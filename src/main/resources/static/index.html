@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KRONOS CORE Pipeline Industrial</title>
+    <meta name="description" content="Interface web premium para gerenciar a tradução, extração, análise de mídia, remuxer e telemetria de legendas de animes.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=2.0">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar de Navegação -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-logo">
+                    <img src="img/kronos_logo.svg" alt="Logo">
+                </div>
+                <div class="brand-info">
+                    <h2>KRONOS CORE</h2>
+                    <span>Pipeline Industrial</span>
+                </div>
+            </div>
+            
+            <nav class="nav-menu">
+                <button class="nav-item active" data-target="inicio" id="btn-menu-inicio" data-tooltip="Acesse o painel principal com informações gerais do repositório, shields e documentação.">
+                    <svg class="nav-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <span>Painel Inicial</span>
+                </button>
+                <button class="nav-item" data-target="analise" id="btn-menu-analise" data-tooltip="Audite faixas, codecs e bitrate dos arquivos de vídeo.">
+                    <svg class="nav-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    <span>1. Análise de Mídia</span>
+                </button>
+                <button class="nav-item" data-target="extracao" id="btn-menu-extracao" data-tooltip="Extraia faixas de legendas (ASS/SRT/PGS) em lote de vídeos (MKV/WebM/MP4/MOV/AVI...).">
+                    <svg class="nav-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    <span>2. Extração</span>
+                </button>
+                <button class="nav-item" data-target="traducao" id="btn-menu-traducao" data-tooltip="Traduza legendas usando IA local com proteção de tags.">
+                    <svg class="nav-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    <span>3. Tradução Local</span>
+                </button>
+                <button class="nav-item" data-target="correcao" id="btn-menu-correcao" data-tooltip="Corrija falhas de cache ou traduções ausentes.">
+                    <svg class="nav-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4z"></path></svg>
+                    <span>4. Correção Cache</span>
+                </button>
+                <button class="nav-item" data-target="revisao" id="btn-menu-revisao" data-tooltip="Revise legendas .ass já traduzidas: inglês residual, concordância PT-BR e correção via Google.">
+                    <svg class="nav-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path><line x1="9" y1="11" x2="13" y2="11"></line></svg>
+                    <span>6. Revisão de Legendas</span>
+                </button>
+                <button class="nav-item" data-target="cura" id="btn-menu-cura" data-tooltip="Corrija falhas estruturais nas formatações e tags do ASS causadas por LLMs.">
+                    <svg class="nav-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="7.5 4.21 12 6.81 16.5 4.21"></polyline><polyline points="7.5 19.79 7.5 14.6 3 12"></polyline><polyline points="21 12 16.5 14.6 16.5 19.79"></polyline><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    <span>7. Cura de Legendas</span>
+                </button>
+                <button class="nav-item" data-target="remuxer" id="btn-menu-remuxer" data-tooltip="Recombine vídeos originais e as legendas traduzidas.">
+                    <svg class="nav-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                    <span>8. Remuxer</span>
+                </button>
+                <button class="nav-item" data-target="mapa" id="btn-menu-mapa" data-tooltip="Exiba a árvore estrutural e taxonomia do código Java.">
+                    <svg class="nav-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                    <span>9. Mapa do Projeto</span>
+                </button>
+                <button class="nav-item" data-target="telemetria" id="btn-menu-telemetria" data-tooltip="Monitore hits de cache, tokens e logs em tempo real.">
+                    <svg class="nav-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                    <span>10. Telemetria</span>
+                </button>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="status-indicator online">
+                    <span class="dot"></span>
+                    <span class="status-text">Backend Online</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Conteúdo Principal -->
+        <main class="main-content">
+            <!-- Header Global -->
+            <header class="main-header">
+                <div class="header-title">
+                    <h1 id="page-title">Painel Inicial</h1>
+                    <p id="page-subtitle">Orquestrador automatizado e pipeline industrial de processamento de animes</p>
+                </div>
+                <div class="quick-stats">
+                    <div class="stat-card">
+                        <span class="stat-label">Cache Local</span>
+                        <span class="stat-value" id="stat-cache-count">Carregando...</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Container dos Painéis (Telas) -->
+            <section class="panels-container">
+                <!-- 0. PAINEL DE BOAS-VINDAS / DASHBOARD INICIAL -->
+                <div class="panel active" id="panel-inicio">
+                    <!-- Dashboard Grid de Stats Rápidos -->
+                    <div class="dashboard-stats-grid">
+                        <div class="stat-widget glow-blue">
+                            <div class="widget-icon">
+                                <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                            </div>
+                            <div class="widget-info">
+                                <span class="widget-label">Orquestrador</span>
+                                <span class="widget-value">Quarkus</span>
+                            </div>
+                            <span class="status-badge pulse-green">Online</span>
+                        </div>
+                        
+                        <div class="stat-widget glow-magenta">
+                            <div class="widget-icon">
+                                <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                            </div>
+                            <div class="widget-info">
+                                <span class="widget-label">LLM de Tradução</span>
+                                <span class="widget-value">Mistral Nemo Local</span>
+                            </div>
+                            <span class="status-badge pulse-purple" id="llm-status-indicator">LM Studio</span>
+                        </div>
+
+                        <div class="stat-widget glow-green">
+                            <div class="widget-icon">
+                                <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                            </div>
+                            <div class="widget-info">
+                                <span class="widget-label">Cache de Legendas</span>
+                                <span class="widget-value" id="dashboard-cache-count">Carregando...</span>
+                            </div>
+                            <span class="status-badge pulse-green">Ativo</span>
+                        </div>
+                    </div>
+
+                    <!-- Banner Hero Modernizado -->
+                    <div class="welcome-hero-banner">
+                        <div class="hero-content">
+                            <div class="hero-title-container">
+                                <span class="hero-eyebrow">AUTOMATION SUITE</span>
+                                <h2>KRONOS CORE</h2>
+                                <p class="hero-tagline-sub">Pipeline Industrial de Processamento & Tradução de Animes</p>
+                            </div>
+                            <p class="hero-desc-new">
+                                Plataforma integrada para gerenciamento em lote de legendas de animes. Realize auditoria detalhada de faixas de mídia, extração de faixas embutidas (ASS/PGS/SRT), tradução contextualizada por Inteligência Artificial rodando 100% localmente e remuxagem automatizada com preservação de qualidade original.
+                            </p>
+                        </div>
+                        <div class="hero-visual">
+                            <div class="tech-circle">
+                                <div class="inner-pulse"></div>
+                                <svg viewBox="0 0 24 24" width="48" height="48" stroke="currentColor" stroke-width="1.5" fill="none" class="floating-tech-icon"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pipeline Flow Section com Estilo Grid Ultra Moderno -->
+                    <div class="pipeline-flow-section">
+                        <div class="flow-header">
+                            <h3>Lógica do Fluxo de Trabalho (Pipeline)</h3>
+                            <span class="flow-line-decorator"></span>
+                        </div>
+                        <div class="pipeline-cards-grid">
+                            
+                            <!-- Card 1 -->
+                            <div class="pipeline-card card-analise" onclick="document.getElementById('btn-menu-analise').click()" data-tooltip="Clique para auditar codecs e bitrate">
+                                <div class="card-glow-bg"></div>
+                                <div class="card-step-num">01</div>
+                                <div class="card-icon-container">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                </div>
+                                <h4>Análise de Mídia</h4>
+                                <p>Audite faixas, codecs e bitrate dos arquivos de vídeo originais.</p>
+                                <span class="card-action-link">Acessar Painel →</span>
+                            </div>
+
+                            <!-- Card 2 -->
+                            <div class="pipeline-card card-extracao" onclick="document.getElementById('btn-menu-extracao').click()" data-tooltip="Clique para extrair as legendas originais">
+                                <div class="card-glow-bg"></div>
+                                <div class="card-step-num">02</div>
+                                <div class="card-icon-container">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                </div>
+                                <h4>Extração</h4>
+                                <p>Extraia faixas de legendas (ASS/PGS/SRT) em lote de arquivos MKV.</p>
+                                <span class="card-action-link">Acessar Painel →</span>
+                            </div>
+
+                            <!-- Card 3 -->
+                            <div class="pipeline-card card-traducao" onclick="document.getElementById('btn-menu-traducao').click()" data-tooltip="Clique para traduzir com LLM local">
+                                <div class="card-glow-bg"></div>
+                                <div class="card-step-num">03</div>
+                                <div class="card-icon-container">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                </div>
+                                <h4>Tradução Local</h4>
+                                <p>Traduza legendas por IA usando LLM local com proteção de estilos.</p>
+                                <span class="card-action-link">Acessar Painel →</span>
+                            </div>
+
+                            <!-- Card 4 -->
+                            <div class="pipeline-card card-correcao" onclick="document.getElementById('btn-menu-correcao').click()" data-tooltip="Clique para preencher linhas falhas do cache">
+                                <div class="card-glow-bg"></div>
+                                <div class="card-step-num">04</div>
+                                <div class="card-icon-container">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4z"></path></svg>
+                                </div>
+                                <h4>Correção Cache</h4>
+                                <p>Varra e corrija falas vazias ou não traduzidas do banco de cache.</p>
+                                <span class="card-action-link">Acessar Painel →</span>
+                            </div>
+
+                            <!-- Card 6 — Revisão de Legendas -->
+                            <div class="pipeline-card card-traducao" onclick="document.getElementById('btn-menu-revisao').click()" data-tooltip="Clique para revisar legendas .ass já traduzidas">
+                                <div class="card-glow-bg"></div>
+                                <div class="card-step-num">06</div>
+                                <div class="card-icon-container">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                                </div>
+                                <h4>Revisão de Legendas</h4>
+                                <p>Detecte e corrija erros remanescentes nas legendas .ass já traduzidas.</p>
+                                <span class="card-action-link">Acessar Painel →</span>
+                            </div>
+
+                            <!-- Card 7 - Cura de Legendas -->
+                            <div class="pipeline-card card-cura" onclick="document.getElementById('btn-menu-cura').click()" data-tooltip="Clique para corrigir formatações de ASS">
+                                <div class="card-glow-bg"></div>
+                                <div class="card-step-num">07</div>
+                                <div class="card-icon-container">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="7.5 4.21 12 6.81 16.5 4.21"></polyline><polyline points="7.5 19.79 7.5 14.6 3 12"></polyline><polyline points="21 12 16.5 14.6 16.5 19.79"></polyline><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                                </div>
+                                <h4>Cura de Legendas</h4>
+                                <p>Saneamento estrutural de formatações complexas e reinjeção de tags.</p>
+                                <span class="card-action-link">Acessar Painel →</span>
+                            </div>
+
+                            <!-- Card 8 -->
+                            <div class="pipeline-card card-remuxer" onclick="document.getElementById('btn-menu-remuxer').click()" data-tooltip="Clique para acoplar legendas traduzidas nos vídeos">
+                                <div class="card-glow-bg"></div>
+                                <div class="card-step-num">08</div>
+                                <div class="card-icon-container">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                                </div>
+                                <h4>Remuxer</h4>
+                                <p>Mescle os vídeos originais e as legendas traduzidas em novos MKVs.</p>
+                                <span class="card-action-link">Acessar Painel →</span>
+                            </div>
+
+                            <!-- Card 9 -->
+                            <div class="pipeline-card card-mapa" onclick="document.getElementById('btn-menu-mapa').click()" data-tooltip="Clique para analisar o código Java">
+                                <div class="card-glow-bg"></div>
+                                <div class="card-step-num">09</div>
+                                <div class="card-icon-container">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                                </div>
+                                <h4>Mapa do Projeto</h4>
+                                <p>Visualize a árvore estrutural e taxonomia de classes Java do projeto.</p>
+                                <span class="card-action-link">Acessar Painel →</span>
+                            </div>
+
+                            <!-- Card 10 -->
+                            <div class="pipeline-card card-telemetria" onclick="document.getElementById('btn-menu-telemetria').click()" data-tooltip="Clique para acessar a telemetria">
+                                <div class="card-glow-bg"></div>
+                                <div class="card-step-num">10</div>
+                                <div class="card-icon-container">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                                </div>
+                                <h4>Telemetria</h4>
+                                <p>Monitore hits de cache, tokens e logs em tempo real do sistema.</p>
+                                <span class="card-action-link">Acessar Painel →</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 1. PAINEL DE ANÁLISE DE MÍDIA -->
+                <div class="panel" id="panel-analise">
+                    <div class="glass-card">
+                        <h2>Iniciar Auditoria de Mídia</h2>
+                        <p class="card-desc">Forneça o caminho da pasta contendo os episódios em formato de vídeo (.mkv, .mp4, etc.) para analisar codecs e sincronias.</p>
+                        
+                        <div class="anime-meta-banner hidden" id="meta-banner-analise"></div>
+
+                        <form id="form-analise" class="standard-form">
+                            <div class="form-group">
+                                <label for="analise-entrada">Caminho da pasta ou arquivo de vídeo: <span class="help-icon" data-tooltip="Caminho absoluto da pasta contendo os vídeos a serem auditados por codecs, faixas e sincronia.">?</span></label>
+                                <div class="input-with-button">
+                                    <input type="text" id="analise-entrada" placeholder="Ex: C:\animes\[Sokudo] DanMachi\Season 04" required>
+                                    <button type="button" class="btn-procurar" data-target="analise-entrada" data-type="pasta">📂 Procurar...</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="analise-saida">Pasta de saída dos relatórios (Opcional): <span class="help-icon" data-tooltip="Diretório onde serão gravados os relatórios da análise. Deixe em branco para salvar por padrão na subpasta 'relatorios' dentro da pasta da mídia.">?</span></label>
+                                <div class="input-with-button">
+                                    <input type="text" id="analise-saida" placeholder="Deixe vazio p/ salvar em 'relatorios' na pasta da mídia">
+                                    <button type="button" class="btn-procurar" data-target="analise-saida" data-type="pasta">📂 Procurar...</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="analise-contexto">Obra / Contexto (Opcional): <span class="help-icon" data-tooltip="Selecione a obra para exibir dados e capa do anime.">?</span></label>
+                                <select id="analise-contexto">
+                                    <option value="" disabled selected>Carregando contextos...</option>
+                                </select>
+                            </div>
+                            <div class="correcao-actions">
+                                <button type="submit" class="btn btn-primary" id="btn-submit-analise" data-tooltip="Iniciar varredura técnica de arquivos de mídia">
+                                    <span>Iniciar Análise</span>
+                                    <svg class="btn-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-clear-form" data-form="form-analise" data-tooltip="Limpa todos os campos e oculta o cartão do anime">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                    <span>Limpar Campos</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="glass-card console-card">
+                        <div class="console-header">
+                            <h3>Logs do Analisador</h3>
+                            <div class="console-actions">
+                                <button class="btn-toggle-console" data-target="console-analise" data-tooltip="Alternar altura expandida do console">↕ Expandir</button>
+                                <button class="btn-clear-console" data-target="console-analise">Limpar</button>
+                            </div>
+                        </div>
+                        <div class="console-body" id="console-analise">
+                            <div class="system-message">Aguardando execução...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. PAINEL DE EXTRAÇÃO -->
+                <div class="panel" id="panel-extracao">
+                    <div class="glass-card">
+                        <h2>Extração Industrial de Legendas</h2>
+                        <p class="card-desc">Extraia faixas de legendas embutidas em vídeos (MKV/WebM via MKVToolNix; MP4/MOV/AVI e outros via ffmpeg) com alta precisão.</p>
+
+                        <form id="form-extracao" class="standard-form">
+                            <div class="form-group">
+                                <label for="extracao-entrada">Pasta com arquivos de vídeo: <span class="help-icon" data-tooltip="Diretório (busca em subpastas também) onde se encontram os vídeos originais dos quais serão extraídas as faixas de legenda. Suporta MKV/WebM e, via ffmpeg, MP4/MOV/AVI/TS/M2TS/FLV/WMV.">?</span></label>
+                                <div class="input-with-button">
+                                    <input type="text" id="extracao-entrada" placeholder="Ex: C:\animes\[Sokudo] DanMachi\Season 04" required>
+                                    <button type="button" class="btn-procurar" data-target="extracao-entrada" data-type="pasta">📂 Procurar...</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="extracao-saida">Pasta de saída das legendas extraídas (Opcional): <span class="help-icon" data-tooltip="Diretório onde as legendas extraídas serão salvas. Deixe em branco para salvar por padrão na subpasta 'legendas_extraidas_[formato]' dentro da pasta da mídia.">?</span></label>
+                                <div class="input-with-button">
+                                    <input type="text" id="extracao-saida" placeholder="Deixe vazio p/ salvar em 'legendas_extraidas_[formato]' na pasta da mídia">
+                                    <button type="button" class="btn-procurar" data-target="extracao-saida" data-type="pasta">📂 Procurar...</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="extracao-formato">Formato desejado: <span class="help-icon" data-tooltip="O formato de destino da extração. Prefira ASS para animes para preservar estilos, fontes e posições dos textos.">?</span></label>
+                                <select id="extracao-formato">
+                                    <option value="ASS" selected>ASS (Legendas de Estilo Complexo)</option>
+                                    <option value="PGS">PGS (Imagens Embutidas / BD)</option>
+                                    <option value="SRT">SRT (SubRip Texto Simples)</option>
+                                </select>
+                            </div>
+                            <div class="correcao-actions">
+                                <button type="submit" class="btn btn-primary btn-magenta" data-tooltip="Iniciar extração paralela das faixas de legenda via mkvextract">
+                                    <span>Executar Extração</span>
+                                    <svg class="btn-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-clear-form" data-form="form-extracao" data-tooltip="Limpa todos os campos da extração">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                    <span>Limpar Campos</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="glass-card console-card">
+                        <div class="console-header">
+                            <h3>Logs do Extrator</h3>
+                            <div class="console-actions">
+                                <button class="btn-toggle-console" data-target="console-extracao" data-tooltip="Alternar altura expandida do console">↕ Expandir</button>
+                                <button class="btn-clear-console" data-target="console-extracao">Limpar</button>
+                            </div>
+                        </div>
+                        <div class="console-body" id="console-extracao">
+                            <div class="system-message">Aguardando execução...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. PAINEL DE TRADUÇÃO LOCAL -->
+                <div class="panel" id="panel-traducao">
+                    <div class="glass-card">
+                        <h2>Tradução via LLM Local</h2>
+                        <p class="card-desc">Traduz legendas no formato ASS/SSA do Inglês para Português usando IA local (ex: Mistral Nemo no LM Studio).</p>
+                        
+                        <div class="anime-meta-banner hidden" id="meta-banner-traducao"></div>
+
+                        <form id="form-traducao" class="standard-form">
+                            <div class="form-group">
+                                <label for="traducao-entrada">Pasta com as legendas ORIGINAIS (.ass / .ssa): <span class="help-icon" data-tooltip="Pasta contendo os arquivos de legenda originais (geralmente em inglês) que serão traduzidos pela LLM.">?</span></label>
+                                <div class="input-with-button">
+                                    <input type="text" id="traducao-entrada" placeholder="Ex: C:\animes\[Sokudo] DanMachi\Season 04\legendas_eng" required>
+                                    <button type="button" class="btn-procurar" data-target="traducao-entrada" data-type="pasta">📂 Procurar...</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="traducao-saida">Pasta de SAÍDA para as legendas em Português: <span class="help-icon" data-tooltip="Pasta de destino onde as legendas traduzidas serão salvas. Por padrão, cria a subpasta 'traducao_ptbr' dentro da pasta indicada.">?</span></label>
+                                <div class="input-with-button">
+                                    <input type="text" id="traducao-saida" placeholder="Deixe vazio p/ salvar em 'traducao_ptbr' na pasta da mídia">
+                                    <button type="button" class="btn-procurar" data-target="traducao-saida" data-type="pasta">📂 Procurar...</button>
+                                </div>
+
+                                <label for="traducao-contexto">Contexto de Tradução (Lore): <span class="help-icon" data-tooltip="Define qual pacote de regras de lore será usado pela LLM.">?</span></label>
+                                <select id="traducao-contexto">
+                                    <option value="" disabled selected>Carregando contextos...</option>
+                                </select>
+                            </div>
+                            <div class="correcao-actions">
+                                <button type="submit" class="btn btn-primary btn-green" data-tooltip="Iniciar tradução em lote pelo servidor local do LM Studio">
+                                    <span>Iniciar Tradução</span>
+                                    <svg class="btn-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-clear-form" data-form="form-traducao" data-tooltip="Limpa todos os campos e oculta o cartão do anime">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                    <span>Limpar Campos</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="glass-card console-card">
+                        <div class="console-header">
+                            <h3>Console da Tradução</h3>
+                            <div class="console-actions">
+                                <button class="btn-toggle-console" data-target="console-traducao" data-tooltip="Alternar altura expandida do console">↕ Expandir</button>
+                                <button class="btn-clear-console" data-target="console-traducao">Limpar</button>
+                            </div>
+                        </div>
+                        <div class="console-body" id="console-traducao">
+                            <div class="system-message">Aguardando execução...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. PAINEL DE CORREÇÃO -->
+                <div class="panel" id="panel-correcao">
+                    <div class="glass-card">
+                        <h2>Correção do Cache de Tradução</h2>
+                        <p class="card-desc">Resolva falas persistentes em inglês, limpando caches antigos ou preenchendo automaticamente com o Google Tradutor online.</p>
+                        
+                        <div class="anime-meta-banner hidden" id="meta-banner-correcao"></div>
+
+                        <form id="form-correcao" class="standard-form">
+                            <div class="form-group">
+                                <label for="correcao-entrada">Pasta do cache de traduções (.cache.json): <span class="help-icon" data-tooltip="Caminho do diretório de cache. Deixe vazio para usar a pasta padrão 'cache'.">?</span></label>
+                                <div class="input-with-button">
+                                    <input type="text" id="correcao-entrada" placeholder="Deixe em branco para usar a pasta de cache padrão 'cache'">
+                                    <button type="button" class="btn-procurar" data-target="correcao-entrada" data-type="pasta">📂 Procurar...</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="correcao-contexto">Obra / Contexto (Opcional): <span class="help-icon" data-tooltip="Selecione a obra para exibir dados e capa durante a correção do cache.">?</span></label>
+                                <select id="correcao-contexto">
+                                    <option value="" disabled selected>Carregando contextos...</option>
+                                </select>
+                            </div>
+                            
+                            <div class="correcao-actions">
+                                <button type="button" class="btn btn-secondary btn-yellow" id="btn-limpar-cache" data-tooltip="Remove traduções marcadas como falhas, vazias ou contendo alucinações de LLM.">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                    <span>Limpar Falhas do Cache</span>
+                                </button>
+                                
+                                <button type="button" class="btn btn-primary btn-yellow" id="btn-scraping-google" data-tooltip="Varre as lacunas e termos não traduzidos e realiza tradução online de contingência.">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path><path d="M2 12h20"></path></svg>
+                                    <span>Corrigir via Scraping Google</span>
+                                </button>
+
+                                <button type="button" class="btn btn-primary btn-purple" id="btn-revisar-cache" data-tooltip="Revisa o cache já traduzido com LLM local e contexto da obra para corrigir gênero, pronomes e concordância.">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
+                                    <span>Revisar Concordância do Cache</span>
+                                </button>
+
+                                <button type="button" class="btn btn-secondary btn-clear-form" data-form="form-correcao" data-tooltip="Limpa todos os campos e oculta o cartão do anime">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                    <span>Limpar Campos</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="glass-card console-card">
+                        <div class="console-header">
+                            <h3>Logs de Correção</h3>
+                            <div class="console-actions">
+                                <button class="btn-toggle-console" data-target="console-correcao" data-tooltip="Alternar altura expandida do console">↕ Expandir</button>
+                                <button class="btn-clear-console" data-target="console-correcao">Limpar</button>
+                            </div>
+                        </div>
+                        <div class="console-body" id="console-correcao">
+                            <div class="system-message">Aguardando execução...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. PAINEL DE REVISÃO DE LEGENDAS -->
+                <div class="panel" id="panel-revisao">
+                    <div class="glass-card">
+                        <h2>Revisão de Legendas</h2>
+                        <p class="card-desc">Varre arquivos .ass/.ssa já em português: corrige concordância de gênero, pronomes, artigos e tratamentos (senhor/senhora, ele/ela) via <strong>LLM local</strong>, ou resíduos em inglês via <strong>Google Tradutor</strong>.</p>
+                        <p class="card-hint">Informe a pasta com as legendas <strong>traduzidas</strong> (.ass). A revisão lê e grava os arquivos PT-BR; o inglês de referência vem de <code>_Track2.ass</code> na mesma pasta (ou pasta EN abaixo) e, se não houver, do <strong>cache</strong> do projeto (<code>cache/**/*_ENG.cache.json</code>).</p>
+
+                        <div class="anime-meta-banner hidden" id="meta-banner-revisao"></div>
+
+                        <form id="form-revisao" class="standard-form">
+                            <div class="form-group">
+                                <label for="revisao-entrada">Pasta com legendas TRADUZIDAS (.ass / .ssa): <span class="help-icon" data-tooltip="Arquivos *_PT-BR.ass ou *_PTBR_TrackN.ass gerados pela tradução.">?</span></label>
+                                <div class="input-with-button">
+                                    <input type="text" id="revisao-entrada" name="entrada" autocomplete="off" spellcheck="false" placeholder="Ex: E:\animes\DANMACHI\temporada_5\legendas_extraidas_ass" required>
+                                    <button type="button" class="btn-procurar" data-target="revisao-entrada" data-type="pasta">📂 Procurar...</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="revisao-entrada-en">Pasta com legendas ORIGINAIS em inglês (opcional): <span class="help-icon" data-tooltip="Se os .ass em inglês estiverem em outra pasta. Vazio = procura na mesma pasta do PT (_Track2.ass, etc.).">?</span></label>
+                                <div class="input-with-button">
+                                    <input type="text" id="revisao-entrada-en" name="saida" autocomplete="off" spellcheck="false" placeholder="Opcional — mesma pasta do PT se vazio">
+                                    <button type="button" class="btn-procurar" data-target="revisao-entrada-en" data-type="pasta">📂 Procurar...</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="revisao-contexto">Contexto de Lore (concordância LLM): <span class="help-icon" data-tooltip="Define gênero de personagens e regras de tratamento para a revisão de pronomes, artigos e adjetivos.">?</span></label>
+                                <select id="revisao-contexto">
+                                    <option value="" disabled selected>Carregando contextos...</option>
+                                </select>
+                            </div>
+                            <div class="correcao-actions">
+                                <button type="button" class="btn btn-primary btn-purple" id="btn-revisao-concordancia" data-tooltip="Corrige concordância PT-BR (gênero, pronomes, artigos, tratamentos) via LLM local">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                                    <span>Revisar Concordância (LLM)</span>
+                                </button>
+                                <button type="submit" class="btn btn-primary btn-green" id="btn-revisao-submit" data-tooltip="Detecta inglês residual e re-traduz falas problemáticas via Google Translate">
+                                    <span>Corrigir via Scraping Google</span>
+                                    <svg class="btn-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-clear-form" data-form="form-revisao" data-tooltip="Limpa todos os campos e oculta o cartão do anime">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                    <span>Limpar Campos</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="glass-card console-card">
+                        <div class="console-header">
+                            <h3>Logs da Revisão</h3>
+                            <div class="console-actions">
+                                <button class="btn-toggle-console" data-target="console-revisao" data-tooltip="Alternar altura expandida do console">↕ Expandir</button>
+                                <button class="btn-clear-console" data-target="console-revisao">Limpar</button>
+                            </div>
+                        </div>
+                        <div class="console-body" id="console-revisao">
+                            <div class="system-message">Aguardando execução...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. PAINEL DE CURA DE LEGENDAS -->
+                <div class="panel" id="panel-cura">
+                    <div class="glass-card">
+                        <h2>Cura de Legendas</h2>
+                        <p class="card-desc">Conserta tags ASS quebradas pelo LLM projetando a formatação original na tradução. Se uma obra for selecionada abaixo, também usa o LLM local (com o contexto/lore daquela obra) para retraduzir falas com resíduo em inglês ou alucinadas.</p>
+
+                        <div class="anime-meta-banner hidden" id="meta-banner-cura"></div>
+
+                        <form id="form-cura" class="standard-form">
+                            <div class="form-group">
+                                <label for="cura-entrada-original">Pasta com legendas ORIGINAIS (.ass, em inglês): <span class="help-icon" data-tooltip="Pasta com as legendas originais (extraídas do vídeo), usadas como referência de formatação. Pode estar em qualquer caminho, inclusive em outro disco.">?</span></label>
+                                <div class="input-with-button">
+                                    <input type="text" id="cura-entrada-original" name="entradaOriginal" autocomplete="off" spellcheck="false" placeholder="Ex: E:\animes\DANMACHI\temporada_4\legendas_extraidas_ass" required>
+                                    <button type="button" class="btn-procurar" data-target="cura-entrada-original" data-type="pasta">📂 Procurar...</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="cura-entrada-traduzida">Pasta com legendas TRADUZIDAS (PT-BR): <span class="help-icon" data-tooltip="Pasta com as legendas em português a serem curadas/corrigidas. Pode estar em qualquer caminho, inclusive em outro disco — não precisa estar dentro da pasta original.">?</span></label>
+                                <div class="input-with-button">
+                                    <input type="text" id="cura-entrada-traduzida" name="entradaTraduzida" autocomplete="off" spellcheck="false" placeholder="Ex: E:\animes\DANMACHI\temporada_4\legendas_extraidas_ass\traducao_ptbr" required>
+                                    <button type="button" class="btn-procurar" data-target="cura-entrada-traduzida" data-type="pasta">📂 Procurar...</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="cura-contexto">Obra / Contexto (Opcional): <span class="help-icon" data-tooltip="Exibe a capa/dados da obra E ativa a correção de erros de tradução via LLM local usando o contexto/lore dessa obra. Deixe em branco para uma cura só estrutural (sem LLM, mais rápida).">?</span></label>
+                                <select id="cura-contexto">
+                                    <option value="" disabled selected>Carregando contextos...</option>
+                                </select>
+                            </div>
+
+                            <div class="cura-actions" style="display: flex; gap: 15px; margin-top: 20px;">
+                                <button type="button" class="btn btn-primary btn-green" id="btn-iniciar-cura" data-tooltip="Conserta as tags ASS de todos os episódios. Com uma obra selecionada, também corrige erros de tradução via LLM.">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="7.5 4.21 12 6.81 16.5 4.21"></polyline><polyline points="7.5 19.79 7.5 14.6 3 12"></polyline><polyline points="21 12 16.5 14.6 16.5 19.79"></polyline><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                                    <span>Iniciar Cura de Tags</span>
+                                </button>
+                                
+                                <button type="button" class="btn btn-secondary btn-clear-form" data-form="form-cura" data-tooltip="Limpa todos os campos e oculta o cartão do anime">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                    <span>Limpar Campos</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="glass-card console-card">
+                        <div class="console-header">
+                            <h3>Logs de Cura Estrutural</h3>
+                            <div class="console-actions">
+                                <button class="btn-toggle-console" data-target="console-cura" data-tooltip="Alternar altura expandida do console">↕ Expandir</button>
+                                <button class="btn-clear-console" data-target="console-cura">Limpar</button>
+                            </div>
+                        </div>
+                        <div class="console-body" id="console-cura">
+                            <div class="system-message">Aguardando execução...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8. PAINEL DE REMUXER -->
+                <div class="panel" id="panel-remuxer">
+                    <div class="glass-card">
+                        <h2>Remuxer Industrial</h2>
+                        <p class="card-desc">Gere novos arquivos de vídeo contendo a faixa de vídeo original e as novas legendas em português acopladas de maneira limpa.</p>
+                        
+                        <form id="form-remuxer" class="standard-form">
+                            <div class="form-group">
+                                <label for="remuxer-videos">Pasta com os arquivos de VÍDEO ORIGINAIS (.mkv): <span class="help-icon" data-tooltip="Caminho da pasta que contém os episódios de vídeo em formato MKV (sem legenda em português).">?</span></label>
+                                <div class="input-with-button">
+                                    <input type="text" id="remuxer-videos" placeholder="Ex: C:\animes\[Sokudo] DanMachi\Season 04" required>
+                                    <button type="button" class="btn-procurar" data-target="remuxer-videos" data-type="pasta">📂 Procurar...</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="remuxer-legendas">Pasta com as legendas traduzidas (.ass): <span class="help-icon" data-tooltip="Diretório onde estão as novas legendas ASS traduzidas. Pressione Enter para buscar automaticamente na pasta padrão do projeto.">?</span></label>
+                                <div class="input-with-button">
+                                    <input type="text" id="remuxer-legendas" placeholder="Ex: C:\animes\[Sokudo] DanMachi\Season 04\legendas_ptbr (Enter = automático)">
+                                    <button type="button" class="btn-procurar" data-target="remuxer-legendas" data-type="pasta">📂 Procurar...</button>
+                                </div>
+                            </div>
+                            <div class="correcao-actions">
+                                <button type="submit" class="btn btn-primary btn-cyan" data-tooltip="Mescla os arquivos de vídeo e legendas traduzidas em novos arquivos usando mkvmerge">
+                                    <span>Iniciar Remuxing</span>
+                                    <svg class="btn-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-clear-form" data-form="form-remuxer" data-tooltip="Limpa todos os campos do remuxer">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                    <span>Limpar Campos</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="glass-card console-card">
+                        <div class="console-header">
+                            <h3>Logs de Remux</h3>
+                            <div class="console-actions">
+                                <button class="btn-toggle-console" data-target="console-remuxer" data-tooltip="Alternar altura expandida do console">↕ Expandir</button>
+                                <button class="btn-clear-console" data-target="console-remuxer">Limpar</button>
+                            </div>
+                        </div>
+                        <div class="console-body" id="console-remuxer">
+                            <div class="system-message">Aguardando execução...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8. PAINEL DE MAPA DO PROJETO -->
+                <div class="panel" id="panel-mapa">
+                    <div class="glass-card">
+                        <h2>Mapeamento de Estrutura & Taxonomia</h2>
+                        <p class="card-desc">Varre recursivamente os arquivos do repositório Java, gerando o relatório markdown de arquitetura e taxonomia automaticamente.</p>
+                        
+                        <div class="mapa-controls">
+                            <button type="button" class="btn btn-primary btn-purple" id="btn-gerar-mapa" data-tooltip="Analisa e gera de forma estática o mapa estrutural das classes Java do repositório.">
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><line x1="6" y1="3" x2="6" y2="15"></line><circle cx="18" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M18 9a9 9 0 0 1-9 9"></path></svg>
+                                <span>Gerar Mapa do Projeto</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card viewer-card">
+                        <div class="viewer-header">
+                            <h3>Estrutura do Projeto</h3>
+                            <button class="btn-copy-viewer" id="btn-copiar-mapa">Copiar Mapa</button>
+                        </div>
+                        <pre class="viewer-body" id="viewer-mapa">Estrutura não gerada. Clique em "Gerar Mapa do Projeto" para analisar...</pre>
+                    </div>
+                </div>
+
+                <!-- 9. PAINEL DE TELEMETRIA -->
+                <div class="panel" id="panel-telemetria">
+                    <div class="panel-header-actions" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                        <h2 style="margin:0;">Telemetria e Analytics</h2>
+                        <button type="button" class="btn btn-primary" id="btn-exportar-telemetria" data-tooltip="Faz o download anonimizado do arquivo de telemetria compartilhado para auditoria">
+                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            <span>Exportar Estatísticas</span>
+                        </button>
+                    </div>
+                    <div class="telemetria-grid">
+                        <div class="glass-card stat-detail-card">
+                            <h3>Métricas de Tradução</h3>
+                            <div class="metric-group">
+                                <div class="metric-item">
+                                    <span class="m-label">Episódios Traduzidos</span>
+                                    <span class="m-value" id="t-episodios">0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="m-label">Linhas Traduzidas</span>
+                                    <span class="m-value" id="t-linhas">0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="m-label">Tempo Médio p/ Linha</span>
+                                    <span class="m-value" id="t-tempo-linha">0 ms</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-card stat-detail-card">
+                            <h3>Métricas de Desempenho LLM</h3>
+                            <div class="metric-group">
+                                <div class="metric-item">
+                                    <span class="m-label">Total de Tokens (Estimado)</span>
+                                    <span class="m-value" id="t-tokens">0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="m-label">Hits de Cache (Reaproveitados)</span>
+                                    <span class="m-value" id="t-cache-hits">0</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="m-label">Fails / Hallucinations</span>
+                                    <span class="m-value" id="t-alucinacoes">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card log-stream-card">
+                        <div class="console-header">
+                            <h3>Métricas e Estatísticas Agregadas</h3>
+                            <button class="btn-refresh-telemetria" id="btn-refresh-telemetria">Atualizar</button>
+                        </div>
+                        <div class="telemetria-details-container">
+                            <table class="telemetria-table">
+                                <thead>
+                                    <tr>
+                                        <th>Época / Operação</th>
+                                        <th>Mapeamento</th>
+                                        <th>Duração</th>
+                                        <th>Taxa de Sucesso</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="telemetria-table-body">
+                                    <tr>
+                                        <td colspan="4" class="table-empty">Nenhuma métrica registrada. Realize operações para alimentar a telemetria.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+            
+            <!-- Rodapé Global -->
+            <footer class="app-footer">
+                <div class="footer-creator-line">
+                    <span class="sparkle-effect">✦</span> Desenvolvido por <strong class="creator-name">Paulo André Carminati</strong>
+                    <a href="https://github.com/carmipa/traducao_animes_llm_local_java" target="_blank" style="display: inline-flex; align-items: center; margin-left: 4px;">
+                        <img src="https://img.shields.io/badge/GitHub-Repository-181717?style=flat-square&logo=github&logoColor=white" alt="GitHub Repo">
+                    </a>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Container Global para Toasts/Alertas Flutuantes -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

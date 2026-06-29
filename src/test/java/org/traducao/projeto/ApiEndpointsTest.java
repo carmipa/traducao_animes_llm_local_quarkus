@@ -1,0 +1,212 @@
+package org.traducao.projeto;
+
+import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.Test;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@QuarkusTest
+class ApiEndpointsTest {
+
+    @Test
+    void telemetriaRetornaResumo() {
+        given()
+            .when().get("/api/telemetria")
+            .then()
+            .statusCode(200)
+            .body("cacheCount", greaterThanOrEqualTo(0))
+            .body("totalEpisodios", greaterThanOrEqualTo(0))
+            .body("historicoOperacoes", notNullValue());
+    }
+
+    @Test
+    void telemetriaExportarRetornaArquivoJson() {
+        given()
+            .when().get("/api/telemetria/exportar")
+            .then()
+            .statusCode(200)
+            .contentType(containsString("json"));
+    }
+
+    @Test
+    void metadataComCaminhoVazioRetorna404() {
+        given()
+            .when().get("/api/metadata?caminho=")
+            .then()
+            .statusCode(404);
+    }
+
+    @Test
+    void analisarSemEntradaRetornaBadRequest() {
+        given()
+            .contentType("application/json")
+            .body("{\"entrada\":\"\",\"saida\":\"\"}")
+            .when().post("/api/analisar")
+            .then()
+            .statusCode(400)
+            .body("mensagem", is("Caminho de entrada obrigatório."));
+    }
+
+    @Test
+    void extrairSemEntradaRetornaBadRequest() {
+        given()
+            .contentType("application/json")
+            .body("{\"entrada\":\"\",\"saida\":\"\",\"formato\":\"ASS\"}")
+            .when().post("/api/extrair")
+            .then()
+            .statusCode(400)
+            .body("mensagem", is("Caminho da pasta de vídeos obrigatório."));
+    }
+
+    @Test
+    void traduzirComContextoInvalidoRetornaBadRequest() {
+        given()
+            .contentType("application/json")
+            .body("{\"entrada\":\"cache\",\"saida\":\"\",\"contextoId\":\"contexto_inexistente_xyz\"}")
+            .when().post("/api/traduzir")
+            .then()
+            .statusCode(400)
+            .body("mensagem", containsString("Contexto de tradução desconhecido"));
+    }
+
+    @Test
+    void corrigirCacheAceitaEntradaVazia() {
+        given()
+            .contentType("application/json")
+            .body("{\"entrada\":\"\",\"saida\":\"\"}")
+            .when().post("/api/corrigir-cache")
+            .then()
+            .statusCode(200)
+            .body("mensagem", containsString("Limpeza de cache iniciada"));
+    }
+
+    @Test
+    void corrigirScrapingIniciaComSucesso() {
+        given()
+            .contentType("application/json")
+            .body("{\"entrada\":\"cache\",\"saida\":\"\"}")
+            .when().post("/api/corrigir-scraping")
+            .then()
+            .statusCode(200)
+            .body("mensagem", containsString("Google Translate"));
+    }
+
+    @Test
+    void revisarCacheComContextoInvalidoRetornaBadRequest() {
+        given()
+            .contentType("application/json")
+            .body("{\"entrada\":\"cache\",\"contextoId\":\"contexto_inexistente_xyz\"}")
+            .when().post("/api/revisar-cache")
+            .then()
+            .statusCode(400)
+            .body("mensagem", containsString("Contexto desconhecido"));
+    }
+
+    @Test
+    void revisarLegendasSemEntradaRetornaBadRequest() {
+        given()
+            .contentType("application/json")
+            .body("{\"entrada\":\"\",\"saida\":\"\"}")
+            .when().post("/api/revisar-legendas")
+            .then()
+            .statusCode(400)
+            .body("mensagem", containsString("obrigatória"));
+    }
+
+    @Test
+    void revisarLegendasConcordanciaSemEntradaRetornaBadRequest() {
+        given()
+            .contentType("application/json")
+            .body("{\"entrada\":\"\",\"saida\":\"\"}")
+            .when().post("/api/revisar-legendas-concordancia")
+            .then()
+            .statusCode(400)
+            .body("mensagem", containsString("obrigatória"));
+    }
+
+    @Test
+    void remuxarSemEntradaRetornaBadRequest() {
+        given()
+            .contentType("application/json")
+            .body("{\"entrada\":\"\",\"saida\":\"\"}")
+            .when().post("/api/remuxar")
+            .then()
+            .statusCode(400)
+            .body("mensagem", is("Pasta de vídeos de entrada obrigatória."));
+    }
+
+    @Test
+    void mapaGeraConteudo() {
+        given()
+            .when().post("/api/mapa")
+            .then()
+            .statusCode(200)
+            .body("conteudo", notNullValue());
+    }
+
+    @Test
+    void curaTagsSemDiretoriosRetornaBadRequest() {
+        given()
+            .contentType("application/json")
+            .body("{\"diretorioOriginal\":\"\",\"diretorioTraduzido\":\"\"}")
+            .when().post("/api/cura-tags")
+            .then()
+            .statusCode(400)
+            .body("erro", containsString("originais"));
+    }
+
+    @Test
+    void curaTagsSemTraduzidoRetornaBadRequest() {
+        given()
+            .contentType("application/json")
+            .body("{\"diretorioOriginal\":\"cache\",\"diretorioTraduzido\":\"\"}")
+            .when().post("/api/cura-tags")
+            .then()
+            .statusCode(400)
+            .body("erro", containsString("traduzidas"));
+    }
+
+    @Test
+    void curaTagsComContextoInvalidoRetornaBadRequest() {
+        given()
+            .contentType("application/json")
+            .body("{\"diretorioOriginal\":\"cache\",\"diretorioTraduzido\":\"cache\",\"contextoId\":\"contexto_inexistente_xyz\"}")
+            .when().post("/api/cura-tags")
+            .then()
+            .statusCode(400)
+            .body("erro", containsString("Contexto de tradução desconhecido"));
+    }
+
+    @Test
+    void sseStreamAceitaConexao() throws Exception {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        try {
+            Future<io.restassured.response.Response> future = executor.submit(() ->
+                given()
+                    .header("Accept", "text/event-stream")
+                    .get("/api/logs/stream")
+            );
+            try {
+                io.restassured.response.Response response = future.get(3, TimeUnit.SECONDS);
+                assertEquals(200, response.statusCode());
+                assertTrue(response.contentType().contains("text/event-stream"));
+            } catch (java.util.concurrent.TimeoutException e) {
+                // Conexão SSE mantida aberta — comportamento esperado
+                future.cancel(true);
+            }
+        } finally {
+            executor.shutdownNow();
+        }
+    }
+}

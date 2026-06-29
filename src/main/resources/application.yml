@@ -1,0 +1,47 @@
+app:
+  modo: WEB
+
+tradutor:
+  # Pastas padrao para modo WEB (a UI sobrescreve em cada operacao).
+  diretorio-entrada: entrada
+  diretorio-saida: saida
+  diretorio-cache: cache
+  # Quantidade de falas por requisicao ao LLM. Modificado para 1 (linha a linha) para evitar falhas e alucinações.
+  tamanho-lote: 1
+  # Estilos ASS que nao devem ser traduzidos (ex: letra original em romaji
+  # usada para karaoke, que deve permanecer no idioma original).
+  estilos-ignorados:
+    - "Song JP"
+    - "Mobile Suit Gundam"
+    - "Char's Counterattack"
+    - "OP - Romaji"
+    - "OP - English"
+    - "ED - Romaji"
+    - "ED - English"
+    - "ED-ROM"
+  # Chaves de idioma gravadas no cache JSON (par original -> traduzido).
+  idioma-original: "en"
+  idioma-traduzido: "pt-br"
+  llm:
+    base-url: "http://127.0.0.1:1234/v1"
+    # Precisa bater com o "id" do modelo carregado no LM Studio
+    # (GET /v1/models). Para o Mistral Nemo costuma ser algo como
+    # "mistralai/mistral-nemo-instruct-2407", nao apenas "mistral-nemo".
+    model: "mistralai/mistral-nemo-instruct-2407"
+    temperature: 0.3
+    max-tokens: 2000
+    connect-timeout: 5s
+    read-timeout: 180s
+
+remuxer:
+  mkvmerge-path: mkvmerge
+
+extrator:
+  formato: ASS
+  mkvmerge-path: mkvmerge
+  mkvextract-path: mkvextract
+  ffmpeg-path: ffmpeg
+  ffprobe-path: ffprobe
+
+tmdb:
+  api-key: dummy_key

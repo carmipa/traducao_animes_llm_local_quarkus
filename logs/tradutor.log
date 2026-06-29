@@ -1,0 +1,135 @@
+2026-06-29 12:38:10,406 desktop-gr98nam C:\Program Files\Java\jdk-25.0.2\bin\java.exe[10436] WARN  [io.qua.config] (Test worker) The "quarkus.log.file.enable" config property is deprecated and should not be used anymore.
+2026-06-29 12:38:10,409 desktop-gr98nam C:\Program Files\Java\jdk-25.0.2\bin\java.exe[10436] WARN  [io.qua.config] (Test worker) The "quarkus.log.console.enable" config property is deprecated and should not be used anymore.
+2026-06-29 12:38:10,467 desktop-gr98nam C:\Program Files\Java\jdk-25.0.2\bin\java.exe[10436] DEBUG [jav.lan.Runtime] (Test worker) Runtime.exit() called with status: 0: java.lang.Throwable: Runtime.exit(0)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Runtime.exit(Runtime.java:177)
+	at java.base/java.lang.System.exit(System.java:1540)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:75)
+
+2026-06-29 13:05:46.210 INFO  [main] loteId= o.t.projeto.traducao.Application - Starting Application v1.0-SNAPSHOT using Java 25.0.2 with PID 31116 (D:\PROJETOS-OPEN\traducao_animes_llm_local_java\build\libs\traducao_animes_llm_local-1.0-SNAPSHOT.jar started by Paulo in D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus)
+2026-06-29 13:05:46.214 INFO  [main] loteId= o.t.projeto.traducao.Application - No active profile set, falling back to 1 default profile: "default"
+2026-06-29 13:05:46.870 INFO  [main] loteId= o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-06-29 13:05:46.880 INFO  [main] loteId= o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-06-29 13:05:46.880 INFO  [main] loteId= o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.30]
+2026-06-29 13:05:46.899 INFO  [main] loteId= o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-06-29 13:05:46.900 INFO  [main] loteId= o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 640 ms
+2026-06-29 13:05:47.025 INFO  [main] loteId= o.t.p.r.i.adapters.MkvmergeAdapter - mkvmerge detectado no caminho padrão do Windows: C:\Program Files\MKVToolNix\mkvmerge.exe
+2026-06-29 13:05:47.032 INFO  [main] loteId= o.t.p.l.i.adapters.MkvToolNixAdapter - mkvmerge.exe detectado no caminho padrão: C:\Program Files\MKVToolNix\mkvmerge.exe
+2026-06-29 13:05:47.033 INFO  [main] loteId= o.t.p.l.i.adapters.MkvToolNixAdapter - mkvextract.exe detectado no caminho padrão: C:\Program Files\MKVToolNix\mkvextract.exe
+2026-06-29 13:05:47.159 INFO  [main] loteId= o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-06-29 13:05:47.265 WARN  [main] loteId= o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-06-29 13:05:47.277 INFO  [main] loteId= o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-06-29 13:05:47.304 ERROR [main] loteId= o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8080 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+
+2026-06-29 13:06:40.984 INFO  [main] loteId= o.t.projeto.traducao.Application - Starting Application v1.0-SNAPSHOT using Java 25.0.2 with PID 34320 (D:\PROJETOS-OPEN\traducao_animes_llm_local_java\build\libs\traducao_animes_llm_local-1.0-SNAPSHOT.jar started by Paulo in D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus)
+2026-06-29 13:06:40.988 INFO  [main] loteId= o.t.projeto.traducao.Application - No active profile set, falling back to 1 default profile: "default"
+2026-06-29 13:06:41.516 WARN  [main] loteId= o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+2026-06-29 13:06:41.523 INFO  [main] loteId= o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-06-29 13:06:41.535 ERROR [main] loteId= o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to bind properties under 'server.port' to java.lang.Integer:
+
+    Property: server.port
+    Value: "8081,8080"
+    Origin: "server.port" from property source "commandLineArgs"
+    Reason: failed to convert java.lang.String to java.lang.Integer (caused by java.lang.NumberFormatException: For input string: "8081,8080")
+
+Action:
+
+Update your application's configuration
+
+2026-06-29 13:08:05.687 INFO  [main] loteId= o.t.projeto.traducao.Application - Starting Application v1.0-SNAPSHOT using Java 25.0.2 with PID 24932 (D:\PROJETOS-OPEN\traducao_animes_llm_local_java\build\libs\traducao_animes_llm_local-1.0-SNAPSHOT.jar started by Paulo in D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus)
+2026-06-29 13:08:05.690 INFO  [main] loteId= o.t.projeto.traducao.Application - No active profile set, falling back to 1 default profile: "default"
+2026-06-29 13:08:06.339 INFO  [main] loteId= o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-06-29 13:08:06.350 INFO  [main] loteId= o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-06-29 13:08:06.351 INFO  [main] loteId= o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.30]
+2026-06-29 13:08:06.373 INFO  [main] loteId= o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-06-29 13:08:06.375 INFO  [main] loteId= o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 635 ms
+2026-06-29 13:08:06.527 INFO  [main] loteId= o.t.p.r.i.adapters.MkvmergeAdapter - mkvmerge detectado no caminho padrão do Windows: C:\Program Files\MKVToolNix\mkvmerge.exe
+2026-06-29 13:08:06.532 INFO  [main] loteId= o.t.p.l.i.adapters.MkvToolNixAdapter - mkvmerge.exe detectado no caminho padrão: C:\Program Files\MKVToolNix\mkvmerge.exe
+2026-06-29 13:08:06.533 INFO  [main] loteId= o.t.p.l.i.adapters.MkvToolNixAdapter - mkvextract.exe detectado no caminho padrão: C:\Program Files\MKVToolNix\mkvextract.exe
+2026-06-29 13:08:06.671 INFO  [main] loteId= o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-06-29 13:08:06.790 INFO  [main] loteId= o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-06-29 13:08:06.803 INFO  [main] loteId= o.t.projeto.traducao.Application - Started Application in 1.446 seconds (process running for 1.704)
+2026-06-29 13:08:06.833 INFO  [main] loteId= o.t.p.t.p.web.BrowserLauncher - Navegador aberto automaticamente na URL: http://localhost:8080
+2026-06-29 13:08:07.831 INFO  [tomcat-handler-0] loteId= o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-29 13:08:07.833 INFO  [tomcat-handler-0] loteId= o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-06-29 13:08:07.835 INFO  [tomcat-handler-0] loteId= o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-06-29 13:08:08.073 INFO  [tomcat-handler-16] loteId= o.t.p.telemetria.TelemetriaService - Carregadas entradas anteriores: 0 mídias, 0 traduções, 6 operações do arquivo logs\telemetria_compartilhada.json.
+2026-06-29 13:09:24.449 INFO  [main] loteId= o.t.projeto.traducao.Application - Starting Application v1.0-SNAPSHOT using Java 25.0.2 with PID 31496 (D:\PROJETOS-OPEN\traducao_animes_llm_local_java\build\libs\traducao_animes_llm_local-1.0-SNAPSHOT.jar started by Paulo in D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus)
+2026-06-29 13:09:24.452 INFO  [main] loteId= o.t.projeto.traducao.Application - No active profile set, falling back to 1 default profile: "default"
+2026-06-29 13:09:25.255 INFO  [main] loteId= o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-06-29 13:09:25.269 INFO  [main] loteId= o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-06-29 13:09:25.269 INFO  [main] loteId= o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.30]
+2026-06-29 13:09:25.292 INFO  [main] loteId= o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-06-29 13:09:25.293 INFO  [main] loteId= o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 783 ms
+2026-06-29 13:09:25.440 INFO  [main] loteId= o.t.p.r.i.adapters.MkvmergeAdapter - mkvmerge detectado no caminho padrão do Windows: C:\Program Files\MKVToolNix\mkvmerge.exe
+2026-06-29 13:09:25.449 INFO  [main] loteId= o.t.p.l.i.adapters.MkvToolNixAdapter - mkvmerge.exe detectado no caminho padrão: C:\Program Files\MKVToolNix\mkvmerge.exe
+2026-06-29 13:09:25.450 INFO  [main] loteId= o.t.p.l.i.adapters.MkvToolNixAdapter - mkvextract.exe detectado no caminho padrão: C:\Program Files\MKVToolNix\mkvextract.exe
+2026-06-29 13:09:25.621 INFO  [main] loteId= o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-06-29 13:09:25.753 INFO  [main] loteId= o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-06-29 13:09:25.766 INFO  [main] loteId= o.t.projeto.traducao.Application - Started Application in 1.711 seconds (process running for 2.001)
+2026-06-29 13:09:25.799 INFO  [main] loteId= o.t.p.t.p.web.BrowserLauncher - Navegador aberto automaticamente na URL: http://localhost:8080
+2026-06-29 13:09:26.851 INFO  [tomcat-handler-0] loteId= o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-29 13:09:26.855 INFO  [tomcat-handler-0] loteId= o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-06-29 13:09:26.858 INFO  [tomcat-handler-0] loteId= o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-06-29 13:09:27.307 INFO  [tomcat-handler-16] loteId= o.t.p.telemetria.TelemetriaService - Carregadas entradas anteriores: 0 mídias, 0 traduções, 6 operações do arquivo logs\telemetria_compartilhada.json.
+2026-06-29 13:10:40.766 INFO  [main] loteId= o.t.projeto.traducao.Application - Starting Application v1.0-SNAPSHOT using Java 25.0.2 with PID 24392 (D:\PROJETOS-OPEN\traducao_animes_llm_local_java\build\libs\traducao_animes_llm_local-1.0-SNAPSHOT.jar started by Paulo in D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus)
+2026-06-29 13:10:40.770 INFO  [main] loteId= o.t.projeto.traducao.Application - No active profile set, falling back to 1 default profile: "default"
+2026-06-29 13:10:41.564 INFO  [main] loteId= o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-06-29 13:10:41.576 INFO  [main] loteId= o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-06-29 13:10:41.577 INFO  [main] loteId= o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.30]
+2026-06-29 13:10:41.601 INFO  [main] loteId= o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-06-29 13:10:41.603 INFO  [main] loteId= o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 782 ms
+2026-06-29 13:10:41.741 INFO  [main] loteId= o.t.p.r.i.adapters.MkvmergeAdapter - mkvmerge detectado no caminho padrão do Windows: C:\Program Files\MKVToolNix\mkvmerge.exe
+2026-06-29 13:10:41.749 INFO  [main] loteId= o.t.p.l.i.adapters.MkvToolNixAdapter - mkvmerge.exe detectado no caminho padrão: C:\Program Files\MKVToolNix\mkvmerge.exe
+2026-06-29 13:10:41.749 INFO  [main] loteId= o.t.p.l.i.adapters.MkvToolNixAdapter - mkvextract.exe detectado no caminho padrão: C:\Program Files\MKVToolNix\mkvextract.exe
+2026-06-29 13:10:41.902 INFO  [main] loteId= o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-06-29 13:10:42.023 INFO  [main] loteId= o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-06-29 13:10:42.039 INFO  [main] loteId= o.t.projeto.traducao.Application - Started Application in 1.684 seconds (process running for 1.989)
+2026-06-29 13:10:42.066 INFO  [main] loteId= o.t.p.t.p.web.BrowserLauncher - Navegador aberto automaticamente na URL: http://localhost:8080
+2026-06-29 13:10:42.099 INFO  [tomcat-handler-0] loteId= o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-29 13:10:42.101 INFO  [tomcat-handler-0] loteId= o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-06-29 13:10:42.104 INFO  [tomcat-handler-0] loteId= o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-06-29 13:10:43.367 INFO  [tomcat-handler-17] loteId= o.t.p.telemetria.TelemetriaService - Carregadas entradas anteriores: 0 mídias, 0 traduções, 6 operações do arquivo logs\telemetria_compartilhada.json.
+2026-06-29 13:11:05.718 INFO  [main] loteId= o.t.projeto.traducao.Application - Starting Application v1.0-SNAPSHOT using Java 25.0.2 with PID 5964 (D:\PROJETOS-OPEN\traducao_animes_llm_local_java\build\libs\traducao_animes_llm_local-1.0-SNAPSHOT.jar started by Paulo in D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus)
+2026-06-29 13:11:05.722 INFO  [main] loteId= o.t.projeto.traducao.Application - No active profile set, falling back to 1 default profile: "default"
+2026-06-29 13:11:06.569 INFO  [main] loteId= o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-06-29 13:11:06.595 INFO  [main] loteId= o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-06-29 13:11:06.598 INFO  [main] loteId= o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.30]
+2026-06-29 13:11:06.625 INFO  [main] loteId= o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-06-29 13:11:06.625 INFO  [main] loteId= o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 830 ms
+2026-06-29 13:11:06.807 INFO  [main] loteId= o.t.p.r.i.adapters.MkvmergeAdapter - mkvmerge detectado no caminho padrão do Windows: C:\Program Files\MKVToolNix\mkvmerge.exe
+2026-06-29 13:11:06.816 INFO  [main] loteId= o.t.p.l.i.adapters.MkvToolNixAdapter - mkvmerge.exe detectado no caminho padrão: C:\Program Files\MKVToolNix\mkvmerge.exe
+2026-06-29 13:11:06.817 INFO  [main] loteId= o.t.p.l.i.adapters.MkvToolNixAdapter - mkvextract.exe detectado no caminho padrão: C:\Program Files\MKVToolNix\mkvextract.exe
+2026-06-29 13:11:07.004 INFO  [main] loteId= o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-06-29 13:11:07.151 INFO  [main] loteId= o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-06-29 13:11:07.171 INFO  [main] loteId= o.t.projeto.traducao.Application - Started Application in 1.913 seconds (process running for 2.215)
+2026-06-29 13:11:07.198 INFO  [main] loteId= o.t.p.t.p.web.BrowserLauncher - Navegador aberto automaticamente na URL: http://localhost:8080
+2026-06-29 13:11:07.572 INFO  [tomcat-handler-0] loteId= o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-29 13:11:07.575 INFO  [tomcat-handler-0] loteId= o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-06-29 13:11:07.578 INFO  [tomcat-handler-0] loteId= o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-06-29 13:11:08.182 INFO  [tomcat-handler-3] loteId= o.t.p.telemetria.TelemetriaService - Carregadas entradas anteriores: 0 mídias, 0 traduções, 6 operações do arquivo logs\telemetria_compartilhada.json.

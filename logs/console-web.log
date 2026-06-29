@@ -1,0 +1,80 @@
+2026-06-29 13:05:47.161 [console] 13:05:47 INFO  [main] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-06-29 13:05:47.267 [console] 13:05:47 WARN  [main] o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-06-29 13:05:47.279 [console] 13:05:47 INFO  [main] o.s.b.a.l.ConditionEvaluationReportLogger - 
+2026-06-29 13:05:47.279 [console] Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-06-29 13:05:47.306 [console] 13:05:47 ERROR [main] o.s.b.d.LoggingFailureAnalysisReporter - 
+2026-06-29 13:05:47.307 [console] ***************************
+2026-06-29 13:05:47.307 [console] APPLICATION FAILED TO START
+2026-06-29 13:05:47.308 [console] ***************************
+2026-06-29 13:05:47.308 [console] Description:
+2026-06-29 13:05:47.308 [console] Web server failed to start. Port 8080 was already in use.
+2026-06-29 13:05:47.309 [console] Action:
+2026-06-29 13:05:47.309 [console] Identify and stop the process that's listening on port 8080 or configure this application to listen on another port.
+2026-06-29 13:08:06.673 [console] 13:08:06 INFO  [main] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-06-29 13:08:06.792 [console] 13:08:06 INFO  [main] o.s.b.w.e.t.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-06-29 13:08:06.805 [console] 13:08:06 INFO  [main] o.t.p.t.Application - Started Application in 1.446 seconds (process running for 1.704)
+2026-06-29 13:08:06.809 [console] ==============================================================
+2026-06-29 13:08:06.810 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-06-29 13:08:06.811 [console]    Acesse a interface visual em: http://localhost:8080
+2026-06-29 13:08:06.811 [console] ==============================================================
+2026-06-29 13:08:06.835 [console] 13:08:06 INFO  [main] o.t.p.t.p.w.BrowserLauncher - Navegador aberto automaticamente na URL: http://localhost:8080
+2026-06-29 13:08:07.833 [console] 13:08:07 INFO  [tomcat-handler-0] o.a.c.c.C.[.[.[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-29 13:08:07.834 [console] 13:08:07 INFO  [tomcat-handler-0] o.s.w.s.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-06-29 13:08:07.836 [console] 13:08:07 INFO  [tomcat-handler-0] o.s.w.s.DispatcherServlet - Completed initialization in 1 ms
+2026-06-29 13:08:08.076 [console] 13:08:08 INFO  [tomcat-handler-16] o.t.p.t.TelemetriaService - Carregadas entradas anteriores: 0 mídias, 0 traduções, 6 operações do arquivo logs\telemetria_compartilhada.json.
+2026-06-29 13:09:25.623 [console] 13:09:25 INFO  [main] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-06-29 13:09:25.755 [console] 13:09:25 INFO  [main] o.s.b.w.e.t.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-06-29 13:09:25.768 [console] 13:09:25 INFO  [main] o.t.p.t.Application - Started Application in 1.711 seconds (process running for 2.001)
+2026-06-29 13:09:25.772 [console] ==============================================================
+2026-06-29 13:09:25.773 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-06-29 13:09:25.774 [console]    Acesse a interface visual em: http://localhost:8080
+2026-06-29 13:09:25.775 [console] ==============================================================
+2026-06-29 13:09:25.801 [console] 13:09:25 INFO  [main] o.t.p.t.p.w.BrowserLauncher - Navegador aberto automaticamente na URL: http://localhost:8080
+2026-06-29 13:09:26.852 [console] 13:09:26 INFO  [tomcat-handler-0] o.a.c.c.C.[.[.[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-29 13:09:26.856 [console] 13:09:26 INFO  [tomcat-handler-0] o.s.w.s.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-06-29 13:09:26.859 [console] 13:09:26 INFO  [tomcat-handler-0] o.s.w.s.DispatcherServlet - Completed initialization in 1 ms
+2026-06-29 13:09:27.313 [console] 13:09:27 INFO  [tomcat-handler-16] o.t.p.t.TelemetriaService - Carregadas entradas anteriores: 0 mídias, 0 traduções, 6 operações do arquivo logs\telemetria_compartilhada.json.
+2026-06-29 13:10:41.903 [console] 13:10:41 INFO  [main] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-06-29 13:10:42.025 [console] 13:10:42 INFO  [main] o.s.b.w.e.t.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-06-29 13:10:42.041 [console] 13:10:42 INFO  [main] o.t.p.t.Application - Started Application in 1.684 seconds (process running for 1.989)
+2026-06-29 13:10:42.046 [console] ==============================================================
+2026-06-29 13:10:42.047 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-06-29 13:10:42.048 [console]    Acesse a interface visual em: http://localhost:8080
+2026-06-29 13:10:42.048 [console] ==============================================================
+2026-06-29 13:10:42.067 [console] 13:10:42 INFO  [main] o.t.p.t.p.w.BrowserLauncher - Navegador aberto automaticamente na URL: http://localhost:8080
+2026-06-29 13:10:42.101 [console] 13:10:42 INFO  [tomcat-handler-0] o.a.c.c.C.[.[.[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-29 13:10:42.102 [console] 13:10:42 INFO  [tomcat-handler-0] o.s.w.s.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-06-29 13:10:42.104 [console] 13:10:42 INFO  [tomcat-handler-0] o.s.w.s.DispatcherServlet - Completed initialization in 1 ms
+2026-06-29 13:10:43.369 [console] 13:10:43 INFO  [tomcat-handler-17] o.t.p.t.TelemetriaService - Carregadas entradas anteriores: 0 mídias, 0 traduções, 6 operações do arquivo logs\telemetria_compartilhada.json.
+2026-06-29 13:11:07.006 [console] 13:11:07 INFO  [main] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-06-29 13:11:07.153 [console] 13:11:07 INFO  [main] o.s.b.w.e.t.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2026-06-29 13:11:07.173 [console] 13:11:07 INFO  [main] o.t.p.t.Application - Started Application in 1.913 seconds (process running for 2.215)
+2026-06-29 13:11:07.179 [console] ==============================================================
+2026-06-29 13:11:07.180 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-06-29 13:11:07.181 [console]    Acesse a interface visual em: http://localhost:8080
+2026-06-29 13:11:07.182 [console] ==============================================================
+2026-06-29 13:11:07.201 [console] 13:11:07 INFO  [main] o.t.p.t.p.w.BrowserLauncher - Navegador aberto automaticamente na URL: http://localhost:8080
+2026-06-29 13:11:07.574 [console] 13:11:07 INFO  [tomcat-handler-0] o.a.c.c.C.[.[.[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-29 13:11:07.576 [console] 13:11:07 INFO  [tomcat-handler-0] o.s.w.s.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-06-29 13:11:07.578 [console] 13:11:07 INFO  [tomcat-handler-0] o.s.w.s.DispatcherServlet - Completed initialization in 1 ms
+2026-06-29 13:11:08.185 [console] 13:11:08 INFO  [tomcat-handler-3] o.t.p.t.TelemetriaService - Carregadas entradas anteriores: 0 mídias, 0 traduções, 6 operações do arquivo logs\telemetria_compartilhada.json.
+2026-06-29 15:27:23.015 [console] ==============================================================
+2026-06-29 15:27:23.018 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-06-29 15:27:23.018 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-06-29 15:27:23.018 [console] ==============================================================
+2026-06-29 15:27:27.894 [correcao] Iniciando limpeza de cache na pasta: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache
+2026-06-29 15:27:27.895 [correcao] Total de arquivos de cache analisados: 0
+2026-06-29 15:27:27.896 [correcao] Total de falas em inglês (fallbacks) limpas: 0
+2026-06-29 15:27:27.905 [correcao] Relatório salvo em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\relatorios\cache
+2026-06-29 15:27:27.906 [correcao] ========================================================================
+2026-06-29 15:27:27.908 [correcao]   🎉 [SUCESSO] LIMPEZA E AUDITORIA DE CACHE CONCLUÍDAS COM SUCESSO!
+2026-06-29 15:27:27.908 [correcao] ========================================================================
+2026-06-29 15:27:27.915 [correcao] Iniciando correção via Scraping Google Translate em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache
+2026-06-29 15:27:27.917 [correcao] Total de arquivos de cache analisados: 0
+2026-06-29 15:27:27.918 [correcao] Total de falas em inglês corrigidas via Google: 0
+2026-06-29 15:27:27.924 [correcao] Relatório salvo em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\relatorios\cache
+2026-06-29 15:27:27.925 [correcao] ========================================================================
+2026-06-29 15:27:27.925 [correcao]   🎉 [SUCESSO] CORREÇÃO VIA GOOGLE TRANSLATE FINALIZADA COM SUCESSO!
+2026-06-29 15:27:27.925 [correcao] ========================================================================
+2026-06-29 15:27:28.341 [correcao] marcador-console-redirector-6b274e8b-1695-40e2-afb5-d576d0555240
+2026-06-29 15:27:28.357 [console-teste] [ OK ] marcador-teste-64e9c145-5fce-4b5e-979c-f69d089522c6

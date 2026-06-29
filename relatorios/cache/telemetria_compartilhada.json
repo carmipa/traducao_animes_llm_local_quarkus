@@ -1,0 +1,69 @@
+{
+  "midias" : [ ],
+  "traducoesLlm" : [ ],
+  "operacoes" : [ {
+    "tipo" : "Limpeza de Cache",
+    "detalhe" : "D:\\PROJETOS-OPEN\\traducao_animes_llm_local_quarkus\\cache",
+    "tempoTotalMs" : 2,
+    "arquivosProcessados" : 0,
+    "itensDetectados" : 0,
+    "itensCorrigidos" : 0,
+    "registradoEm" : "2026-06-29T15:49:43.692563700Z"
+  }, {
+    "tipo" : "Correção Google (cache)",
+    "detalhe" : "D:\\PROJETOS-OPEN\\traducao_animes_llm_local_quarkus\\cache",
+    "tempoTotalMs" : 2,
+    "arquivosProcessados" : 0,
+    "itensDetectados" : 0,
+    "itensCorrigidos" : 0,
+    "registradoEm" : "2026-06-29T15:49:43.732998Z"
+  }, {
+    "tipo" : "Limpeza de Cache",
+    "detalhe" : "D:\\PROJETOS-OPEN\\traducao_animes_llm_local_quarkus\\cache",
+    "tempoTotalMs" : 4,
+    "arquivosProcessados" : 0,
+    "itensDetectados" : 0,
+    "itensCorrigidos" : 0,
+    "registradoEm" : "2026-06-29T15:50:28.338391500Z"
+  }, {
+    "tipo" : "Correção Google (cache)",
+    "detalhe" : "D:\\PROJETOS-OPEN\\traducao_animes_llm_local_quarkus\\cache",
+    "tempoTotalMs" : 3,
+    "arquivosProcessados" : 0,
+    "itensDetectados" : 0,
+    "itensCorrigidos" : 0,
+    "registradoEm" : "2026-06-29T15:50:28.377392700Z"
+  }, {
+    "tipo" : "Limpeza de Cache",
+    "detalhe" : "D:\\PROJETOS-OPEN\\traducao_animes_llm_local_quarkus\\cache",
+    "tempoTotalMs" : 3,
+    "arquivosProcessados" : 0,
+    "itensDetectados" : 0,
+    "itensCorrigidos" : 0,
+    "registradoEm" : "2026-06-29T15:51:24.954456100Z"
+  }, {
+    "tipo" : "Correção Google (cache)",
+    "detalhe" : "D:\\PROJETOS-OPEN\\traducao_animes_llm_local_quarkus\\cache",
+    "tempoTotalMs" : 3,
+    "arquivosProcessados" : 0,
+    "itensDetectados" : 0,
+    "itensCorrigidos" : 0,
+    "registradoEm" : "2026-06-29T15:51:25.000548100Z"
+  }, {
+    "tipo" : "Limpeza de Cache",
+    "detalhe" : "D:\\PROJETOS-OPEN\\traducao_animes_llm_local_quarkus\\cache",
+    "tempoTotalMs" : 3,
+    "arquivosProcessados" : 0,
+    "itensDetectados" : 0,
+    "itensCorrigidos" : 0,
+    "registradoEm" : "2026-06-29T18:27:27.896672100Z"
+  }, {
+    "tipo" : "Correção Google (cache)",
+    "detalhe" : "D:\\PROJETOS-OPEN\\traducao_animes_llm_local_quarkus\\cache",
+    "tempoTotalMs" : 4,
+    "arquivosProcessados" : 0,
+    "itensDetectados" : 0,
+    "itensCorrigidos" : 0,
+    "registradoEm" : "2026-06-29T18:27:27.918674300Z"
+  } ]
+}

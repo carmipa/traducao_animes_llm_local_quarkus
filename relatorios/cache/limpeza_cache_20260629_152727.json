@@ -1,0 +1,9 @@
+{
+  "tipo" : "Limpeza de Cache",
+  "detalhe" : "D:\\PROJETOS-OPEN\\traducao_animes_llm_local_quarkus\\cache",
+  "tempoTotalMs" : 3,
+  "arquivosProcessados" : 0,
+  "itensDetectados" : 0,
+  "itensCorrigidos" : 0,
+  "registradoEm" : "2026-06-29T18:27:27.896672100Z"
+}
