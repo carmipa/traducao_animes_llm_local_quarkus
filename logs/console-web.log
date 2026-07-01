@@ -78,3 +78,264 @@
 2026-06-29 15:27:27.925 [correcao] ========================================================================
 2026-06-29 15:27:28.341 [correcao] marcador-console-redirector-6b274e8b-1695-40e2-afb5-d576d0555240
 2026-06-29 15:27:28.357 [console-teste] [ OK ] marcador-teste-64e9c145-5fce-4b5e-979c-f69d089522c6
+2026-06-29 15:36:22.415 [console] ==============================================================
+2026-06-29 15:36:22.415 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-06-29 15:36:22.416 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-06-29 15:36:22.416 [console] ==============================================================
+2026-07-01 16:45:51.945 [console] ==============================================================
+2026-07-01 16:45:51.945 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 16:45:51.946 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 16:45:51.946 [console] ==============================================================
+2026-07-01 16:47:59.960 [revisao] [FAIL] LLM indisponível para revisão de concordância: Não foi possível conectar ao servidor LLM em http://127.0.0.1:1234/v1: Unrecognized field "object" (class org.traducao.projeto.traducao.infrastructure.dtos.RecordsMistral$ModeloDisponivel), not marked as ignorable (one known property: "id")
+2026-07-01 16:47:59.961 [revisao]  at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 5, column: 18] (through reference chain: org.traducao.projeto.traducao.infrastructure.dtos.RecordsMistral$ListaModelos["data"]->java.util.ArrayList[0]->org.traducao.projeto.traducao.infrastructure.dtos.RecordsMistral$ModeloDisponivel["object"])
+2026-07-01 16:48:35.548 [revisao] [FAIL] LLM indisponível para revisão de concordância: Não foi possível conectar ao servidor LLM em http://127.0.0.1:1234/v1: Unrecognized field "object" (class org.traducao.projeto.traducao.infrastructure.dtos.RecordsMistral$ModeloDisponivel), not marked as ignorable (one known property: "id")
+2026-07-01 16:48:35.549 [revisao]  at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 5, column: 18] (through reference chain: org.traducao.projeto.traducao.infrastructure.dtos.RecordsMistral$ListaModelos["data"]->java.util.ArrayList[0]->org.traducao.projeto.traducao.infrastructure.dtos.RecordsMistral$ModeloDisponivel["object"])
+2026-07-01 16:48:51.250 [revisao] [FAIL] LLM indisponível para revisão de concordância: Não foi possível conectar ao servidor LLM em http://127.0.0.1:1234/v1: Unrecognized field "object" (class org.traducao.projeto.traducao.infrastructure.dtos.RecordsMistral$ModeloDisponivel), not marked as ignorable (one known property: "id")
+2026-07-01 16:48:51.251 [revisao]  at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 5, column: 18] (through reference chain: org.traducao.projeto.traducao.infrastructure.dtos.RecordsMistral$ListaModelos["data"]->java.util.ArrayList[0]->org.traducao.projeto.traducao.infrastructure.dtos.RecordsMistral$ModeloDisponivel["object"])
+2026-07-01 16:49:12.416 [revisao] [FAIL] LLM indisponível para revisão de concordância: Não foi possível conectar ao servidor LLM em http://127.0.0.1:1234/v1: Unrecognized field "object" (class org.traducao.projeto.traducao.infrastructure.dtos.RecordsMistral$ModeloDisponivel), not marked as ignorable (one known property: "id")
+2026-07-01 16:49:12.417 [revisao]  at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 5, column: 18] (through reference chain: org.traducao.projeto.traducao.infrastructure.dtos.RecordsMistral$ListaModelos["data"]->java.util.ArrayList[0]->org.traducao.projeto.traducao.infrastructure.dtos.RecordsMistral$ModeloDisponivel["object"])
+2026-07-01 16:50:12.152 [console] ==============================================================
+2026-07-01 16:50:12.152 [console] ==============================================================
+2026-07-01 16:50:12.152 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 16:50:12.153 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 16:50:12.153 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 16:50:12.154 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 16:50:12.154 [console] ==============================================================
+2026-07-01 16:50:12.154 [console] ==============================================================
+2026-07-01 16:50:55.831 [console] ==============================================================
+2026-07-01 16:50:55.831 [console] ==============================================================
+2026-07-01 16:50:55.832 [console] ==============================================================
+2026-07-01 16:50:55.832 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 16:50:55.832 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 16:50:55.832 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 16:50:55.833 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 16:50:55.833 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 16:50:55.833 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 16:50:55.833 [console] ==============================================================
+2026-07-01 16:50:55.834 [console] ==============================================================
+2026-07-01 16:50:55.834 [console] ==============================================================
+2026-07-01 16:51:39.733 [console] Iniciando revisão de concordância PT-BR (LLM) em legendas: C:\animes\Macross II (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales](v2)\legendas_ptbr_corrigidas
+2026-07-01 16:51:39.734 [console] Iniciando revisão de concordância PT-BR (LLM) em legendas: C:\animes\Macross II (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales](v2)\legendas_ptbr_corrigidas
+2026-07-01 16:51:39.736 [revisao] Iniciando revisão de concordância PT-BR (LLM) em legendas: C:\animes\Macross II (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales](v2)\legendas_ptbr_corrigidas
+2026-07-01 16:51:39.738 [console] Contexto ativo: Macross II: Lovers Again
+2026-07-01 16:51:39.740 [console] Contexto ativo: Macross II: Lovers Again
+2026-07-01 16:51:39.740 [revisao] Contexto ativo: Macross II: Lovers Again
+2026-07-01 16:51:39.742 [console] Originais EN: .ass em C:\animes\Macross II (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales](v2)\legendas_ptbr_corrigidas (se existir) + cache/ em D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache
+2026-07-01 16:51:39.742 [console] Originais EN: .ass em C:\animes\Macross II (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales](v2)\legendas_ptbr_corrigidas (se existir) + cache/ em D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache
+2026-07-01 16:51:39.742 [revisao] Originais EN: .ass em C:\animes\Macross II (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales](v2)\legendas_ptbr_corrigidas (se existir) + cache/ em D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache
+2026-07-01 16:51:39.743 [console] Analisando legenda: Macross II - 01v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_PTBR.ass
+2026-07-01 16:51:39.743 [console] Analisando legenda: Macross II - 01v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_PTBR.ass
+2026-07-01 16:51:39.744 [revisao] Analisando legenda: Macross II - 01v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_PTBR.ass
+2026-07-01 16:51:39.758 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 01v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_ENG.cache.json)
+2026-07-01 16:51:39.758 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 01v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_ENG.cache.json)
+2026-07-01 16:51:39.759 [revisao]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 01v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_ENG.cache.json)
+2026-07-01 16:51:39.806 [console]   -> Nenhum problema detectado neste arquivo (249 falas auditadas).
+2026-07-01 16:51:39.806 [console]   -> Nenhum problema detectado neste arquivo (249 falas auditadas).
+2026-07-01 16:51:39.807 [revisao]   -> Nenhum problema detectado neste arquivo (249 falas auditadas).
+2026-07-01 16:51:39.807 [console] Analisando legenda: Macross II - 02v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:39.808 [console] Analisando legenda: Macross II - 02v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:39.808 [revisao] Analisando legenda: Macross II - 02v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:39.816 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 02v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:39.816 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 02v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:39.817 [revisao]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 02v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:39.855 [console]   -> Nenhum problema detectado neste arquivo (228 falas auditadas).
+2026-07-01 16:51:39.855 [console]   -> Nenhum problema detectado neste arquivo (228 falas auditadas).
+2026-07-01 16:51:39.856 [revisao]   -> Nenhum problema detectado neste arquivo (228 falas auditadas).
+2026-07-01 16:51:39.856 [console] Analisando legenda: Macross II - 03v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:39.857 [console] Analisando legenda: Macross II - 03v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:39.857 [revisao] Analisando legenda: Macross II - 03v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:39.863 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 03v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:39.864 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 03v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:39.864 [revisao]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 03v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:39.901 [console]   -> Nenhum problema detectado neste arquivo (261 falas auditadas).
+2026-07-01 16:51:39.902 [console]   -> Nenhum problema detectado neste arquivo (261 falas auditadas).
+2026-07-01 16:51:39.902 [revisao]   -> Nenhum problema detectado neste arquivo (261 falas auditadas).
+2026-07-01 16:51:39.902 [console] Analisando legenda: Macross II - 04v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:39.904 [console] Analisando legenda: Macross II - 04v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:39.904 [revisao] Analisando legenda: Macross II - 04v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:39.909 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 04v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:39.910 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 04v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:39.910 [revisao]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 04v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:39.920 [console]   -> Linha 69 [Default]:
+2026-07-01 16:51:39.920 [console]   -> Linha 69 [Default]:
+2026-07-01 16:51:39.921 [revisao]   -> Linha 69 [Default]:
+2026-07-01 16:51:39.921 [console]      EN: null
+2026-07-01 16:51:39.921 [console]      EN: null
+2026-07-01 16:51:39.922 [revisao]      EN: null
+2026-07-01 16:51:39.922 [console]      PT: que nossa guerra contra eles está errada!
+2026-07-01 16:51:39.922 [console]      PT: que nossa guerra contra eles está errada!
+2026-07-01 16:51:39.922 [revisao]      PT: que nossa guerra contra eles está errada!
+2026-07-01 16:51:39.923 [console]      • Sujeito 'eles' com predicado no feminino: "eles está errada"
+2026-07-01 16:51:39.923 [console]      • Sujeito 'eles' com predicado no feminino: "eles está errada"
+2026-07-01 16:51:39.924 [revisao]      • Sujeito 'eles' com predicado no feminino: "eles está errada"
+2026-07-01 16:51:50.345 [console]      Correção descartada: LLM não melhorou o problema.
+2026-07-01 16:51:50.345 [console]      Correção descartada: LLM não melhorou o problema.
+2026-07-01 16:51:50.347 [revisao]      Correção descartada: LLM não melhorou o problema.
+2026-07-01 16:51:50.363 [console]   Problemas encontrados, mas nenhuma correção aplicada.
+2026-07-01 16:51:50.363 [console]   Problemas encontrados, mas nenhuma correção aplicada.
+2026-07-01 16:51:50.364 [revisao]   Problemas encontrados, mas nenhuma correção aplicada.
+2026-07-01 16:51:50.364 [console] Analisando legenda: Macross II - 05v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:50.364 [console] Analisando legenda: Macross II - 05v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:50.365 [revisao] Analisando legenda: Macross II - 05v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:50.370 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 05v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:50.370 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 05v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:50.371 [revisao]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 05v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:50.403 [console]   -> Linha 193 [Default]:
+2026-07-01 16:51:50.403 [console]   -> Linha 193 [Default]:
+2026-07-01 16:51:50.403 [revisao]   -> Linha 193 [Default]:
+2026-07-01 16:51:50.404 [console]      EN: null
+2026-07-01 16:51:50.405 [console]      EN: null
+2026-07-01 16:51:50.405 [revisao]      EN: null
+2026-07-01 16:51:50.405 [console]      PT: exactly. Um ataque surpresa!
+2026-07-01 16:51:50.405 [console]      PT: exactly. Um ataque surpresa!
+2026-07-01 16:51:50.405 [revisao]      PT: exactly. Um ataque surpresa!
+2026-07-01 16:51:50.406 [console]      • Resíduo gringo detectado: exactly. Um ataque surpresa!
+2026-07-01 16:51:50.406 [console]      • Resíduo gringo detectado: exactly. Um ataque surpresa!
+2026-07-01 16:51:50.406 [revisao]      • Resíduo gringo detectado: exactly. Um ataque surpresa!
+2026-07-01 16:51:51.635 [console]      PT corrigido: Um ataque surpresa!
+2026-07-01 16:51:51.635 [console]      PT corrigido: Um ataque surpresa!
+2026-07-01 16:51:51.635 [revisao]      PT corrigido: Um ataque surpresa!
+2026-07-01 16:51:51.642 [console]   [OK] 1 fala(s) corrigida(s). Salvo em: Macross II - 05v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:51.642 [console]   [OK] 1 fala(s) corrigida(s). Salvo em: Macross II - 05v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:51.643 [revisao]   [OK] 1 fala(s) corrigida(s). Salvo em: Macross II - 05v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:51.643 [console] Analisando legenda: Macross II - 06v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_PTBR.ass
+2026-07-01 16:51:51.643 [console] Analisando legenda: Macross II - 06v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_PTBR.ass
+2026-07-01 16:51:51.643 [revisao] Analisando legenda: Macross II - 06v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_PTBR.ass
+2026-07-01 16:51:51.651 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 06v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_ENG.cache.json)
+2026-07-01 16:51:51.651 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 06v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_ENG.cache.json)
+2026-07-01 16:51:51.652 [revisao]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 06v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_ENG.cache.json)
+2026-07-01 16:51:51.688 [console]   -> Nenhum problema detectado neste arquivo (241 falas auditadas).
+2026-07-01 16:51:51.688 [console]   -> Nenhum problema detectado neste arquivo (241 falas auditadas).
+2026-07-01 16:51:51.689 [revisao]   -> Nenhum problema detectado neste arquivo (241 falas auditadas).
+2026-07-01 16:51:51.690 [console] Arquivos analisados: 6
+2026-07-01 16:51:51.690 [console] Arquivos analisados: 6
+2026-07-01 16:51:51.690 [revisao] Arquivos analisados: 6
+2026-07-01 16:51:51.691 [console] Falas auditadas: 1381
+2026-07-01 16:51:51.691 [console] Falas auditadas: 1381
+2026-07-01 16:51:51.691 [revisao] Falas auditadas: 1381
+2026-07-01 16:51:51.692 [console] Falas sem original EN (ignoradas): 1381
+2026-07-01 16:51:51.692 [console] Falas sem original EN (ignoradas): 1381
+2026-07-01 16:51:51.693 [revisao] Falas sem original EN (ignoradas): 1381
+2026-07-01 16:51:51.694 [console] Falas com problemas detectados: 2
+2026-07-01 16:51:51.694 [console] Falas com problemas detectados: 2
+2026-07-01 16:51:51.695 [revisao] Falas com problemas detectados: 2
+2026-07-01 16:51:51.695 [console] Falas corrigidas via LLM e salvas: 1
+2026-07-01 16:51:51.695 [console] Falas corrigidas via LLM e salvas: 1
+2026-07-01 16:51:51.696 [revisao] Falas corrigidas via LLM e salvas: 1
+2026-07-01 16:51:51.704 [console] Relatório salvo em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\relatorios\legendas_ptbr_corrigidas
+2026-07-01 16:51:51.704 [console] Relatório salvo em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\relatorios\legendas_ptbr_corrigidas
+2026-07-01 16:51:51.704 [revisao] Relatório salvo em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\relatorios\legendas_ptbr_corrigidas
+2026-07-01 16:51:51.704 [console] ========================================================================
+2026-07-01 16:51:51.705 [console] ========================================================================
+2026-07-01 16:51:51.705 [revisao] ========================================================================
+2026-07-01 16:51:51.708 [console]   🎉 [SUCESSO] REVISÃO DE CONCORDÂNCIA PT-BR (LLM) FINALIZADA!
+2026-07-01 16:51:51.709 [console]   🎉 [SUCESSO] REVISÃO DE CONCORDÂNCIA PT-BR (LLM) FINALIZADA!
+2026-07-01 16:51:51.710 [revisao]   🎉 [SUCESSO] REVISÃO DE CONCORDÂNCIA PT-BR (LLM) FINALIZADA!
+2026-07-01 16:51:51.710 [console] ========================================================================
+2026-07-01 16:51:51.710 [console] ========================================================================
+2026-07-01 16:51:51.711 [revisao] ========================================================================
+2026-07-01 16:51:51.712 [console]   • Arquivos Analisados : 6
+2026-07-01 16:51:51.712 [console]   • Arquivos Analisados : 6
+2026-07-01 16:51:51.713 [revisao]   • Arquivos Analisados : 6
+2026-07-01 16:51:51.714 [console]   • Falas Corrigidas    : 1
+2026-07-01 16:51:51.714 [console]   • Falas Corrigidas    : 1
+2026-07-01 16:51:51.715 [revisao]   • Falas Corrigidas    : 1
+2026-07-01 16:51:51.715 [console] ========================================================================
+2026-07-01 16:51:51.715 [console] ========================================================================
+2026-07-01 16:51:51.716 [revisao] ========================================================================
+2026-07-01 16:51:54.806 [console] Iniciando revisão de legendas traduzidas em: C:\animes\Macross II (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales](v2)\legendas_ptbr_corrigidas
+2026-07-01 16:51:54.807 [console] Iniciando revisão de legendas traduzidas em: C:\animes\Macross II (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales](v2)\legendas_ptbr_corrigidas
+2026-07-01 16:51:54.809 [revisao] Iniciando revisão de legendas traduzidas em: C:\animes\Macross II (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales](v2)\legendas_ptbr_corrigidas
+2026-07-01 16:51:54.810 [console] Originais EN: .ass em C:\animes\Macross II (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales](v2)\legendas_ptbr_corrigidas (se existir) + cache/ em D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache
+2026-07-01 16:51:54.812 [console] Originais EN: .ass em C:\animes\Macross II (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales](v2)\legendas_ptbr_corrigidas (se existir) + cache/ em D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache
+2026-07-01 16:51:54.812 [revisao] Originais EN: .ass em C:\animes\Macross II (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales](v2)\legendas_ptbr_corrigidas (se existir) + cache/ em D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache
+2026-07-01 16:51:54.812 [console] Analisando legenda: Macross II - 01v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_PTBR.ass
+2026-07-01 16:51:54.812 [console] Analisando legenda: Macross II - 01v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_PTBR.ass
+2026-07-01 16:51:54.812 [revisao] Analisando legenda: Macross II - 01v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_PTBR.ass
+2026-07-01 16:51:54.820 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 01v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_ENG.cache.json)
+2026-07-01 16:51:54.820 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 01v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_ENG.cache.json)
+2026-07-01 16:51:54.821 [revisao]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 01v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_ENG.cache.json)
+2026-07-01 16:51:54.824 [console]   -> Nenhuma fala auditada (249 ignoradas por falta de original EN).
+2026-07-01 16:51:54.825 [console]   -> Nenhuma fala auditada (249 ignoradas por falta de original EN).
+2026-07-01 16:51:54.825 [revisao]   -> Nenhuma fala auditada (249 ignoradas por falta de original EN).
+2026-07-01 16:51:54.826 [console] Analisando legenda: Macross II - 02v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:54.826 [console] Analisando legenda: Macross II - 02v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:54.826 [revisao] Analisando legenda: Macross II - 02v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:54.832 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 02v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:54.833 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 02v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:54.834 [revisao]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 02v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:54.837 [console]   -> Nenhuma fala auditada (228 ignoradas por falta de original EN).
+2026-07-01 16:51:54.837 [console]   -> Nenhuma fala auditada (228 ignoradas por falta de original EN).
+2026-07-01 16:51:54.837 [revisao]   -> Nenhuma fala auditada (228 ignoradas por falta de original EN).
+2026-07-01 16:51:54.838 [console] Analisando legenda: Macross II - 03v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:54.838 [console] Analisando legenda: Macross II - 03v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:54.839 [revisao] Analisando legenda: Macross II - 03v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:54.844 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 03v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:54.845 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 03v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:54.845 [revisao]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 03v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:54.847 [console]   -> Nenhuma fala auditada (261 ignoradas por falta de original EN).
+2026-07-01 16:51:54.847 [console]   -> Nenhuma fala auditada (261 ignoradas por falta de original EN).
+2026-07-01 16:51:54.847 [revisao]   -> Nenhuma fala auditada (261 ignoradas por falta de original EN).
+2026-07-01 16:51:54.848 [console] Analisando legenda: Macross II - 04v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:54.849 [console] Analisando legenda: Macross II - 04v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:54.849 [revisao] Analisando legenda: Macross II - 04v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:54.853 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 04v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:54.853 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 04v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:54.854 [revisao]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 04v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:54.855 [console]   -> Nenhuma fala auditada (194 ignoradas por falta de original EN).
+2026-07-01 16:51:54.856 [console]   -> Nenhuma fala auditada (194 ignoradas por falta de original EN).
+2026-07-01 16:51:54.856 [revisao]   -> Nenhuma fala auditada (194 ignoradas por falta de original EN).
+2026-07-01 16:51:54.857 [console] Analisando legenda: Macross II - 05v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:54.858 [console] Analisando legenda: Macross II - 05v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:54.859 [revisao] Analisando legenda: Macross II - 05v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_PTBR.ass
+2026-07-01 16:51:54.862 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 05v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:54.862 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 05v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:54.863 [revisao]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 05v2 (BDRip 1440x1080p x265 HEVC FLAC 2.0)[sxales]_ENG.cache.json)
+2026-07-01 16:51:54.865 [console]   -> Nenhuma fala auditada (208 ignoradas por falta de original EN).
+2026-07-01 16:51:54.866 [console]   -> Nenhuma fala auditada (208 ignoradas por falta de original EN).
+2026-07-01 16:51:54.866 [revisao]   -> Nenhuma fala auditada (208 ignoradas por falta de original EN).
+2026-07-01 16:51:54.867 [console] Analisando legenda: Macross II - 06v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_PTBR.ass
+2026-07-01 16:51:54.867 [console] Analisando legenda: Macross II - 06v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_PTBR.ass
+2026-07-01 16:51:54.867 [revisao] Analisando legenda: Macross II - 06v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_PTBR.ass
+2026-07-01 16:51:54.874 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 06v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_ENG.cache.json)
+2026-07-01 16:51:54.875 [console]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 06v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_ENG.cache.json)
+2026-07-01 16:51:54.876 [revisao]   Aviso: cache EN não encontrado. Procurado em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache (esperado algo como Macross II - 06v2 (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales]_ENG.cache.json)
+2026-07-01 16:51:54.879 [console]   -> Nenhuma fala auditada (241 ignoradas por falta de original EN).
+2026-07-01 16:51:54.880 [console]   -> Nenhuma fala auditada (241 ignoradas por falta de original EN).
+2026-07-01 16:51:54.881 [revisao]   -> Nenhuma fala auditada (241 ignoradas por falta de original EN).
+2026-07-01 16:51:54.881 [console] Arquivos analisados: 6
+2026-07-01 16:51:54.881 [console] Arquivos analisados: 6
+2026-07-01 16:51:54.882 [revisao] Arquivos analisados: 6
+2026-07-01 16:51:54.882 [console] Falas auditadas: 0
+2026-07-01 16:51:54.882 [console] Falas auditadas: 0
+2026-07-01 16:51:54.883 [revisao] Falas auditadas: 0
+2026-07-01 16:51:54.883 [console] Falas sem original EN (ignoradas): 1381
+2026-07-01 16:51:54.883 [console] Falas sem original EN (ignoradas): 1381
+2026-07-01 16:51:54.883 [revisao] Falas sem original EN (ignoradas): 1381
+2026-07-01 16:51:54.883 [console] Falas com problemas detectados: 0
+2026-07-01 16:51:54.883 [console] Falas com problemas detectados: 0
+2026-07-01 16:51:54.884 [revisao] Falas com problemas detectados: 0
+2026-07-01 16:51:54.885 [console] Falas corrigidas via Google e salvas: 0
+2026-07-01 16:51:54.886 [console] Falas corrigidas via Google e salvas: 0
+2026-07-01 16:51:54.886 [revisao] Falas corrigidas via Google e salvas: 0
+2026-07-01 16:51:54.908 [console] Relatório salvo em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\relatorios\legendas_ptbr_corrigidas
+2026-07-01 16:51:54.909 [console] Relatório salvo em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\relatorios\legendas_ptbr_corrigidas
+2026-07-01 16:51:54.909 [revisao] Relatório salvo em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\relatorios\legendas_ptbr_corrigidas
+2026-07-01 16:51:54.909 [console] ========================================================================
+2026-07-01 16:51:54.910 [console] ========================================================================
+2026-07-01 16:51:54.910 [revisao] ========================================================================
+2026-07-01 16:51:54.911 [console]   🎉 [SUCESSO] REVISÃO DE LEGENDAS TRADUZIDAS FINALIZADA!
+2026-07-01 16:51:54.911 [console]   🎉 [SUCESSO] REVISÃO DE LEGENDAS TRADUZIDAS FINALIZADA!
+2026-07-01 16:51:54.911 [revisao]   🎉 [SUCESSO] REVISÃO DE LEGENDAS TRADUZIDAS FINALIZADA!
+2026-07-01 16:51:54.911 [console] ========================================================================
+2026-07-01 16:51:54.912 [console] ========================================================================
+2026-07-01 16:51:54.912 [revisao] ========================================================================
+2026-07-01 16:51:54.912 [console]   • Arquivos Analisados : 6
+2026-07-01 16:51:54.912 [console]   • Arquivos Analisados : 6
+2026-07-01 16:51:54.913 [revisao]   • Arquivos Analisados : 6
+2026-07-01 16:51:54.913 [console]   • Falas Corrigidas    : 0
+2026-07-01 16:51:54.914 [console]   • Falas Corrigidas    : 0
+2026-07-01 16:51:54.914 [revisao]   • Falas Corrigidas    : 0
+2026-07-01 16:51:54.914 [console] ========================================================================
+2026-07-01 16:51:54.914 [console] ========================================================================
+2026-07-01 16:51:54.915 [revisao] ========================================================================

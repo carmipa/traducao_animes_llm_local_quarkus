@@ -54,22 +54,30 @@ public class MistralClientAdapter implements MistralPort {
                     "Servidor LLM em " + propriedades.baseUrl() + " respondeu, mas nenhum modelo está carregado em memória.");
             }
 
-            boolean modeloCarregado = modelos.stream()
+            // 1. Tenta achar o modelo configurado (busca exata ou parcial case-insensitive)
+            Optional<String> modeloEncontrado = modelos.stream()
                 .map(ModeloDisponivel::id)
                 .filter(id -> id != null)
-                .anyMatch(id -> id.equalsIgnoreCase(modeloConfigurado) || id.contains(modeloConfigurado));
+                .filter(id -> id.equalsIgnoreCase(modeloConfigurado) 
+                    || id.toLowerCase().contains(modeloConfigurado.toLowerCase()) 
+                    || modeloConfigurado.toLowerCase().contains(id.toLowerCase()))
+                .findFirst();
 
-            if (!modeloCarregado) {
-                String idsDisponiveis = modelos.stream()
-                    .map(ModeloDisponivel::id)
-                    .collect(Collectors.joining(", "));
-                return new StatusLlm(true, false,
-                    "Modelo configurado (\"" + modeloConfigurado + "\") não está entre os carregados no servidor. "
-                        + "Carregados atualmente: [" + idsDisponiveis + "]");
+            if (modeloEncontrado.isPresent()) {
+                // Modelo configurado está carregado. Garante que usamos o ID oficial retornado pelo LM Studio
+                propriedades.setModel(modeloEncontrado.get());
+                return new StatusLlm(true, true,
+                    "Servidor LLM online e modelo \"" + modeloEncontrado.get() + "\" carregado em memória.");
             }
 
+            // 2. Se o configurado não está carregado, mas há outro(s) modelo(s) em memória, adota o primeiro ativo!
+            String modeloAtivo = modelos.get(0).id();
+            log.info("Modelo configurado (\"{}\") não está carregado no LM Studio. Adaptando dinamicamente para o modelo carregado na memória: \"{}\"",
+                modeloConfigurado, modeloAtivo);
+            propriedades.setModel(modeloAtivo);
+
             return new StatusLlm(true, true,
-                "Servidor LLM online e modelo \"" + modeloConfigurado + "\" carregado em memória.");
+                "Servidor LLM online. Adaptado dinamicamente para usar o modelo ativo em memória: \"" + modeloAtivo + "\".");
         } catch (Exception e) {
             return new StatusLlm(false, false,
                 "Não foi possível conectar ao servidor LLM em " + propriedades.baseUrl() + ": " + e.getMessage());
