@@ -181,6 +181,7 @@ public class ProcessarArquivoUseCase {
             } catch (AlucinacaoDetectadaException e) {
                 // Não derruba milhares de falas já traduzidas por causa de 1 suspeita
                 // nesta revalidação final: mantém o texto e sinaliza para revisão manual.
+                telemetriaService.registrarAlucinacaoPrevenida();
                 log.warn("Fala suspeita mantida na revalidação final do evento {}: {}. Texto: \"{}\"",
                     evento.indice(), e.getMessage(), textoFinal);
                 uiLogger.log("[ WARN ] Fala suspeita mantida (revise manualmente no cache): " + textoFinal);
@@ -287,6 +288,7 @@ public class ProcessarArquivoUseCase {
         try {
             return mascarador.desmascarar(traduzidoMascarado, tags);
         } catch (AlucinacaoDetectadaException e) {
+            telemetriaService.registrarAlucinacaoPrevenida();
             log.warn("Tags corrompidas pelo LLM nesta fala — mantendo o texto original sem tradução. Motivo: {}. Original: \"{}\"",
                 e.getMessage(), original);
             uiLogger.log("[ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): " + original);

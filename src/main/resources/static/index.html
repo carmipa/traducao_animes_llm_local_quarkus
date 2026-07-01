@@ -683,81 +683,236 @@
                     
                     <div class="glass-card viewer-card">
                         <div class="viewer-header">
-                            <h3>Estrutura do Projeto</h3>
-                            <button class="btn-copy-viewer" id="btn-copiar-mapa">Copiar Mapa</button>
-                        </div>
-                        <pre class="viewer-body" id="viewer-mapa">Estrutura não gerada. Clique em "Gerar Mapa do Projeto" para analisar...</pre>
-                    </div>
-                </div>
-
-                <!-- 9. PAINEL DE TELEMETRIA -->
+                            <h3>Estrutura d                <!-- 9. PAINEL DE TELEMETRIA -->
                 <div class="panel" id="panel-telemetria">
-                    <div class="panel-header-actions" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                        <h2 style="margin:0;">Telemetria e Analytics</h2>
-                        <button type="button" class="btn btn-primary" id="btn-exportar-telemetria" data-tooltip="Faz o download anonimizado do arquivo de telemetria compartilhado para auditoria">
-                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                            <span>Exportar Estatísticas</span>
-                        </button>
-                    </div>
-                    <div class="telemetria-grid">
-                        <div class="glass-card stat-detail-card">
-                            <h3>Métricas de Tradução</h3>
-                            <div class="metric-group">
-                                <div class="metric-item">
-                                    <span class="m-label">Episódios Traduzidos</span>
-                                    <span class="m-value" id="t-episodios">0</span>
-                                </div>
-                                <div class="metric-item">
-                                    <span class="m-label">Linhas Traduzidas</span>
-                                    <span class="m-value" id="t-linhas">0</span>
-                                </div>
-                                <div class="metric-item">
-                                    <span class="m-label">Tempo Médio p/ Linha</span>
-                                    <span class="m-value" id="t-tempo-linha">0 ms</span>
-                                </div>
-                            </div>
+                    <!-- Cabeçalho com ações unificadas -->
+                    <div class="panel-header-actions" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+                        <div>
+                            <span class="tdb-eyebrow" style="color: var(--accent-color);">Telemetria KRONOS</span>
+                            <h2 style="margin:0;">Telemetria e Observabilidade da Tradução</h2>
                         </div>
-
-                        <div class="glass-card stat-detail-card">
-                            <h3>Métricas de Desempenho LLM</h3>
-                            <div class="metric-group">
-                                <div class="metric-item">
-                                    <span class="m-label">Total de Tokens (Estimado)</span>
-                                    <span class="m-value" id="t-tokens">0</span>
-                                </div>
-                                <div class="metric-item">
-                                    <span class="m-label">Hits de Cache (Reaproveitados)</span>
-                                    <span class="m-value" id="t-cache-hits">0</span>
-                                </div>
-                                <div class="metric-item">
-                                    <span class="m-label">Fails / Hallucinations</span>
-                                    <span class="m-value" id="t-alucinacoes">0</span>
-                                </div>
-                            </div>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <button type="button" class="btn btn-secondary" id="btn-refresh-telemetria" style="display: inline-flex; align-items: center; gap: 6px;">
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" style="vertical-align: middle;"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                                <span>Atualizar</span>
+                            </button>
+                            <button type="button" class="btn btn-primary" id="btn-exportar-telemetria" data-tooltip="Faz o download anonimizado do arquivo de telemetria compartilhado para auditoria" style="display: inline-flex; align-items: center; gap: 6px;">
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                <span>Exportar Estatísticas</span>
+                            </button>
                         </div>
                     </div>
 
-                    <div class="glass-card log-stream-card">
+                    <!-- Monitor de IA em Tempo Real (Status / Latência) -->
+                    <div class="ia-status-panel">
+                        <div class="ia-status-info">
+                            <div class="ia-status-item">
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                                <span>Provedor: <strong id="t-ia-provider">LM Studio (Local)</strong></span>
+                            </div>
+                            <div class="ia-status-item">
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                <span>Latência: <strong id="t-ia-latency">-- ms</strong></span>
+                            </div>
+                            <div class="ia-status-item">
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                                <span>Modelo Ativo: <strong id="t-ia-model">Carregando...</strong></span>
+                            </div>
+                        </div>
+                        <div class="ia-status-badge offline" id="t-ia-badge">
+                            <span class="ia-ping-dot"></span> <span id="t-ia-badge-text">Desconectado</span>
+                        </div>
+                    </div>
+
+                    <!-- Seção Executiva: Gauge + 6 KPIs -->
+                    <div class="tdb-hero-grid">
+                        <!-- Card Gauge de Eficiência -->
+                        <div class="tdb-card tdb-gauge-card">
+                            <span class="tdb-eyebrow" style="color: var(--accent-color);">Eficiência do Cache</span>
+                            <div class="tdb-gauge-clip">
+                                <canvas id="chart-gauge-cache"></canvas>
+                            </div>
+                            <div class="tdb-gauge-text">
+                                <span class="tdb-gauge-num" id="t-cache-rate">0.0</span>
+                                <span class="tdb-gauge-denom">%</span>
+                                <div class="tdb-gauge-badge" id="t-cache-badge" style="color: var(--accent-color); border: 1px solid rgba(45, 212, 191, 0.3); background: rgba(45, 212, 191, 0.1);">Taxa de Acerto</div>
+                                <span class="tdb-gauge-delta" id="t-cache-delta" style="color: #10b981;">&#8213; estável</span>
+                            </div>
+                        </div>
+
+                        <!-- Grid de KPIs 3x2 -->
+                        <div class="tdb-kpi-grid">
+                            <div class="tdb-kpi-card">
+                                <div class="tdb-kpi-icon" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                                </div>
+                                <div class="tdb-kpi-body">
+                                    <span class="tdb-kpi-val" id="t-episodios">0</span>
+                                    <span class="tdb-kpi-label">Episódios</span>
+                                </div>
+                            </div>
+                            <div class="tdb-kpi-card">
+                                <div class="tdb-kpi-icon" style="background: rgba(244, 63, 94, 0.15); color: #f43f5e;">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                                </div>
+                                <div class="tdb-kpi-body">
+                                    <span class="tdb-kpi-val" id="t-linhas-llm">0</span>
+                                    <span class="tdb-kpi-label">Traduzidas via LLM</span>
+                                </div>
+                            </div>
+                            <div class="tdb-kpi-card">
+                                <div class="tdb-kpi-icon" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                </div>
+                                <div class="tdb-kpi-body">
+                                    <span class="tdb-kpi-val" id="t-tempo-total-formatado">0s</span>
+                                    <span class="tdb-kpi-label">Tempo de Execução</span>
+                                </div>
+                            </div>
+                            <div class="tdb-kpi-card">
+                                <div class="tdb-kpi-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                                </div>
+                                <div class="tdb-kpi-body">
+                                    <span class="tdb-kpi-val" id="t-roi-estimado" style="color: #10b981;">R$ 0,00</span>
+                                    <span class="tdb-kpi-label">Economia Estimada (ROI)</span>
+                                </div>
+                            </div>
+                            <div class="tdb-kpi-card">
+                                <div class="tdb-kpi-icon" style="background: rgba(236, 72, 153, 0.15); color: #ec4899;">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                </div>
+                                <div class="tdb-kpi-body">
+                                    <span class="tdb-kpi-val" id="t-alucinacoes" style="color: #ec4899;">0</span>
+                                    <span class="tdb-kpi-label">Alucinações Prevenidas</span>
+                                </div>
+                            </div>
+                            <div class="tdb-kpi-card">
+                                <div class="tdb-kpi-icon" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4;">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                                </div>
+                                <div class="tdb-kpi-body">
+                                    <span class="tdb-kpi-val" id="t-cache-count">0</span>
+                                    <span class="tdb-kpi-label">Arquivos Cache</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seção de Gráficos em Grid -->
+                    <div class="tdb-charts-grid">
+                        <!-- Funil de Tradução (Redução Cognitive LLM) -->
+                        <div class="tdb-card">
+                            <span class="tdb-eyebrow" style="color: #818cf8;">Triagem e Custo</span>
+                            <h4 class="tdb-card-title">Funil de Processamento Cognitive</h4>
+                            <p class="tdb-card-desc">Volume de falas filtradas até o acionamento real do LLM local.</p>
+                            <div style="position: relative; height: 180px;">
+                                <canvas id="chart-funil-processamento"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Distribuição de Modelos LLM -->
+                        <div class="tdb-card">
+                            <span class="tdb-eyebrow" style="color: #f59e0b;">Modelos Utilizados</span>
+                            <h4 class="tdb-card-title">Distribuição de Modelos LLM</h4>
+                            <p class="tdb-card-desc">Frequência de chamada de IAs locais e remotas nos episódios.</p>
+                            <div class="tdb-donut-row">
+                                <div class="tdb-donut-canvas-wrap">
+                                    <canvas id="chart-modelos-llm"></canvas>
+                                    <div class="tdb-donut-center">
+                                        <span class="tdb-donut-num" id="donut-total-traducoes">0</span>
+                                        <span class="tdb-donut-sub">traduções</span>
+                                    </div>
+                                </div>
+                                <div class="tdb-donut-legend" id="donut-llm-legend"></div>
+                            </div>
+                        </div>
+
+                        <!-- Complexidade Linguística (Categorias owasp adaptadas) -->
+                        <div class="tdb-card">
+                            <span class="tdb-eyebrow" style="color: #eab308;">Complexidade Linguística</span>
+                            <h4 class="tdb-card-title">Complexidade Semântica das Falas</h4>
+                            <p class="tdb-card-desc">Ocorrência de elementos complexos classificados no pipeline.</p>
+                            <div style="position: relative; height: 180px;">
+                                <canvas id="chart-complexidade-barras"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Diagnóstico e Recursos da JVM -->
+                        <div class="tdb-card">
+                            <span class="tdb-eyebrow" style="color: #2dd4bf;">Recursos da JVM</span>
+                            <h4 class="tdb-card-title">Recursos do Servidor Java</h4>
+                            <p class="tdb-card-desc">Monitoramento de CPU, Threads e Heap de memória em tempo real.</p>
+                            <div class="tdb-jvm-minicards">
+                                <div class="tdb-jvm-mini">
+                                    <span class="tdb-jvm-val" id="jvm-cpu">—</span>
+                                    <span class="tdb-jvm-label">CPU Processo</span>
+                                </div>
+                                <div class="tdb-jvm-mini">
+                                    <span class="tdb-jvm-val" id="jvm-threads">—</span>
+                                    <span class="tdb-jvm-label">Threads Ativas</span>
+                                </div>
+                                <div class="tdb-jvm-mini">
+                                    <span class="tdb-jvm-val" id="jvm-heap">—</span>
+                                    <span class="tdb-jvm-label">Heap Usado</span>
+                                </div>
+                            </div>
+                            <div style="position: relative; height: 100px;">
+                                <canvas id="chart-jvm-performance"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Evolução de Processamento por Episódio (Tempo total) -->
+                        <div class="tdb-card" style="grid-column: span 2;">
+                            <span class="tdb-eyebrow" style="color: #10b981;">Desempenho</span>
+                            <h4 class="tdb-card-title">Histórico de Performance por Episódio</h4>
+                            <p class="tdb-card-desc">Tempo total gasto no processamento e volume de falas traduzidas por lote.</p>
+                            <div style="position: relative; height: 180px;">
+                                <canvas id="chart-desempenho-episodios"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabela de Complexidade dos Episódios -->
+                    <div class="glass-card log-stream-card" style="margin-top: 20px;">
                         <div class="console-header">
-                            <h3>Métricas e Estatísticas Agregadas</h3>
-                            <button class="btn-refresh-telemetria" id="btn-refresh-telemetria">Atualizar</button>
+                            <h3>Episódios com Maior Complexidade de Tradução</h3>
                         </div>
                         <div class="telemetria-details-container">
                             <table class="telemetria-table">
                                 <thead>
                                     <tr>
-                                        <th>Época / Operação</th>
-                                        <th>Mapeamento</th>
-                                        <th>Duração</th>
-                                        <th>Taxa de Sucesso</th>
+                                        <th>Episódio / Legenda</th>
+                                        <th>Falas Totais</th>
+                                        <th>Alucinações Prevenidas / Erros</th>
+                                        <th>Score de Confiança</th>
+                                        <th>Status da Tradução</th>
                                     </tr>
                                 </thead>
-                                <tbody id="telemetria-table-body">
+                                <tbody id="tabela-complexidade-episodios-body">
                                     <tr>
-                                        <td colspan="4" class="table-empty">Nenhuma métrica registrada. Realize operações para alimentar a telemetria.</td>
+                                        <td colspan="5" class="table-empty">Aguardando dados de processamento...</td>
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+
+                    <!-- Console de Log Auditável do Pipeline -->
+                    <div class="tdb-card audit-log-card">
+                        <div class="panel-header-actions" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <div>
+                                <span class="tdb-eyebrow" style="color: #06b6d4;">KRONOS AUDIT STREAM</span>
+                                <h4 class="tdb-card-title" style="margin-top:2px">Log Auditável do Pipeline de Tradução</h4>
+                            </div>
+                            <span class="ia-status-badge online" style="background: rgba(6, 182, 212, 0.12); color: #06b6d4; border-color: rgba(6, 182, 212, 0.3);">
+                                <span class="ia-ping-dot" style="background-color: #06b6d4; box-shadow: 0 0 8px #06b6d4;"></span> STREAM ATIVO
+                            </span>
+                        </div>
+                        <p class="tdb-card-desc" style="margin-bottom:12px;">Registro em tempo real de auditoria de eventos e mitigação de erros linguísticos.</p>
+                        
+                        <div id="pipeline-audit-log-terminal" class="audit-log-terminal">
+                            <div class="audit-log-line" style="color: #64748b; font-style: italic;">[System] Inicializando stream de observabilidade KRONOS...</div>
                         </div>
                     </div>
                 </div>
@@ -780,6 +935,7 @@
     <div id="toast-container" class="toast-container"></div>
 
     <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
     <script type="module" src="js/app.js"></script>
 </body>
 </html>

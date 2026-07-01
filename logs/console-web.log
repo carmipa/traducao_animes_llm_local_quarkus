@@ -339,3 +339,127 @@
 2026-07-01 16:51:54.914 [console] ========================================================================
 2026-07-01 16:51:54.914 [console] ========================================================================
 2026-07-01 16:51:54.915 [revisao] ========================================================================
+2026-07-01 18:21:46.171 [console] ==============================================================
+2026-07-01 18:21:46.172 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 18:21:46.172 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 18:21:46.172 [console] ==============================================================
+2026-07-01 18:25:05.128 [console] ==============================================================
+2026-07-01 18:25:05.128 [console] ==============================================================
+2026-07-01 18:25:05.129 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 18:25:05.130 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 18:25:05.130 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 18:25:05.130 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 18:25:05.130 [console] ==============================================================
+2026-07-01 18:25:05.130 [console] ==============================================================
+2026-07-01 18:25:09.375 [console] ==============================================================
+2026-07-01 18:25:09.375 [console] ==============================================================
+2026-07-01 18:25:09.375 [console] ==============================================================
+2026-07-01 18:25:09.376 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 18:25:09.376 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 18:25:09.376 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 18:25:09.377 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 18:25:09.377 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 18:25:09.378 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 18:25:09.378 [console] ==============================================================
+2026-07-01 18:25:09.378 [console] ==============================================================
+2026-07-01 18:25:09.378 [console] ==============================================================
+2026-07-01 18:27:06.197 [console] ==============================================================
+2026-07-01 18:27:06.198 [console] ==============================================================
+2026-07-01 18:27:06.198 [console] ==============================================================
+2026-07-01 18:27:06.199 [console] ==============================================================
+2026-07-01 18:27:06.199 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 18:27:06.200 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 18:27:06.200 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 18:27:06.200 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 18:27:06.201 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 18:27:06.201 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 18:27:06.201 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 18:27:06.201 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 18:27:06.203 [console] ==============================================================
+2026-07-01 18:27:06.203 [console] ==============================================================
+2026-07-01 18:27:06.203 [console] ==============================================================
+2026-07-01 18:27:06.204 [console] ==============================================================
+2026-07-01 18:27:09.550 [console] ==============================================================
+2026-07-01 18:27:09.551 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 18:27:09.551 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 18:27:09.552 [console] ==============================================================
+2026-07-01 18:27:14.887 [correcao] Iniciando limpeza de cache na pasta: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache
+2026-07-01 18:27:14.889 [correcao] Total de arquivos de cache analisados: 0
+2026-07-01 18:27:14.889 [correcao] Total de falas em inglês (fallbacks) limpas: 0
+2026-07-01 18:27:14.899 [correcao] Relatório salvo em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\relatorios\cache
+2026-07-01 18:27:14.900 [correcao] ========================================================================
+2026-07-01 18:27:14.901 [correcao]   🎉 [SUCESSO] LIMPEZA E AUDITORIA DE CACHE CONCLUÍDAS COM SUCESSO!
+2026-07-01 18:27:14.901 [correcao] ========================================================================
+2026-07-01 18:27:14.909 [correcao] Iniciando correção via Scraping Google Translate em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache
+2026-07-01 18:27:14.910 [correcao] Total de arquivos de cache analisados: 0
+2026-07-01 18:27:14.911 [correcao] Total de falas em inglês corrigidas via Google: 0
+2026-07-01 18:27:14.919 [correcao] Relatório salvo em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\relatorios\cache
+2026-07-01 18:27:14.919 [correcao] ========================================================================
+2026-07-01 18:27:14.920 [correcao]   🎉 [SUCESSO] CORREÇÃO VIA GOOGLE TRANSLATE FINALIZADA COM SUCESSO!
+2026-07-01 18:27:14.920 [correcao] ========================================================================
+2026-07-01 18:27:15.532 [correcao] marcador-console-redirector-d9b412dc-1e1c-4827-90d0-52c33bc772d7
+2026-07-01 18:27:15.547 [console-teste] [ OK ] marcador-teste-c01bd540-fb3d-4f59-aa0a-9275bc951d6b
+2026-07-01 18:34:33.605 [console] ==============================================================
+2026-07-01 18:34:33.606 [console] ==============================================================
+2026-07-01 18:34:33.606 [console] ==============================================================
+2026-07-01 18:34:33.606 [console] ==============================================================
+2026-07-01 18:34:33.606 [console] ==============================================================
+2026-07-01 18:34:33.607 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 18:34:33.607 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 18:34:33.607 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 18:34:33.607 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 18:34:33.607 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 18:34:33.608 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 18:34:33.608 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 18:34:33.608 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 18:34:33.608 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 18:34:33.608 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 18:34:33.608 [console] ==============================================================
+2026-07-01 18:34:33.608 [console] ==============================================================
+2026-07-01 18:34:33.608 [console] ==============================================================
+2026-07-01 18:34:33.609 [console] ==============================================================
+2026-07-01 18:34:33.609 [console] ==============================================================
+2026-07-01 18:36:20.747 [console] ==============================================================
+2026-07-01 18:36:20.748 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 18:36:20.748 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 18:36:20.748 [console] ==============================================================
+2026-07-01 18:36:21.699 [console] ==============================================================
+2026-07-01 18:36:21.699 [console] ==============================================================
+2026-07-01 18:36:21.699 [console] ==============================================================
+2026-07-01 18:36:21.699 [console] ==============================================================
+2026-07-01 18:36:21.699 [console] ==============================================================
+2026-07-01 18:36:21.701 [console] ==============================================================
+2026-07-01 18:36:21.701 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 18:36:21.701 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 18:36:21.701 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 18:36:21.701 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 18:36:21.701 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 18:36:21.702 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-01 18:36:21.703 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 18:36:21.703 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 18:36:21.703 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 18:36:21.704 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 18:36:21.704 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 18:36:21.704 [console]    Acesse a interface visual em: http://127.0.0.1:8080
+2026-07-01 18:36:21.704 [console] ==============================================================
+2026-07-01 18:36:21.704 [console] ==============================================================
+2026-07-01 18:36:21.704 [console] ==============================================================
+2026-07-01 18:36:21.704 [console] ==============================================================
+2026-07-01 18:36:21.706 [console] ==============================================================
+2026-07-01 18:36:21.706 [console] ==============================================================
+2026-07-01 18:36:27.048 [correcao] Iniciando limpeza de cache na pasta: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache
+2026-07-01 18:36:27.049 [correcao] Total de arquivos de cache analisados: 0
+2026-07-01 18:36:27.050 [correcao] Total de falas em inglês (fallbacks) limpas: 0
+2026-07-01 18:36:27.059 [correcao] Relatório salvo em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\relatorios\cache
+2026-07-01 18:36:27.060 [correcao] ========================================================================
+2026-07-01 18:36:27.060 [correcao]   🎉 [SUCESSO] LIMPEZA E AUDITORIA DE CACHE CONCLUÍDAS COM SUCESSO!
+2026-07-01 18:36:27.061 [correcao] ========================================================================
+2026-07-01 18:36:27.076 [correcao] Iniciando correção via Scraping Google Translate em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache
+2026-07-01 18:36:27.078 [correcao] Total de arquivos de cache analisados: 0
+2026-07-01 18:36:27.078 [correcao] Total de falas em inglês corrigidas via Google: 0
+2026-07-01 18:36:27.087 [correcao] Relatório salvo em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\relatorios\cache
+2026-07-01 18:36:27.088 [correcao] ========================================================================
+2026-07-01 18:36:27.088 [correcao]   🎉 [SUCESSO] CORREÇÃO VIA GOOGLE TRANSLATE FINALIZADA COM SUCESSO!
+2026-07-01 18:36:27.090 [correcao] ========================================================================
+2026-07-01 18:36:27.659 [correcao] marcador-console-redirector-c538034c-5d3e-4d29-8bba-765680fce6ee
+2026-07-01 18:36:27.672 [console-teste] [ OK ] marcador-teste-cac7a0f7-68ea-408e-a024-9f59d25234f7

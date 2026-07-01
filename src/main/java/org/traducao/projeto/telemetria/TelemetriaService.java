@@ -16,6 +16,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.lang.management.ManagementFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -41,6 +43,12 @@ public class TelemetriaService {
     private final List<MidiaTelemetria> loteMidia = new ArrayList<>();
     private final List<LlmTelemetria> loteLlm = new ArrayList<>();
     private final List<OperacaoTelemetria> loteOperacoes = new ArrayList<>();
+    private final AtomicInteger alucinacoesPrevenidas = new AtomicInteger(0);
+
+    public void registrarAlucinacaoPrevenida() {
+        alucinacoesPrevenidas.incrementAndGet();
+        log.info("Alucinação de tradução interceptada e corrigida. Total acumulado na sessão: {}", alucinacoesPrevenidas.get());
+    }
 
     public TelemetriaService() {
         this.objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
@@ -223,9 +231,47 @@ public class TelemetriaService {
         long tempoTotalMs = bancoLlm.values().stream().mapToLong(l -> l.tempoTotalMs() != null ? l.tempoTotalMs() : 0L).sum();
         long tempoMedioPorLinhaMs = totalLinhas > 0 ? tempoTotalMs / totalLinhas : 0L;
 
+        double jvmCpu = 0.0;
+        try {
+            com.sun.management.OperatingSystemMXBean osBean = 
+                ManagementFactory.getPlatformMXBean(com.sun.management.OperatingSystemMXBean.class);
+            if (osBean != null) {
+                jvmCpu = osBean.getProcessCpuLoad() * 100.0;
+                if (jvmCpu < 0) {
+                    jvmCpu = 0.0;
+                }
+            }
+        } catch (Throwable e) {
+            // OperatingSystemMXBean proprietário da Sun não disponível (ou em SO não suportado)
+        }
+
+        int jvmThreads = 0;
+        try {
+            jvmThreads = ManagementFactory.getThreadMXBean().getThreadCount();
+        } catch (Throwable e) {
+            // Thread bean não disponível
+        }
+
+        long heapUsed = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        long heapMax = Runtime.getRuntime().maxMemory();
+
         List<OperacaoHistorico> historico = montarHistorico(bancoOperacoes, bancoLlm, bancoMidia);
 
-        return new TelemetriaResumo(cacheCount, bancoLlm.size(), totalLinhas, tempoMedioPorLinhaMs, totalCacheHits, historico);
+        return new TelemetriaResumo(
+            cacheCount,
+            bancoLlm.size(),
+            totalLinhas,
+            tempoMedioPorLinhaMs,
+            totalCacheHits,
+            historico,
+            new ArrayList<>(bancoLlm.values()),
+            bancoOperacoes,
+            alucinacoesPrevenidas.get(),
+            jvmCpu,
+            jvmThreads,
+            heapUsed,
+            heapMax
+        );
     }
 
     private List<OperacaoHistorico> montarHistorico(

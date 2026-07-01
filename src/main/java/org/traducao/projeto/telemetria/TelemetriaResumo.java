@@ -12,5 +12,12 @@ public record TelemetriaResumo(
     int totalLinhas,
     long tempoMedioPorLinhaMs,
     int totalCacheHits,
-    List<OperacaoHistorico> historicoOperacoes
+    List<OperacaoHistorico> historicoOperacoes,
+    List<LlmTelemetria> traducoesLlm,
+    List<OperacaoTelemetria> operacoes,
+    int alucinacoesPrevenidas,
+    double jvmCpuUso,
+    int jvmThreadsAtivas,
+    long jvmHeapUsadoBytes,
+    long jvmHeapMaxBytes
 ) {}
