@@ -655,6 +655,45 @@ body {
    PAINEL: TELEMETRIA E DASHBOARD EXECUTIVO
    ========================================================================== */
 
+/* Barra de filtros (Anime / Temporada) */
+.tdb-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.tdb-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.tdb-filter-group label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-muted);
+}
+
+.tdb-filter-group select {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    font-size: 0.8rem;
+    outline: none;
+    min-width: 200px;
+    transition: var(--transition-fast);
+}
+
+.tdb-filter-group select:focus {
+    border-color: var(--border-active);
+}
+
 /* Cards executivos e containers */
 .tdb-card {
     background: linear-gradient(180deg, rgba(15, 22, 34, 0.6), rgba(10, 14, 22, 0.8));

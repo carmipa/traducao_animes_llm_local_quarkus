@@ -683,7 +683,14 @@
                     
                     <div class="glass-card viewer-card">
                         <div class="viewer-header">
-                            <h3>Estrutura d                <!-- 9. PAINEL DE TELEMETRIA -->
+                            <h3>Estrutura do Projeto</h3>
+                            <button class="btn-copy-viewer" id="btn-copiar-mapa">Copiar Mapa</button>
+                        </div>
+                        <pre class="viewer-body" id="viewer-mapa">Estrutura não gerada. Clique em "Gerar Mapa do Projeto" para analisar...</pre>
+                    </div>
+                </div>
+
+                <!-- 9. PAINEL DE TELEMETRIA -->
                 <div class="panel" id="panel-telemetria">
                     <!-- Cabeçalho com ações unificadas -->
                     <div class="panel-header-actions" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
@@ -700,6 +707,22 @@
                                 <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                                 <span>Exportar Estatísticas</span>
                             </button>
+                        </div>
+                    </div>
+
+                    <!-- Filtros por Anime / Temporada -->
+                    <div class="tdb-filter-bar">
+                        <div class="tdb-filter-group">
+                            <label for="filtro-anime">Anime</label>
+                            <select id="filtro-anime">
+                                <option value="">Todos os animes</option>
+                            </select>
+                        </div>
+                        <div class="tdb-filter-group">
+                            <label for="filtro-temporada">Temporada</label>
+                            <select id="filtro-temporada">
+                                <option value="">Todas as temporadas</option>
+                            </select>
                         </div>
                     </div>
 
@@ -892,6 +915,32 @@
                                 <tbody id="tabela-complexidade-episodios-body">
                                     <tr>
                                         <td colspan="5" class="table-empty">Aguardando dados de processamento...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Comparação entre Modelos LLM -->
+                    <div class="glass-card log-stream-card" style="margin-top: 20px;">
+                        <div class="console-header">
+                            <h3>Comparação entre Modelos LLM</h3>
+                        </div>
+                        <div class="telemetria-details-container">
+                            <table class="telemetria-table">
+                                <thead>
+                                    <tr>
+                                        <th>Modelo</th>
+                                        <th>Episódios</th>
+                                        <th>Falas Totais</th>
+                                        <th>Taxa de Cache</th>
+                                        <th>Tempo Médio / Linha</th>
+                                        <th>Erros</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabela-comparacao-modelos-body">
+                                    <tr>
+                                        <td colspan="6" class="table-empty">Aguardando dados de processamento...</td>
                                     </tr>
                                 </tbody>
                             </table>

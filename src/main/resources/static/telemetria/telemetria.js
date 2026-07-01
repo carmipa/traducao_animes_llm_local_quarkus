@@ -34,12 +34,21 @@ function configurarTemaDarkChart() {
     Chart.defaults.scale.ticks.color = '#8b97ad';
 }
 
+let telemetriaEventSource = null;
+
+// Guarda o último payload bruto recebido via SSE para poder re-renderizar
+// instantaneamente quando o usuário muda um filtro, sem esperar o próximo tick.
+let ultimoPayloadTelemetria = null;
+
 export function initTelemetria() {
     configurarTemaDarkChart();
 
     const btnRefresh = document.getElementById('btn-refresh-telemetria');
     if (btnRefresh) {
-        btnRefresh.addEventListener('click', carregarDadosTelemetria);
+        btnRefresh.addEventListener('click', () => {
+            testarConexaoIa();
+            conectarTelemetriaStream();
+        });
     }
 
     const btnExportar = document.getElementById('btn-exportar-telemetria');
@@ -49,23 +58,49 @@ export function initTelemetria() {
         });
     }
 
-    // Primeira carga
-    carregarDadosTelemetria();
+    const selAnime = document.getElementById('filtro-anime');
+    const selTemporada = document.getElementById('filtro-temporada');
+    if (selAnime) {
+        selAnime.addEventListener('change', () => {
+            popularFiltroTemporada(ultimoPayloadTelemetria);
+            processarDadosTelemetria(ultimoPayloadTelemetria);
+        });
+    }
+    if (selTemporada) {
+        selTemporada.addEventListener('change', () => processarDadosTelemetria(ultimoPayloadTelemetria));
+    }
 
-    // Atualiza automaticamente a cada 10 segundos se o painel estiver ativo (menor intervalo para JVM em tempo real)
-    const timerTelemetria = setInterval(() => {
-        const panel = document.getElementById('panel-telemetria');
-        if (panel && panel.classList.contains('active')) {
-            carregarDadosTelemetria();
-        }
-    }, 10000);
+    // Inicializa a escuta de stream SSE para atualização em tempo real
+    conectarTelemetriaStream();
 
-    // Salva o timer no document para limpeza posterior caso necessário
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-            clearInterval(timerTelemetria);
+    // Loop leve de 10 segundos apenas para checar saúde do LM Studio local
+    setInterval(testarConexaoIa, 10000);
+}
+
+function conectarTelemetriaStream() {
+    if (telemetriaEventSource) {
+        telemetriaEventSource.close();
+    }
+
+    telemetriaEventSource = new EventSource('/api/telemetria/stream');
+
+    telemetriaEventSource.addEventListener('telemetria', (event) => {
+        try {
+            const dados = JSON.parse(event.data);
+            ultimoPayloadTelemetria = dados;
+            popularFiltroAnime(dados);
+            popularFiltroTemporada(dados);
+            processarDadosTelemetria(dados);
+        } catch (e) {
+            console.error('Erro ao processar dados de telemetria SSE:', e);
         }
     });
+
+    telemetriaEventSource.onerror = (err) => {
+        console.warn('Conexão SSE de telemetria perdida. Tentando reconectar em 5 segundos...', err);
+        telemetriaEventSource.close();
+        setTimeout(conectarTelemetriaStream, 5000);
+    };
 }
 
 // Escapa conteúdo HTML
@@ -98,12 +133,12 @@ const DADOS_DEMO = {
     jvmHeapUsadoBytes: 158 * 1024 * 1024,
     jvmHeapMaxBytes: 512 * 1024 * 1024,
     traducoesLlm: [
-        { nomeEpisodio: "Episódio 01.ass", totalLinhas: 240, falasTraduzidas: 75, falasDoCache: 165, tempoTotalMs: 29800, modeloLlm: "Mistral Nemo (Local)", errosOcorridos: [] },
-        { nomeEpisodio: "Episódio 02.ass", totalLinhas: 260, falasTraduzidas: 80, falasDoCache: 180, tempoTotalMs: 31200, modeloLlm: "Mistral Nemo (Local)", errosOcorridos: [] },
-        { nomeEpisodio: "Episódio 03.ass", totalLinhas: 220, falasTraduzidas: 92, falasDoCache: 128, tempoTotalMs: 35800, modeloLlm: "Mistral Nemo (Local)", errosOcorridos: ["Lote falhou temporariamente"] },
-        { nomeEpisodio: "Episódio 04.ass", totalLinhas: 280, falasTraduzidas: 60, falasDoCache: 220, tempoTotalMs: 24000, modeloLlm: "Llama 3 8B (Local)", errosOcorridos: [] },
-        { nomeEpisodio: "Episódio 05.ass", totalLinhas: 290, falasTraduzidas: 110, falasDoCache: 180, tempoTotalMs: 44000, modeloLlm: "Llama 3 8B (Local)", errosOcorridos: ["Erro de timeout, restabelecido"] },
-        { nomeEpisodio: "Episódio 06.ass", totalLinhas: 250, falasTraduzidas: 78, falasDoCache: 172, tempoTotalMs: 28900, modeloLlm: "Google Translate Cloud", errosOcorridos: [] }
+        { nomeEpisodio: "Episódio 01.ass", totalLinhas: 240, falasTraduzidas: 75, falasDoCache: 165, tempoTotalMs: 29800, modeloLlm: "Mistral Nemo (Local)", errosOcorridos: [], animeNome: "Macross II (BDRip)[sxales]", temporada: "Temporada Única" },
+        { nomeEpisodio: "Episódio 02.ass", totalLinhas: 260, falasTraduzidas: 80, falasDoCache: 180, tempoTotalMs: 31200, modeloLlm: "Mistral Nemo (Local)", errosOcorridos: [], animeNome: "Macross II (BDRip)[sxales]", temporada: "Temporada Única" },
+        { nomeEpisodio: "Episódio 03.ass", totalLinhas: 220, falasTraduzidas: 92, falasDoCache: 128, tempoTotalMs: 35800, modeloLlm: "Mistral Nemo (Local)", errosOcorridos: ["Lote falhou temporariamente"], animeNome: "Macross II (BDRip)[sxales]", temporada: "Temporada Única" },
+        { nomeEpisodio: "Episódio 04.ass", totalLinhas: 280, falasTraduzidas: 60, falasDoCache: 220, tempoTotalMs: 24000, modeloLlm: "Llama 3 8B (Local)", errosOcorridos: [], animeNome: "[Sokudo] DanMachi Season 04", temporada: "Temporada 4" },
+        { nomeEpisodio: "Episódio 05.ass", totalLinhas: 290, falasTraduzidas: 110, falasDoCache: 180, tempoTotalMs: 44000, modeloLlm: "Llama 3 8B (Local)", errosOcorridos: ["Erro de timeout, restabelecido"], animeNome: "[Sokudo] DanMachi Season 04", temporada: "Temporada 4" },
+        { nomeEpisodio: "Episódio 06.ass", totalLinhas: 250, falasTraduzidas: 78, falasDoCache: 172, tempoTotalMs: 28900, modeloLlm: "Google Translate Cloud", errosOcorridos: [], animeNome: "[Sokudo] DanMachi Season 04", temporada: "Temporada 4" }
     ],
     operacoes: [
         { tipo: "Limpar Cache", detalhe: "Limpeza de arquivos órfãos | arquivos: 12", tempoTotalMs: 240, arquivosProcessados: 12, registradoEm: new Date(Date.now() - 3600000).toISOString() },
@@ -128,6 +163,52 @@ const LOGS_DEMO = [
     { time: "18:29:22", level: "warn", msg: "Alucinação detectada e corrigida: preâmbulo em inglês removido no Episódio 05.", model: "ValidadorLegendas" },
     { time: "18:29:25", level: "success", msg: "Métricas de hardware JVM carregadas com sucesso.", model: "System" }
 ];
+
+// Decide se usa os dados reais do backend ou o conjunto de demonstração,
+// com a mesma regra usada em processarDadosTelemetria — mantido centralizado
+// para os filtros e a renderização enxergarem sempre a mesma lista.
+function obterListaTraducoesEfetiva(dadosReais) {
+    const usarDemo = !dadosReais || (dadosReais.totalEpisodios === 0 && (!dadosReais.historicoOperacoes || dadosReais.historicoOperacoes.length === 0));
+    return usarDemo ? DADOS_DEMO.traducoesLlm : (dadosReais.traducoesLlm || []);
+}
+
+// Reconstrói as opções de um <select> de filtro preservando a seleção atual
+// do usuário sempre que o valor escolhido ainda existir na nova lista.
+function popularSelectFiltro(selectEl, valores, labelTodos) {
+    if (!selectEl) return;
+    const valorAtual = selectEl.value;
+    const unicos = Array.from(new Set(valores.filter(Boolean))).sort((a, b) => a.localeCompare(b, 'pt-BR'));
+    const chaveNova = unicos.join('|');
+    if (selectEl.dataset.chave === chaveNova) return;
+
+    selectEl.dataset.chave = chaveNova;
+    selectEl.innerHTML = `<option value="">${esc(labelTodos)}</option>` +
+        unicos.map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join('');
+    if (unicos.includes(valorAtual)) {
+        selectEl.value = valorAtual;
+    }
+}
+
+function popularFiltroAnime(dadosReais) {
+    const listaTraducoes = obterListaTraducoesEfetiva(dadosReais);
+    popularSelectFiltro(
+        document.getElementById('filtro-anime'),
+        listaTraducoes.map(t => t.animeNome),
+        'Todos os animes'
+    );
+}
+
+function popularFiltroTemporada(dadosReais) {
+    const filtroAnimeEl = document.getElementById('filtro-anime');
+    const animeSelecionado = filtroAnimeEl ? filtroAnimeEl.value : '';
+    const listaTraducoes = obterListaTraducoesEfetiva(dadosReais)
+        .filter(t => !animeSelecionado || t.animeNome === animeSelecionado);
+    popularSelectFiltro(
+        document.getElementById('filtro-temporada'),
+        listaTraducoes.map(t => t.temporada),
+        'Todas as temporadas'
+    );
+}
 
 async function testarConexaoIa() {
     const start = Date.now();
@@ -177,21 +258,29 @@ async function testarConexaoIa() {
     return { online: false, latency: 0, model: 'Nenhum' };
 }
 
-async function carregarDadosTelemetria() {
+async function processarDadosTelemetria(dadosReais) {
     if (typeof Chart === 'undefined') return;
 
     // 1. Testa a conexão com o LM Studio local de forma assíncrona
     const statusIa = await testarConexaoIa();
 
     try {
-        const res = await fetch('/api/telemetria');
-        if (!res.ok) throw new Error('Falha ao obter os dados de telemetria');
-
-        const dadosReais = await res.json();
-        
         // Verifica se há dados reais no backend. Caso contrário, ativa o modo de demonstração.
         const usarDemo = !dadosReais || (dadosReais.totalEpisodios === 0 && (!dadosReais.historicoOperacoes || dadosReais.historicoOperacoes.length === 0));
         const dados = usarDemo ? DADOS_DEMO : dadosReais;
+
+        // Aplica os filtros de Anime/Temporada selecionados pelo usuário sobre a
+        // lista completa de traduções. Todo o dashboard abaixo (KPIs, gráficos,
+        // tabelas) deriva desta lista já filtrada, em vez dos totais agregados
+        // pelo backend (que não têm noção do filtro escolhido no frontend).
+        const filtroAnimeEl = document.getElementById('filtro-anime');
+        const filtroTemporadaEl = document.getElementById('filtro-temporada');
+        const filtroAnime = filtroAnimeEl ? filtroAnimeEl.value : '';
+        const filtroTemporada = filtroTemporadaEl ? filtroTemporadaEl.value : '';
+        const listaTraducoes = (dados.traducoesLlm || []).filter(t =>
+            (!filtroAnime || t.animeNome === filtroAnime) &&
+            (!filtroTemporada || t.temporada === filtroTemporada)
+        );
 
         // --- 1. POPULAR OS CARDS DE KPI ---
         const epEl = document.getElementById('t-episodios');
@@ -202,18 +291,17 @@ async function carregarDadosTelemetria() {
         const cacheCountEl = document.getElementById('t-cache-count');
         const roiEl = document.getElementById('t-roi-estimado');
 
-        const totalFalas = dados.totalLinhas ?? 0;
-        const cacheHits = dados.totalCacheHits ?? 0;
+        const totalFalas = listaTraducoes.reduce((acc, t) => acc + (t.totalLinhas ?? 0), 0);
+        const cacheHits = listaTraducoes.reduce((acc, t) => acc + (t.falasDoCache ?? 0), 0);
         const linhasLlm = Math.max(0, totalFalas - cacheHits);
 
-        if (epEl) epEl.textContent = dados.totalEpisodios ?? 0;
+        if (epEl) epEl.textContent = listaTraducoes.length;
         if (linLlmEl) linLlmEl.textContent = linhasLlm.toLocaleString();
         if (cacheEl) cacheEl.textContent = cacheHits.toLocaleString();
         if (alucEl) alucEl.textContent = dados.alucinacoesPrevenidas ?? 0;
         if (cacheCountEl) cacheCountEl.textContent = dados.cacheCount ?? 0;
 
         // Tempo total de execução acumulado
-        const listaTraducoes = dados.traducoesLlm || [];
         const tempoTotalMs = listaTraducoes.reduce((acc, t) => acc + (t.tempoTotalMs ?? 0), 0);
         if (tempoEl) tempoEl.textContent = formatarTempoMs(tempoTotalMs);
 
@@ -653,6 +741,69 @@ async function carregarDadosTelemetria() {
                 compTableBody.innerHTML = `
                     <tr>
                         <td colspan="5" class="table-empty">Nenhum episódio no histórico de traduções.</td>
+                    </tr>
+                `;
+            }
+        }
+
+        // --- 8.5 TABELA DE COMPARAÇÃO ENTRE MODELOS LLM ---
+        const compModelosBody = document.getElementById('tabela-comparacao-modelos-body');
+        if (compModelosBody) {
+            const porModelo = new Map();
+            listaTraducoes.forEach(t => {
+                const nomeModelo = t.modeloLlm || 'Desconhecido';
+                if (!porModelo.has(nomeModelo)) {
+                    porModelo.set(nomeModelo, { episodios: 0, totalLinhas: 0, cacheHits: 0, tempoTotalMs: 0, erros: 0 });
+                }
+                const acc = porModelo.get(nomeModelo);
+                acc.episodios += 1;
+                acc.totalLinhas += t.totalLinhas ?? 0;
+                acc.cacheHits += t.falasDoCache ?? 0;
+                acc.tempoTotalMs += t.tempoTotalMs ?? 0;
+                acc.erros += t.errosOcorridos ? t.errosOcorridos.length : 0;
+            });
+
+            if (porModelo.size > 0) {
+                compModelosBody.innerHTML = '';
+                Array.from(porModelo.entries())
+                    .sort((a, b) => b[1].totalLinhas - a[1].totalLinhas)
+                    .forEach(([nomeModelo, acc]) => {
+                        const linhasLlmModelo = Math.max(0, acc.totalLinhas - acc.cacheHits);
+                        const taxaCache = acc.totalLinhas > 0 ? ((acc.cacheHits / acc.totalLinhas) * 100).toFixed(1) : '0.0';
+                        const tempoMedioPorLinha = linhasLlmModelo > 0 ? Math.round(acc.tempoTotalMs / linhasLlmModelo) : 0;
+
+                        const row = document.createElement('tr');
+
+                        const tdModelo = document.createElement('td');
+                        const strong = document.createElement('strong');
+                        strong.style.fontFamily = 'var(--font-mono)';
+                        strong.textContent = nomeModelo;
+                        tdModelo.appendChild(strong);
+
+                        const tdEpisodios = document.createElement('td');
+                        tdEpisodios.textContent = acc.episodios;
+
+                        const tdLinhas = document.createElement('td');
+                        tdLinhas.textContent = acc.totalLinhas.toLocaleString();
+
+                        const tdTaxaCache = document.createElement('td');
+                        tdTaxaCache.textContent = `${taxaCache}%`;
+
+                        const tdTempo = document.createElement('td');
+                        tdTempo.textContent = `${tempoMedioPorLinha} ms`;
+
+                        const tdErros = document.createElement('td');
+                        tdErros.innerHTML = acc.erros > 0
+                            ? `<span style="color:#f59e0b; font-weight:700;">${acc.erros}</span>`
+                            : `<span style="color:#10b981;">0</span>`;
+
+                        row.append(tdModelo, tdEpisodios, tdLinhas, tdTaxaCache, tdTempo, tdErros);
+                        compModelosBody.appendChild(row);
+                    });
+            } else {
+                compModelosBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="table-empty">Nenhum episódio no histórico de traduções.</td>
                     </tr>
                 `;
             }

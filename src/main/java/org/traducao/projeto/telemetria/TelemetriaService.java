@@ -8,6 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import jakarta.ws.rs.sse.OutboundSseEvent;
+import jakarta.ws.rs.sse.Sse;
+import jakarta.ws.rs.sse.SseEventSink;
+import jakarta.inject.Inject;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,14 +23,20 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.lang.management.ManagementFactory;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import jakarta.enterprise.context.ApplicationScoped;
 import java.util.stream.Stream;
 
 @Service
+@ApplicationScoped
 public class TelemetriaService {
 
     private static final Logger log = LoggerFactory.getLogger(TelemetriaService.class);
@@ -45,19 +56,36 @@ public class TelemetriaService {
     private final List<OperacaoTelemetria> loteOperacoes = new ArrayList<>();
     private final AtomicInteger alucinacoesPrevenidas = new AtomicInteger(0);
 
+    // Estruturas para Server-Sent Events (SSE)
+    private final List<SseEventSink> sinks = new CopyOnWriteArrayList<>();
+    private volatile Path ultimoDiretorioCache = Path.of("cache");
+
+    @Inject
+    Sse sse;
+
     public void registrarAlucinacaoPrevenida() {
         alucinacoesPrevenidas.incrementAndGet();
         log.info("Alucinação de tradução interceptada e corrigida. Total acumulado na sessão: {}", alucinacoesPrevenidas.get());
+        broadcast();
     }
 
     public TelemetriaService() {
         this.objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+
+        // Agendador daemon em segundo plano que envia atualizações contínuas de CPU/Memória JVM a cada 1 segundo
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
+            Thread t = new Thread(r, "telemetria-sse-scheduler");
+            t.setDaemon(true);
+            return t;
+        });
+        scheduler.scheduleAtFixedRate(this::broadcast, 1000, 1000, TimeUnit.MILLISECONDS);
     }
 
     public synchronized void registrarMidia(MidiaTelemetria midia) {
         if (midia != null) {
             loteMidia.add(midia);
             salvar(PASTA_TELEMETRIA_PROJETO);
+            broadcast();
         }
     }
 
@@ -65,6 +93,7 @@ public class TelemetriaService {
         if (traducao != null) {
             loteLlm.add(traducao);
             salvar(PASTA_TELEMETRIA_PROJETO);
+            broadcast();
         }
     }
 
@@ -75,6 +104,7 @@ public class TelemetriaService {
             log.info("Telemetria de operação registrada: {} — {} ({} arquivos, {} detectados, {} corrigidos)",
                 operacao.tipo(), operacao.detalhe(), valorOuZero(operacao.arquivosProcessados()),
                 valorOuZero(operacao.itensDetectados()), valorOuZero(operacao.itensCorrigidos()));
+            broadcast();
         }
     }
 
@@ -134,6 +164,7 @@ public class TelemetriaService {
         loteMidia.clear();
         loteLlm.clear();
         loteOperacoes.clear();
+        broadcast();
     }
 
     /**
@@ -212,6 +243,7 @@ public class TelemetriaService {
      * lida diretamente do diretório informado.
      */
     public synchronized TelemetriaResumo gerarResumo(Path diretorioCache) {
+        this.ultimoDiretorioCache = diretorioCache;
         int cacheCount = contarArquivosCache(diretorioCache);
 
         Map<String, MidiaTelemetria> bancoMidia = new LinkedHashMap<>();
@@ -425,5 +457,56 @@ public class TelemetriaService {
         }
         long segundos = ms / 1000;
         return segundos >= 60 ? (segundos / 60) + "min " + (segundos % 60) + "s" : segundos + "s";
+    }
+
+    // Gerenciamento de Sinks SSE
+    public void registrarSink(SseEventSink sink) {
+        sinks.add(sink);
+        enviarInicial(sink);
+    }
+
+    private void enviarInicial(SseEventSink sink) {
+        if (sse == null) {
+            log.warn("Tentativa de enviar telemetria inicial SSE falhou: objeto Sse não injetado.");
+            return;
+        }
+        try {
+            TelemetriaResumo resumo = gerarResumo(ultimoDiretorioCache);
+            String json = objectMapper.writeValueAsString(resumo);
+            OutboundSseEvent event = sse.newEventBuilder()
+                .name("telemetria")
+                .data(json)
+                .build();
+            sink.send(event);
+        } catch (Exception e) {
+            sinks.remove(sink);
+        }
+    }
+
+    public void broadcast() {
+        if (sse == null || sinks.isEmpty()) {
+            return;
+        }
+        try {
+            TelemetriaResumo resumo = gerarResumo(ultimoDiretorioCache);
+            String json = objectMapper.writeValueAsString(resumo);
+            OutboundSseEvent event = sse.newEventBuilder()
+                .name("telemetria")
+                .data(json)
+                .build();
+            for (SseEventSink sink : sinks) {
+                if (sink.isClosed()) {
+                    sinks.remove(sink);
+                    continue;
+                }
+                try {
+                    sink.send(event);
+                } catch (Exception e) {
+                    sinks.remove(sink);
+                }
+            }
+        } catch (Exception e) {
+            log.error("Erro ao emitir broadcast de telemetria SSE", e);
+        }
     }
 }

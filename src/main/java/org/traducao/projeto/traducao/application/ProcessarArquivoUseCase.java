@@ -200,6 +200,7 @@ public class ProcessarArquivoUseCase {
         cacheService.salvar(arquivoCache, entradasCache);
 
         long tempoTotalMs = System.currentTimeMillis() - inicioMs;
+        String animeNome = animeAPartirDoArquivo(arquivoEntrada);
         telemetriaService.registrarTraducao(new LlmTelemetria(
             arquivoEntrada.getFileName().toString(),
             llmPropriedades.model(),
@@ -207,7 +208,9 @@ public class ProcessarArquivoUseCase {
             traducoesNovas.size(),
             cacheReaproveitavel.size(),
             tempoTotalMs,
-            List.of()
+            List.of(),
+            animeNome,
+            temporadaAPartirDoNome(animeNome)
         ));
 
         log.info("Arquivo traduzido salvo em {} (cache em {})", arquivoSaida, arquivoCache);
@@ -448,5 +451,40 @@ public class ProcessarArquivoUseCase {
         String extensao = nome.toLowerCase().endsWith(".ssa") ? ".ssa" : ".ass";
         String base = nome.substring(0, nome.length() - extensao.length());
         return pastasExecucao.diretorioCache().resolve(base + ".cache.json");
+    }
+
+    /**
+     * Deriva o nome do anime a partir da pasta-avó do arquivo de legenda
+     * (arquivo dentro de "&lt;AnimeFolder&gt;/legendas_originais/arquivo.ass"),
+     * mesma convenção de duas pastas acima já usada por
+     * {@code TradutorProperties.resolverDiretorioCache()} para nomear o cache.
+     */
+    private String animeAPartirDoArquivo(Path arquivoEntrada) {
+        Path pastaEntrada = arquivoEntrada.getParent();
+        Path pastaAnime = pastaEntrada != null ? pastaEntrada.getParent() : null;
+        if (pastaAnime != null && pastaAnime.getFileName() != null) {
+            return pastaAnime.getFileName().toString();
+        }
+        if (pastaEntrada != null && pastaEntrada.getFileName() != null) {
+            return pastaEntrada.getFileName().toString();
+        }
+        return "Desconhecido";
+    }
+
+    private static final Pattern PADRAO_TEMPORADA = Pattern.compile("(?i)(?:season|temporada|\\bs)\\s*0*(\\d{1,2})\\b");
+
+    /**
+     * Extrai um marcador de temporada (ex.: "Season 04", "S04") do nome da
+     * pasta do anime, quando presente. Sem marcador, agrupa como temporada única.
+     */
+    private String temporadaAPartirDoNome(String animeNome) {
+        if (animeNome == null) {
+            return "Temporada Única";
+        }
+        var matcher = PADRAO_TEMPORADA.matcher(animeNome);
+        if (matcher.find()) {
+            return "Temporada " + Integer.parseInt(matcher.group(1));
+        }
+        return "Temporada Única";
     }
 }

@@ -9,5 +9,7 @@ public record LlmTelemetria(
     Integer falasTraduzidas,
     Integer falasDoCache,
     Long tempoTotalMs,
-    List<String> errosOcorridos
+    List<String> errosOcorridos,
+    String animeNome,
+    String temporada
 ) {}

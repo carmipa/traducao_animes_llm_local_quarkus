@@ -113,5 +113,53 @@
     "itensDetectados" : 0,
     "itensCorrigidos" : 0,
     "registradoEm" : "2026-07-01T21:36:27.080449Z"
+  }, {
+    "tipo" : "Limpeza de Cache",
+    "detalhe" : "D:\\PROJETOS-OPEN\\traducao_animes_llm_local_quarkus\\cache",
+    "tempoTotalMs" : 3,
+    "arquivosProcessados" : 0,
+    "itensDetectados" : 0,
+    "itensCorrigidos" : 0,
+    "registradoEm" : "2026-07-01T21:44:24.957816100Z"
+  }, {
+    "tipo" : "Correção Google (cache)",
+    "detalhe" : "D:\\PROJETOS-OPEN\\traducao_animes_llm_local_quarkus\\cache",
+    "tempoTotalMs" : 4,
+    "arquivosProcessados" : 0,
+    "itensDetectados" : 0,
+    "itensCorrigidos" : 0,
+    "registradoEm" : "2026-07-01T21:44:24.993081100Z"
+  }, {
+    "tipo" : "Limpeza de Cache",
+    "detalhe" : "D:\\PROJETOS-OPEN\\traducao_animes_llm_local_quarkus\\cache",
+    "tempoTotalMs" : 4,
+    "arquivosProcessados" : 0,
+    "itensDetectados" : 0,
+    "itensCorrigidos" : 0,
+    "registradoEm" : "2026-07-01T21:45:24.494445700Z"
+  }, {
+    "tipo" : "Correção Google (cache)",
+    "detalhe" : "D:\\PROJETOS-OPEN\\traducao_animes_llm_local_quarkus\\cache",
+    "tempoTotalMs" : 3,
+    "arquivosProcessados" : 0,
+    "itensDetectados" : 0,
+    "itensCorrigidos" : 0,
+    "registradoEm" : "2026-07-01T21:45:24.522029600Z"
+  }, {
+    "tipo" : "Limpeza de Cache",
+    "detalhe" : "D:\\PROJETOS-OPEN\\traducao_animes_llm_local_quarkus\\cache",
+    "tempoTotalMs" : 3,
+    "arquivosProcessados" : 0,
+    "itensDetectados" : 0,
+    "itensCorrigidos" : 0,
+    "registradoEm" : "2026-07-01T21:46:23.969957400Z"
+  }, {
+    "tipo" : "Correção Google (cache)",
+    "detalhe" : "D:\\PROJETOS-OPEN\\traducao_animes_llm_local_quarkus\\cache",
+    "tempoTotalMs" : 3,
+    "arquivosProcessados" : 0,
+    "itensDetectados" : 0,
+    "itensCorrigidos" : 0,
+    "registradoEm" : "2026-07-01T21:46:23.995151800Z"
   } ]
 }

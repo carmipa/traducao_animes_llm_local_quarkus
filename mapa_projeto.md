@@ -327,12 +327,7 @@ consumido pelo painel "Telemetria" da interface web.
 ```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/telemetria/TelemetriaService.java`
-```text
-Local canônico dentro do próprio projeto onde a telemetria é sempre
-mesclada e persistida a cada registro, para sobreviver a restarts do
-servidor e não depender só do lote em memória (que é limpo a cada
-análise via limparLote()). É o que o painel web lê em gerarResumo().
-```
+*(Sem docstring ou cabeçalho explicativo)*
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducaoCorrige/application/LimparCacheUseCase.java`
 *(Sem docstring ou cabeçalho explicativo)*
@@ -786,6 +781,12 @@ Endpoint SSE nativo do Quarkus (substitui SseEmitter do Spring MVC).
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducao/presentation/web/LogStreamService.java`
 ```text
 Gerencia conexoes SSE (JAX-RS) e despacha logs em tempo real para clientes web.
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducao/presentation/web/TelemetriaStreamResource.java`
+```text
+Endpoint Server-Sent Events (SSE) reativo para streaming da telemetria da KRONOS em tempo real.
+Rota mapeada especificamente para evitar colisões com o Controller Spring.
 ```
 
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/ApiControllerTest.java`
