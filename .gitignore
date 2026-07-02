@@ -40,3 +40,8 @@ application-local.yml
 /.quarkus/cli/plugins/
 # TLS Certificates
 .certs/
+
+# KRONOS CORE Operational Data
+/cache/
+/relatorios/
+/logs/
