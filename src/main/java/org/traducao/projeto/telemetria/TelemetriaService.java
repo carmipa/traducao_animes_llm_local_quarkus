@@ -51,9 +51,9 @@ public class TelemetriaService {
         DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 
     private final ObjectMapper objectMapper;
-    private final List<MidiaTelemetria> loteMidia = new ArrayList<>();
-    private final List<LlmTelemetria> loteLlm = new ArrayList<>();
-    private final List<OperacaoTelemetria> loteOperacoes = new ArrayList<>();
+    private final Map<String, MidiaTelemetria> bancoMidia = new LinkedHashMap<>();
+    private final Map<String, LlmTelemetria> bancoLlm = new LinkedHashMap<>();
+    private final List<OperacaoTelemetria> bancoOperacoes = new ArrayList<>();
     private final AtomicInteger alucinacoesPrevenidas = new AtomicInteger(0);
 
     // Estruturas para Server-Sent Events (SSE)
@@ -71,6 +71,11 @@ public class TelemetriaService {
 
     public TelemetriaService() {
         this.objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+    }
+
+    @jakarta.annotation.PostConstruct
+    public void init() {
+        carregarBancoPersistido(PASTA_TELEMETRIA_PROJETO.resolve(NOME_ARQUIVO_TELEMETRIA), bancoMidia, bancoLlm, bancoOperacoes);
 
         // Agendador daemon em segundo plano que envia atualizações contínuas de CPU/Memória JVM a cada 1 segundo
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
@@ -83,23 +88,23 @@ public class TelemetriaService {
 
     public synchronized void registrarMidia(MidiaTelemetria midia) {
         if (midia != null) {
-            loteMidia.add(midia);
-            salvar(PASTA_TELEMETRIA_PROJETO);
+            bancoMidia.put(midia.nomeArquivo(), midia);
+            persistirCanonico();
             broadcast();
         }
     }
 
     public synchronized void registrarTraducao(LlmTelemetria traducao) {
         if (traducao != null) {
-            loteLlm.add(traducao);
-            salvar(PASTA_TELEMETRIA_PROJETO);
+            bancoLlm.put(traducao.nomeEpisodio(), traducao);
+            persistirCanonico();
             broadcast();
         }
     }
 
     public synchronized void registrarOperacao(OperacaoTelemetria operacao) {
         if (operacao != null) {
-            loteOperacoes.add(operacao);
+            bancoOperacoes.add(operacao);
             persistirCanonico();
             log.info("Telemetria de operação registrada: {} — {} ({} arquivos, {} detectados, {} corrigidos)",
                 operacao.tipo(), operacao.detalhe(), valorOuZero(operacao.arquivosProcessados()),
@@ -161,9 +166,10 @@ public class TelemetriaService {
     }
 
     public synchronized void limparLote() {
-        loteMidia.clear();
-        loteLlm.clear();
-        loteOperacoes.clear();
+        this.bancoMidia.clear();
+        this.bancoLlm.clear();
+        this.bancoOperacoes.clear();
+        persistirCanonico();
         broadcast();
     }
 
@@ -201,29 +207,15 @@ public class TelemetriaService {
 
             Path caminhoTelemetria = PASTA_TELEMETRIA_PROJETO.resolve(NOME_ARQUIVO_TELEMETRIA);
 
-            Map<String, MidiaTelemetria> bancoMidia = new LinkedHashMap<>();
-            Map<String, LlmTelemetria> bancoLlm = new LinkedHashMap<>();
-            List<OperacaoTelemetria> bancoOperacoes = new ArrayList<>();
-            carregarBancoPersistido(caminhoTelemetria, bancoMidia, bancoLlm, bancoOperacoes);
-
-            for (MidiaTelemetria m : loteMidia) {
-                bancoMidia.put(m.nomeArquivo(), m);
-            }
-            for (LlmTelemetria l : loteLlm) {
-                bancoLlm.put(l.nomeEpisodio(), l);
-            }
-            bancoOperacoes.addAll(loteOperacoes);
-            loteOperacoes.clear();
-
             ObjectNode rootNode = objectMapper.createObjectNode();
-            rootNode.set("midias", objectMapper.valueToTree(new ArrayList<>(bancoMidia.values())));
-            rootNode.set("traducoesLlm", objectMapper.valueToTree(new ArrayList<>(bancoLlm.values())));
-            rootNode.set("operacoes", objectMapper.valueToTree(bancoOperacoes));
+            rootNode.set("midias", objectMapper.valueToTree(new ArrayList<>(this.bancoMidia.values())));
+            rootNode.set("traducoesLlm", objectMapper.valueToTree(new ArrayList<>(this.bancoLlm.values())));
+            rootNode.set("operacoes", objectMapper.valueToTree(this.bancoOperacoes));
 
             objectMapper.writeValue(caminhoTelemetria.toFile(), rootNode);
 
             log.info("Telemetria unificada salva com sucesso: {} mídias, {} traduções, {} operações em: {}",
-                bancoMidia.size(), bancoLlm.size(), bancoOperacoes.size(), caminhoTelemetria);
+                this.bancoMidia.size(), this.bancoLlm.size(), this.bancoOperacoes.size(), caminhoTelemetria);
 
             return caminhoTelemetria;
         } catch (IOException e) {
@@ -246,21 +238,9 @@ public class TelemetriaService {
         this.ultimoDiretorioCache = diretorioCache;
         int cacheCount = contarArquivosCache(diretorioCache);
 
-        Map<String, MidiaTelemetria> bancoMidia = new LinkedHashMap<>();
-        Map<String, LlmTelemetria> bancoLlm = new LinkedHashMap<>();
-        List<OperacaoTelemetria> bancoOperacoes = new ArrayList<>();
-        carregarBancoPersistido(PASTA_TELEMETRIA_PROJETO.resolve(NOME_ARQUIVO_TELEMETRIA), bancoMidia, bancoLlm, bancoOperacoes);
-        for (MidiaTelemetria m : loteMidia) {
-            bancoMidia.put(m.nomeArquivo(), m);
-        }
-        for (LlmTelemetria l : loteLlm) {
-            bancoLlm.put(l.nomeEpisodio(), l);
-        }
-        bancoOperacoes.addAll(loteOperacoes);
-
-        int totalLinhas = bancoLlm.values().stream().mapToInt(l -> valorOuZero(l.totalLinhas())).sum();
-        int totalCacheHits = bancoLlm.values().stream().mapToInt(l -> valorOuZero(l.falasDoCache())).sum();
-        long tempoTotalMs = bancoLlm.values().stream().mapToLong(l -> l.tempoTotalMs() != null ? l.tempoTotalMs() : 0L).sum();
+        int totalLinhas = this.bancoLlm.values().stream().mapToInt(l -> valorOuZero(l.totalLinhas())).sum();
+        int totalCacheHits = this.bancoLlm.values().stream().mapToInt(l -> valorOuZero(l.falasDoCache())).sum();
+        long tempoTotalMs = this.bancoLlm.values().stream().mapToLong(l -> l.tempoTotalMs() != null ? l.tempoTotalMs() : 0L).sum();
         long tempoMedioPorLinhaMs = totalLinhas > 0 ? tempoTotalMs / totalLinhas : 0L;
 
         double jvmCpu = 0.0;

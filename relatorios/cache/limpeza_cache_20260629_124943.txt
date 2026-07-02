@@ -1,6 +1,0 @@
-LIMPEZA DE CACHE
-================
-Pasta: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache
-Duração: 0s
-Arquivos de cache analisados: 0
-Falas em inglês (fallbacks) limpas: 0

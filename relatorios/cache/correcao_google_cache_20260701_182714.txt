@@ -1,6 +1,0 @@
-CORREÇÃO VIA GOOGLE TRANSLATE (CACHE)
-=====================================
-Pasta: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache
-Duração: 0s
-Arquivos de cache analisados: 0
-Falas corrigidas via Google: 0

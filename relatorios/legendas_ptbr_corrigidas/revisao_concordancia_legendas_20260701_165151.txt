@@ -1,9 +1,0 @@
-REVISÃO DE CONCORDÂNCIA PT-BR (.ass via LLM)
-============================================
-Pasta: C:\animes\Macross II (BDRip 1440x1080p x265 HEVC FLACx2 2.0x2)[sxales](v2)\legendas_ptbr_corrigidas
-Duração: 11s
-Arquivos analisados: 6
-Falas auditadas: 1381
-Falas sem original EN (ignoradas): 1381
-Problemas detectados: 2
-Falas corrigidas via LLM: 1

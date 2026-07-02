@@ -53,8 +53,8 @@ const CONFIG_SECOES = {
         subtitulo: "Auditoria de taxonomia e visualização da árvore de estrutura do código"
     },
     telemetria: {
-        titulo: "10. Telemetria e Analytics",
-        subtitulo: "Monitoramento em tempo real de tokens, hits de cache e vazão do LLM"
+        titulo: "10. Telemetria KRONOS",
+        subtitulo: "Observabilidade da traducao, cache local e historico operacional"
     }
 };
 
@@ -661,4 +661,3 @@ document.addEventListener('DOMContentLoaded', () => {
     inicializarControlesConsole();
     inicializarBotoesProcurarCaminho();
 });
-

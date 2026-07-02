@@ -103,8 +103,13 @@ public class DialogoArquivoController {
 
     private String executarScriptPowerShell(String script) {
         try {
-            ProcessBuilder pb = new ProcessBuilder("powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-STA", "-Command", script);
+            ProcessBuilder pb = new ProcessBuilder("powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-STA", "-Command", "-");
             Process process = pb.start();
+
+            try (java.io.OutputStreamWriter writer = new java.io.OutputStreamWriter(process.getOutputStream(), StandardCharsets.UTF_8)) {
+                writer.write(script);
+                writer.flush();
+            }
 
             StringBuilder erro = new StringBuilder();
             Thread leitorErro = new Thread(() -> {

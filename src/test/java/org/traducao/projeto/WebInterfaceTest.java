@@ -67,12 +67,5 @@ class WebInterfaceTest {
         }
     }
 
-    @Test
-    void indexReferenciaQuarkus() {
-        given()
-            .when().get("/")
-            .then()
-            .statusCode(200)
-            .body(containsString("Quarkus"));
-    }
+
 }

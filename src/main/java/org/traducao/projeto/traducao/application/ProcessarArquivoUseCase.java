@@ -450,7 +450,8 @@ public class ProcessarArquivoUseCase {
         String nome = entrada.getFileName().toString();
         String extensao = nome.toLowerCase().endsWith(".ssa") ? ".ssa" : ".ass";
         String base = nome.substring(0, nome.length() - extensao.length());
-        return pastasExecucao.diretorioCache().resolve(base + ".cache.json");
+        String animeNome = animeAPartirDoArquivo(entrada);
+        return pastasExecucao.diretorioCache().resolve(animeNome).resolve(base + ".cache.json");
     }
 
     /**
