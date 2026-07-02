@@ -98,6 +98,15 @@ manualmente. O {@code errorId} permite cruzar a resposta HTTP com a
 entrada correspondente no log do servidor.
 ```
 
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/core/util/ProcessoExternoUtil.java`
+```text
+Executa processos externos (ffmpeg, ffprobe, mkvmerge, mkvextract) de forma segura:
+drena stdout e stderr em threads separadas (evita o deadlock classico de ProcessBuilder,
+em que o processo filho trava escrevendo em um pipe cujo buffer do SO enche enquanto o
+pai ainda le o outro stream) e aplica um timeout que mata o processo (destroyForcibly)
+caso ele nao termine a tempo, em vez de travar o pipeline indefinidamente.
+```
+
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/curatags/CorretorTraducaoLlmService.java`
 ```text
 Retorna a tradução corrigida via LLM apenas se a tradução atual estiver com
@@ -230,7 +239,8 @@ tags ASS mascaradas e quebras {@code \N}.
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/raspagemRevisao/application/AuditorProblemasLegendaService.java`
 ```text
-Agrega detecção de resíduo em inglês e erros de concordância PT-BR.
+Agrega detecção de resíduo em inglês, falas não traduzidas e erros de
+concordância PT-BR.
 ```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/raspagemRevisao/application/DetectorConcordanciaService.java`
@@ -354,12 +364,20 @@ Utilitarios de inicializacao compartilhados entre modos CLI.
 O Quarkus e o container principal; nao ha {@code SpringApplication.run} aqui.
 ```
 
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducao/application/DetectorTraducaoIdenticaService.java`
+```text
+Decide se uma fala pode legitimamente permanecer idêntica ao original (nomes
+próprios, números, siglas, termos de lore) ou se a igualdade é sinal de que o
+LLM simplesmente devolveu a fala sem traduzir.
+```
+
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducao/application/ProcessarArquivoUseCase.java`
 ```text
 Orquestra a tradução de um único arquivo de legenda: le -> reaproveita o
 cache existente -> traduz só o que falta (deduplicando falas repetidas) ->
 valida -> escreve a legenda final em PT-BR -> grava/atualiza o cache.
 <p>
+Correções manuais feitas pelo usuário no JSON de cache são respeitadas na
 ```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducao/application/ProcessarEpisodioUseCase.java`
