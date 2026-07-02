@@ -131,6 +131,11 @@ public class MistralClientAdapter implements MistralPort {
                 ultimaFalha = e;
                 log.warn("LLM respondeu com erro HTTP {} para o lote {} (tentativa {}/{}): {}",
                     e.statusCode(), lote.idLote(), tentativa, MAX_TENTATIVAS, e.getMessage());
+                if (isErroPermanente(e.statusCode())) {
+                    log.warn("Erro HTTP {} é permanente (não é timeout/rate-limit) — abortando retries do lote {}.",
+                        e.statusCode(), lote.idLote());
+                    break;
+                }
             } catch (Exception e) {
                 ultimaFalha = e;
                 if (JsonHttpClient.isErroRedeOuTimeout(e)) {
@@ -223,6 +228,20 @@ public class MistralClientAdapter implements MistralPort {
                 }
 
                 return Optional.of(normalizarLinhaUnica(texto));
+            } catch (HttpClientException e) {
+                log.warn("Falha na chamada LLM (tentativa {}/{}): HTTP {} - {}",
+                    tentativa, MAX_TENTATIVAS_REVISAO, e.statusCode(), e.getMessage());
+                if (isErroPermanente(e.statusCode())) {
+                    break;
+                }
+                if (tentativa < MAX_TENTATIVAS_REVISAO) {
+                    try {
+                        Thread.sleep(PAUSA_ENTRE_TENTATIVAS_MS);
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                }
             } catch (Exception e) {
                 log.warn("Falha na chamada LLM (tentativa {}/{}): {}",
                     tentativa, MAX_TENTATIVAS_REVISAO, e.getMessage());
@@ -237,6 +256,15 @@ public class MistralClientAdapter implements MistralPort {
             }
         }
         return Optional.empty();
+    }
+
+    /**
+     * 4xx que não seja 408 (timeout) ou 429 (rate limit) indica um problema permanente
+     * (modelo inválido, payload rejeitado, contexto excedido) — repetir a mesma
+     * requisição não muda o resultado, então não vale gastar as tentativas restantes.
+     */
+    private boolean isErroPermanente(int statusCode) {
+        return statusCode >= 400 && statusCode < 500 && statusCode != 408 && statusCode != 429;
     }
 
     private String montarPromptCorrecaoTraducao(String originalIngles, String traducaoPt, String motivoDetectado) {

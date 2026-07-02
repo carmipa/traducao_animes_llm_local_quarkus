@@ -6,18 +6,21 @@ import org.springframework.stereotype.Component;
 import org.traducao.projeto.remuxer.domain.RemuxTarefa;
 import org.traducao.projeto.remuxer.domain.RemuxerException;
 import org.traducao.projeto.remuxer.infrastructure.config.RemuxerProperties;
+import org.traducao.projeto.core.util.ProcessoExternoUtil;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 @Component
 public class MkvmergeAdapter {
 
     private static final Logger log = LoggerFactory.getLogger(MkvmergeAdapter.class);
+    private static final Duration TIMEOUT_REMUX = Duration.ofMinutes(30);
     private final String mkvmergePath;
 
     public MkvmergeAdapter(RemuxerProperties properties) {
@@ -86,17 +89,14 @@ public class MkvmergeAdapter {
         log.debug("Executando comando: {}", String.join(" ", command));
 
         try {
-            Process process = new ProcessBuilder(command)
-                    .redirectErrorStream(true)
-                    .start();
+            ProcessoExternoUtil.Resultado resultado = ProcessoExternoUtil.executar(command, TIMEOUT_REMUX, true);
+            String output = new String(resultado.stdout());
 
-            String output = new String(process.getInputStream().readAllBytes());
-            int exitCode = process.waitFor();
-
-            if (exitCode != 0) {
-                throw new RemuxerException("mkvmerge falhou com exitCode " + exitCode + ": " + output);
+            if (resultado.codigoSaida() != 0) {
+                excluirSaidaParcial(tarefa.caminhoSaida());
+                throw new RemuxerException("mkvmerge falhou com exitCode " + resultado.codigoSaida() + ": " + output);
             }
-            
+
             if (!Files.exists(tarefa.caminhoSaida())) {
                 throw new RemuxerException("mkvmerge finalizou, mas arquivo de saída não foi encontrado: " + tarefa.caminhoSaida());
             }
@@ -105,6 +105,19 @@ public class MkvmergeAdapter {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new RemuxerException("Thread interrompida durante a execução do mkvmerge.", e);
+        } catch (TimeoutException e) {
+            excluirSaidaParcial(tarefa.caminhoSaida());
+            throw new RemuxerException("Tempo limite excedido ao executar mkvmerge para: " + tarefa.caminhoVideo(), e);
+        }
+    }
+
+    private void excluirSaidaParcial(Path caminhoSaida) {
+        if (Files.exists(caminhoSaida)) {
+            try {
+                Files.delete(caminhoSaida);
+            } catch (IOException e) {
+                log.warn("Não foi possível remover arquivo de saída parcial após falha: {}", caminhoSaida, e);
+            }
         }
     }
 }

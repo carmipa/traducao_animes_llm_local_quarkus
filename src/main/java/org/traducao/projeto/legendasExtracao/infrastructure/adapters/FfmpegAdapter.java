@@ -9,14 +9,17 @@ import org.traducao.projeto.legendasExtracao.domain.ExtratorException;
 import org.traducao.projeto.legendasExtracao.domain.FaixaLegenda;
 import org.traducao.projeto.legendasExtracao.domain.ports.ExtratorVideoPort;
 import org.traducao.projeto.legendasExtracao.infrastructure.config.ExtratorProperties;
+import org.traducao.projeto.core.util.ProcessoExternoUtil;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Extrai legendas de contêineres que o MKVToolNix não lê (mkvextract só opera
@@ -25,6 +28,8 @@ import java.util.Set;
 @Component
 public class FfmpegAdapter implements ExtratorVideoPort {
     private static final Logger log = LoggerFactory.getLogger(FfmpegAdapter.class);
+    private static final Duration TIMEOUT_IDENTIFICACAO = Duration.ofSeconds(60);
+    private static final Duration TIMEOUT_EXTRACAO = Duration.ofMinutes(5);
     private static final Set<String> EXTENSOES_SUPORTADAS = Set.of(
         ".mp4", ".m4v", ".mov", ".avi", ".ts", ".m2ts", ".flv", ".wmv"
     );
@@ -71,17 +76,14 @@ public class FfmpegAdapter implements ExtratorVideoPort {
         );
 
         try {
-            Process process = new ProcessBuilder(cmd).start();
-            byte[] stdoutBytes = process.getInputStream().readAllBytes();
-            byte[] stderrBytes = process.getErrorStream().readAllBytes();
-            int exitCode = process.waitFor();
+            ProcessoExternoUtil.Resultado resultado = ProcessoExternoUtil.executar(cmd, TIMEOUT_IDENTIFICACAO);
 
-            if (exitCode != 0) {
-                String stderr = new String(stderrBytes, StandardCharsets.UTF_8);
-                throw new ExtratorException("ffprobe falhou com código " + exitCode + ". Erro: " + stderr);
+            if (resultado.codigoSaida() != 0) {
+                String stderr = new String(resultado.stderr(), StandardCharsets.UTF_8);
+                throw new ExtratorException("ffprobe falhou com código " + resultado.codigoSaida() + ". Erro: " + stderr);
             }
 
-            String jsonString = new String(stdoutBytes, StandardCharsets.UTF_8);
+            String jsonString = new String(resultado.stdout(), StandardCharsets.UTF_8);
             JsonNode root = objectMapper.readTree(jsonString);
             JsonNode streamsNode = root.path("streams");
 
@@ -111,6 +113,8 @@ public class FfmpegAdapter implements ExtratorVideoPort {
         } catch (IOException | InterruptedException e) {
             if (e instanceof InterruptedException) Thread.currentThread().interrupt();
             throw new ExtratorException("Falha ao invocar ffprobe para identificar: " + videoPath, e);
+        } catch (TimeoutException e) {
+            throw new ExtratorException("Tempo limite excedido ao identificar faixas com ffprobe: " + videoPath, e);
         }
 
         return faixas;
@@ -128,14 +132,10 @@ public class FfmpegAdapter implements ExtratorVideoPort {
         );
 
         try {
-            Process process = new ProcessBuilder(cmd)
-                    .redirectErrorStream(true)
-                    .start();
-            
-            String output = new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
-            int exitCode = process.waitFor();
+            ProcessoExternoUtil.Resultado resultado = ProcessoExternoUtil.executar(cmd, TIMEOUT_EXTRACAO, true);
 
-            if (exitCode != 0) {
+            if (resultado.codigoSaida() != 0) {
+                String output = new String(resultado.stdout(), StandardCharsets.UTF_8);
                 throw new ExtratorException("ffmpeg falhou: " + output);
             }
 
@@ -146,6 +146,8 @@ public class FfmpegAdapter implements ExtratorVideoPort {
         } catch (IOException | InterruptedException e) {
             if (e instanceof InterruptedException) Thread.currentThread().interrupt();
             throw new ExtratorException("Falha ao invocar ffmpeg para o arquivo: " + videoPath, e);
+        } catch (TimeoutException e) {
+            throw new ExtratorException("Tempo limite excedido ao extrair trilha com ffmpeg: " + videoPath, e);
         }
     }
 }

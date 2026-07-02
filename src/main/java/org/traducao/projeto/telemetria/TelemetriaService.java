@@ -59,6 +59,7 @@ public class TelemetriaService {
     // Estruturas para Server-Sent Events (SSE)
     private final List<SseEventSink> sinks = new CopyOnWriteArrayList<>();
     private volatile Path ultimoDiretorioCache = Path.of("cache");
+    private ScheduledExecutorService scheduler;
 
     @Inject
     Sse sse;
@@ -78,12 +79,19 @@ public class TelemetriaService {
         carregarBancoPersistido(PASTA_TELEMETRIA_PROJETO.resolve(NOME_ARQUIVO_TELEMETRIA), bancoMidia, bancoLlm, bancoOperacoes);
 
         // Agendador daemon em segundo plano que envia atualizações contínuas de CPU/Memória JVM a cada 1 segundo
-        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
+        this.scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
             Thread t = new Thread(r, "telemetria-sse-scheduler");
             t.setDaemon(true);
             return t;
         });
-        scheduler.scheduleAtFixedRate(this::broadcast, 1000, 1000, TimeUnit.MILLISECONDS);
+        this.scheduler.scheduleAtFixedRate(this::broadcast, 1000, 1000, TimeUnit.MILLISECONDS);
+    }
+
+    @jakarta.annotation.PreDestroy
+    public void destruir() {
+        if (scheduler != null) {
+            scheduler.shutdownNow();
+        }
     }
 
     public synchronized void registrarMidia(MidiaTelemetria midia) {
@@ -212,7 +220,13 @@ public class TelemetriaService {
             rootNode.set("traducoesLlm", objectMapper.valueToTree(new ArrayList<>(this.bancoLlm.values())));
             rootNode.set("operacoes", objectMapper.valueToTree(this.bancoOperacoes));
 
-            objectMapper.writeValue(caminhoTelemetria.toFile(), rootNode);
+            // Grava em arquivo temporário e move atomicamente para evitar que uma
+            // interrupção no meio da escrita (o arquivo é regravado a cada registro)
+            // deixe o JSON truncado e derrube o histórico inteiro no próximo boot.
+            Path arquivoTemp = PASTA_TELEMETRIA_PROJETO.resolve(NOME_ARQUIVO_TELEMETRIA + ".tmp");
+            objectMapper.writeValue(arquivoTemp.toFile(), rootNode);
+            Files.move(arquivoTemp, caminhoTelemetria,
+                StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
 
             log.info("Telemetria unificada salva com sucesso: {} mídias, {} traduções, {} operações em: {}",
                 this.bancoMidia.size(), this.bancoLlm.size(), this.bancoOperacoes.size(), caminhoTelemetria);

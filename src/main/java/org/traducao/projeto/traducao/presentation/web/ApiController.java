@@ -180,8 +180,13 @@ public class ApiController {
         executor.submit(() -> {
             logStreamService.definirCanalAtual("analise");
             try {
-                Path pathEntrada = Path.of(req.entrada());
-                Path pathSaida = (req.saida() != null && !req.saida().isBlank()) ? Path.of(req.saida()) : null;
+                Path pathEntrada = normalizarCaminho(req.entrada());
+                if (pathEntrada == null) {
+                    System.out.println("\u001B[31m[FAIL] Caminho de entrada inválido: " + req.entrada() + "\u001B[0m");
+                    log.error("Caminho de entrada inválido informado para análise: {}", req.entrada());
+                    return;
+                }
+                Path pathSaida = normalizarCaminho(req.saida());
                 analisarMidiaUseCase.executar(pathEntrada, pathSaida);
                 System.out.println("\n\u001B[32m========================================================================\u001B[0m");
                 System.out.println("\u001B[32m  🎉 [SUCESSO] ANÁLISE DE MÍDIA FINALIZADA COM SUCESSO!\u001B[0m");
@@ -277,7 +282,12 @@ public class ApiController {
         executor.submit(() -> {
             logStreamService.definirCanalAtual("traducao");
             try {
-                Path pathEntrada = Path.of(req.entrada());
+                Path pathEntrada = normalizarCaminho(req.entrada());
+                if (pathEntrada == null) {
+                    log.error("Caminho de entrada inválido informado para tradução: {}", req.entrada());
+                    System.out.println("[FAIL] Caminho de entrada inválido: " + req.entrada());
+                    return;
+                }
                 if (!Files.isDirectory(pathEntrada)) {
                     System.out.println("\u001B[31m[FAIL] Pasta de entrada inválida: " + pathEntrada + "\u001B[0m");
                     return;
@@ -349,7 +359,10 @@ public class ApiController {
     @PostMapping("/corrigir-cache")
     public ResponseEntity<RespostaPadrao> limparCache(@RequestBody OperacaoRequest req) {
         String cacheDir = req.entrada() != null && !req.entrada().isBlank() ? req.entrada() : "cache";
-        Path pathCache = Path.of(cacheDir);
+        Path pathCache = normalizarCaminho(cacheDir);
+        if (pathCache == null) {
+            return ResponseEntity.badRequest().body(new RespostaPadrao("Caminho de cache inválido: " + cacheDir));
+        }
 
         executor.submit(() -> {
             logStreamService.definirCanalAtual("correcao");
@@ -374,7 +387,10 @@ public class ApiController {
     @PostMapping("/corrigir-scraping")
     public ResponseEntity<RespostaPadrao> corrigirScraping(@RequestBody OperacaoRequest req) {
         String cacheDir = req.entrada() != null && !req.entrada().isBlank() ? req.entrada() : "cache";
-        Path pathCache = Path.of(cacheDir);
+        Path pathCache = normalizarCaminho(cacheDir);
+        if (pathCache == null) {
+            return ResponseEntity.badRequest().body(new RespostaPadrao("Caminho de cache inválido: " + cacheDir));
+        }
 
         executor.submit(() -> {
             logStreamService.definirCanalAtual("correcao");
@@ -399,7 +415,10 @@ public class ApiController {
     @PostMapping("/revisar-cache")
     public ResponseEntity<RespostaPadrao> revisarCache(@RequestBody OperacaoRequest req) {
         String cacheDir = req.entrada() != null && !req.entrada().isBlank() ? req.entrada() : "cache";
-        Path pathCache = Path.of(cacheDir);
+        Path pathCache = normalizarCaminho(cacheDir);
+        if (pathCache == null) {
+            return ResponseEntity.badRequest().body(new RespostaPadrao("Caminho de cache inválido: " + cacheDir));
+        }
 
         if (req.contextoId() != null && !req.contextoId().isBlank() && !gerenciadorContexto.existeContexto(req.contextoId())) {
             return ResponseEntity.badRequest().body(new RespostaPadrao(
@@ -585,9 +604,19 @@ public class ApiController {
         executor.submit(() -> {
             logStreamService.definirCanalAtual("remuxer");
             try {
-                Path pathVideos = Path.of(req.entrada());
+                Path pathVideos = normalizarCaminho(req.entrada());
+                if (pathVideos == null) {
+                    log.error("Caminho de vídeos inválido informado para remuxer: {}", req.entrada());
+                    System.out.println("[FAIL] Caminho de vídeos inválido: " + req.entrada());
+                    return;
+                }
                 String saidaDir = req.saida() != null && !req.saida().isBlank() ? req.saida() : "legendas-ptbr"; // Padrão
-                Path pathLegendas = Path.of(saidaDir);
+                Path pathLegendas = normalizarCaminho(saidaDir);
+                if (pathLegendas == null) {
+                    log.error("Caminho de legendas inválido informado para remuxer: {}", saidaDir);
+                    System.out.println("[FAIL] Caminho de legendas inválido: " + saidaDir);
+                    return;
+                }
 
                 if (!Files.isDirectory(pathVideos)) {
                     System.out.println("\u001B[31m[FAIL] Pasta de vídeos inválida: " + pathVideos + "\u001B[0m");

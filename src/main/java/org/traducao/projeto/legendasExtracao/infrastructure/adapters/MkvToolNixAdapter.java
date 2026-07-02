@@ -9,17 +9,22 @@ import org.traducao.projeto.legendasExtracao.domain.ExtratorException;
 import org.traducao.projeto.legendasExtracao.domain.FaixaLegenda;
 import org.traducao.projeto.legendasExtracao.domain.ports.ExtratorVideoPort;
 import org.traducao.projeto.legendasExtracao.infrastructure.config.ExtratorProperties;
+import org.traducao.projeto.core.util.ProcessoExternoUtil;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 
 @Component
 public class MkvToolNixAdapter implements ExtratorVideoPort {
     private static final Logger log = LoggerFactory.getLogger(MkvToolNixAdapter.class);
+    private static final Duration TIMEOUT_IDENTIFICACAO = Duration.ofSeconds(60);
+    private static final Duration TIMEOUT_EXTRACAO = Duration.ofMinutes(5);
     private static final Set<String> EXTENSOES_SUPORTADAS = Set.of(".mkv", ".webm");
 
     private final String mkvmergePath;
@@ -84,15 +89,11 @@ public class MkvToolNixAdapter implements ExtratorVideoPort {
         );
 
         try {
-            Process process = new ProcessBuilder(cmd)
-                    .redirectErrorStream(true)
-                    .start();
-            
-            String jsonOutput = new String(process.getInputStream().readAllBytes());
-            int exitCode = process.waitFor();
+            ProcessoExternoUtil.Resultado resultado = ProcessoExternoUtil.executar(cmd, TIMEOUT_IDENTIFICACAO, true);
+            String jsonOutput = new String(resultado.stdout());
 
-            if (exitCode != 0) {
-                throw new ExtratorException("mkvmerge --identify falhou com exitCode " + exitCode);
+            if (resultado.codigoSaida() != 0) {
+                throw new ExtratorException("mkvmerge --identify falhou com exitCode " + resultado.codigoSaida());
             }
 
             JsonNode root = objectMapper.readTree(jsonOutput);
@@ -117,6 +118,8 @@ public class MkvToolNixAdapter implements ExtratorVideoPort {
         } catch (IOException | InterruptedException e) {
             if (e instanceof InterruptedException) Thread.currentThread().interrupt();
             throw new ExtratorException("Falha ao invocar mkvmerge para identificar: " + mkvPath, e);
+        } catch (TimeoutException e) {
+            throw new ExtratorException("Tempo limite excedido ao identificar faixas com mkvmerge: " + mkvPath, e);
         }
 
         return faixas;
@@ -132,14 +135,10 @@ public class MkvToolNixAdapter implements ExtratorVideoPort {
         );
 
         try {
-            Process process = new ProcessBuilder(cmd)
-                    .redirectErrorStream(true)
-                    .start();
-            
-            String output = new String(process.getInputStream().readAllBytes());
-            int exitCode = process.waitFor();
+            ProcessoExternoUtil.Resultado resultado = ProcessoExternoUtil.executar(cmd, TIMEOUT_EXTRACAO, true);
+            String output = new String(resultado.stdout());
 
-            if (exitCode != 0) {
+            if (resultado.codigoSaida() != 0) {
                 throw new ExtratorException("mkvextract falhou: " + output);
             }
 
@@ -150,6 +149,8 @@ public class MkvToolNixAdapter implements ExtratorVideoPort {
         } catch (IOException | InterruptedException e) {
             if (e instanceof InterruptedException) Thread.currentThread().interrupt();
             throw new ExtratorException("Falha ao invocar mkvextract para o arquivo: " + mkvPath, e);
+        } catch (TimeoutException e) {
+            throw new ExtratorException("Tempo limite excedido ao extrair trilha com mkvextract: " + mkvPath, e);
         }
     }
 }

@@ -139,11 +139,15 @@ public class CorrigirComGoogleUseCase {
                     String traduzidoNovo = googleScraper.traduzir(original);
                     System.out.println("     Português: " + AnsiCores.GREEN + traduzidoNovo + AnsiCores.RESET);
 
-                    entrada.put("traduzido", traduzidoNovo);
-                    entrada.put("idiomaTraduzido", "pt-br");
+                    if (traduzidoNovo.equals(original)) {
+                        System.out.println(AnsiCores.YELLOW + "     [AVISO] Google Translate falhou/indisponível; fala mantida sem correção." + AnsiCores.RESET);
+                    } else {
+                        entrada.put("traduzido", traduzidoNovo);
+                        entrada.put("idiomaTraduzido", "pt-br");
 
-                    linhasCorrigidasNesteArquivo++;
-                    modificado = true;
+                        linhasCorrigidasNesteArquivo++;
+                        modificado = true;
+                    }
 
                     try {
                         Thread.sleep(400);

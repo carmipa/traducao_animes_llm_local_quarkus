@@ -38,13 +38,13 @@ public class MapeadorMidiaService {
             
             List<Path> todasLegendas;
             try (Stream<Path> streamLegendas = Files.list(pastaLegendas)) {
-                todasLegendas = streamLegendas
+                todasLegendas = new ArrayList<>(streamLegendas
                     .filter(Files::isRegularFile)
                     .filter(p -> {
                         String f = p.getFileName().toString().toLowerCase();
                         return f.endsWith(".ass") || f.endsWith(".srt");
                     })
-                    .toList();
+                    .toList());
             } catch (IOException e) {
                 throw new RemuxerException("Erro ao listar arquivos de legenda", e);
             }
@@ -85,6 +85,9 @@ public class MapeadorMidiaService {
                 }
 
                 if (legendaEncontrada != null) {
+                    // Remove do pool para que outro vídeo não seja pareado com a mesma legenda
+                    // (ex.: dois episódios cujos nomes colidem na mesma tag/prefixo).
+                    todasLegendas.remove(legendaEncontrada);
                     String nomeSaida = nomeLimpoBase.endsWith("_PTBR") ? nomeLimpoBase + ".mkv" : nomeLimpoBase + "_PTBR.mkv";
                     Path caminhoSaida = pastaSaida.resolve(nomeSaida);
                     fila.add(new RemuxTarefa(mkv.getFileName().toString(), mkv, legendaEncontrada, caminhoSaida));

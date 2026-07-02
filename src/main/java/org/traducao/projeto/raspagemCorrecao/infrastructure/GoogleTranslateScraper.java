@@ -12,6 +12,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -33,6 +34,7 @@ public class GoogleTranslateScraper {
         this.mapper = mapper;
         this.httpClient = HttpClient.newBuilder()
             .followRedirects(HttpClient.Redirect.NORMAL)
+            .connectTimeout(Duration.ofSeconds(10))
             .build();
     }
 
@@ -71,6 +73,7 @@ public class GoogleTranslateScraper {
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
+                .timeout(Duration.ofSeconds(15))
                 .GET()
                 .build();
 
@@ -96,6 +99,11 @@ public class GoogleTranslateScraper {
             }
 
             String traduzido = resultadoTraduzido.toString();
+
+            if (traduzido.isBlank()) {
+                log.warn("Resposta do Google Translate em formato inesperado (sem segmentos traduzíveis); mantendo texto original.");
+                return textoOriginal;
+            }
 
             if (temQuebra) {
                 traduzido = traduzido.replaceAll("(?i)\\s*\\[b\\]\\s*", "\\\\N");

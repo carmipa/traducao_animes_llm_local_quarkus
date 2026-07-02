@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.traducao.projeto.traducao.infrastructure.contexto.GerenciadorContexto;
 
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
@@ -40,9 +41,16 @@ public class CuraTagsController {
                 "erro", "Contexto de tradução desconhecido: \"" + contextoId + "\". Recarregue a página e selecione um contexto válido."));
         }
 
+        Path pastaOriginal;
+        Path pastaTraduzida;
         try {
-            Path pastaOriginal = Paths.get(diretorioOriginal);
-            Path pastaTraduzida = Paths.get(diretorioTraduzido);
+            pastaOriginal = Paths.get(diretorioOriginal.trim());
+            pastaTraduzida = Paths.get(diretorioTraduzido.trim());
+        } catch (InvalidPathException e) {
+            return ResponseEntity.badRequest().body(Map.of("erro", "Caminho de pasta inválido: " + e.getMessage()));
+        }
+
+        try {
             ResultadoCuraTags resultado = curaTagsUseCase.curarPasta(pastaOriginal, pastaTraduzida, contextoId);
 
             String mensagem = String.format(

@@ -6,18 +6,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.traducao.projeto.analisadorMidia.domain.*;
+import org.traducao.projeto.core.util.ProcessoExternoUtil;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 @Component
 public class FfprobeAdapter {
 
     private static final Logger log = LoggerFactory.getLogger(FfprobeAdapter.class);
+    private static final Duration TIMEOUT = Duration.ofSeconds(60);
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
@@ -31,18 +35,14 @@ public class FfprobeAdapter {
 
         try {
             log.debug("Executando: {}", String.join(" ", cmd));
-            Process process = new ProcessBuilder(cmd).start();
+            ProcessoExternoUtil.Resultado resultado = ProcessoExternoUtil.executar(cmd, TIMEOUT);
 
-            byte[] stdoutBytes = process.getInputStream().readAllBytes();
-            byte[] stderrBytes = process.getErrorStream().readAllBytes();
-            int exitCode = process.waitFor();
-
-            if (exitCode != 0) {
-                String stderr = new String(stderrBytes, StandardCharsets.UTF_8);
-                throw new AnalisadorException("ffprobe falhou com código " + exitCode + ". Erro: " + stderr);
+            if (resultado.codigoSaida() != 0) {
+                String stderr = new String(resultado.stderr(), StandardCharsets.UTF_8);
+                throw new AnalisadorException("ffprobe falhou com código " + resultado.codigoSaida() + ". Erro: " + stderr);
             }
 
-            String jsonString = new String(stdoutBytes, StandardCharsets.UTF_8);
+            String jsonString = new String(resultado.stdout(), StandardCharsets.UTF_8);
             JsonNode root = objectMapper.readTree(jsonString);
 
             // Parsing do Container
@@ -87,6 +87,8 @@ public class FfprobeAdapter {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new AnalisadorException("Execução do ffprobe foi interrompida para " + caminhoVideo, e);
+        } catch (TimeoutException e) {
+            throw new AnalisadorException("Tempo limite excedido ao executar ffprobe em " + caminhoVideo, e);
         }
     }
 
@@ -103,19 +105,15 @@ public class FfprobeAdapter {
 
         try {
             log.debug("Executando para pacotes de legenda s:{}: {}", indexRelativoLegenda, String.join(" ", cmd));
-            Process process = new ProcessBuilder(cmd).start();
+            ProcessoExternoUtil.Resultado resultado = ProcessoExternoUtil.executar(cmd, TIMEOUT);
 
-            byte[] stdoutBytes = process.getInputStream().readAllBytes();
-            byte[] stderrBytes = process.getErrorStream().readAllBytes();
-            int exitCode = process.waitFor();
-
-            if (exitCode != 0) {
-                String stderr = new String(stderrBytes, StandardCharsets.UTF_8);
-                log.warn("ffprobe ao ler pacotes de legenda falhou com código {}. Erro: {}", exitCode, stderr);
+            if (resultado.codigoSaida() != 0) {
+                String stderr = new String(resultado.stderr(), StandardCharsets.UTF_8);
+                log.warn("ffprobe ao ler pacotes de legenda falhou com código {}. Erro: {}", resultado.codigoSaida(), stderr);
                 return null;
             }
 
-            String jsonString = new String(stdoutBytes, StandardCharsets.UTF_8);
+            String jsonString = new String(resultado.stdout(), StandardCharsets.UTF_8);
             JsonNode root = objectMapper.readTree(jsonString);
             JsonNode packetsNode = root.get("packets");
 
