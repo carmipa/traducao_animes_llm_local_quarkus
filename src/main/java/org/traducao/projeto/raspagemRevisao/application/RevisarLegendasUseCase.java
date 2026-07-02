@@ -705,10 +705,11 @@ public class RevisarLegendasUseCase {
         MascaradorTags.Mascarado mascOriginal = mascaradorTags.mascarar(textoOriginal);
         MascaradorTags.Mascarado mascTraduzido = mascaradorTags.mascarar(traduzido);
 
-        boolean temResiduoGringo = motivos.stream().anyMatch(m -> m.contains("Resíduo gringo"));
+        boolean precisaRetraducaoCompleta = motivos.stream().anyMatch(
+            m -> m.contains("Resíduo gringo") || m.contains("não traduzida"));
         Optional<String> resposta;
 
-        if (temResiduoGringo) {
+        if (precisaRetraducaoCompleta) {
             resposta = mistralPort.corrigirTraducao(
                 mascOriginal.texto(),
                 mascTraduzido.texto(),

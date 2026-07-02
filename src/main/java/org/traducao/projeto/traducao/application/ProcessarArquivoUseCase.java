@@ -29,7 +29,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
@@ -64,6 +63,7 @@ public class ProcessarArquivoUseCase {
     private final CacheTraducaoService cacheService;
     private final ProcessarEpisodioUseCase processarEpisodioUseCase;
     private final ValidadorTraducaoService validador;
+    private final DetectorTraducaoIdenticaService detectorIdentica;
     private final TradutorProperties propriedades;
     private final LlmProperties llmPropriedades;
     private final ConsoleUILogger uiLogger;
@@ -77,6 +77,7 @@ public class ProcessarArquivoUseCase {
         CacheTraducaoService cacheService,
         ProcessarEpisodioUseCase processarEpisodioUseCase,
         ValidadorTraducaoService validador,
+        DetectorTraducaoIdenticaService detectorIdentica,
         TradutorProperties propriedades,
         LlmProperties llmPropriedades,
         ConsoleUILogger uiLogger,
@@ -89,6 +90,7 @@ public class ProcessarArquivoUseCase {
         this.cacheService = cacheService;
         this.processarEpisodioUseCase = processarEpisodioUseCase;
         this.validador = validador;
+        this.detectorIdentica = detectorIdentica;
         this.propriedades = propriedades;
         this.llmPropriedades = llmPropriedades;
         this.uiLogger = uiLogger;
@@ -364,10 +366,7 @@ public class ProcessarArquivoUseCase {
             return false;
         }
         if (normalizarParaComparacao(original).equals(normalizarParaComparacao(traduzido))) {
-            if (deveManterIdentico(original)) {
-                return true;
-            }
-            return false;
+            return detectorIdentica.deveManterIdentico(original);
         }
         try {
             validador.validarFala(traduzido);
@@ -376,62 +375,6 @@ public class ProcessarArquivoUseCase {
             log.warn("Cache ignorado porque parece conter fala ainda nao traduzida: {}", traduzido);
             return false;
         }
-    }
-
-    private boolean deveManterIdentico(String texto) {
-        String textoLimpo = PADRAO_REMOVE_TAGS_ASS.matcher(texto).replaceAll("").strip();
-        textoLimpo = textoLimpo.replaceAll("[^\\w\\s\\d]", "").strip();
-
-        if (textoLimpo.isEmpty()) {
-            return true;
-        }
-
-        String[] palavras = textoLimpo.split("\\s+");
-        if (palavras.length == 1) {
-            return deveManterPalavraUnicaIdentica(textoLimpo);
-        }
-
-        if (palavras.length == 2 && 
-            Character.isUpperCase(palavras[0].charAt(0)) && 
-            Character.isUpperCase(palavras[1].charAt(0))) {
-            return true;
-        }
-
-        String textoMinusculo = textoLimpo.toLowerCase();
-        List<String> termosIgnorados = List.of(
-            "fire bolt", "argo vesta", "caelus hildr", "hildrsleif", "dios aedes vesta",
-            "vana freya", "vana seith", "vana seith.", "zeo gullveig", "hildis vini",
-            "agallis arvesynth", "remiste felis", "uchide no kozuchi", "feles cruz",
-            "dubh daol", "zekka", "gralineze fromel", "gokoh", "astrea record"
-        );
-        return termosIgnorados.contains(textoMinusculo);
-    }
-
-    private boolean deveManterPalavraUnicaIdentica(String textoLimpo) {
-        if (textoLimpo.matches("\\d+")) {
-            return true;
-        }
-        if (textoLimpo.length() > 1 && textoLimpo.equals(textoLimpo.toUpperCase())) {
-            return true;
-        }
-
-        String minusculo = textoLimpo.toLowerCase();
-        Set<String> palavrasInglesComuns = Set.of(
-            "hello", "hi", "hey", "goodbye", "bye", "yes", "no", "yeah", "yep", "nope",
-            "thanks", "thank", "sorry", "please", "wait", "stop", "go", "come", "run",
-            "what", "why", "who", "where", "when", "how", "right", "okay", "ok", "fine"
-        );
-        if (palavrasInglesComuns.contains(minusculo)) {
-            return false;
-        }
-
-        Set<String> termosDeLore = Set.of(
-            "bell", "hestia", "ais", "orario", "dungeon", "falna", "familia",
-            "zeon", "gundam", "zaku", "alex", "kampfer", "axis", "aeug", "titans",
-            "macross", "zentradi", "meltrandi", "valkyrie", "marduk",
-            "gauna", "sidonia", "legion", "juggernaut"
-        );
-        return termosDeLore.contains(minusculo);
     }
 
     private String normalizarParaComparacao(String texto) {
