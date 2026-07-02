@@ -105,7 +105,7 @@ public class ApiController {
     }
 
     // DTOs
-    public record OperacaoRequest(String entrada, String saida, String contextoId) {}
+    public record OperacaoRequest(String entrada, String saida, String contextoId, Long syncOffsetMs) {}
     public record ExtracaoRequest(String entrada, String saida, String formato) {}
     public record RespostaPadrao(String mensagem) {}
     public record MapaResponse(String conteudo) {}
@@ -598,7 +598,8 @@ public class ApiController {
                     return;
                 }
 
-                RelatorioRemux relatorio = remuxarLoteUseCase.executar(pathVideos, pathLegendas);
+                long sincronismoMs = req.syncOffsetMs() != null ? req.syncOffsetMs() : 0;
+                RelatorioRemux relatorio = remuxarLoteUseCase.executar(pathVideos, pathLegendas, sincronismoMs);
                 boolean semFalhas = relatorio.getTotalErros() == 0 && relatorio.getMkvProcessadosSucesso() > 0;
                 String resumo = relatorio.getMkvProcessadosSucesso() + " sucesso, " + relatorio.getTotalErros() + " erro(s)"
                     + (relatorio.getErrosLegendaInvalida() > 0

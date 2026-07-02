@@ -28,8 +28,16 @@ public class RemuxarLoteUseCase {
     }
 
     public RelatorioRemux executar(Path pastaVideos, Path pastaLegendas) {
+        return executar(pastaVideos, pastaLegendas, 0);
+    }
+
+    public RelatorioRemux executar(Path pastaVideos, Path pastaLegendas, long sincronismoMs) {
         RelatorioRemux relatorio = new RelatorioRemux();
-        
+
+        if (sincronismoMs != 0) {
+            log.info("Sincronismo manual de legenda aplicado: {}ms", sincronismoMs);
+        }
+
         try {
             mkvmergeAdapter.validarInfraestrutura();
         } catch (RemuxerException e) {
@@ -86,7 +94,7 @@ public class RemuxarLoteUseCase {
                     continue;
                 }
 
-                mkvmergeAdapter.executarRemux(tarefa);
+                mkvmergeAdapter.executarRemux(tarefa, sincronismoMs);
                 long bytes = Files.size(tarefa.caminhoSaida());
                 relatorio.registrarSucesso(bytes);
                 log.info("MKV finalizado com sucesso: {}", tarefa.caminhoSaida().getFileName());

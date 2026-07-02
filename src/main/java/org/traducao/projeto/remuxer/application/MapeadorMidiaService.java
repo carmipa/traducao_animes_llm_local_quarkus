@@ -36,6 +36,19 @@ public class MapeadorMidiaService {
                 .sorted()
                 .toList();
             
+            List<Path> todasLegendas;
+            try (Stream<Path> streamLegendas = Files.list(pastaLegendas)) {
+                todasLegendas = streamLegendas
+                    .filter(Files::isRegularFile)
+                    .filter(p -> {
+                        String f = p.getFileName().toString().toLowerCase();
+                        return f.endsWith(".ass") || f.endsWith(".srt");
+                    })
+                    .toList();
+            } catch (IOException e) {
+                throw new RemuxerException("Erro ao listar arquivos de legenda", e);
+            }
+
             for (Path mkv : mkvs) {
                 String nomeArq = mkv.getFileName().toString();
                 String nomeBase = nomeArq.replaceFirst("[.][^.]+$", "");
@@ -43,35 +56,32 @@ public class MapeadorMidiaService {
 
                 String tagEpisodio = extrairTagEpisodio(nomeArq);
 
-                Path legendaEncontrada = null;
-                try (Stream<Path> streamLegendas = Files.list(pastaLegendas)) {
-                    List<Path> candidatas = streamLegendas
-                        .filter(Files::isRegularFile)
-                        .filter(p -> {
-                            String f = p.getFileName().toString().toLowerCase();
-                            return f.endsWith(".ass") || f.endsWith(".srt");
-                        })
-                        .filter(p -> {
-                            String f = p.getFileName().toString();
-                            if (f.startsWith(nomeBase) || f.startsWith(nomeLimpoBase)) {
-                                return true;
-                            }
-                            if (tagEpisodio != null && !tagEpisodio.isBlank()) {
-                                String tagLeg = extrairTagEpisodio(f);
-                                return tagEpisodio.equalsIgnoreCase(tagLeg);
-                            }
-                            return false;
-                        })
-                        .toList();
+                List<Path> candidatas = todasLegendas.stream()
+                    .filter(p -> {
+                        String f = p.getFileName().toString();
+                        if (f.startsWith(nomeBase) || f.startsWith(nomeLimpoBase)) {
+                            return true;
+                        }
+                        if (tagEpisodio != null && !tagEpisodio.isBlank()) {
+                            String tagLeg = extrairTagEpisodio(f);
+                            return tagEpisodio.equalsIgnoreCase(tagLeg);
+                        }
+                        return false;
+                    })
+                    .toList();
 
-                    // Priorizar as que possuem PT-BR ou PTBR no nome, depois as outras
-                    legendaEncontrada = candidatas.stream()
-                        .filter(p -> p.getFileName().toString().toUpperCase().contains("PT-BR") || 
-                                     p.getFileName().toString().toUpperCase().contains("PTBR"))
-                        .findFirst()
-                        .orElse(candidatas.isEmpty() ? null : candidatas.get(0));
-                } catch (IOException e) {
-                    log.warn("Erro ao ler diretório de legendas para pareamento", e);
+                // Priorizar as que possuem PT-BR ou PTBR no nome, depois as outras
+                Path legendaEncontrada = candidatas.stream()
+                    .filter(p -> p.getFileName().toString().toUpperCase().contains("PT-BR") ||
+                                 p.getFileName().toString().toUpperCase().contains("PTBR"))
+                    .findFirst()
+                    .orElse(candidatas.isEmpty() ? null : candidatas.get(0));
+
+                // Filme/arquivo avulso: 1 único mkv e 1 única legenda na pasta, mesmo com nomes
+                // completamente diferentes (releases de fansubs distintos) - pareia direto.
+                if (legendaEncontrada == null && mkvs.size() == 1 && todasLegendas.size() == 1) {
+                    legendaEncontrada = todasLegendas.get(0);
+                    log.info("Pareamento por arquivo único (filme): {} -> {}", nomeArq, legendaEncontrada.getFileName());
                 }
 
                 if (legendaEncontrada != null) {

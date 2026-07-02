@@ -12,7 +12,7 @@ import { initRevisao } from '../revisao/revisao.js';
 import { initCura } from '../cura/cura.js';
 import { initRemuxer } from '../remuxer/remuxer.js';
 import { initMapa } from '../mapa/mapa.js';
-import { initTelemetria } from '../telemetria/telemetria.js';
+import { initTelemetria } from '../telemetria/telemetria.js?v=2.4';
 
 // Definições de Títulos e Subtítulos por seção do menu
 const CONFIG_SECOES = {

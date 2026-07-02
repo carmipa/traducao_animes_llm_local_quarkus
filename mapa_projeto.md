@@ -378,7 +378,11 @@ UNICODE_CHARACTER_CLASS e necessario aqui: sem ela, \b no Java so reconhece
 [a-zA-Z0-9_] como caractere de palavra, entao letras acentuadas (ç, ã, é...)
 contam como "fronteira", e palavras em portugues como "força" ou "esforço"
 batem com "\bfor\b" e disparam falso positivo de "resíduo em inglês".
-Evita os falsos positivos de "Abaixo a tirania" bloqueando apenas preâmbulos óbvios
+Palavras inequívocas de francês (sem colisão com vocabulário PT-BR) que pegam
+o LLM local "vazando" pra francês em vez de inglês — caso observado em
+produção: "WITH SHINING BLUE FIRE" foi "corrigido" para "AURA BLEU BRILLANTE"
+e passou batido pelo PADRAO_RESIDUO, que só cobre inglês. Espanhol não entra
+aqui: nunca foi observado como idioma de origem/vazamento neste projeto.
 ```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducao/contexto/ContextoPrompt.java`

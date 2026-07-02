@@ -242,6 +242,9 @@ public class TelemetriaService {
         int totalCacheHits = this.bancoLlm.values().stream().mapToInt(l -> valorOuZero(l.falasDoCache())).sum();
         long tempoTotalMs = this.bancoLlm.values().stream().mapToLong(l -> l.tempoTotalMs() != null ? l.tempoTotalMs() : 0L).sum();
         long tempoMedioPorLinhaMs = totalLinhas > 0 ? tempoTotalMs / totalLinhas : 0L;
+        int totalErros = this.bancoLlm.values().stream()
+            .mapToInt(l -> l.errosOcorridos() != null ? l.errosOcorridos().size() : 0)
+            .sum();
 
         double jvmCpu = 0.0;
         try {
@@ -279,6 +282,7 @@ public class TelemetriaService {
             new ArrayList<>(bancoLlm.values()),
             bancoOperacoes,
             alucinacoesPrevenidas.get(),
+            totalErros,
             jvmCpu,
             jvmThreads,
             heapUsed,
@@ -303,17 +307,48 @@ public class TelemetriaService {
                 op.tipo(),
                 formatarDetalheOperacao(op),
                 formatarDuracaoMs(op.tempoTotalMs()),
-                calcularTaxaSucesso(op.itensDetectados(), op.itensCorrigidos())
+                calcularTaxaSucesso(op.itensDetectados(), op.itensCorrigidos()),
+                inferirOrigem(op.tipo()),
+                op.tempoTotalMs()
             ));
         }
 
         for (LlmTelemetria l : traducoes.values()) {
-            historico.add(new OperacaoHistorico("Tradução LLM", l.nomeEpisodio(), formatarDuracaoMs(l.tempoTotalMs()), null));
+            historico.add(new OperacaoHistorico(
+                "Tradução LLM", l.nomeEpisodio(), formatarDuracaoMs(l.tempoTotalMs()), null,
+                inferirOrigem("Tradução LLM"), l.tempoTotalMs()
+            ));
         }
         for (MidiaTelemetria m : midias.values()) {
-            historico.add(new OperacaoHistorico("Análise de Mídia", m.nomeArquivo(), null, null));
+            historico.add(new OperacaoHistorico(
+                "Análise de Mídia", m.nomeArquivo(), null, null,
+                inferirOrigem("Análise de Mídia"), null
+            ));
         }
         return historico;
+    }
+
+    /**
+     * Classifica a operação numa origem (LLM/GOOGLE/CACHE/SISTEMA) a partir do
+     * próprio nome/tipo, já que o histórico não guarda essa dimensão à parte.
+     * LLM tem prioridade porque operações como "Revisão Gramatical (cache LLM)"
+     * são, na prática, chamadas ao modelo local, mesmo mencionando cache.
+     */
+    private String inferirOrigem(String tipo) {
+        if (tipo == null) {
+            return "SISTEMA";
+        }
+        String normalizado = tipo.toUpperCase(java.util.Locale.ROOT);
+        if (normalizado.contains("LLM")) {
+            return "LLM";
+        }
+        if (normalizado.contains("GOOGLE")) {
+            return "GOOGLE";
+        }
+        if (normalizado.contains("CACHE")) {
+            return "CACHE";
+        }
+        return "SISTEMA";
     }
 
     private String formatarDetalheOperacao(OperacaoTelemetria op) {

@@ -16,6 +16,7 @@ public record TelemetriaResumo(
     List<LlmTelemetria> traducoesLlm,
     List<OperacaoTelemetria> operacoes,
     int alucinacoesPrevenidas,
+    int totalErros,
     double jvmCpuUso,
     int jvmThreadsAtivas,
     long jvmHeapUsadoBytes,

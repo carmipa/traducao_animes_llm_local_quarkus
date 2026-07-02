@@ -9,16 +9,19 @@ export function initRemuxer() {
         
         const entrada = document.getElementById('remuxer-videos').value.trim();
         const saida = document.getElementById('remuxer-legendas').value.trim();
-        
+        const syncOffsetRaw = document.getElementById('remuxer-sync-offset').value.trim();
+        const syncOffsetMs = syncOffsetRaw ? parseInt(syncOffsetRaw, 10) : null;
+
         logNoConsole('console-remuxer', 'Solicitando remux de vídeos com legendas traduzidas...', 'info');
         logNoConsole('console-remuxer', `Pasta de Vídeos: ${entrada}`, 'info');
         if (saida) logNoConsole('console-remuxer', `Pasta de Legendas: ${saida}`, 'info');
+        if (syncOffsetMs) logNoConsole('console-remuxer', `Sincronismo manual: ${syncOffsetMs}ms`, 'info');
 
         try {
             const res = await fetch('/api/remuxar', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ entrada, saida })
+                body: JSON.stringify({ entrada, saida, syncOffsetMs })
             });
 
             if (!res.ok) {

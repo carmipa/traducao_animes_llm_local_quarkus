@@ -29,6 +29,18 @@ public class ValidadorTraducaoService {
         Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS
     );
 
+    // Palavras inequívocas de francês (sem colisão com vocabulário PT-BR) que pegam
+    // o LLM local "vazando" pra francês em vez de inglês — caso observado em
+    // produção: "WITH SHINING BLUE FIRE" foi "corrigido" para "AURA BLEU BRILLANTE"
+    // e passou batido pelo PADRAO_RESIDUO, que só cobre inglês. Espanhol não entra
+    // aqui: nunca foi observado como idioma de origem/vazamento neste projeto.
+    private static final Pattern PADRAO_OUTRO_IDIOMA = Pattern.compile(
+        "\\b(bleu|rouge|noir|blanc|jaune|monde|cœur|coeur|amour|bonjour|merci|"
+            + "toujours|déjà|deja|être|avoir|avec|chez|sans|vous|nous|elles|"
+            + "très|tres|où|quelque|aujourd'hui)\\b",
+        Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS
+    );
+
     // Evita os falsos positivos de "Abaixo a tirania" bloqueando apenas preâmbulos óbvios
     private static final Pattern PADRAO_PREAMBULO = Pattern.compile(
         "^(esta [ée] a tradu|abaixo seguem|aqui está a|tradução solicitada|a tradução seria)",
@@ -39,9 +51,13 @@ public class ValidadorTraducaoService {
         if (textoTraduzido == null || textoTraduzido.trim().isEmpty()) {
             return;
         }
-        
+
         if (PADRAO_RESIDUO.matcher(textoTraduzido).find()) {
             throw new AlucinacaoDetectadaException("Resíduo gringo detectado: " + textoTraduzido);
+        }
+
+        if (PADRAO_OUTRO_IDIOMA.matcher(textoTraduzido).find()) {
+            throw new AlucinacaoDetectadaException("Idioma incorreto detectado (não é PT-BR): " + textoTraduzido);
         }
 
         if (PADRAO_PREAMBULO.matcher(textoTraduzido).find()) {

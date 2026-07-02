@@ -225,11 +225,22 @@ public class RevisarCacheUseCase {
         MascaradorTags.Mascarado mascOriginal = mascaradorTags.mascarar(original);
         MascaradorTags.Mascarado mascTraduzido = mascaradorTags.mascarar(traduzido);
 
-        Optional<String> resposta = mistralPort.revisarConcordancia(
-            mascOriginal.texto(),
-            mascTraduzido.texto(),
-            motivos
-        );
+        boolean temResiduoGringo = motivos.stream().anyMatch(m -> m.contains("Resíduo gringo"));
+        Optional<String> resposta;
+
+        if (temResiduoGringo) {
+            resposta = mistralPort.corrigirTraducao(
+                mascOriginal.texto(),
+                mascTraduzido.texto(),
+                String.join(", ", motivos)
+            );
+        } else {
+            resposta = mistralPort.revisarConcordancia(
+                mascOriginal.texto(),
+                mascTraduzido.texto(),
+                motivos
+            );
+        }
 
         if (resposta.isEmpty()) {
             return Optional.empty();

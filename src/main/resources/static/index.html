@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=2.2">
+    <link rel="stylesheet" href="css/style.css?v=2.4">
 </head>
 <body>
     <div class="app-container">
@@ -640,6 +640,10 @@
                                     <button type="button" class="btn-procurar" data-target="remuxer-legendas" data-type="pasta">📂 Procurar...</button>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="remuxer-sync-offset">Sincronismo manual da legenda (ms, opcional): <span class="help-icon" data-tooltip="Use quando o vídeo e a legenda vêm de releases/fontes diferentes e a legenda fica atrasada ou adiantada em relação à fala. Positivo atrasa a legenda, negativo adianta. Ex: 350 ou -1200.">?</span></label>
+                                <input type="number" id="remuxer-sync-offset" placeholder="Ex: 350 (atrasa) ou -1200 (adianta)" step="1">
+                            </div>
                             <div class="correcao-actions">
                                 <button type="submit" class="btn btn-primary btn-cyan" data-tooltip="Mescla os arquivos de vídeo e legendas traduzidas em novos arquivos usando mkvmerge">
                                     <span>Iniciar Remuxing</span>
@@ -746,10 +750,10 @@
                         </div>
 
                         <div class="telemetry-metrics-grid">
-                            <article class="telemetry-metric-card accent-blue">
-                                <span class="metric-icon"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg></span>
-                                <span class="metric-label">Episodios</span>
-                                <strong id="t-episodios">0</strong>
+                            <article class="telemetry-metric-card accent-red">
+                                <span class="metric-icon"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></span>
+                                <span class="metric-label">Erros</span>
+                                <strong id="t-erros">0</strong>
                             </article>
                             <article class="telemetry-metric-card accent-green">
                                 <span class="metric-icon"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></span>
@@ -771,6 +775,11 @@
                                 <span class="metric-label">Arquivos cache</span>
                                 <strong id="t-cache-files">0</strong>
                             </article>
+                            <article class="telemetry-metric-card accent-blue">
+                                <span class="metric-icon"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 2a4 4 0 0 0-4 4c0 1.5.8 2.4 1.5 3.1.6.6 1 1.1 1 1.9v1h3v-1c0-.8.4-1.3 1-1.9C15.2 8.4 16 7.5 16 6a4 4 0 0 0-4-4z"></path><path d="M9 18h6"></path><path d="M10 21h4"></path></svg></span>
+                                <span class="metric-label">Chamadas LLM</span>
+                                <strong id="t-chamadas-llm">0</strong>
+                            </article>
                         </div>
 
                         <div class="telemetry-insights-grid">
@@ -778,8 +787,8 @@
                                 <span class="insight-kicker accent-purple">Triagem e Custo</span>
                                 <h3>Funil de Processamento Cognitivo</h3>
                                 <p>Volume de falas filtradas ate o acionamento real do LLM local.</p>
-                                <div style="position: relative; height: 110px; margin-top: 10px; margin-bottom: 5px;">
-                                    <canvas id="chart-funil-processamento"></canvas>
+                                <div class="telemetry-chart-box">
+                                    <div id="chart-funil-processamento" class="telemetry-dom-chart"></div>
                                 </div>
                                 <div class="insight-stat">
                                     <span>Cache evitou</span>
@@ -790,8 +799,8 @@
                                 <span class="insight-kicker accent-yellow">Modelos Utilizados</span>
                                 <h3>Distribuicao de Modelos LLM</h3>
                                 <p>Frequencia agregada das chamadas locais registradas no historico.</p>
-                                <div style="position: relative; height: 110px; margin-top: 10px; margin-bottom: 5px;">
-                                    <canvas id="chart-modelos-llm"></canvas>
+                                <div class="telemetry-chart-box">
+                                    <div id="chart-modelos-llm" class="telemetry-dom-chart"></div>
                                 </div>
                                 <div class="insight-stat">
                                     <span>Operacoes</span>
@@ -807,8 +816,8 @@
                                     <span>Threads Ativas: <strong id="t-jvm-threads">--</strong></span>
                                     <span>Heap Usado: <strong id="t-jvm-heap">--</strong></span>
                                 </div>
-                                <div style="position: relative; height: 90px; margin-top: 5px;">
-                                    <canvas id="chart-jvm-performance"></canvas>
+                                <div class="telemetry-chart-box compact">
+                                    <div id="chart-jvm-performance" class="telemetry-dom-chart"></div>
                                 </div>
                             </section>
                         </div>
@@ -816,26 +825,49 @@
                         <section class="glass-card telemetry-table-card">
                             <div class="telemetry-card-header">
                                 <div>
-                                    <span class="section-kicker">Episodios com maior complexidade de traducao</span>
+                                    <span class="section-kicker">Eventos &middot; Pipeline</span>
                                     <h3>Historico Operacional</h3>
+                                    <p class="telemetry-table-count" id="t-table-count">0 operacoes registradas</p>
+                                </div>
+                                <div class="telemetry-search">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                    <input type="search" id="t-table-search" placeholder="Buscar por operacao ou conteudo..." autocomplete="off">
                                 </div>
                             </div>
+
+                            <div class="telemetry-filter-chips" id="t-filter-chips">
+                                <button type="button" class="filter-chip active" data-filtro="todas">
+                                    <span class="chip-dot" style="background:#8b97ad"></span>
+                                    <span class="chip-label">Todas</span>
+                                    <span class="chip-count" id="chip-count-todas">0</span>
+                                </button>
+                            </div>
+
                             <div class="telemetria-details-container">
                                 <table class="telemetria-table">
                                     <thead>
                                         <tr>
                                             <th>Operacao</th>
-                                            <th>Detalhe / Legenda</th>
+                                            <th>Origem</th>
+                                            <th>Detalhe / Chave</th>
                                             <th>Duracao</th>
                                             <th>Confianca</th>
                                         </tr>
                                     </thead>
                                     <tbody id="telemetria-table-body">
                                         <tr>
-                                            <td colspan="4" class="table-empty">Aguardando dados de processamento...</td>
+                                            <td colspan="5" class="table-empty">Aguardando dados de processamento...</td>
                                         </tr>
                                     </tbody>
                                 </table>
+                            </div>
+
+                            <div class="telemetry-pagination">
+                                <span class="pagination-info" id="t-pagination-info">Pagina 1 de 1</span>
+                                <div class="pagination-buttons">
+                                    <button type="button" class="btn btn-secondary" id="t-page-prev" disabled>Anterior</button>
+                                    <button type="button" class="btn btn-secondary" id="t-page-next" disabled>Proxima</button>
+                                </div>
                             </div>
                         </section>
 
@@ -869,7 +901,7 @@
     <div id="toast-container" class="toast-container"></div>
 
     <!-- Scripts -->
-    <script src="js/chart.umd.min.js"></script>
+    <script src="js/chart.umd.min.js?v=2.4"></script>
     <script type="module" src="js/app.js"></script>
 </body>
 </html>

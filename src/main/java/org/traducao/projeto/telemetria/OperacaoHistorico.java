@@ -7,5 +7,7 @@ public record OperacaoHistorico(
     String nomeOperacao,
     String detalheOperacao,
     String duracaoFormatada,
-    Integer taxaSucesso
+    Integer taxaSucesso,
+    String origem,
+    Long duracaoMs
 ) {}

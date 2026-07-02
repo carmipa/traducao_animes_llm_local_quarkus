@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -63,16 +64,24 @@ public class MkvmergeAdapter {
     }
 
     public void executarRemux(RemuxTarefa tarefa) {
-        List<String> command = List.of(
+        executarRemux(tarefa, 0);
+    }
+
+    public void executarRemux(RemuxTarefa tarefa, long sincronismoMs) {
+        List<String> command = new ArrayList<>(List.of(
             mkvmergePath,
             "-o", tarefa.caminhoSaida().toString(),
             "--no-subtitles",
             tarefa.caminhoVideo().toString(),
             "--language", "0:por",
             "--track-name", "0:Português (Mistral)",
-            "--default-track", "0:yes",
-            tarefa.caminhoLegenda().toString()
-        );
+            "--default-track", "0:yes"
+        ));
+        if (sincronismoMs != 0) {
+            command.add("--sync");
+            command.add("0:" + sincronismoMs);
+        }
+        command.add(tarefa.caminhoLegenda().toString());
 
         log.debug("Executando comando: {}", String.join(" ", command));
 
