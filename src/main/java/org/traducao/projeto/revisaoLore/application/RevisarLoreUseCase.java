@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +35,8 @@ import java.util.stream.Stream;
 public class RevisarLoreUseCase {
 
     private static final Logger log = LoggerFactory.getLogger(RevisarLoreUseCase.class);
+    private static final DateTimeFormatter UTC_FORMATTER = DateTimeFormatter.ISO_INSTANT;
+    private static final int TAMANHO_TRECHO_LOG = 120;
 
     private final LeitorLegendaAss leitor;
     private final EscritorLegendaAss escritor;
@@ -50,6 +53,7 @@ public class RevisarLoreUseCase {
     private Path pastaTraduzidaRef;
     private String contextoIdRef;
     private boolean revisarTodasFalasRef;
+    private long inicioSessaoMs;
 
     public RevisarLoreUseCase(
         LeitorLegendaAss leitor,
@@ -84,6 +88,7 @@ public class RevisarLoreUseCase {
         pastaTraduzidaRef = pastaTraduzida;
         contextoIdRef = contextoId;
         revisarTodasFalasRef = revisarTodasFalas;
+        inicioSessaoMs = System.currentTimeMillis();
 
         validarEntrada(pastaOriginal, pastaTraduzida, contextoId);
 
@@ -94,9 +99,10 @@ public class RevisarLoreUseCase {
 
         String nomePromptRevisao = gerenciadorPromptRevisaoLore.obterNome(contextoId);
         String promptSistemaRevisaoLore = gerenciadorPromptRevisaoLore.obterPromptSistema(contextoId);
-        long inicioMs = System.currentTimeMillis();
+        long inicioMs = inicioSessaoMs;
 
         out(AnsiCores.CYAN + "\n=== Revisao de Lore (nomes, locais e terminologia) ===" + AnsiCores.RESET);
+        out("Inicio UTC: " + UTC_FORMATTER.format(Instant.now()));
         out("Pasta original (EN): " + pastaOriginal.toAbsolutePath());
         out("Pasta traduzida (PT-BR): " + pastaTraduzida.toAbsolutePath());
         out("Prompt de revisao de lore ativo: " + nomePromptRevisao + " (" + contextoId + ")");
@@ -219,11 +225,13 @@ public class RevisarLoreUseCase {
         }
 
         arquivosAnalisados[0]++;
-        out("\nAnalisando: " + arqTraduzido.getFileName());
+        out("\n[Arquivo] Analisando: " + arqTraduzido.getFileName());
 
         try {
             DocumentoLegenda docOriginal = leitor.ler(arqOriginal);
             DocumentoLegenda docTraduzido = leitor.ler(arqTraduzido);
+            out("[Arquivo] Eventos original/traduzido: " + docOriginal.eventos().size()
+                + "/" + docTraduzido.eventos().size());
 
             if (docOriginal.eventos().size() != docTraduzido.eventos().size()) {
                 String msg = arqTraduzido.getFileName() + ": contagem de eventos divergente ("
@@ -235,6 +243,8 @@ public class RevisarLoreUseCase {
 
             boolean houveModificacao = false;
             int corrigidasNoArquivo = 0;
+            int totalDialogos = contarDialogosAuditaveis(docOriginal, docTraduzido);
+            int dialogoAtual = 0;
             List<EventoLegenda> novosEventos = new ArrayList<>(docTraduzido.eventos().size());
 
             for (int i = 0; i < docOriginal.eventos().size(); i++) {
@@ -250,6 +260,12 @@ public class RevisarLoreUseCase {
                 String textoEn = evtOriginal.texto();
                 String textoPt = evtTraduzido.texto();
                 falasAuditadas[0]++;
+                dialogoAtual++;
+
+                String marcadorFala = "[Fala " + dialogoAtual + "/" + totalDialogos
+                    + " | evento " + (i + 1) + "]";
+                out(AnsiCores.DIM + marcadorFala + " auditando lore | EN: "
+                    + trecho(textoEn) + " | PT: " + trecho(textoPt) + AnsiCores.RESET);
 
                 MascaradorTags.Mascarado mascaraEn = mascarador.mascarar(textoEn);
                 MascaradorTags.Mascarado mascaraPt = mascarador.mascarar(textoPt);
@@ -257,11 +273,14 @@ public class RevisarLoreUseCase {
                 ResultadoDeteccaoLore deteccao = detector.auditar(mascaraEn.texto(), mascaraPt.texto());
                 if (!revisarTodasFalas && !deteccao.suspeito()) {
                     falasSemAlteracao[0]++;
+                    out(AnsiCores.DIM + marcadorFala + " limpo pela heuristica" + AnsiCores.RESET);
                     novosEventos.add(evtTraduzido);
                     continue;
                 }
 
                 falasSinalizadas[0]++;
+                out(AnsiCores.YELLOW + marcadorFala + " enviada ao LLM | motivos: "
+                    + formatarMotivos(deteccao.motivos()) + AnsiCores.RESET);
 
                 Optional<String> revisadaOpt = mistralPort.revisarLore(
                     promptSistemaRevisaoLore,
@@ -271,6 +290,7 @@ public class RevisarLoreUseCase {
                 );
 
                 if (revisadaOpt.isEmpty()) {
+                    out(AnsiCores.YELLOW + marcadorFala + " LLM sem resposta valida; mantendo traducao atual" + AnsiCores.RESET);
                     novosEventos.add(evtTraduzido);
                     continue;
                 }
@@ -278,6 +298,7 @@ public class RevisarLoreUseCase {
                 String revisada = mascarador.desmascarar(revisadaOpt.get(), mascaraPt.tags());
                 if (revisada.equals(textoPt)) {
                     falasSemAlteracao[0]++;
+                    out(AnsiCores.DIM + marcadorFala + " conforme apos revisao LLM" + AnsiCores.RESET);
                     novosEventos.add(evtTraduzido);
                     continue;
                 }
@@ -286,6 +307,8 @@ public class RevisarLoreUseCase {
                     validador.validarFala(revisada);
                 } catch (Exception e) {
                     log.warn("Revisao de lore descartada (validacao): {}", e.getMessage());
+                    out(AnsiCores.YELLOW + marcadorFala + " revisao descartada pela validacao: "
+                        + e.getMessage() + AnsiCores.RESET);
                     novosEventos.add(evtTraduzido);
                     continue;
                 }
@@ -294,6 +317,8 @@ public class RevisarLoreUseCase {
                 houveModificacao = true;
                 corrigidasNoArquivo++;
                 falasCorrigidas[0]++;
+                out(AnsiCores.GREEN + marcadorFala + " corrigida | Antes: "
+                    + trecho(textoPt) + " | Depois: " + trecho(revisada) + AnsiCores.RESET);
             }
 
             if (houveModificacao) {
@@ -389,14 +414,69 @@ public class RevisarLoreUseCase {
     }
 
     private void out(String msg) {
-        System.out.println(msg);
         String limpo = removerAnsi(msg);
-        log.info(limpo);
+        String prefixo = prefixoLog();
+        String mensagemComPrefixo = prefixo + " " + msg;
+        String limpoComPrefixo = prefixo + " " + limpo;
+        System.out.println(mensagemComPrefixo);
+        log.info(limpoComPrefixo);
         eventosSessao.add(new LogEventoRevisaoLore(
             Instant.now().toString(),
-            inferirNivel(limpo),
-            limpo
+            inferirNivel(limpoComPrefixo),
+            limpoComPrefixo
         ));
+    }
+
+    private String prefixoLog() {
+        long decorridoMs = Math.max(0, System.currentTimeMillis() - inicioSessaoMs);
+        return "[UTC " + UTC_FORMATTER.format(Instant.now()) + " | +" + formatarDuracaoDetalhada(decorridoMs) + "]";
+    }
+
+    private String formatarDuracaoDetalhada(long ms) {
+        long totalSegundos = ms / 1000;
+        long minutos = totalSegundos / 60;
+        long segundos = totalSegundos % 60;
+        long millis = ms % 1000;
+        if (minutos > 0) {
+            return "%02d:%02d.%03d".formatted(minutos, segundos, millis);
+        }
+        return "%02d.%03ds".formatted(segundos, millis);
+    }
+
+    private int contarDialogosAuditaveis(DocumentoLegenda docOriginal, DocumentoLegenda docTraduzido) {
+        int total = 0;
+        int limite = Math.min(docOriginal.eventos().size(), docTraduzido.eventos().size());
+        for (int i = 0; i < limite; i++) {
+            EventoLegenda original = docOriginal.eventos().get(i);
+            EventoLegenda traduzido = docTraduzido.eventos().get(i);
+            if (original.isDialogo() && traduzido.isDialogo()
+                && original.temTexto() && traduzido.temTexto()) {
+                total++;
+            }
+        }
+        return total;
+    }
+
+    private String formatarMotivos(List<String> motivos) {
+        if (motivos == null || motivos.isEmpty()) {
+            return "revisao preventiva";
+        }
+        return String.join(" | ", motivos.stream().map(this::trecho).toList());
+    }
+
+    private String trecho(String texto) {
+        if (texto == null || texto.isBlank()) {
+            return "(vazio)";
+        }
+        String normalizado = texto
+            .replace("\\N", " ")
+            .replace("\\n", " ")
+            .replaceAll("\\s+", " ")
+            .strip();
+        if (normalizado.length() <= TAMANHO_TRECHO_LOG) {
+            return normalizado;
+        }
+        return normalizado.substring(0, TAMANHO_TRECHO_LOG - 3).stripTrailing() + "...";
     }
 
     private static String inferirNivel(String mensagem) {
