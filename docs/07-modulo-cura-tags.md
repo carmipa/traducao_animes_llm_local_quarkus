@@ -1,14 +1,23 @@
-# 🧵 Módulo: Cura de Tags (Aegisub / Kara Templater)
+# Modulo: Correcao de Legendas
 
-[← Correção & Revisão](06-modulo-correcao-revisao.md) | [Revisão de Lore →](16-modulo-revisao-lore.md)
+[<- Correcao & Revisao](06-modulo-correcao-revisao.md) | [Revisao de Lore ->](16-modulo-revisao-lore.md)
 
 ---
 
 ## Para que serve
 
-Falas de karaokê/efeitos em `.ass` carregam tags de formatação e posicionamento complexas no prefixo (`{\pos(...)\an8\c&H...&}`), e algumas usam a sintaxe especial do **Kara Templater do Aegisub** (`{=1}`, `{=2}`...) para templates de karaokê animado. LLMs frequentemente **alucinam** essas tags durante a tradução — corrompem `{=1}` para `\N=1`, injetam chaves `{texto}` fantasmas que quebram a leitura no Aegisub, ou perdem o prefixo de formatação inteiro. O CuraTags é um **pós-processamento estrutural** que restaura essas tags comparando a legenda original (EN) com a já traduzida (PT-BR), sem precisar retraduzir nada.
+Este modulo e o pos-processamento especializado de legendas traduzidas. A regra central e:
 
-![Painel de Cura de Legendas](../src/main/resources/static/img/screenshots/cura-legendas.webp)
+```text
+Legenda original = referencia imutavel
+Legenda traduzida = unico alvo de alteracao
+```
+
+Ele compara os arquivos `.ass` originais com os arquivos PT-BR ja traduzidos, preserva estrutura, tempos, estilos e tags da original, e grava somente a legenda traduzida. A original nunca deve ser reescrita.
+
+Quando um contexto e informado, o modulo tambem pode acionar o LLM local para corrigir falas suspeitas depois da correcao estrutural. Sem contexto, a operacao e deterministica e nao usa LLM.
+
+![Painel de Correcao de Legendas](../src/main/resources/static/img/screenshots/cura-legendas.webp)
 
 ---
 
@@ -16,77 +25,128 @@ Falas de karaokê/efeitos em `.ass` carregam tags de formatação e posicionamen
 
 | Classe | Papel |
 |--------|-------|
-| `CuraTagsUseCase` (`curatags`) | Orquestra: localiza pares original↔traduzido, valida contagem de eventos, aplica sanitização e (opcionalmente) correção LLM |
-| `SanitizadorTagsService` | **100% regex/estrutural, sem LLM** — o coração da cura |
-| `CorretorTraducaoLlmService` | Camada opcional (só roda se um `contextoId` for informado) — corrige via LLM as falas que *ainda* têm resíduo em inglês depois da cura estrutural |
-| `ResultadoCuraTags` | Record de retorno: `curados, corrigidosLlm, semAlteracao, semPar, totalErros, erros` |
+| `CorrigirLegendasUseCase` (`correcaoLegendas`) | Orquestra localizacao de pares, validacao de eventos, sanitizacao estrutural, correcao LLM opcional, logs e telemetria |
+| `SanitizadorTagsService` | Restaura tags ASS da original na traducao e remove/escapa marcacoes invalidas |
+| `CorretorTraducaoLlmService` | Camada opcional: corrige via LLM falas que ainda parecem quebradas |
+| `ResultadoCorrecaoLegendas` | Record de retorno da operacao |
+| `CorrecaoLegendasRelatorioJson` | Relatorio JSON completo da sessao |
+| `LogEventoCorrecaoLegendas` | Evento de log estruturado com timestamp UTC |
+| `CorrecaoLegendasLogPersistencia` | Persiste o relatorio JSON em `relatorios/<pasta>/correcao_legendas_*.json` |
+| `CorrecaoLegendasController` | Endpoint REST novo e alias legado |
 
 ---
 
-## O que a sanitização estrutural faz
+## Fluxo
 
 ```mermaid
 graph TD
-    A["Fala original (EN)<br/>{\pos(100,200)}Hello"] --> B["Extrai prefixo {...} do original"]
-    C["Fala traduzida (PT-BR)<br/>possivelmente com tag alucinada"] --> D{"Traduzida tem<br/>prefixo correto?"}
-    B --> D
-    D -->|Não tem, mas original tinha| E["Reinjeta o prefixo do original na tradução"]
-    D -->|Tem um diferente/alucinado| F["Substitui pelo prefixo correto do original"]
-    D -->|Original não tinha prefixo| G["Remove qualquer {...} alucinado da tradução"]
-    E --> H["Fala curada"]
-    F --> H
-    G --> H
-    H --> I{"Contém padrão legado<br/>'\\N=X'?"}
-    I -->|Sim| J["Reverte para '{=X}' (Kara Templater)"]
-    I -->|Não| K["Escapa chaves inválidas remanescentes<br/>como quebra de linha (\\N)"]
+    A["Pasta original/ref (.ass)"] --> C["Pareador de arquivos"]
+    B["Pasta traduzida PT-BR (.ass)"] --> C
+    C --> D{"Eventos alinhados 1:1?"}
+    D -->|Nao| E["Pula arquivo com aviso"]
+    D -->|Sim| F["Sanitizador estrutural"]
+    F --> G{"Contexto informado?"}
+    G -->|Nao| H["Grava traducao corrigida"]
+    G -->|Sim| I["Valida fala e chama LLM se necessario"]
+    I --> H
+    H --> J["Relatorio JSON + Telemetria"]
 ```
 
-Regras específicas implementadas:
+---
 
-1. **Prefixo forçado igual ao original** — a tradução é obrigada a usar exatamente o mesmo prefixo `{...}` do início da linha original, inclusive quando o original **não tem** nenhum (nesse caso, qualquer `{...}` que apareça na tradução é considerado alucinação do LLM e é descartado).
-2. **`\N=X` → `{=X}`** — reverte um padrão de corrupção legado onde a tag do Kara Templater `{=X}` foi corrompida para uma quebra de linha seguida de `=X`.
-3. **Chaves órfãs → quebra de linha** — chaves remanescentes que não formam uma tag ASS válida são alucinação do LLM; em vez de apagar o texto dentro delas (risco de perder conteúdo real), são escapadas como `\N`.
+## Pareamento de arquivos
+
+O corretor procura pares sem usar fuzzy perigoso. Padroes aceitos:
+
+```text
+original.ass              -> original_PT-BR.ass
+original.ass              -> original_PTBR.ass
+nome_ENG.ass              -> nome_PT-BR.ass
+nome_ENG.ass              -> nome_PTBR.ass
+nome_EN.ass               -> nome_PT-BR.ass
+nome_EN.ass               -> nome_PTBR.ass
+```
+
+Essa regra foi adicionada apos os relatorios mostrarem que arquivos de `86` vinham como:
+
+```text
+[DB]86_..._PTBR_ENG.ass
+[DB]86_..._PTBR_PT-BR.ass
+```
+
+Antes, estes pares eram marcados como `semPar`.
 
 ---
 
-## Validação de segurança antes de curar
+## Sanitizacao estrutural
 
-`CuraTagsUseCase` **recusa** processar um par de arquivos se a contagem de eventos (`Dialogue:`/`Comment:`) do original e do traduzido não bater exatamente — nesse caso, o arquivo é pulado com aviso em vez de arriscar desalinhar falas ao comparar por índice. Isso protege contra o cenário onde o arquivo traduzido já está com linhas fora de ordem por algum outro motivo.
+Regras principais:
 
----
-
-## Correção LLM opcional (segunda camada)
-
-Só é acionada quando um `contextoId` é passado no request. Depois da cura estrutural, `CorretorTraducaoLlmService` usa `ValidadorTraducaoService` para detectar se a fala **ainda** tem resíduo em inglês ou alucinação — se sim, mascara as tags (via `MascaradorTags`, mesmo mecanismo da [tradução principal](05-modulo-traducao-llm.md)) e chama `MistralPort.corrigirTraducao()` para re-traduzir só aquela linha específica, preservando o resto do arquivo intacto.
-
-> Resumo do fluxo: **a cura é sempre estrutural** (rápida, determinística, sem custo de LLM); a correção via LLM é um extra opcional só para as falas que restarem com problema textual depois da cura.
+1. Prefixos ASS validos no inicio da fala (`{\...}` ou `{=...}`) sao restaurados a partir da original.
+2. Prefixos ASS alucinados pela traducao sao removidos/substituidos pelo prefixo da original.
+3. Corrupcoes legadas `\N=X` sao revertidas para `{=X}`.
+4. Chaves invalidas que carregam texto, como `{pensamento}`, nao sao tratadas como tag ASS valida; o texto interno e preservado como conteudo seguro.
 
 ---
 
-## Endpoint REST
+## Logs, JSON e telemetria
 
-### `POST /api/cura-tags`
+A correcao registra:
+
+```text
+logs/console-web.log
+logs/telemetria_compartilhada.json
+relatorios/<pasta-traduzida>/correcao_legendas_yyyyMMdd_HHmmss.json
+```
+
+O console web recebe as linhas via SSE no canal:
+
+```text
+correcao-legendas
+```
+
+Cada linha de execucao do use case inclui timestamp UTC e tempo relativo.
+
+---
+
+## Endpoints REST
+
+### `POST /api/correcao-legendas`
+
+Endpoint oficial.
 
 ```json
 {
-  "diretorioOriginal": "C:/animes/[Sokudo] DanMachi/legendas_extraidas",
-  "diretorioTraduzido": "C:/animes/[Sokudo] DanMachi/legendas-ptbr",
-  "contextoId": "danmachi-s4"
+  "diretorioOriginal": "C:/animes/obra/legendas-en",
+  "diretorioTraduzido": "C:/animes/obra/legendas-ptbr",
+  "contextoId": "gundam-0083"
 }
 ```
 
-| Campo | Obrigatório | Descrição |
-|-------|:-----------:|-----------|
-| `diretorioOriginal` | ✅ | Pasta com as legendas `.ass` originais em inglês |
-| `diretorioTraduzido` | ✅ | Pasta com as legendas `.ass` já traduzidas (sufixo `_PT-BR.ass`/`_PTBR.ass`) |
-| `contextoId` | ⚪ | Se informado, ativa a segunda camada de correção via LLM |
+### `POST /api/cura-tags`
 
-**Resposta:** mensagem com a contagem de `curados`, `corrigidosLlm`, `semAlteracao`, `semPar` e `totalErros`.
+Alias legado mantido para compatibilidade.
+
+| Campo | Obrigatorio | Descricao |
+|-------|:-----------:|-----------|
+| `diretorioOriginal` | Sim | Pasta com legendas originais/referencia |
+| `diretorioTraduzido` | Sim | Pasta com legendas PT-BR que podem ser alteradas |
+| `contextoId` | Nao | Ativa correcao textual via LLM local |
 
 ---
 
-## Navegação
+## Decisoes importantes
 
-| Anterior | Próximo |
+- A original e somente leitura.
+- A traducao e o unico arquivo gravado.
+- A revisao de lore continua em modulo separado (`revisaoLore`).
+- Este modulo e pos-processamento/refinamento estrutural da legenda pronta.
+- Telemetria e relatorio JSON sao parte obrigatoria da operacao.
+
+---
+
+## Navegacao
+
+| Anterior | Proximo |
 |----------|---------|
-| [← Correção & Revisão](06-modulo-correcao-revisao.md) | [Revisão de Lore →](16-modulo-revisao-lore.md) |
+| [<- Correcao & Revisao](06-modulo-correcao-revisao.md) | [Revisao de Lore ->](16-modulo-revisao-lore.md) |

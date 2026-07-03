@@ -102,8 +102,11 @@ Revisão de legendas `.ass` finais via LLM local (modo `LLM_CONCORDANCIA`).
 
 ---
 
+### `POST /api/correcao-legendas`
+Correção estrutural de legendas PT-BR usando a original como referência. Ver [Correção de Legendas](07-modulo-cura-tags.md).
+
 ### `POST /api/cura-tags`
-Restauração estrutural de tags ASS. Ver [Cura de Tags](07-modulo-cura-tags.md).
+Alias legado de compatibilidade para `/api/correcao-legendas`.
 
 ```json
 { "diretorioOriginal": "C:/.../legendas_extraidas", "diretorioTraduzido": "C:/.../legendas-ptbr", "contextoId": "danmachi-s4" }

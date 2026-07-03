@@ -1,6 +1,6 @@
 # 📖 Módulo: Revisão de Lore
 
-[← Cura de Tags](07-modulo-cura-tags.md) | [Remuxer →](08-modulo-remuxer.md)
+[← Correção de Legendas](07-modulo-cura-tags.md) | [Remuxer →](08-modulo-remuxer.md)
 
 ---
 
@@ -102,4 +102,4 @@ Os dois campos de pasta (original em inglês / traduzida em PT-BR) mais o seleto
 
 | Anterior | Próximo |
 |----------|---------|
-| [← Cura de Tags](07-modulo-cura-tags.md) | [Remuxer →](08-modulo-remuxer.md) |
+| [← Correção de Legendas](07-modulo-cura-tags.md) | [Remuxer →](08-modulo-remuxer.md) |

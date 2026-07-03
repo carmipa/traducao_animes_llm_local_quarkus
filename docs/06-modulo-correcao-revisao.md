@@ -1,6 +1,6 @@
 # 🩹 Módulo: Correção & Revisão
 
-[← Tradução Local](05-modulo-traducao-llm.md) | [Cura de Tags →](07-modulo-cura-tags.md)
+[← Tradução Local](05-modulo-traducao-llm.md) | [Correção de Legendas →](07-modulo-cura-tags.md)
 
 ---
 
@@ -108,4 +108,4 @@ sequenceDiagram
 
 | Anterior | Próximo |
 |----------|---------|
-| [← Tradução Local](05-modulo-traducao-llm.md) | [Cura de Tags →](07-modulo-cura-tags.md) |
+| [← Tradução Local](05-modulo-traducao-llm.md) | [Correção de Legendas →](07-modulo-cura-tags.md) |

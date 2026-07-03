@@ -34,7 +34,7 @@ graph TB
         P_TR["🌐 Tradução Local"]
         P_CO["🩹 Correção de Cache"]
         P_RE["📝 Revisão de Legendas"]
-        P_CU["🧵 Cura de Tags"]
+        P_CU["🧵 Correção de Legendas"]
         P_RX["📦 Remuxer"]
         P_MA["🗺️ Mapa do Projeto"]
         P_TE["📊 Telemetria"]
@@ -44,7 +44,7 @@ graph TB
     subgraph API["🎮 ApiController (Spring-style REST, prefixo /api)"]
         EP1["/analisar /extrair"]
         EP2["/traduzir /corrigir-* /revisar-*"]
-        EP3["/cura-tags /remuxar /mapa"]
+        EP3["/correcao-legendas /remuxar /mapa"]
         EP4["/telemetria /contextos /metadata"]
         SSE["/logs/stream (SSE)"]
     end
@@ -55,7 +55,7 @@ graph TB
         UC_TR["ProcessarArquivoUseCase"]
         UC_CO["RevisarCacheUseCase / CorrigirComGoogleUseCase"]
         UC_RE["RevisarLegendasUseCase"]
-        UC_CU["CuraTagsUseCase"]
+        UC_CU["CorrigirLegendasUseCase"]
         UC_RX["RemuxarLoteUseCase"]
     end
 
@@ -117,7 +117,7 @@ graph LR
     E -->|Sim| F["🩹 4. Correção<br/>(cache LLM / Google scraping)"]
     E -->|Não| G["📝 5. Revisão<br/>concordância PT-BR"]
     F --> G
-    G --> H["🧵 6. Cura de Tags<br/>Aegisub / Kara Templater"]
+    G --> H["🧵 6. Correção de Legendas<br/>original como referência imutável"]
     H --> I["📦 7. Remuxer<br/>mkvmerge: vídeo + legenda PT-BR"]
     I --> J["🎬 MKV Final<br/>pronto para distribuição"]
 
@@ -179,7 +179,8 @@ org.traducao.projeto/
 │   └── presentation/web/   ← ApiController (a maioria dos endpoints REST vive aqui)
 ├── raspagemCorrecao/       ← Correção de cache via Google Translate (scraping)
 ├── raspagemRevisao/        ← Revisão de legendas .ass finais (Google ou LLM) + detector de concordância PT-BR
-├── curatags/                ← Restauração estrutural de tags ASS corrompidas por alucinação do LLM
+├── revisaoLore/             ← Refinamento de lore pós-tradução: nomes, lugares, objetos e termos de universo
+├── correcaoLegendas/        ← Correção estrutural da legenda PT-BR usando a original como referência imutável
 ├── remuxer/                 ← Combina vídeo original + legenda traduzida em MKV final (mkvmerge)
 ├── telemetria/               ← Rastreamento de operações, métricas JVM, SSE de telemetria
 ├── mapaProjeto/               ← Gera o mapa_projeto.md (varredura estática de docstrings)
