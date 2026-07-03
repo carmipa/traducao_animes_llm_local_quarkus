@@ -1,8 +1,9 @@
-package org.traducao.projeto.correcaoLegendas;
+package org.traducao.projeto.correcaoLegendas.infrastructure;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.stereotype.Component;
+import org.traducao.projeto.correcaoLegendas.domain.CorrecaoLegendasRelatorioJson;
 import org.traducao.projeto.telemetria.TelemetriaService;
 
 import java.io.IOException;

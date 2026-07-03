@@ -121,32 +121,17 @@ pai ainda le o outro stream) e aplica um timeout que mata o processo (destroyFor
 caso ele nao termine a tempo, em vez de travar o pipeline indefinidamente.
 ```
 
-### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/CorrecaoLegendasController.java`
-*(Sem docstring ou cabeçalho explicativo)*
-
-### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/CorrecaoLegendasLogPersistencia.java`
-*(Sem docstring ou cabeçalho explicativo)*
-
-### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/CorrecaoLegendasRelatorioJson.java`
-*(Sem docstring ou cabeçalho explicativo)*
-
-### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/CorretorTraducaoLlmService.java`
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/application/CorretorTraducaoLlmService.java`
 ```text
 Retorna a tradução corrigida via LLM apenas se a tradução atual estiver com
 resíduo em inglês/preâmbulo (ValidadorTraducaoService) — evita chamar o LLM
 para falas que já estão corretas.
 ```
 
-### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/CorrigirLegendasUseCase.java`
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/application/CorrigirLegendasUseCase.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
-### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/LogEventoCorrecaoLegendas.java`
-*(Sem docstring ou cabeçalho explicativo)*
-
-### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/ResultadoCorrecaoLegendas.java`
-*(Sem docstring ou cabeçalho explicativo)*
-
-### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/SanitizadorTagsService.java`
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/application/SanitizadorTagsService.java`
 ```text
 LLM costuma alucinar chaves {texto} como marcação de pensamento, o que quebra a linha no Aegisub.
 Legado: LLM (ou versões antigas deste código) corrompiam a tag do Kara Templater
@@ -158,6 +143,21 @@ alucinação do LLM e precisa ser descartado, não preservado.
 Chaves remanescentes que não são tags válidas do ASS são alucinação do LLM;
 escapamos para quebra de linha em vez de apagar o texto.
 ```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/domain/CorrecaoLegendasRelatorioJson.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/domain/LogEventoCorrecaoLegendas.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/domain/ResultadoCorrecaoLegendas.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/infrastructure/CorrecaoLegendasLogPersistencia.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/presentation/CorrecaoLegendasController.java`
+*(Sem docstring ou cabeçalho explicativo)*
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/legendasExtracao/application/ExtrairLegendaUseCase.java`
 *(Sem docstring ou cabeçalho explicativo)*

@@ -1,4 +1,4 @@
-package org.traducao.projeto.correcaoLegendas;
+package org.traducao.projeto.correcaoLegendas.application;
 
 import org.springframework.stereotype.Service;
 
@@ -38,7 +38,11 @@ public class SanitizadorTagsService {
             resultado = matcher.replaceAll("\\\\N$1");
         }
 
-        resultado = resultado.replaceAll("\\}\\s+", "}");
+        // Nao remover espaco em branco apos "}" aqui: falas de karaoke (OP/ED) tem
+        // tags validas no meio da linha, uma por silaba/palavra (ex.: "{\k50}Ka {\k30}ra"),
+        // e um regex global de limpeza de espaco pos-"}" gruda as palavras entre si.
+        // O prefixo (unica parte onde sobrava espaco) ja sai sem espaco por causa do
+        // trim() em removerPrefixo(...) acima.
 
         return resultado;
     }

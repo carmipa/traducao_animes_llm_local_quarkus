@@ -86,6 +86,8 @@ Regras principais:
 2. Prefixos ASS alucinados pela traducao sao removidos/substituidos pelo prefixo da original.
 3. Corrupcoes legadas `\N=X` sao revertidas para `{=X}`.
 4. Chaves invalidas que carregam texto, como `{pensamento}`, nao sao tratadas como tag ASS valida; o texto interno e preservado como conteudo seguro.
+5. Espaco em branco apos `}` **nao** e removido de forma global — falas de karaoke (OP/ED) usam tags validas no meio da linha, uma por silaba/palavra (ex.: `{\k50}Ka {\k30}ra`), e uma limpeza global de espaco pos-`}` gruda as palavras entre si. Apenas o prefixo (inicio da linha) e normalizado.
+6. Se a original tem fala real (`isDialogo` + texto nao vazio) mas a traducao pareada chegou vazia, o arquivo **nao** e "corrigido" com um texto em branco — o evento e mantido como esta, contado a parte (`traducaoAusente`) e reportado como pendencia de revisao manual, em vez de mascarar uma falha de traducao anterior como sucesso.
 
 ---
 

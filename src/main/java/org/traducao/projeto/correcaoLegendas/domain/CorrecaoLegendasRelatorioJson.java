@@ -1,4 +1,4 @@
-package org.traducao.projeto.correcaoLegendas;
+package org.traducao.projeto.correcaoLegendas.domain;
 
 import org.traducao.projeto.telemetria.OperacaoTelemetria;
 

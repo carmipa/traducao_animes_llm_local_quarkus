@@ -1,4 +1,4 @@
-package org.traducao.projeto.correcaoLegendas;
+package org.traducao.projeto.correcaoLegendas.domain;
 
 import java.util.List;
 
@@ -7,6 +7,7 @@ public record ResultadoCorrecaoLegendas(
     int corrigidosLlm,
     int semAlteracao,
     int semPar,
+    int traducaoAusente,
     int totalErros,
     List<String> erros,
     String relatorioJson

@@ -1,4 +1,4 @@
-package org.traducao.projeto.correcaoLegendas;
+package org.traducao.projeto.correcaoLegendas.domain;
 
 public record LogEventoCorrecaoLegendas(
     String timestampUtc,

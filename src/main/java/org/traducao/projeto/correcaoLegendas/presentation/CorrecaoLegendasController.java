@@ -1,10 +1,12 @@
-package org.traducao.projeto.correcaoLegendas;
+package org.traducao.projeto.correcaoLegendas.presentation;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.traducao.projeto.correcaoLegendas.application.CorrigirLegendasUseCase;
+import org.traducao.projeto.correcaoLegendas.domain.ResultadoCorrecaoLegendas;
 import org.traducao.projeto.traducao.infrastructure.contexto.GerenciadorContexto;
 import org.traducao.projeto.traducao.presentation.web.LogStreamService;
 
@@ -71,9 +73,9 @@ public class CorrecaoLegendasController {
             ResultadoCorrecaoLegendas resultado = corrigirLegendasUseCase.corrigirPasta(pastaOriginal, pastaTraduzida, contextoId);
 
             String mensagem = String.format(
-                "Correção de legendas finalizada: %d arquivo(s) corrigido(s), %d fala(s) corrigida(s) via LLM, %d já perfeito(s), %d sem tradução pareada, %d erro(s) de %d arquivo(s).",
+                "Correção de legendas finalizada: %d arquivo(s) corrigido(s), %d fala(s) corrigida(s) via LLM, %d já perfeito(s), %d sem tradução pareada, %d fala(s) sem tradução (vazia), %d erro(s) de %d arquivo(s).",
                 resultado.curados(), resultado.corrigidosLlm(), resultado.semAlteracao(), resultado.semPar(),
-                resultado.totalErros(), resultado.totalArquivosAnalisados());
+                resultado.traducaoAusente(), resultado.totalErros(), resultado.totalArquivosAnalisados());
 
             if (resultado.teveErros()) {
                 return ResponseEntity.internalServerError().body(Map.of(
