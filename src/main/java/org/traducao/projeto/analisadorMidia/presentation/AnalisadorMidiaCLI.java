@@ -61,10 +61,10 @@ public class AnalisadorMidiaCLI implements ExecucaoCli {
             // Executa a auditoria
             List<AuditoriaResultado> resultados = analisarMidiaUseCase.executar(
                 entrada,
-                propriedades.diretorioSaida() != null && !propriedades.diretorioSaida().isBlank() 
-                    ? pastasExecucao.diretorioSaida() 
+                propriedades.diretorioSaida() != null && !propriedades.diretorioSaida().isBlank()
+                    ? pastasExecucao.diretorioSaida()
                     : null
-            );
+            ).resultados();
 
             // Imprime o relatório colorido na tela para cada arquivo analisado
             for (AuditoriaResultado res : resultados) {

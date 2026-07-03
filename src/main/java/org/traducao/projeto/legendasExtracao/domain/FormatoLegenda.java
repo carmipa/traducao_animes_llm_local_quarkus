@@ -1,5 +1,7 @@
 package org.traducao.projeto.legendasExtracao.domain;
 
+import org.traducao.projeto.legendasExtracao.domain.exceptions.FormatoLegendaInvalidoException;
+
 public enum FormatoLegenda {
     ASS("ass", "ASS/SSA (SubStation Alpha)"),
     PGS("sup", "PGS (Presentation Graphic Stream)"),
@@ -22,11 +24,15 @@ public enum FormatoLegenda {
     }
 
     public static FormatoLegenda fromString(String formatoStr) {
-        if (formatoStr == null || formatoStr.isBlank()) return ASS;
+        if (formatoStr == null || formatoStr.isBlank()) {
+            throw new FormatoLegendaInvalidoException("Formato de legenda não informado. Escolha ASS, PGS ou SRT.");
+        }
         return switch (formatoStr.toUpperCase()) {
+            case "ASS" -> ASS;
             case "PGS" -> PGS;
             case "SRT" -> SRT;
-            default -> ASS;
+            default -> throw new FormatoLegendaInvalidoException(
+                    "Formato de legenda inválido: \"" + formatoStr + "\". Escolha ASS, PGS ou SRT.");
         };
     }
 }

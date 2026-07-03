@@ -545,6 +545,7 @@ body {
 
 .btn-clear-console,
 .btn-toggle-console,
+.btn-copy-console,
 .btn-copy-viewer,
 .btn-refresh-telemetria {
     background-color: transparent;
@@ -561,6 +562,7 @@ body {
 
 .btn-clear-console:hover,
 .btn-toggle-console:hover,
+.btn-copy-console:hover,
 .btn-copy-viewer:hover,
 .btn-refresh-telemetria:hover {
     color: var(--text-primary);
@@ -596,6 +598,16 @@ body {
 
 .log-line {
     margin-bottom: 4px;
+}
+
+.relatorio-salvo {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+    white-space: pre-wrap;
+    word-break: break-word;
 }
 
 .system-message {

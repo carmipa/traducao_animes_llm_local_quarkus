@@ -162,6 +162,14 @@ function conectarFluxoLugsSSE() {
         }
     });
 
+    // Relatório final da Análise de Mídia: o backend lê de volta o .txt que
+    // acabou de salvar em disco e manda o conteúdo completo em um único
+    // evento. Diferente do canal 'analise' (log linha a linha ao vivo), aqui
+    // substituímos o console inteiro pelo relatório salvo.
+    eventSource.addEventListener('analise-relatorio', (event) => {
+        exibirRelatorioSalvo('console-analise', event.data);
+    });
+
     eventSource.addEventListener('sistema', (event) => {
         console.log('SSE Sistema:', event.data);
     });
@@ -316,6 +324,26 @@ function logNoConsoleFormatado(consoleId, rawMessage) {
 }
 
 /**
+ * Substitui todo o conteúdo de um painel de console pelo texto de um
+ * relatório já salvo em disco (ex.: relatório de Análise de Mídia), em vez
+ * de acrescentar mais uma linha de log. Usado quando o backend manda o
+ * conteúdo integral de um arquivo via SSE, não uma linha de log ao vivo.
+ */
+function exibirRelatorioSalvo(consoleId, textoRelatorio) {
+    const consoleDiv = document.getElementById(consoleId);
+    if (!consoleDiv) return;
+
+    consoleDiv.innerHTML = '';
+
+    const pre = document.createElement('pre');
+    pre.className = 'relatorio-salvo';
+    pre.textContent = textoRelatorio;
+    consoleDiv.appendChild(pre);
+
+    consoleDiv.scrollTop = 0;
+}
+
+/**
  * Método genérico clássico para logs manuais do frontend
  */
 export function logNoConsole(consoleId, mensagem, tipo = 'info') {
@@ -335,6 +363,42 @@ document.querySelectorAll('.btn-clear-console').forEach(btn => {
         const consoleDiv = document.getElementById(consoleId);
         if (consoleDiv) {
             consoleDiv.innerHTML = '<div class="system-message">Console limpo. Aguardando novos logs...</div>';
+        }
+    });
+});
+
+// Configura funcionalidade de copiar o conteúdo de um console/relatório
+document.querySelectorAll('.btn-copy-console').forEach(btn => {
+    btn.addEventListener('click', async () => {
+        const consoleId = btn.getAttribute('data-target');
+        const consoleDiv = document.getElementById(consoleId);
+        if (!consoleDiv) return;
+
+        const texto = consoleDiv.innerText.trim();
+        if (!texto) {
+            mostrarAlerta('Não há conteúdo para copiar.', 'aviso');
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(texto);
+            mostrarAlerta('Conteúdo copiado para a área de transferência!', 'sucesso');
+        } catch (err) {
+            console.warn('Falha ao copiar via Clipboard API, usando fallback.', err);
+            const textarea = document.createElement('textarea');
+            textarea.value = texto;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                mostrarAlerta('Conteúdo copiado para a área de transferência!', 'sucesso');
+            } catch (fallbackErr) {
+                mostrarAlerta('Não foi possível copiar automaticamente. Selecione o texto manualmente.', 'erro');
+            } finally {
+                document.body.removeChild(textarea);
+            }
         }
     });
 });

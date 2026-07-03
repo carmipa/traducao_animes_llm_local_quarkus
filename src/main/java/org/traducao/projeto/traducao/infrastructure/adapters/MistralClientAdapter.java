@@ -35,45 +35,53 @@ public class MistralClientAdapter implements MistralPort {
     private final JsonHttpClient httpClient;
     private final LlmProperties propriedades;
     private final GerenciadorContexto gerenciadorContexto;
+    private final ObjectMapper objectMapper;
 
     public MistralClientAdapter(LlmProperties propriedades, GerenciadorContexto gerenciadorContexto, ObjectMapper mapper) {
         this.propriedades = propriedades;
         this.gerenciadorContexto = gerenciadorContexto;
+        this.objectMapper = mapper;
         this.httpClient = new JsonHttpClient(propriedades, propriedades.baseUrl(), mapper);
     }
 
     @Override
     public StatusLlm verificarDisponibilidade() {
-        String modeloConfigurado = propriedades.model();
         try {
-            ListaModelos resposta = httpClient.get("/models", ListaModelos.class);
+            // 1. Fonte de verdade: a API estendida da LM Studio (/api/v0/models) informa
+            // o campo "state" ("loaded"/"not-loaded"), diferente do endpoint OpenAI-
+            // compatible (/v1/models) usado abaixo, que só lista o catálogo baixado sem
+            // indicar o que está de fato carregado em memória. Confiar cegamente no
+            // catálogo (ex.: pegar o primeiro item da lista) já causou o app enviar uma
+            // requisição para um modelo diferente do carregado, e o LM Studio subir uma
+            // SEGUNDA instância via auto-load (JIT) só para atender esse pedido.
+            Optional<String> modeloCarregado = buscarModeloCarregadoViaApiEstendida();
+            if (modeloCarregado.isPresent()) {
+                propriedades.setModel(modeloCarregado.get());
+                return new StatusLlm(true, true,
+                    "Servidor LLM online e modelo \"" + modeloCarregado.get() + "\" carregado em memória.");
+            }
 
+            // 2. API estendida indisponível (servidor não é LM Studio, ou não suporta a
+            // extensão) — cai para o catálogo OpenAI-compatible como melhor esforço.
+            ListaModelos resposta = httpClient.get("/models", ListaModelos.class);
             List<ModeloDisponivel> modelos = resposta != null ? resposta.data() : null;
             if (modelos == null || modelos.isEmpty()) {
                 return new StatusLlm(true, false,
                     "Servidor LLM em " + propriedades.baseUrl() + " respondeu, mas nenhum modelo está carregado em memória.");
             }
 
-            // 1. Tenta achar o modelo configurado (busca exata ou parcial case-insensitive)
+            String modeloConfigurado = propriedades.model();
             Optional<String> modeloEncontrado = modelos.stream()
                 .map(ModeloDisponivel::id)
                 .filter(id -> id != null)
-                .filter(id -> id.equalsIgnoreCase(modeloConfigurado) 
-                    || id.toLowerCase().contains(modeloConfigurado.toLowerCase()) 
+                .filter(id -> id.equalsIgnoreCase(modeloConfigurado)
+                    || id.toLowerCase().contains(modeloConfigurado.toLowerCase())
                     || modeloConfigurado.toLowerCase().contains(id.toLowerCase()))
                 .findFirst();
 
-            if (modeloEncontrado.isPresent()) {
-                // Modelo configurado está carregado. Garante que usamos o ID oficial retornado pelo LM Studio
-                propriedades.setModel(modeloEncontrado.get());
-                return new StatusLlm(true, true,
-                    "Servidor LLM online e modelo \"" + modeloEncontrado.get() + "\" carregado em memória.");
-            }
-
-            // 2. Se o configurado não está carregado, mas há outro(s) modelo(s) em memória, adota o primeiro ativo!
-            String modeloAtivo = modelos.get(0).id();
-            log.info("Modelo configurado (\"{}\") não está carregado no LM Studio. Adaptando dinamicamente para o modelo carregado na memória: \"{}\"",
-                modeloConfigurado, modeloAtivo);
+            String modeloAtivo = modeloEncontrado.orElseGet(() -> modelos.get(0).id());
+            log.info("API estendida da LM Studio indisponível; adotando \"{}\" a partir do catálogo /v1/models (melhor esforço, sem garantia de load-state).",
+                modeloAtivo);
             propriedades.setModel(modeloAtivo);
 
             return new StatusLlm(true, true,
@@ -81,6 +89,33 @@ public class MistralClientAdapter implements MistralPort {
         } catch (Exception e) {
             return new StatusLlm(false, false,
                 "Não foi possível conectar ao servidor LLM em " + propriedades.baseUrl() + ": " + e.getMessage());
+        }
+    }
+
+    /**
+     * Consulta a API estendida da LM Studio ({@code /api/v0/models}, fora do
+     * prefixo {@code /v1} do base-url configurado) para achar o modelo com
+     * {@code state == "loaded"}. Retorna vazio (sem lançar) se o servidor não
+     * suportar essa extensão — o chamador cai para o comportamento de catálogo.
+     */
+    private Optional<String> buscarModeloCarregadoViaApiEstendida() {
+        try {
+            String raiz = propriedades.baseUrl().endsWith("/v1")
+                ? propriedades.baseUrl().substring(0, propriedades.baseUrl().length() - "/v1".length())
+                : propriedades.baseUrl();
+            String json = httpClient.getAbsolute(raiz + "/api/v0/models");
+            ListaModelosV0 resposta = objectMapper.readValue(json, ListaModelosV0.class);
+            if (resposta == null || resposta.data() == null) {
+                return Optional.empty();
+            }
+            return resposta.data().stream()
+                .filter(m -> "loaded".equalsIgnoreCase(m.state()))
+                .map(ModeloDisponivelV0::id)
+                .filter(id -> id != null)
+                .findFirst();
+        } catch (Exception e) {
+            log.debug("Não foi possível consultar /api/v0/models (extensão da LM Studio): {}", e.getMessage());
+            return Optional.empty();
         }
     }
 

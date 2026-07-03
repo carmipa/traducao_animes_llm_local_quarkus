@@ -41,7 +41,7 @@ public class AnalisarMidiaUseCase {
         this.objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     }
 
-    public List<AuditoriaResultado> executar(Path entrada, Path saidaEfetiva) {
+    public ResultadoAnaliseLote executar(Path entrada, Path saidaEfetiva) {
         List<Path> arquivosAnalisar = encontrarVideos(entrada);
 
         if (arquivosAnalisar.isEmpty()) {
@@ -116,18 +116,19 @@ public class AnalisarMidiaUseCase {
 
         // Salvar relatórios consolidados e telemetria consolidada
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        
+
         // Se for um único arquivo, já salvou o individual. Se for mais, salvamos o consolidado
+        Path relatorioPrincipal = null;
         if (resultados.size() > 1) {
-            salvarRelatorioConsolidado(resultados, pastaRelatorios, entrada.getFileName().toString(), timestamp);
+            relatorioPrincipal = salvarRelatorioConsolidado(resultados, pastaRelatorios, entrada.getFileName().toString(), timestamp);
         } else if (resultados.size() == 1) {
-            salvarRelatorioIndividual(resultados.getFirst(), pastaRelatorios, timestamp);
+            relatorioPrincipal = salvarRelatorioIndividual(resultados.getFirst(), pastaRelatorios, timestamp);
         }
 
         // Persiste a telemetria consolidada na pasta de relatórios
         telemetriaService.salvar(pastaRelatorios);
 
-        return resultados;
+        return new ResultadoAnaliseLote(resultados, relatorioPrincipal);
     }
 
     private List<Path> encontrarVideos(Path entrada) {
@@ -173,6 +174,21 @@ public class AnalisarMidiaUseCase {
         logs.add("Validação OK");
         logs.add(String.format("Tamanho: %.2f GiB (%.0f MB)", tamanhoGB, tamanhoMB));
         logs.add("Formatos detectados e mapeados via ffprobe com sucesso.\n");
+
+        logs.add("=".repeat(80));
+        logs.add("FORMATO DE LEGENDA DETECTADO");
+        logs.add("=".repeat(80));
+        if (base.legendas().isEmpty()) {
+            logs.add("  NENHUMA LEGENDA ENCONTRADA (arquivo RAW ou legenda queimada/hardsub)");
+        } else {
+            for (LegendaInfo leg : base.legendas()) {
+                String[] classifResumo = classificarLegenda(leg.codecId(), leg.formato());
+                String tituloResumo = leg.titulo() != null && !leg.titulo().isBlank() ? " - " + leg.titulo() : "";
+                logs.add(String.format("  [%d] %s | Idioma: %s%s",
+                    leg.indexRelativo() + 1, classifResumo[0], leg.idioma(), tituloResumo));
+            }
+        }
+        logs.add("");
 
         logs.add("=".repeat(80));
         logs.add("ESTRUTURA GERAL");
@@ -435,7 +451,7 @@ public class AnalisarMidiaUseCase {
         telemetriaService.registrarMidia(tel);
     }
 
-    private void salvarRelatorioIndividual(AuditoriaResultado res, Path pasta, String timestamp) {
+    private Path salvarRelatorioIndividual(AuditoriaResultado res, Path pasta, String timestamp) {
         String nomeBase = getNomeSemExtensao(res.nomeArquivo());
         Path arqTxt = pasta.resolve(nomeBase + "_" + timestamp + ".txt");
         Path arqJson = pasta.resolve(nomeBase + "_" + timestamp + ".json");
@@ -448,19 +464,21 @@ public class AnalisarMidiaUseCase {
             // Salva JSON
             objectMapper.writeValue(arqJson.toFile(), res);
             log.info("Relatório JSON salvo: {}", arqJson);
+            return arqTxt;
         } catch (IOException e) {
             log.error("Erro ao salvar relatórios individuais para {}: {}", res.nomeArquivo(), e.getMessage());
+            return null;
         }
     }
 
-    private void salvarRelatorioConsolidado(List<AuditoriaResultado> resultados, Path pasta, String nomeEntrada, String timestamp) {
+    private Path salvarRelatorioConsolidado(List<AuditoriaResultado> resultados, Path pasta, String nomeEntrada, String timestamp) {
         Path arqTxt = pasta.resolve("consolidado_" + nomeEntrada + "_" + timestamp + ".txt");
         List<String> consolidado = new ArrayList<>();
 
         for (AuditoriaResultado res : resultados) {
             consolidado.addAll(res.logsAuditoria());
             consolidado.add("\n" + "=".repeat(100) + "\n\n");
-            
+
             // Também salvamos o JSON individual de cada arquivo para auditoria fina
             salvarRelatorioIndividual(res, pasta, timestamp);
         }
@@ -468,8 +486,10 @@ public class AnalisarMidiaUseCase {
         try {
             Files.write(arqTxt, consolidado);
             log.info("Relatório consolidado de texto salvo com {} arquivos em: {}", resultados.size(), arqTxt);
+            return arqTxt;
         } catch (IOException e) {
             log.error("Erro ao salvar relatório consolidado em {}: {}", arqTxt, e.getMessage());
+            return null;
         }
     }
 

@@ -21,4 +21,17 @@ public class RecordsMistral {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public record ListaModelos(List<ModeloDisponivel> data) {}
+
+    /**
+     * Shape da API estendida da LM Studio ({@code /api/v0/models}, fora do
+     * prefixo {@code /v1}), que — diferente do endpoint OpenAI-compatible
+     * {@code /v1/models} — informa o campo {@code state} ("loaded" /
+     * "not-loaded"), permitindo saber com certeza qual modelo está de fato
+     * carregado em memória.
+     */
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public record ModeloDisponivelV0(String id, String state) {}
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public record ListaModelosV0(List<ModeloDisponivelV0> data) {}
 }

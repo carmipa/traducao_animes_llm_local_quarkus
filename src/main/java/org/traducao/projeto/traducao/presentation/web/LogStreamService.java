@@ -34,7 +34,12 @@ public class LogStreamService {
     @Inject
     Sse sse;
 
-    private volatile String canalAtual = "console";
+    // Cada operação em segundo plano roda em sua própria thread do executor e
+    // chama definirCanalAtual() como primeiro passo (ver ApiController). Usar
+    // ThreadLocal em vez de um campo único compartilhado evita que operações
+    // concorrentes (ex.: uma tradução em andamento + uma análise disparada
+    // em paralelo) "roubem" o canal SSE uma da outra e misturem os consoles.
+    private final ThreadLocal<String> canalAtual = ThreadLocal.withInitial(() -> "console");
 
     public void registrar(SseEventSink sink) {
         conexoes.add(sink);
@@ -42,11 +47,11 @@ public class LogStreamService {
     }
 
     public void definirCanalAtual(String canal) {
-        this.canalAtual = canal;
+        this.canalAtual.set(canal);
     }
 
     public void publicarLog(String mensagem) {
-        publicarLog(canalAtual, mensagem);
+        publicarLog(canalAtual.get(), mensagem);
     }
 
     public void publicarLog(String canal, String mensagem) {

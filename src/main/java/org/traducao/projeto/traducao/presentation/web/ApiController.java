@@ -5,9 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.traducao.projeto.analisadorMidia.application.AnalisarMidiaUseCase;
+import org.traducao.projeto.analisadorMidia.domain.ResultadoAnaliseLote;
 import org.traducao.projeto.legendasExtracao.application.ExtrairLegendaUseCase;
 import org.traducao.projeto.legendasExtracao.domain.FormatoLegenda;
 import org.traducao.projeto.legendasExtracao.domain.RelatorioExtracao;
+import org.traducao.projeto.legendasExtracao.domain.exceptions.FormatoLegendaInvalidoException;
 import org.traducao.projeto.mapaProjeto.application.GeradorMapaProjetoUseCase;
 import org.traducao.projeto.mapaProjeto.domain.exceptions.MapaProjetoException;
 import org.traducao.projeto.raspagemCorrecao.application.CorrigirComGoogleUseCase;
@@ -187,7 +189,8 @@ public class ApiController {
                     return;
                 }
                 Path pathSaida = normalizarCaminho(req.saida());
-                analisarMidiaUseCase.executar(pathEntrada, pathSaida);
+                ResultadoAnaliseLote resultadoLote = analisarMidiaUseCase.executar(pathEntrada, pathSaida);
+                publicarRelatorioSalvoNoConsole(resultadoLote.relatorioPrincipal());
                 System.out.println("\n\u001B[32m========================================================================\u001B[0m");
                 System.out.println("\u001B[32m  🎉 [SUCESSO] ANÁLISE DE MÍDIA FINALIZADA COM SUCESSO!\u001B[0m");
                 System.out.println("\u001B[32m========================================================================\n\u001B[0m");
@@ -202,12 +205,42 @@ public class ApiController {
     }
 
     /**
+     * Publica no canal SSE dedicado "analise-relatorio" o conteúdo exato do
+     * relatório .txt que a auditoria acabou de gravar em disco, para que o
+     * navegador exiba o relatório efetivamente salvo (fonte única de verdade),
+     * em vez de reconstruí-lo a partir do log ao vivo da execução.
+     */
+    private void publicarRelatorioSalvoNoConsole(Path relatorioPrincipal) {
+        if (relatorioPrincipal == null) {
+            log.warn("Nenhum relatório de análise foi gravado em disco; nada para exibir no navegador.");
+            return;
+        }
+        try {
+            // Normaliza CRLF -> LF: o framing de eventos SSE multilinha trata \r
+            // e \n como quebras de linha separadas, então um \r\n do arquivo
+            // (line separator padrão no Windows) viraria uma linha em branco
+            // extra a cada linha real depois de recomposto no navegador.
+            String conteudo = Files.readString(relatorioPrincipal).replace("\r\n", "\n");
+            logStreamService.publicarLog("analise-relatorio", conteudo);
+        } catch (IOException e) {
+            log.error("Erro ao ler o relatório salvo em {} para exibição no navegador: {}", relatorioPrincipal, e.getMessage());
+        }
+    }
+
+    /**
      * 2. EXTRAÇÃO DE LEGENDAS
      */
     @PostMapping("/extrair")
     public ResponseEntity<RespostaPadrao> extrair(@RequestBody ExtracaoRequest req) {
         if (req.entrada() == null || req.entrada().isBlank()) {
             return ResponseEntity.badRequest().body(new RespostaPadrao("Caminho da pasta de vídeos obrigatório."));
+        }
+
+        final FormatoLegenda formatoSelecionado;
+        try {
+            formatoSelecionado = FormatoLegenda.fromString(req.formato());
+        } catch (FormatoLegendaInvalidoException e) {
+            return ResponseEntity.badRequest().body(new RespostaPadrao(e.getMessage()));
         }
 
         executor.submit(() -> {
@@ -219,7 +252,7 @@ public class ApiController {
                     return;
                 }
                 Path pathSaida = normalizarCaminho(req.saida());
-                FormatoLegenda formato = FormatoLegenda.fromString(req.formato() != null ? req.formato() : "ASS");
+                FormatoLegenda formato = formatoSelecionado;
                 RelatorioExtracao rel = extrairLegendaUseCase.executar(pathEntrada, pathSaida, formato);
                 if (rel.getArquivosDetectados() == 0) {
                     System.out.println("\n\u001B[33m========================================================================\u001B[0m");
