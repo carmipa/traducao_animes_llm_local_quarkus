@@ -8,7 +8,7 @@
 
 Extrai a faixa de legenda embutida de um vídeo para um arquivo independente (`.ass`, `.srt` ou `.sup`), no formato solicitado pelo operador, para que ela possa ser traduzida e depois remuxada de volta. Suporta lote (varredura recursiva de pasta) e dois motores conforme o contêiner do vídeo.
 
-![Painel de Extração de Legendas](../src/main/resources/static/img/screenshots/extracao.png)
+![Painel de Extração de Legendas](../src/main/resources/static/img/screenshots/extracao.webp)
 
 ---
 

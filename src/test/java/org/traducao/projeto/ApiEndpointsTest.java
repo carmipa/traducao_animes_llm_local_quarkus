@@ -209,7 +209,17 @@ class ApiEndpointsTest {
             .when().post("/api/revisar-lore")
             .then()
             .statusCode(400)
-            .body("erro", containsString("Contexto desconhecido"));
+            .body("erro", containsString("Prompt de revisao de lore desconhecido"));
+    }
+
+    @Test
+    void listarContextosRevisaoLoreRetornaPromptsProprios() {
+        given()
+            .when().get("/api/revisao-lore/contextos")
+            .then()
+            .statusCode(200)
+            .body("size()", greaterThanOrEqualTo(1))
+            .body("find { it.id == 'gundam_nt' }.nome", containsString("Revisao de Lore"));
     }
 
     @Test

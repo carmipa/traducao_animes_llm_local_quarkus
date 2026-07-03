@@ -333,6 +333,9 @@ Heuristica leve para priorizar falas com possivel erro de lore/terminologia
 antes de chamar o LLM (nomes em ingles remanescentes, grafias suspeitas, etc.).
 ```
 
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/application/GerenciadorPromptRevisaoLore.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/application/PromptRevisaoLore.java`
 ```text
 Monta os prompts de sistema e usuario para revisao de terminologia/lore
@@ -342,6 +345,33 @@ Monta os prompts de sistema e usuario para revisao de terminologia/lore
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/application/RevisarLoreUseCase.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/contexto/ContextoRevisaoLore86.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/contexto/ContextoRevisaoLoreDanMachi.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/contexto/ContextoRevisaoLoreDanMachiS4.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/contexto/ContextoRevisaoLoreDanMachiS5.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/contexto/ContextoRevisaoLoreGundam0080.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/contexto/ContextoRevisaoLoreGundam0083.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/contexto/ContextoRevisaoLoreGundam08thMSTeam.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/contexto/ContextoRevisaoLoreGundamCCA.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/contexto/ContextoRevisaoLoreGundamNT.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/domain/exceptions/RevisaoLoreException.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
@@ -349,6 +379,9 @@ Monta os prompts de sistema e usuario para revisao de terminologia/lore
 ```text
 Entrada estruturada do log de sessao da revisao de lore (serializavel em JSON).
 ```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/domain/ports/ProvedorPromptRevisaoLore.java`
+*(Sem docstring ou cabeçalho explicativo)*
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/domain/ResultadoDeteccaoLore.java`
 *(Sem docstring ou cabeçalho explicativo)*

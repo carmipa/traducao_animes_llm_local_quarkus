@@ -16,7 +16,6 @@ import org.traducao.projeto.traducao.domain.StatusLlm;
 import org.traducao.projeto.traducao.domain.legenda.DocumentoLegenda;
 import org.traducao.projeto.traducao.domain.legenda.EventoLegenda;
 import org.traducao.projeto.traducao.domain.ports.MistralPort;
-import org.traducao.projeto.traducao.infrastructure.contexto.GerenciadorContexto;
 import org.traducao.projeto.traducao.infrastructure.legenda.EscritorLegendaAss;
 import org.traducao.projeto.traducao.infrastructure.legenda.LeitorLegendaAss;
 import org.traducao.projeto.traducao.infrastructure.legenda.MascaradorTags;
@@ -42,7 +41,7 @@ public class RevisarLoreUseCase {
     private final DetectorTermosLoreService detector;
     private final ValidadorTraducaoService validador;
     private final MistralPort mistralPort;
-    private final GerenciadorContexto gerenciadorContexto;
+    private final GerenciadorPromptRevisaoLore gerenciadorPromptRevisaoLore;
     private final TelemetriaService telemetriaService;
     private final RevisaoLoreLogPersistencia logPersistencia;
 
@@ -59,7 +58,7 @@ public class RevisarLoreUseCase {
         DetectorTermosLoreService detector,
         ValidadorTraducaoService validador,
         MistralPort mistralPort,
-        GerenciadorContexto gerenciadorContexto,
+        GerenciadorPromptRevisaoLore gerenciadorPromptRevisaoLore,
         TelemetriaService telemetriaService,
         RevisaoLoreLogPersistencia logPersistencia
     ) {
@@ -69,7 +68,7 @@ public class RevisarLoreUseCase {
         this.detector = detector;
         this.validador = validador;
         this.mistralPort = mistralPort;
-        this.gerenciadorContexto = gerenciadorContexto;
+        this.gerenciadorPromptRevisaoLore = gerenciadorPromptRevisaoLore;
         this.telemetriaService = telemetriaService;
         this.logPersistencia = logPersistencia;
     }
@@ -93,13 +92,14 @@ public class RevisarLoreUseCase {
             throw new RevisaoLoreException("LLM indisponivel para revisao de lore: " + status.mensagem());
         }
 
-        gerenciadorContexto.definirContextoAtivo(contextoId);
+        String nomePromptRevisao = gerenciadorPromptRevisaoLore.obterNome(contextoId);
+        String promptSistemaRevisaoLore = gerenciadorPromptRevisaoLore.obterPromptSistema(contextoId);
         long inicioMs = System.currentTimeMillis();
 
         out(AnsiCores.CYAN + "\n=== Revisao de Lore (nomes, locais e terminologia) ===" + AnsiCores.RESET);
         out("Pasta original (EN): " + pastaOriginal.toAbsolutePath());
         out("Pasta traduzida (PT-BR): " + pastaTraduzida.toAbsolutePath());
-        out("Contexto/lore ativo: " + gerenciadorContexto.obterNomeContextoAtivo() + " (" + contextoId + ")");
+        out("Prompt de revisao de lore ativo: " + nomePromptRevisao + " (" + contextoId + ")");
         out(revisarTodasFalas
             ? "Modo: revisar TODAS as falas com dialogo"
             : "Modo: revisar apenas falas sinalizadas pela heuristica");
@@ -122,7 +122,7 @@ public class RevisarLoreUseCase {
 
             for (Path arqOriginal : originais) {
                 processarArquivo(
-                    arqOriginal, pastaTraduzida, revisarTodasFalas,
+                    arqOriginal, pastaTraduzida, revisarTodasFalas, promptSistemaRevisaoLore,
                     arquivosAnalisados, arquivosAlterados, falasAuditadas, falasSinalizadas,
                     falasCorrigidas, falasSemAlteracao, erros
                 );
@@ -178,9 +178,10 @@ public class RevisarLoreUseCase {
             throw new RevisaoLoreException(
                 "Contexto da obra obrigatorio. Selecione o anime/filme no menu para carregar a lore oficial.");
         }
-        if (!gerenciadorContexto.existeContexto(contextoId)) {
+        if (!gerenciadorPromptRevisaoLore.existePrompt(contextoId)) {
             throw new RevisaoLoreException(
-                "Contexto desconhecido: \"" + contextoId + "\". Recarregue a pagina e selecione uma obra valida.");
+                "Prompt de revisao de lore desconhecido: \"" + contextoId
+                    + "\". Recarregue a pagina e selecione uma obra valida.");
         }
         if (!Files.isDirectory(pastaOriginal) || !Files.isDirectory(pastaTraduzida)) {
             throw new RevisaoLoreException(
@@ -192,6 +193,7 @@ public class RevisarLoreUseCase {
         Path arqOriginal,
         Path pastaTraduzida,
         boolean revisarTodasFalas,
+        String promptSistemaRevisaoLore,
         int[] arquivosAnalisados,
         int[] arquivosAlterados,
         int[] falasAuditadas,
@@ -262,6 +264,7 @@ public class RevisarLoreUseCase {
                 falasSinalizadas[0]++;
 
                 Optional<String> revisadaOpt = mistralPort.revisarLore(
+                    promptSistemaRevisaoLore,
                     mascaraEn.texto(),
                     mascaraPt.texto(),
                     deteccao.motivos()
@@ -329,7 +332,7 @@ public class RevisarLoreUseCase {
         List<String> erros
     ) {
         String detalhe = pastaTraduzida.toAbsolutePath()
-            + " | contexto=" + gerenciadorContexto.obterNomeContextoAtivo();
+            + " | promptRevisaoLore=" + gerenciadorPromptRevisaoLore.obterNome(contextoIdRef);
 
         OperacaoTelemetria operacao = TelemetriaService.criarOperacao(
             "Revisao de Lore (.ass LLM)",
@@ -345,7 +348,7 @@ public class RevisarLoreUseCase {
             operacao,
             new RevisaoLoreRelatorioJson.ContextoObra(
                 contextoIdRef,
-                gerenciadorContexto.obterNomeContextoAtivo()
+                gerenciadorPromptRevisaoLore.obterNome(contextoIdRef)
             ),
             new RevisaoLoreRelatorioJson.PastasOperacao(
                 pastaOriginal.toAbsolutePath().toString(),

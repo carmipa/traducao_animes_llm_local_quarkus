@@ -8,7 +8,7 @@
 
 Rastreia **todas** as operações do pipeline (análise, extração, tradução, correção, revisão, remux) em um armazenamento único e persistente, alimentando o painel **Telemetria** da UI em tempo real via SSE e permitindo auditoria histórica de tudo que já foi processado.
 
-![Painel de Telemetria](../src/main/resources/static/img/screenshots/telemetria.png)
+![Painel de Telemetria](../src/main/resources/static/img/screenshots/telemetria.webp)
 
 ---
 

@@ -1,6 +1,6 @@
 # 📦 Módulo: Remuxer
 
-[← Cura de Tags](07-modulo-cura-tags.md) | [Contextos & Lore →](09-contextos-lore.md)
+[← Revisão de Lore](16-modulo-revisao-lore.md) | [Contextos & Lore →](09-contextos-lore.md)
 
 ---
 
@@ -8,7 +8,7 @@
 
 Última etapa do pipeline: combina o **vídeo original** com a **legenda traduzida** (já revisada/curada) num novo arquivo `.mkv`, via `mkvmerge` (MKVToolNix), preservando todas as faixas de vídeo/áudio originais e adicionando a faixa de legenda PT-BR — sem re-encodar nada (remuxagem, não transcodificação: rápido e sem perda de qualidade).
 
-![Painel do Remuxer](../src/main/resources/static/img/screenshots/remuxer.png)
+![Painel do Remuxer](../src/main/resources/static/img/screenshots/remuxer.webp)
 
 ---
 
@@ -104,4 +104,4 @@ sequenceDiagram
 
 | Anterior | Próximo |
 |----------|---------|
-| [← Cura de Tags](07-modulo-cura-tags.md) | [Contextos & Lore →](09-contextos-lore.md) |
+| [← Revisão de Lore](16-modulo-revisao-lore.md) | [Contextos & Lore →](09-contextos-lore.md) |

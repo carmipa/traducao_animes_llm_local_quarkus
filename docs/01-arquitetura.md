@@ -19,7 +19,7 @@ O desenho segue **Arquitetura Hexagonal (Ports & Adapters)** por módulo: cada p
 
 A aplicação roda **100% localmente** (`quarkus.http.host=127.0.0.1`) — não expõe nenhuma porta na rede, e a única dependência de rede externa opcional é para metadados de anime (Jikan/TMDB) e correção via Google Translate (scraping da API pública, não a API paga).
 
-![Painel Inicial do KRONOS CORE](../src/main/resources/static/img/screenshots/painel-inicial.png)
+![Painel Inicial do KRONOS CORE](../src/main/resources/static/img/screenshots/painel-inicial.webp)
 
 ---
 

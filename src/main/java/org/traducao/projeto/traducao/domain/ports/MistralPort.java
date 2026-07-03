@@ -44,6 +44,7 @@ public interface MistralPort {
      * usando a lore do contexto ativo. Retorna vazio se o LLM falhar ou a resposta for invalida.
      */
     Optional<String> revisarLore(
+        String promptSistemaRevisaoLore,
         String originalInglesMascarado,
         String traducaoPtMascarada,
         List<String> problemasDetectados

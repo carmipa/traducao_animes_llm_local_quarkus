@@ -38,7 +38,7 @@ O **KRONOS CORE** é uma plataforma de automação para **tradução industrial 
 
 Tudo rodando sobre **Java 25 + Quarkus** com uma SPA própria (HTML/CSS/JS puro, sem framework de frontend), pensado para operação **desktop-first e 100% offline** — a única dependência de rede é opcional (metadados de anime via Jikan/TMDB).
 
-![Painel Inicial do KRONOS CORE](src/main/resources/static/img/screenshots/painel-inicial.png)
+![Painel Inicial do KRONOS CORE](src/main/resources/static/img/screenshots/painel-inicial.webp)
 
 ---
 
@@ -61,6 +61,7 @@ Tudo rodando sobre **Java 25 + Quarkus** com uma SPA própria (HTML/CSS/JS puro,
 | 🌐 | [**Tradução Local (LLM)**](docs/05-modulo-traducao-llm.md) | Núcleo: LM Studio, cache, proteção de tags, contextos |
 | 🩹 | [**Correção & Revisão**](docs/06-modulo-correcao-revisao.md) | Os 3 fluxos: LLM, Google Translate, concordância PT-BR |
 | 🧵 | [**Cura de Tags**](docs/07-modulo-cura-tags.md) | Restauração estrutural de tags ASS/Kara Templater |
+| 📖 | [**Revisão de Lore**](docs/16-modulo-revisao-lore.md) | Corrige nomes, locais e termos de lore comparando com o original em inglês |
 | 📦 | [**Remuxer**](docs/08-modulo-remuxer.md) | Combina vídeo + legenda em MKV final |
 | 🎭 | [**Contextos & Lore**](docs/09-contextos-lore.md) | Sistema de lore por anime — 56+ contextos cadastrados |
 | 📊 | [**Telemetria**](docs/10-modulo-telemetria.md) | Rastreamento de operações e métricas de JVM em tempo real |
@@ -191,7 +192,7 @@ A aplicação web tem 11 painéis navegáveis pela barra lateral — cada um map
 
 O menu **Documentação** renderiza esta mesma pasta `docs/` dentro da própria aplicação (incluindo os diagramas Mermaid), sem precisar sair do app ou abrir o GitHub.
 
-![Painel de Documentação dentro do app](src/main/resources/static/img/screenshots/documentacao.png)
+![Painel de Documentação dentro do app](src/main/resources/static/img/screenshots/documentacao.webp)
 
 ---
 

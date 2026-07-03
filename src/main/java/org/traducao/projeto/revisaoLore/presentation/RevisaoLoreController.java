@@ -1,17 +1,19 @@
 package org.traducao.projeto.revisaoLore.presentation;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.traducao.projeto.revisaoLore.application.GerenciadorPromptRevisaoLore;
 import org.traducao.projeto.revisaoLore.application.RevisarLoreUseCase;
 import org.traducao.projeto.revisaoLore.domain.ResultadoRevisaoLore;
 import org.traducao.projeto.revisaoLore.domain.exceptions.RevisaoLoreException;
-import org.traducao.projeto.traducao.infrastructure.contexto.GerenciadorContexto;
 import org.traducao.projeto.traducao.presentation.web.LogStreamService;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -22,16 +24,16 @@ public class RevisaoLoreController {
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final RevisarLoreUseCase revisarLoreUseCase;
-    private final GerenciadorContexto gerenciadorContexto;
+    private final GerenciadorPromptRevisaoLore gerenciadorPromptRevisaoLore;
     private final LogStreamService logStreamService;
 
     public RevisaoLoreController(
         RevisarLoreUseCase revisarLoreUseCase,
-        GerenciadorContexto gerenciadorContexto,
+        GerenciadorPromptRevisaoLore gerenciadorPromptRevisaoLore,
         LogStreamService logStreamService
     ) {
         this.revisarLoreUseCase = revisarLoreUseCase;
-        this.gerenciadorContexto = gerenciadorContexto;
+        this.gerenciadorPromptRevisaoLore = gerenciadorPromptRevisaoLore;
         this.logStreamService = logStreamService;
     }
 
@@ -41,6 +43,16 @@ public class RevisaoLoreController {
         String contextoId,
         boolean revisarTodasFalas
     ) {}
+
+    public record RevisaoLoreContextoResponse(String id, String nome) {}
+
+    @GetMapping("/revisao-lore/contextos")
+    public ResponseEntity<List<RevisaoLoreContextoResponse>> listarPromptsRevisaoLore() {
+        List<RevisaoLoreContextoResponse> lista = gerenciadorPromptRevisaoLore.getProvedores().stream()
+            .map(p -> new RevisaoLoreContextoResponse(p.getId(), p.getNomeExibicao()))
+            .toList();
+        return ResponseEntity.ok(lista);
+    }
 
     @PostMapping("/revisar-lore")
     public ResponseEntity<Map<String, Object>> iniciarRevisaoLore(@RequestBody RevisaoLoreRequest req) {
@@ -56,9 +68,9 @@ public class RevisaoLoreController {
             return ResponseEntity.badRequest().body(Map.of(
                 "erro", "Selecione a obra/contexto no menu para carregar a lore oficial da revisao."));
         }
-        if (!gerenciadorContexto.existeContexto(req.contextoId())) {
+        if (!gerenciadorPromptRevisaoLore.existePrompt(req.contextoId())) {
             return ResponseEntity.badRequest().body(Map.of(
-                "erro", "Contexto desconhecido: \"" + req.contextoId()
+                "erro", "Prompt de revisao de lore desconhecido: \"" + req.contextoId()
                     + "\". Recarregue a pagina e selecione uma obra valida."));
         }
 

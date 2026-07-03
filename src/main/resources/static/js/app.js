@@ -572,10 +572,16 @@ function inicializarMetadadosDinamicos() {
 
 async function carregarContextosAuxiliares(idsSelects, onComplete) {
     try {
-        const response = await fetch('/api/contextos');
+        const [response, responseRevisaoLore] = await Promise.all([
+            fetch('/api/contextos'),
+            fetch('/api/revisao-lore/contextos').catch(() => null)
+        ]);
         if (!response.ok) return;
         const contextos = await response.json();
         if (!Array.isArray(contextos) || contextos.length === 0) return;
+        const contextosRevisaoLore = responseRevisaoLore?.ok
+            ? await responseRevisaoLore.json()
+            : contextos;
 
         const todosSelects = ['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto'];
         todosSelects.forEach(id => {
@@ -602,7 +608,11 @@ async function carregarContextosAuxiliares(idsSelects, onComplete) {
                 select.appendChild(optObrigatorio);
             }
 
-            contextos.forEach(ctx => {
+            const fonteContextos = ehRevisaoLore && Array.isArray(contextosRevisaoLore) && contextosRevisaoLore.length > 0
+                ? contextosRevisaoLore
+                : contextos;
+
+            fonteContextos.forEach(ctx => {
                 const opt = document.createElement('option');
                 opt.value = ctx.id;
                 opt.textContent = ctx.nome;

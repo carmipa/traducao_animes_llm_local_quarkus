@@ -1,5 +1,6 @@
 package org.traducao.projeto.revisaoLore.application;
 
+import jakarta.enterprise.inject.Instance;
 import org.springframework.stereotype.Component;
 import org.traducao.projeto.revisaoLore.domain.exceptions.RevisaoLoreException;
 import org.traducao.projeto.revisaoLore.domain.ports.ProvedorPromptRevisaoLore;
@@ -15,7 +16,7 @@ public class GerenciadorPromptRevisaoLore {
 
     private final List<ProvedorPromptRevisaoLore> provedores;
 
-    public GerenciadorPromptRevisaoLore(List<ProvedorPromptRevisaoLore> provedores) {
+    public GerenciadorPromptRevisaoLore(Instance<ProvedorPromptRevisaoLore> provedores) {
         this.provedores = provedores.stream()
             .sorted(Comparator.comparing(ProvedorPromptRevisaoLore::getNomeExibicao, String.CASE_INSENSITIVE_ORDER))
             .toList();

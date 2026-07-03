@@ -112,6 +112,16 @@ Restauração estrutural de tags ASS. Ver [Cura de Tags](07-modulo-cura-tags.md)
 
 ---
 
+### `POST /api/revisar-lore`
+Corrige nomes, locais e termos de lore em legendas `.ass` já traduzidas, comparando com o original em inglês. Ver [Revisão de Lore](16-modulo-revisao-lore.md).
+
+```json
+{ "diretorioOriginal": "E:/.../legendas_eng", "diretorioTraduzido": "E:/.../traducao_ptbr", "contextoId": "gundam_0083", "revisarTodasFalas": false }
+```
+`contextoId` é **obrigatório** (`400` se ausente/desconhecido — usa o sistema de contextos próprio deste módulo, não o `/api/contextos` geral). **Canal SSE:** `revisao-lore`
+
+---
+
 ### `POST /api/remuxar`
 Combina vídeo + legenda em MKV final. Ver [Remuxer](08-modulo-remuxer.md).
 
@@ -136,6 +146,13 @@ Lista os contextos/lore disponíveis. Ver [Contextos & Lore](09-contextos-lore.m
 
 ```json
 [{ "id": "danmachi", "nome": "DanMachi (Geral)", "padrao": true }]
+```
+
+### `GET /api/revisao-lore/contextos`
+Lista os contextos específicos do módulo de [Revisão de Lore](16-modulo-revisao-lore.md) — sistema separado do `/api/contextos` acima, com um subconjunto menor de obras calibradas.
+
+```json
+[{ "id": "gundam_0083", "nome": "Gundam 0083 - Revisao de Lore" }]
 ```
 
 ### `GET /api/metadata?caminho=<pasta_ou_nome>`
@@ -175,6 +192,7 @@ Conexão `EventSource` única para **todos** os logs em tempo real. Cada operaç
 | `correcao` | `/api/corrigir-*`, `/api/revisar-cache` |
 | `revisao` | `/api/revisar-legendas*` |
 | `cura` | `/api/cura-tags` |
+| `revisao-lore` | `/api/revisar-lore` |
 | `remuxer` | `/api/remuxar` |
 | `console` | Fallback genérico — roteado para a aba ativa no navegador |
 | `sistema` | Mensagens de conexão/sistema |
@@ -187,7 +205,7 @@ es.addEventListener('traducao', (e) => console.log(e.data));
 
 Cada painel da SPA renderiza seu canal nesta mesma caixa "Logs do..." (exemplo abaixo: canal `analise`, painel Análise de Mídia):
 
-![Console de logs em tempo real (SSE) — mesmo componente em todos os painéis](../src/main/resources/static/img/screenshots/analise-midia.png)
+![Console de logs em tempo real (SSE) — mesmo componente em todos os painéis](../src/main/resources/static/img/screenshots/analise-midia.webp)
 
 ---
 

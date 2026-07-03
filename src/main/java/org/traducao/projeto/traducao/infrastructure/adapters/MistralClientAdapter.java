@@ -250,18 +250,18 @@ public class MistralClientAdapter implements MistralPort {
 
     @Override
     public Optional<String> revisarLore(
+        String promptSistemaRevisaoLore,
         String originalInglesMascarado,
         String traducaoPtMascarada,
         List<String> problemasDetectados
     ) {
         String promptUsuario = PromptRevisaoLore.montarPromptUsuario(
             originalInglesMascarado, traducaoPtMascarada, problemasDetectados);
-        String promptSistema = PromptRevisaoLore.montarPromptSistema(gerenciadorContexto.obterLoreAtiva());
 
         ChatRequest request = new ChatRequest(
             propriedades.model(),
             List.of(
-                new Mensagem("system", promptSistema),
+                new Mensagem("system", promptSistemaRevisaoLore),
                 new Mensagem("user", promptUsuario)
             ),
             TEMPERATURA_REVISAO,

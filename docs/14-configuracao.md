@@ -53,7 +53,7 @@ tmdb:
 
 O badge **"LLM de Tradução"** no Painel Inicial reflete `tradutor.llm.base-url` — mostra o nome do modelo atualmente carregado no LM Studio (não o valor `"current"` da config):
 
-![Widget de status do LLM no Painel Inicial](../src/main/resources/static/img/screenshots/painel-inicial.png)
+![Widget de status do LLM no Painel Inicial](../src/main/resources/static/img/screenshots/painel-inicial.webp)
 
 ---
 

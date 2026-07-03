@@ -8,7 +8,7 @@
 
 Gera automaticamente o `mapa_projeto.md` na raiz do repositório — um índice de todos os arquivos `.java`/`.py` do projeto com o comentário/docstring de topo de cada um, servindo como mapa de contexto rápido (para humanos ou para uma LLM) sem precisar abrir cada arquivo.
 
-![Painel do Mapa do Projeto](../src/main/resources/static/img/screenshots/mapa-projeto.png)
+![Painel do Mapa do Projeto](../src/main/resources/static/img/screenshots/mapa-projeto.webp)
 
 ---
 
