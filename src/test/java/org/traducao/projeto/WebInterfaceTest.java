@@ -54,6 +54,7 @@ class WebInterfaceTest {
             "/correcao/correcao.js",
             "/revisao/revisao.js",
             "/cura/cura.js",
+            "/revisaoLore/revisaoLore.js",
             "/remuxer/remuxer.js",
             "/mapa/mapa.js",
             "/telemetria/telemetria.js"
@@ -67,5 +68,12 @@ class WebInterfaceTest {
         }
     }
 
-
+    @Test
+    void indexContemRevisaoLore() {
+        given()
+            .when().get("/")
+            .then()
+            .statusCode(200)
+            .body(containsString("Revisão de Lore"));
+    }
 }

@@ -38,6 +38,14 @@ Memória viva e estado recente: veja **CEREBRO_IA.md** na raiz do repositório.
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/analisadorMidia/domain/LegendaInfo.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/analisadorMidia/domain/ResultadoAnaliseLote.java`
+```text
+Resultado de uma execução de auditoria sobre um lote de vídeos, incluindo o
+caminho do relatório de texto efetivamente gravado em disco (individual,
+se um único arquivo foi analisado, ou consolidado, se foram vários).
+{@code relatorioPrincipal} é {@code null} se nada foi gravado (ex.: falha de IO).
+```
+
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/analisadorMidia/domain/VideoInfo.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
@@ -312,6 +320,39 @@ Tag colorida em negrito (chama atenção), corpo da mensagem em peso normal
 (mais fácil de ler em blocos de texto maiores) — INFO/DEBUG ficam sem cor.
 Exemplo: [10:20:30] [INFO   ] Mensagem...
 ```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/application/DetectorTermosLoreService.java`
+```text
+Heuristica leve para priorizar falas com possivel erro de lore/terminologia
+antes de chamar o LLM (nomes em ingles remanescentes, grafias suspeitas, etc.).
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/application/PromptRevisaoLore.java`
+```text
+Monta os prompts de sistema e usuario para revisao de terminologia/lore
+(nomes proprios, locais, faccoes, mechas) com base na lore da obra ativa.
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/application/RevisarLoreUseCase.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/domain/exceptions/RevisaoLoreException.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/domain/ResultadoDeteccaoLore.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/domain/ResultadoRevisaoLore.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/infrastructure/RevisaoLoreLogPersistencia.java`
+```text
+Persiste o log linha a linha da sessao de revisao de lore em disco,
+no mesmo padrao de relatorios das demais operacoes do pipeline.
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/presentation/RevisaoLoreController.java`
+*(Sem docstring ou cabeçalho explicativo)*
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/telemetria/LlmTelemetria.java`
 *(Sem docstring ou cabeçalho explicativo)*
@@ -691,7 +732,13 @@ de que múltiplas threads concorrem por este campo.
 ```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducao/infrastructure/dtos/RecordsMistral.java`
-*(Sem docstring ou cabeçalho explicativo)*
+```text
+Shape da API estendida da LM Studio ({@code /api/v0/models}, fora do
+prefixo {@code /v1}), que — diferente do endpoint OpenAI-compatible
+{@code /v1/models} — informa o campo {@code state} ("loaded" /
+"not-loaded"), permitindo saber com certeza qual modelo está de fato
+carregado em memória.
+```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducao/infrastructure/http/JsonHttpClient.java`
 ```text
@@ -793,6 +840,15 @@ removidos).
 ```text
 Usa OpenFileDialog (UI moderna do Explorer) em vez de FolderBrowserDialog/Shell.Application,
 cuja janela de seleção de pasta ainda usa a interface antiga (estilo Windows 95).
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducao/presentation/web/DocumentacaoController.java`
+```text
+Serve o conteúdo bruto das páginas de documentação (pasta {@code docs/} na
+raiz do projeto) para o painel "Documentação" da SPA, que renderiza o
+markdown no navegador (ver static/documentacao/documentacao.js). O README
+raiz é o índice canônico no GitHub; este endpoint espelha a mesma pasta
+docs/ dentro do próprio app, sem precisar sair dele.
 ```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducao/presentation/web/LogStreamResource.java`

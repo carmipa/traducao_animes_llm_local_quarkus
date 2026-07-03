@@ -54,17 +54,25 @@
                     <svg class="nav-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="7.5 4.21 12 6.81 16.5 4.21"></polyline><polyline points="7.5 19.79 7.5 14.6 3 12"></polyline><polyline points="21 12 16.5 14.6 16.5 19.79"></polyline><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
                     <span>7. Cura de Legendas</span>
                 </button>
+                <button class="nav-item" data-target="revisao-lore" id="btn-menu-revisao-lore" data-tooltip="Revise nomes, locais e termos de lore nas legendas traduzidas usando a lore oficial da obra.">
+                    <svg class="nav-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path><line x1="12" y1="6" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                    <span>8. Revisão de Lore</span>
+                </button>
                 <button class="nav-item" data-target="remuxer" id="btn-menu-remuxer" data-tooltip="Recombine vídeos originais e as legendas traduzidas.">
                     <svg class="nav-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
-                    <span>8. Remuxer</span>
+                    <span>9. Remuxer</span>
                 </button>
                 <button class="nav-item" data-target="mapa" id="btn-menu-mapa" data-tooltip="Exiba a árvore estrutural e taxonomia do código Java.">
                     <svg class="nav-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-                    <span>9. Mapa do Projeto</span>
+                    <span>10. Mapa do Projeto</span>
                 </button>
                 <button class="nav-item" data-target="telemetria" id="btn-menu-telemetria" data-tooltip="Monitore hits de cache, tokens e logs em tempo real.">
                     <svg class="nav-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                    <span>10. Telemetria</span>
+                    <span>11. Telemetria</span>
+                </button>
+                <button class="nav-item" data-target="documentacao" id="btn-menu-documentacao" data-tooltip="Documentação técnica completa: arquitetura, módulos, API REST e diagramas.">
+                    <svg class="nav-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    <span>📖 Documentação</span>
                 </button>
             </nav>
             
@@ -625,7 +633,71 @@
                     </div>
                 </div>
 
-                <!-- 8. PAINEL DE REMUXER -->
+                <!-- 8. PAINEL DE REVISÃO DE LORE -->
+                <div class="panel" id="panel-revisao-lore">
+                    <div class="glass-card">
+                        <h2>Revisão de Lore</h2>
+                        <p class="card-desc">Compara legendas traduzidas com as originais em inglês e corrige <strong>nomes de personagens, locais, facções, mechas e termos de mundo</strong> que estejam fora do padrão oficial da obra, usando o LLM local com a lore do contexto selecionado.</p>
+                        <p class="card-hint">Selecione obrigatoriamente a obra no menu abaixo — isso carrega a lore canônica e exibe os metadados do anime/filme via API.</p>
+
+                        <div class="anime-meta-banner hidden" id="meta-banner-revisao-lore"></div>
+
+                        <form id="form-revisao-lore" class="standard-form">
+                            <div class="form-group">
+                                <label for="revisao-lore-entrada-original">Pasta com legendas ORIGINAIS (.ass, em inglês): <span class="help-icon" data-tooltip="Legendas de referência em inglês para comparar nomes e termos.">?</span></label>
+                                <div class="input-with-button">
+                                    <input type="text" id="revisao-lore-entrada-original" autocomplete="off" spellcheck="false" placeholder="Ex: E:\animes\Gundam\0083\legendas_eng" required>
+                                    <button type="button" class="btn-procurar" data-target="revisao-lore-entrada-original" data-type="pasta">📂 Procurar...</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="revisao-lore-entrada-traduzida">Pasta com legendas TRADUZIDAS (PT-BR): <span class="help-icon" data-tooltip="Legendas em português que serão revisadas e gravadas no lugar.">?</span></label>
+                                <div class="input-with-button">
+                                    <input type="text" id="revisao-lore-entrada-traduzida" autocomplete="off" spellcheck="false" placeholder="Ex: E:\animes\Gundam\0083\legendas_eng\traducao_ptbr" required>
+                                    <button type="button" class="btn-procurar" data-target="revisao-lore-entrada-traduzida" data-type="pasta">📂 Procurar...</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="revisao-lore-contexto">Obra / Contexto (obrigatório): <span class="help-icon" data-tooltip="Define a lore oficial usada pelo LLM para padronizar nomes e termos. Também exibe capa e sinopse do anime.">?</span></label>
+                                <select id="revisao-lore-contexto" required>
+                                    <option value="" disabled selected>Carregando contextos...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="revisao-lore-todas-falas">
+                                    Revisar todas as falas (mais lento — por padrão só falas sinalizadas pela heurística)
+                                </label>
+                            </div>
+                            <div class="correcao-actions">
+                                <button type="button" class="btn btn-primary btn-purple" id="btn-iniciar-revisao-lore" data-tooltip="Inicia revisão de terminologia/lore via LLM local">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                                    <span>Iniciar Revisão de Lore</span>
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-clear-form" data-form="form-revisao-lore" data-tooltip="Limpa os campos e oculta o cartão do anime">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                    <span>Limpar Campos</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="glass-card console-card">
+                        <div class="console-header">
+                            <h3>Logs da Revisão de Lore</h3>
+                            <div class="console-actions">
+                                <button class="btn-toggle-console" data-target="console-revisao-lore" data-tooltip="Alternar altura expandida do console">↕ Expandir</button>
+                                <button class="btn-copy-console" data-target="console-revisao-lore" data-tooltip="Copiar conteúdo do console">📋 Copiar</button>
+                                <button class="btn-clear-console" data-target="console-revisao-lore">Limpar</button>
+                            </div>
+                        </div>
+                        <div class="console-body" id="console-revisao-lore">
+                            <div class="system-message">Aguardando execução...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 9. PAINEL DE REMUXER -->
                 <div class="panel" id="panel-remuxer">
                     <div class="glass-card">
                         <h2>Remuxer Industrial</h2>
@@ -890,8 +962,111 @@
                     </div>
                 </div>
 
+                <!-- 11. PAINEL DE DOCUMENTAÇÃO -->
+                <div class="panel" id="panel-documentacao">
+                    <div class="doc-layout">
+                        <aside class="doc-sidebar">
+                            <div class="doc-sidebar-header">
+                                <h3>📖 Documentação</h3>
+                                <span class="doc-version">KRONOS CORE</span>
+                            </div>
+                            <nav class="doc-nav" aria-label="Seções da documentação">
+                                <div class="doc-nav-group">
+                                    <span class="doc-nav-group-label">Fundamentos</span>
+                                    <button class="doc-nav-item" data-pagina="01-arquitetura" data-titulo="Arquitetura">📐 Arquitetura</button>
+                                    <button class="doc-nav-item" data-pagina="02-instalacao" data-titulo="Instalação & Configuração">🚀 Instalação</button>
+                                </div>
+                                <div class="doc-nav-group">
+                                    <span class="doc-nav-group-label">Pipeline</span>
+                                    <button class="doc-nav-item" data-pagina="03-modulo-analise-midia" data-titulo="Análise de Mídia">🔍 Análise de Mídia</button>
+                                    <button class="doc-nav-item" data-pagina="04-modulo-extracao-legendas" data-titulo="Extração de Legendas">✂️ Extração</button>
+                                    <button class="doc-nav-item" data-pagina="05-modulo-traducao-llm" data-titulo="Tradução Local (LLM)">🌐 Tradução Local</button>
+                                    <button class="doc-nav-item" data-pagina="06-modulo-correcao-revisao" data-titulo="Correção & Revisão">🩹 Correção & Revisão</button>
+                                    <button class="doc-nav-item" data-pagina="07-modulo-cura-tags" data-titulo="Cura de Tags">🧵 Cura de Tags</button>
+                                    <button class="doc-nav-item" data-pagina="08-modulo-remuxer" data-titulo="Remuxer">📦 Remuxer</button>
+                                </div>
+                                <div class="doc-nav-group">
+                                    <span class="doc-nav-group-label">Módulos de Apoio</span>
+                                    <button class="doc-nav-item" data-pagina="09-contextos-lore" data-titulo="Contextos & Lore">🎭 Contextos & Lore</button>
+                                    <button class="doc-nav-item" data-pagina="10-modulo-telemetria" data-titulo="Telemetria">📊 Telemetria</button>
+                                    <button class="doc-nav-item" data-pagina="11-modulo-metadados-anime" data-titulo="Metadados de Anime">🎬 Metadados de Anime</button>
+                                    <button class="doc-nav-item" data-pagina="12-modulo-mapa-projeto" data-titulo="Mapa do Projeto">🗺️ Mapa do Projeto</button>
+                                </div>
+                                <div class="doc-nav-group">
+                                    <span class="doc-nav-group-label">Referência</span>
+                                    <button class="doc-nav-item" data-pagina="13-api-endpoints" data-titulo="API REST — Referência">📋 API REST</button>
+                                    <button class="doc-nav-item" data-pagina="14-configuracao" data-titulo="Configuração">⚙️ Configuração</button>
+                                    <button class="doc-nav-item" data-pagina="15-solucao-problemas" data-titulo="Solução de Problemas">🩺 Solução de Problemas</button>
+                                </div>
+                            </nav>
+                        </aside>
+
+                        <div class="doc-content-area">
+                            <div class="doc-content-toolbar">
+                                <div class="doc-breadcrumb">
+                                    <span>Documentação</span>
+                                    <span class="sep">/</span>
+                                    <span class="current" id="doc-breadcrumb-atual">Visão Geral</span>
+                                </div>
+                                <div class="doc-toolbar-actions">
+                                    <button class="doc-btn-tool" id="btn-doc-copiar">📋 Copiar</button>
+                                    <button class="doc-btn-tool" id="btn-doc-exportar">⬇️ Exportar .md</button>
+                                    <button class="doc-btn-tool" id="btn-doc-imprimir">🖨️ Imprimir</button>
+                                </div>
+                            </div>
+
+                            <div class="doc-content-body" id="doc-content-body">
+                                <div id="doc-welcome" class="doc-welcome">
+                                    <div style="font-size:48px; margin-bottom:12px;">📖</div>
+                                    <h1>Documentação Técnica</h1>
+                                    <p>Guia completo do <strong>KRONOS CORE</strong> — arquitetura, todos os módulos do pipeline, referência de API REST e diagnósticos.</p>
+                                    <div class="doc-welcome-grid">
+                                        <a class="doc-welcome-card" data-pagina="01-arquitetura" data-titulo="Arquitetura" href="javascript:void(0)">
+                                            <span class="wc-icon">📐</span>
+                                            <div class="wc-title">Arquitetura</div>
+                                            <div class="wc-desc">Diagramas de componentes e fluxos de dados</div>
+                                        </a>
+                                        <a class="doc-welcome-card" data-pagina="02-instalacao" data-titulo="Instalação" href="javascript:void(0)">
+                                            <span class="wc-icon">🚀</span>
+                                            <div class="wc-title">Instalação</div>
+                                            <div class="wc-desc">Setup rápido e configuração</div>
+                                        </a>
+                                        <a class="doc-welcome-card" data-pagina="05-modulo-traducao-llm" data-titulo="Tradução Local (LLM)" href="javascript:void(0)">
+                                            <span class="wc-icon">🌐</span>
+                                            <div class="wc-title">Tradução Local</div>
+                                            <div class="wc-desc">LLM local, cache e proteção de tags</div>
+                                        </a>
+                                        <a class="doc-welcome-card" data-pagina="13-api-endpoints" data-titulo="API REST — Referência" href="javascript:void(0)">
+                                            <span class="wc-icon">📋</span>
+                                            <div class="wc-title">API REST</div>
+                                            <div class="wc-desc">Referência completa de endpoints</div>
+                                        </a>
+                                        <a class="doc-welcome-card" data-pagina="15-solucao-problemas" data-titulo="Solução de Problemas" href="javascript:void(0)">
+                                            <span class="wc-icon">🩺</span>
+                                            <div class="wc-title">Solução de Problemas</div>
+                                            <div class="wc-desc">Diagnósticos reais e correções</div>
+                                        </a>
+                                    </div>
+                                    <p style="font-size:12px;color:var(--text-muted);margin-top:16px;">Selecione uma seção no menu lateral ou clique nos cards acima.</p>
+                                </div>
+
+                                <div id="doc-loading" class="doc-loading" style="display:none;">
+                                    <div class="doc-spinner"></div>
+                                    <span>Carregando documentação…</span>
+                                </div>
+
+                                <div id="doc-error" class="doc-error" style="display:none;">
+                                    <p id="doc-error-msg">Não foi possível carregar esta página de documentação.</p>
+                                </div>
+
+                                <article id="doc-markdown-view" class="doc-markdown" style="display:none;"></article>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </section>
-            
+
             <!-- Rodapé Global -->
             <footer class="app-footer">
                 <div class="footer-creator-line">
@@ -909,6 +1084,8 @@
 
     <!-- Scripts -->
     <script src="js/chart.umd.min.js?v=2.4"></script>
+    <script src="js/marked.min.js?v=2.4"></script>
+    <script src="js/mermaid.min.js?v=2.4"></script>
     <script type="module" src="js/app.js"></script>
 </body>
 </html>

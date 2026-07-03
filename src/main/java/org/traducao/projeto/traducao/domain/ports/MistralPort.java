@@ -38,4 +38,14 @@ public interface MistralPort {
         String traducaoPtMascarada,
         String motivoDetectado
     );
+
+    /**
+     * Revisa nomes proprios, locais, faccoes e termos de lore na traducao PT-BR
+     * usando a lore do contexto ativo. Retorna vazio se o LLM falhar ou a resposta for invalida.
+     */
+    Optional<String> revisarLore(
+        String originalInglesMascarado,
+        String traducaoPtMascarada,
+        List<String> problemasDetectados
+    );
 }

@@ -1,74 +1,192 @@
-# code-with-quarkus
+<div align="center">
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+<img src="src/main/resources/static/img/kronos_logo.png" alt="KRONOS CORE Logo" width="160"/>
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+# KRONOS CORE
 
-## Running the application in dev mode
+### Pipeline Industrial de Processamento & Tradução de Animes
+**Tradução de legendas por IA rodando 100% local — sem nuvem, sem custo por token**
 
-You can run your application in dev mode that enables live coding using:
+---
 
-```shell script
+[![Java](https://img.shields.io/badge/Java-25-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://openjdk.org/projects/jdk/25/)
+[![Quarkus](https://img.shields.io/badge/Quarkus-3.37-4695EB?style=for-the-badge&logo=quarkus&logoColor=white)](https://quarkus.io/)
+[![Gradle](https://img.shields.io/badge/Gradle-Wrapper-02303A?style=for-the-badge&logo=gradle&logoColor=white)](https://gradle.org/)
+[![LM Studio](https://img.shields.io/badge/LLM-LM_Studio_Local-8B5CF6?style=for-the-badge)](https://lmstudio.ai/)
+[![MKVToolNix](https://img.shields.io/badge/MKVToolNix-Remux-3B82F6?style=for-the-badge)](https://mkvtoolnix.download/)
+[![FFmpeg](https://img.shields.io/badge/FFmpeg-Analysis-007808?style=for-the-badge&logo=ffmpeg&logoColor=white)](https://ffmpeg.org/)
+
+</div>
+
+---
+
+## O que é o KRONOS CORE?
+
+O **KRONOS CORE** é uma plataforma de automação para **tradução industrial de legendas de anime**, cobrindo o pipeline completo do fã-sub: da mídia crua ao MKV final remuxado. Ele combina:
+
+- 🔍 **Auditoria técnica de mídia** (ffprobe) com detecção automática de dessincronismo de legenda
+- ✂️ **Extração em lote** de faixas de legenda (ASS/SRT/PGS) de MKV/MP4/qualquer contêiner comum
+- 🌐 **Tradução por LLM 100% local** (LM Studio) com cache persistente e lore por anime (56+ contextos)
+- 🩹 **Três fluxos de correção/revisão** (LLM, Google Translate, heurística de concordância PT-BR)
+- 🧵 **Restauração estrutural de tags ASS** corrompidas por alucinação de IA (Aegisub/Kara Templater)
+- 📦 **Remuxagem automatizada** com preservação total de qualidade original
+- 📊 **Telemetria em tempo real** (SSE) de todas as etapas do pipeline
+
+Tudo rodando sobre **Java 25 + Quarkus** com uma SPA própria (HTML/CSS/JS puro, sem framework de frontend), pensado para operação **desktop-first e 100% offline** — a única dependência de rede é opcional (metadados de anime via Jikan/TMDB).
+
+---
+
+## Navegação da Documentação
+
+> Clique em qualquer seção para ir à documentação detalhada.
+
+| # | Módulo | Descrição |
+|---|--------|-----------|
+| 📐 | [**Arquitetura**](docs/01-arquitetura.md) | Visão geral, diagramas de componentes e fluxos de dados |
+| 🚀 | [**Instalação & Configuração**](docs/02-instalacao.md) | Pré-requisitos, setup local e primeiros passos |
+| 🔍 | [**Análise de Mídia**](docs/03-modulo-analise-midia.md) | Auditoria ffprobe e detecção de dessincronismo de legenda |
+| ✂️ | [**Extração de Legendas**](docs/04-modulo-extracao-legendas.md) | Extração em lote ASS/SRT/PGS via MKVToolNix/ffmpeg |
+| 🌐 | [**Tradução Local (LLM)**](docs/05-modulo-traducao-llm.md) | Núcleo: LM Studio, cache, proteção de tags, contextos |
+| 🩹 | [**Correção & Revisão**](docs/06-modulo-correcao-revisao.md) | Os 3 fluxos: LLM, Google Translate, concordância PT-BR |
+| 🧵 | [**Cura de Tags**](docs/07-modulo-cura-tags.md) | Restauração estrutural de tags ASS/Kara Templater |
+| 📦 | [**Remuxer**](docs/08-modulo-remuxer.md) | Combina vídeo + legenda em MKV final |
+| 🎭 | [**Contextos & Lore**](docs/09-contextos-lore.md) | Sistema de lore por anime — 56+ contextos cadastrados |
+| 📊 | [**Telemetria**](docs/10-modulo-telemetria.md) | Rastreamento de operações e métricas de JVM em tempo real |
+| 🎬 | [**Metadados de Anime**](docs/11-modulo-metadados-anime.md) | Integração Jikan/MAL e TMDB para pôster/sinopse na UI |
+| 🗺️ | [**Mapa do Projeto**](docs/12-modulo-mapa-projeto.md) | Gerador automático do índice de código-fonte |
+| 📋 | [**API REST — Referência**](docs/13-api-endpoints.md) | Todos os endpoints documentados com exemplos |
+| ⚙️ | [**Configuração**](docs/14-configuracao.md) | Referência completa de `application.yml` |
+| 🩺 | [**Solução de Problemas**](docs/15-solucao-problemas.md) | Diagnósticos reais: dessincronismo, LM Studio, SSE |
+
+> A mesma navegação está disponível **dentro da aplicação**, no menu **📖 Documentação** da interface web.
+
+---
+
+## Início Rápido
+
+### Pré-requisitos
+
+| Ferramenta | Versão mínima |
+|------------|---------------|
+| Java (JDK) | 25 |
+| Gradle | Incluído via Wrapper |
+| FFmpeg / FFprobe | Qualquer build recente |
+| MKVToolNix | Qualquer build recente |
+| LM Studio | Com servidor local ativo |
+
+### Executar em modo desenvolvimento
+
+```shell
+git clone <url-do-repositorio>
+cd traducao_animes_llm_local_quarkus
+
 ./gradlew quarkusDev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+> O servidor sobe em **`http://127.0.0.1:8080`** e o navegador abre automaticamente. Detalhes completos em [Instalação & Configuração](docs/02-instalacao.md).
 
-## Packaging and running the application
+---
 
-The application can be packaged using:
+## Arquitetura em 30 Segundos
 
-```shell script
-./gradlew build
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│                           KRONOS CORE                                 │
+│                                                                        │
+│  ┌──────────┐    ┌────────────────┐    ┌───────────────────────┐    │
+│  │   SPA    │───▶│ ApiController  │───▶│  Use Cases (13 pacotes)│    │
+│  │ (HTML/JS)│    │  REST + SSE    │    │  análise → extração →  │    │
+│  └──────────┘    └───────┬────────┘    │  tradução → correção → │    │
+│                          │              │  cura → remuxer        │    │
+│              ┌───────────┼───────────┐  └───────────────────────┘    │
+│              ▼           ▼           ▼                                │
+│       ┌──────────┐ ┌──────────┐ ┌──────────┐                        │
+│       │LM Studio │ │MKVToolNix│ │  FFmpeg  │                        │
+│       │ (GPU/LOC)│ │ (remux)  │ │(análise) │                        │
+│       └──────────┘ └──────────┘ └──────────┘                        │
+└──────────────────────────────────────────────────────────────────────┘
 ```
 
-It produces the `quarkus-run.jar` file in the `build/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `build/quarkus-app/lib/` directory.
+> Diagrama completo com fluxo de dados e decisões de arquitetura em [docs/01-arquitetura.md](docs/01-arquitetura.md).
 
-The application is now runnable using `java -jar build/quarkus-app/quarkus-run.jar`.
+---
 
-If you want to build an _über-jar_, execute the following command:
+## Pipeline de Trabalho
 
-```shell script
-./gradlew build -Dquarkus.package.jar.type=uber-jar
+```mermaid
+graph LR
+    A["📼 Vídeo"] --> B["🔍 Análise"]
+    B --> C["✂️ Extração"]
+    C --> D["🌐 Tradução"]
+    D --> E["🩹 Correção/Revisão"]
+    E --> F["🧵 Cura de Tags"]
+    F --> G["📦 Remuxer"]
+    G --> H["🎬 MKV Final"]
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar build/*-runner.jar`.
+Cada etapa é **independente e re-executável** — rode só a etapa que precisar, sem repetir o pipeline inteiro. Detalhes em [Arquitetura — Pipeline Completo](docs/01-arquitetura.md#diagrama-de-fluxo--pipeline-completo-visão-de-negócio).
 
-## Creating a native executable
+---
 
-You can create a native executable using:
+## Stack Tecnológica
 
-```shell script
-./gradlew build -Dquarkus.native.enabled=true
+```
+Backend:    Java 25 + Quarkus 3.37 (compatibilidade Spring: DI, Web, Config)
+Frontend:   HTML/CSS/JS puro (SPA sem build step), Server-Sent Events (SSE)
+IA:         LM Studio (OpenAI-compatible local), qualquer modelo GGUF servido nele
+Mídia:      FFmpeg/FFprobe (análise), MKVToolNix (extração + remux)
+Metadados:  Jikan (MyAnimeList) + TMDB (opcional, com chave de API)
+Build:      Gradle com Quarkus Plugin
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+---
 
-```shell script
-./gradlew build -Dquarkus.native.enabled=true -Dquarkus.native.container-build=true
+## Estrutura do Projeto
+
+```
+traducao_animes_llm_local_quarkus/
+├── src/
+│   ├── main/
+│   │   ├── java/org/traducao/projeto/
+│   │   │   ├── analisadorMidia/       ← Auditoria ffprobe
+│   │   │   ├── legendasExtracao/      ← Extração ASS/SRT/PGS
+│   │   │   ├── traducao/              ← Núcleo: LLM, cache, contextos, ApiController
+│   │   │   ├── raspagemCorrecao/      ← Correção via Google Translate
+│   │   │   ├── raspagemRevisao/       ← Revisão de concordância PT-BR
+│   │   │   ├── curatags/              ← Restauração de tags ASS
+│   │   │   ├── remuxer/               ← Combina vídeo + legenda
+│   │   │   ├── telemetria/            ← Rastreamento de operações
+│   │   │   ├── mapaProjeto/           ← Gerador de mapa_projeto.md
+│   │   │   ├── apiDadosAnime/         ← Metadados (Jikan/TMDB)
+│   │   │   └── core/, config/         ← Utilitários e bootstrap compartilhados
+│   │   └── resources/
+│   │       ├── static/                ← SPA (HTML/CSS/JS por painel)
+│   │       ├── application.yml        ← Configuração principal
+│   │       └── application-local.yml  ← Chaves privadas (git-ignored)
+│   └── test/
+├── docs/                               ← Esta documentação
+├── build.gradle
+└── gradle.properties
 ```
 
-You can then execute your native executable with: `./build/code-with-quarkus-1.0.0-SNAPSHOT-runner`
+---
 
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/gradle-tooling>.
+## Navegação Interna (dentro do app)
 
-## Related Guides
+A aplicação web tem 11 painéis navegáveis pela barra lateral — cada um mapeia a um módulo desta documentação:
 
-- REST Jackson ([guide](https://quarkus.io/guides/rest#json-serialisation)): Jackson serialization support for Quarkus REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it
-- Quarkus Extension for Spring DI API ([guide](https://quarkus.io/guides/spring-di)): Define your dependency injection with Spring DI
-- Quarkus Extension for Spring Web API ([guide](https://quarkus.io/guides/spring-web)): Use Spring Web annotations to create your REST services
+`Início` · `Análise de Mídia` · `Extração` · `Tradução Local` · `Correção` · `Revisão` · `Cura de Legendas` · `Remuxer` · `Mapa do Projeto` · `Telemetria` · **`Documentação`**
 
-## Provided Code
+O menu **Documentação** renderiza esta mesma pasta `docs/` dentro da própria aplicação (incluindo os diagramas Mermaid), sem precisar sair do app ou abrir o GitHub.
 
-### REST
+---
 
-Easily start your REST Web Services
+<div align="center">
 
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+**[⬆ Voltar ao topo](#kronos-core)**
 
-### Spring Web
+[![Java](https://img.shields.io/badge/Java-25-ED8B00?style=flat-square&logo=openjdk)](https://openjdk.org/)
+[![Quarkus](https://img.shields.io/badge/Quarkus-3.37-4695EB?style=flat-square&logo=quarkus)](https://quarkus.io/)
+[![LM Studio](https://img.shields.io/badge/LLM-Local-8B5CF6?style=flat-square)](https://lmstudio.ai/)
 
-Spring, the Quarkus way! Start your REST Web Services with a Spring Controller.
-
-[Related guide section...](https://quarkus.io/guides/spring-web#greetingcontroller)
+</div>

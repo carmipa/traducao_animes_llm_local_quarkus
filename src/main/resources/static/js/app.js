@@ -10,9 +10,11 @@ import { initTraducao } from '../traducao/traducao.js';
 import { initCorrecao } from '../correcao/correcao.js';
 import { initRevisao } from '../revisao/revisao.js';
 import { initCura } from '../cura/cura.js';
+import { initRevisaoLore } from '../revisaoLore/revisaoLore.js';
 import { initRemuxer } from '../remuxer/remuxer.js';
 import { initMapa } from '../mapa/mapa.js';
 import { initTelemetria } from '../telemetria/telemetria.js?v=2.4';
+import { initDocumentacao } from '../documentacao/documentacao.js';
 
 // Definições de Títulos e Subtítulos por seção do menu
 const CONFIG_SECOES = {
@@ -44,16 +46,20 @@ const CONFIG_SECOES = {
         titulo: "7. Cura de Legendas",
         subtitulo: "Saneamento estrutural de formatações complexas e reinjeção de tags originais ASS"
     },
+    "revisao-lore": {
+        titulo: "8. Revisão de Lore",
+        subtitulo: "Padronização de nomes, locais e termos de mundo nas legendas via LLM e lore oficial"
+    },
     remuxer: {
-        titulo: "8. Remuxer Industrial",
+        titulo: "9. Remuxer Industrial",
         subtitulo: "Junção de vídeos originais e novas legendas traduzidas em novos MKVs"
     },
     mapa: {
-        titulo: "9. Mapeamento do Projeto",
+        titulo: "10. Mapeamento do Projeto",
         subtitulo: "Auditoria de taxonomia e visualização da árvore de estrutura do código"
     },
     telemetria: {
-        titulo: "10. Telemetria KRONOS",
+        titulo: "11. Telemetria KRONOS",
         subtitulo: "Observabilidade da traducao, cache local e historico operacional"
     }
 };
@@ -115,9 +121,11 @@ function inicializarModulos() {
     initCorrecao();
     initRevisao();
     initCura();
+    initRevisaoLore();
     initRemuxer();
     initMapa();
     initTelemetria();
+    initDocumentacao();
 }
 
 /**
@@ -137,6 +145,7 @@ function conectarFluxoLugsSSE() {
         'traducao': 'console-traducao',
         'correcao': 'console-correcao',
         'revisao': 'console-revisao',
+        'revisao-lore': 'console-revisao-lore',
         'cura': 'console-cura',
         'remuxer': 'console-remuxer'
     };
@@ -477,7 +486,8 @@ function inicializarMetadadosDinamicos() {
         { inputId: 'traducao-entrada', selectId: 'traducao-contexto', bannerId: 'meta-banner-traducao' },
         { inputId: 'correcao-entrada', selectId: 'correcao-contexto', bannerId: 'meta-banner-correcao' },
         { inputId: 'revisao-entrada', selectId: 'revisao-contexto', bannerId: 'meta-banner-revisao' },
-        { inputId: 'cura-entrada-original', selectId: 'cura-contexto', bannerId: 'meta-banner-cura' }
+        { inputId: 'cura-entrada-original', selectId: 'cura-contexto', bannerId: 'meta-banner-cura' },
+        { inputId: 'revisao-lore-entrada-original', selectId: 'revisao-lore-contexto', bannerId: 'meta-banner-revisao-lore' }
     ];
 
     const atualizarItem = (item) => {
@@ -510,7 +520,7 @@ function inicializarMetadadosDinamicos() {
     };
 
     // Popula automaticamente todos os selects de contexto (análise, tradução, correção, revisão e cura)
-    carregarContextosAuxiliares(['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto'], () => {
+    carregarContextosAuxiliares(['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto'], () => {
         mapeamentoFormularios.forEach(atualizarItem);
     });
 
@@ -551,12 +561,13 @@ async function carregarContextosAuxiliares(idsSelects, onComplete) {
         const contextos = await response.json();
         if (!Array.isArray(contextos) || contextos.length === 0) return;
 
-        const todosSelects = ['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto'];
+        const todosSelects = ['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto'];
         todosSelects.forEach(id => {
             const select = document.getElementById(id);
             if (!select) return;
 
             const ehAuxiliar = (id === 'analise-contexto' || id === 'correcao-contexto' || id === 'cura-contexto');
+            const ehRevisaoLore = (id === 'revisao-lore-contexto');
             select.innerHTML = '';
             
             if (ehAuxiliar) {
@@ -566,11 +577,20 @@ async function carregarContextosAuxiliares(idsSelects, onComplete) {
                 select.appendChild(optDefault);
             }
 
+            if (ehRevisaoLore) {
+                const optObrigatorio = document.createElement('option');
+                optObrigatorio.value = '';
+                optObrigatorio.textContent = '-- Selecione a obra (obrigatório) --';
+                optObrigatorio.disabled = true;
+                optObrigatorio.selected = true;
+                select.appendChild(optObrigatorio);
+            }
+
             contextos.forEach(ctx => {
                 const opt = document.createElement('option');
                 opt.value = ctx.id;
                 opt.textContent = ctx.nome;
-                if (!ehAuxiliar && ctx.padrao) {
+                if (!ehAuxiliar && !ehRevisaoLore && ctx.padrao) {
                     opt.selected = true;
                 }
                 select.appendChild(opt);

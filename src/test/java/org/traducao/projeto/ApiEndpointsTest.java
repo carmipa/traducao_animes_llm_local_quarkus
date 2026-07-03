@@ -189,6 +189,39 @@ class ApiEndpointsTest {
     }
 
     @Test
+    void revisarLoreSemContextoRetornaBadRequest() {
+        given()
+            .contentType("application/json")
+            .body("{\"diretorioOriginal\":\"cache\",\"diretorioTraduzido\":\"cache\",\"contextoId\":\"\"}")
+            .when().post("/api/revisar-lore")
+            .then()
+            .statusCode(400)
+            .body("erro", containsString("obra/contexto"));
+    }
+
+    @Test
+    void revisarLoreComContextoInvalidoRetornaBadRequest() {
+        given()
+            .contentType("application/json")
+            .body("{\"diretorioOriginal\":\"cache\",\"diretorioTraduzido\":\"cache\",\"contextoId\":\"contexto_inexistente_xyz\"}")
+            .when().post("/api/revisar-lore")
+            .then()
+            .statusCode(400)
+            .body("erro", containsString("Contexto desconhecido"));
+    }
+
+    @Test
+    void revisarLoreIniciaComContextoValido() {
+        given()
+            .contentType("application/json")
+            .body("{\"diretorioOriginal\":\"cache\",\"diretorioTraduzido\":\"cache\",\"contextoId\":\"danmachi\",\"revisarTodasFalas\":false}")
+            .when().post("/api/revisar-lore")
+            .then()
+            .statusCode(200)
+            .body("mensagem", containsString("Revisao de lore iniciada"));
+    }
+
+    @Test
     void sseStreamAceitaConexao() throws Exception {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         try {
@@ -202,7 +235,6 @@ class ApiEndpointsTest {
                 assertEquals(200, response.statusCode());
                 assertTrue(response.contentType().contains("text/event-stream"));
             } catch (java.util.concurrent.TimeoutException e) {
-                // Conexão SSE mantida aberta — comportamento esperado
                 future.cancel(true);
             }
         } finally {
