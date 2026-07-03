@@ -11,10 +11,13 @@ let paginaAtualTabela = 1;
 
 const CORES_ORIGEM = {
     LLM: '#8b5cf6',
+    LORE: '#ec4899',
     GOOGLE: '#3b82f6',
     CACHE: '#06b6d4',
     SISTEMA: '#8b97ad'
 };
+
+const NOME_OPERACAO_LORE = 'Revisao de Lore (.ass LLM)';
 
 // Configuração de tema dark global do Chart.js
 function configurarTemaDarkChart() {
@@ -81,6 +84,20 @@ export function initTelemetria() {
                 paginaAtualTabela += 1;
                 renderizarTabelaHistorico();
             }
+        });
+    }
+
+    const btnFiltrarLore = document.getElementById('btn-filtrar-lore-historico');
+    if (btnFiltrarLore) {
+        btnFiltrarLore.addEventListener('click', () => {
+            filtroOperacaoAtivo = NOME_OPERACAO_LORE;
+            paginaAtualTabela = 1;
+            const campoBusca = document.getElementById('t-table-search');
+            if (campoBusca) campoBusca.value = '';
+            termoBuscaTabela = '';
+            renderizarChipsFiltro();
+            renderizarTabelaHistorico();
+            document.querySelector('.telemetry-table-card')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         });
     }
 
@@ -163,6 +180,7 @@ async function carregarDadosTelemetria() {
         if (heapEl) heapEl.textContent = `${Math.round(heapUsedMb)} MB / ${Math.round(heapMaxMb)} MB`;
 
         renderizarGraficosTelemetria(data, totalLinhas, cacheHits, cpuVal, heapPercent);
+        renderizarRevisaoLore(data.revisaoLore);
 
         // Atualiza o Historico Operacional (busca + filtros + paginacao)
         historicoCompleto = historico;
@@ -175,6 +193,46 @@ async function carregarDadosTelemetria() {
         if (tableBody && tableBody.children.length === 0) {
             renderizarLinhaVazia(tableBody, 'Nao foi possivel carregar a telemetria agora.');
         }
+    }
+}
+
+function rotuloExibicaoOperacao(nome) {
+    if (!nome) return 'Desconhecida';
+    if (nome === NOME_OPERACAO_LORE || nome.includes('Revisao de Lore')) {
+        return 'Revisão de Lore';
+    }
+    return nome;
+}
+
+function renderizarRevisaoLore(resumo) {
+    const sessoesEl = document.getElementById('t-lore-sessoes');
+    const arquivosEl = document.getElementById('t-lore-arquivos');
+    const sinalizadasEl = document.getElementById('t-lore-sinalizadas');
+    const corrigidasEl = document.getElementById('t-lore-corrigidas');
+    const taxaEl = document.getElementById('t-lore-taxa');
+    const hintEl = document.getElementById('t-lore-hint');
+    const btnFiltrar = document.getElementById('btn-filtrar-lore-historico');
+
+    const sessoes = Number(resumo?.totalSessoes ?? 0);
+    const arquivos = Number(resumo?.totalArquivosProcessados ?? 0);
+    const sinalizadas = Number(resumo?.totalFalasSinalizadas ?? 0);
+    const corrigidas = Number(resumo?.totalFalasCorrigidas ?? 0);
+    const taxa = resumo?.taxaCorrecaoPercent;
+
+    if (sessoesEl) sessoesEl.textContent = formatarNumero(sessoes);
+    if (arquivosEl) arquivosEl.textContent = formatarNumero(arquivos);
+    if (sinalizadasEl) sinalizadasEl.textContent = formatarNumero(sinalizadas);
+    if (corrigidasEl) corrigidasEl.textContent = formatarNumero(corrigidas);
+    if (taxaEl) {
+        taxaEl.textContent = taxa === null || taxa === undefined ? '—' : `${taxa}%`;
+    }
+    if (hintEl) {
+        hintEl.textContent = sessoes > 0
+            ? `${formatarNumero(sessoes)} sessão(ões) registrada(s) no histórico do pipeline.`
+            : 'Nenhuma sessão de revisão de lore registrada ainda.';
+    }
+    if (btnFiltrar) {
+        btnFiltrar.hidden = sessoes <= 0;
     }
 }
 
@@ -220,7 +278,7 @@ function renderizarChipsFiltro() {
 
     const chips = [criarChip('todas', 'Todas', historicoCompleto.length, CORES_ORIGEM.SISTEMA)];
     contagemPorTipo.forEach((info, nome) => {
-        chips.push(criarChip(nome, nome, info.total, CORES_ORIGEM[info.origem] ?? CORES_ORIGEM.SISTEMA));
+        chips.push(criarChip(nome, rotuloExibicaoOperacao(nome), info.total, CORES_ORIGEM[info.origem] ?? CORES_ORIGEM.SISTEMA));
     });
 
     container.innerHTML = '';
@@ -256,6 +314,7 @@ function classeDuracao(duracaoMs) {
 function origemBadgeClass(origem) {
     switch (origem) {
         case 'LLM': return 'origin-llm';
+        case 'LORE': return 'origin-lore';
         case 'GOOGLE': return 'origin-google';
         case 'CACHE': return 'origin-cache';
         default: return 'origin-sistema';
@@ -289,7 +348,7 @@ function renderizarTabelaHistorico() {
             const cor = CORES_ORIGEM[origem] ?? CORES_ORIGEM.SISTEMA;
 
             const tdOperacao = document.createElement('td');
-            tdOperacao.innerHTML = `<span class="op-name"><span class="chip-dot" style="background:${cor}"></span>${op.nomeOperacao ?? '-'}</span>`;
+            tdOperacao.innerHTML = `<span class="op-name"><span class="chip-dot" style="background:${cor}"></span>${rotuloExibicaoOperacao(op.nomeOperacao)}</span>`;
 
             const tdOrigem = document.createElement('td');
             tdOrigem.innerHTML = `<span class="origin-badge ${origemBadgeClass(origem)}">${origem}</span>`;

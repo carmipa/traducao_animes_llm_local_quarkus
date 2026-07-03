@@ -51,6 +51,7 @@ public class ContextoGundamNT implements ProvedorContexto {
 
         === Regras Específicas de Tradução ===
         - Manter sempre em inglês ou forma oficial: Mobile Suit Gundam NT, Narrative Gundam, Phenex, Unicorn Gundam, Banshee, Sinanju Stein, II Neo Zeong, Silver Bullet Suppressor, Psycho-Frame, Newtype, Cyber Newtype, Operation Phoenix Hunt, Laplace Incident, Universal Century, U.C., Earth Federation, Republic of Zeon, Luio & Co., Shezarr Unit, Sleeves, Minovsky particles, beam rifle, beam saber.
+        - "Narrative" e "Narrative Gundam" sao nomes oficiais; nunca traduzir como "Narrativo" ou "Gundam Narrativo".
         - "Operation Phoenix Hunt" pode ser explicado em português apenas se o original já soar como nome de operação narrado; como nome oficial, manter em inglês.
         - Não traduzir "Phenex" como "Fênix" quando se referir ao RX-0 Unicorn Gundam 03 Phenex.
         - Comunicação militar: curta, objetiva e técnica ("Alvo confirmado", "Contato com o Phenex", "Retomar formação", "Unidade inimiga se aproximando", "Danos no frame").

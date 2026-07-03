@@ -47,6 +47,7 @@ public class TelemetriaService {
     // servidor e não depender só do lote em memória (que é limpo a cada
     // análise via limparLote()). É o que o painel web lê em gerarResumo().
     private static final Path PASTA_TELEMETRIA_PROJETO = Path.of("logs");
+    private static final String TIPO_REVISAO_LORE = "Revisao de Lore (.ass LLM)";
     private static final DateTimeFormatter TIMESTAMP_RELATORIO =
         DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 
@@ -285,6 +286,7 @@ public class TelemetriaService {
         long heapMax = Runtime.getRuntime().maxMemory();
 
         List<OperacaoHistorico> historico = montarHistorico(bancoOperacoes, bancoLlm, bancoMidia);
+        RevisaoLoreTelemetriaResumo revisaoLore = agregarRevisaoLore(bancoOperacoes);
 
         return new TelemetriaResumo(
             cacheCount,
@@ -295,6 +297,7 @@ public class TelemetriaService {
             historico,
             new ArrayList<>(bancoLlm.values()),
             bancoOperacoes,
+            revisaoLore,
             alucinacoesPrevenidas.get(),
             totalErros,
             jvmCpu,
@@ -353,6 +356,9 @@ public class TelemetriaService {
             return "SISTEMA";
         }
         String normalizado = tipo.toUpperCase(java.util.Locale.ROOT);
+        if (ehRevisaoLore(tipo)) {
+            return "LORE";
+        }
         if (normalizado.contains("LLM")) {
             return "LLM";
         }
@@ -363,6 +369,36 @@ public class TelemetriaService {
             return "CACHE";
         }
         return "SISTEMA";
+    }
+
+    private RevisaoLoreTelemetriaResumo agregarRevisaoLore(List<OperacaoTelemetria> operacoes) {
+        int sessoes = 0;
+        int arquivos = 0;
+        int sinalizadas = 0;
+        int corrigidas = 0;
+        for (OperacaoTelemetria op : operacoes) {
+            if (!ehRevisaoLore(op.tipo())) {
+                continue;
+            }
+            sessoes++;
+            arquivos += valorOuZero(op.arquivosProcessados());
+            sinalizadas += valorOuZero(op.itensDetectados());
+            corrigidas += valorOuZero(op.itensCorrigidos());
+        }
+        return new RevisaoLoreTelemetriaResumo(
+            sessoes,
+            arquivos,
+            sinalizadas,
+            corrigidas,
+            calcularTaxaSucesso(sinalizadas, corrigidas)
+        );
+    }
+
+    static boolean ehRevisaoLore(String tipo) {
+        if (tipo == null) {
+            return false;
+        }
+        return tipo.contains(TIPO_REVISAO_LORE) || tipo.toUpperCase(java.util.Locale.ROOT).contains("REVISAO DE LORE");
     }
 
     private String formatarDetalheOperacao(OperacaoTelemetria op) {

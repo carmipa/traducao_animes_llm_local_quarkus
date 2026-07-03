@@ -10,6 +10,8 @@ Primeira etapa do pipeline: **auditoria técnica** de arquivos de vídeo antes d
 
 > 📖 Contexto real de uso desta funcionalidade: numa sessão de suporte, este módulo foi usado para diagnosticar por que a legenda de um filme (*Gundam Narrative*) chegava "adiantada" desde a primeira fala — a causa raiz era a legenda ter sido extraída de um release/encode diferente (grupo de fansub distinto) do vídeo usado no remux final. Ver [Solução de Problemas](15-solucao-problemas.md#legenda-dessincronizada-desde-o-inicio).
 
+![Painel de Análise de Mídia](../src/main/resources/static/img/screenshots/analise-midia.png)
+
 ---
 
 ## Pacote e classes principais

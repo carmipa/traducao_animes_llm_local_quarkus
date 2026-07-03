@@ -69,11 +69,21 @@ class WebInterfaceTest {
     }
 
     @Test
+    void revisaoLoreHtmlDisponivel() {
+        given()
+            .when().get("/revisaoLore/revisaoLore.html")
+            .then()
+            .statusCode(200)
+            .contentType(containsString("html"))
+            .body(containsString("Revisão de Lore"));
+    }
+
+    @Test
     void indexContemRevisaoLore() {
         given()
             .when().get("/")
             .then()
             .statusCode(200)
-            .body(containsString("Revisão de Lore"));
+            .body(containsString("data-modulo=\"revisaoLore\""));
     }
 }

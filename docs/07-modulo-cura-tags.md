@@ -8,6 +8,8 @@
 
 Falas de karaokê/efeitos em `.ass` carregam tags de formatação e posicionamento complexas no prefixo (`{\pos(...)\an8\c&H...&}`), e algumas usam a sintaxe especial do **Kara Templater do Aegisub** (`{=1}`, `{=2}`...) para templates de karaokê animado. LLMs frequentemente **alucinam** essas tags durante a tradução — corrompem `{=1}` para `\N=1`, injetam chaves `{texto}` fantasmas que quebram a leitura no Aegisub, ou perdem o prefixo de formatação inteiro. O CuraTags é um **pós-processamento estrutural** que restaura essas tags comparando a legenda original (EN) com a já traduzida (PT-BR), sem precisar retraduzir nada.
 
+![Painel de Cura de Legendas](../src/main/resources/static/img/screenshots/cura-legendas.png)
+
 ---
 
 ## Pacote e classes principais

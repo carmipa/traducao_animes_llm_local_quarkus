@@ -1,6 +1,24 @@
 import { logNoConsole, mostrarAlerta } from '../js/app.js';
 
-export function initRevisaoLore() {
+const PAINEL_HTML = 'revisaoLore/revisaoLore.html';
+
+async function carregarPainelHtml() {
+    const painel = document.getElementById('panel-revisao-lore');
+    if (!painel || painel.dataset.moduloCarregado === 'true') {
+        return painel;
+    }
+
+    const resposta = await fetch(PAINEL_HTML);
+    if (!resposta.ok) {
+        throw new Error(`Falha ao carregar ${PAINEL_HTML}`);
+    }
+
+    painel.innerHTML = await resposta.text();
+    painel.dataset.moduloCarregado = 'true';
+    return painel;
+}
+
+function vincularEventos() {
     const btnIniciar = document.getElementById('btn-iniciar-revisao-lore');
     const inputOriginal = document.getElementById('revisao-lore-entrada-original');
     const inputTraduzida = document.getElementById('revisao-lore-entrada-traduzida');
@@ -57,4 +75,18 @@ export function initRevisaoLore() {
             btnIniciar.disabled = false;
         }
     });
+}
+
+export async function initRevisaoLore() {
+    try {
+        await carregarPainelHtml();
+        vincularEventos();
+        document.dispatchEvent(new CustomEvent('revisao-lore:painel-carregado'));
+    } catch (err) {
+        console.error('[Revisão de Lore] Erro ao carregar painel:', err);
+        const painel = document.getElementById('panel-revisao-lore');
+        if (painel) {
+            painel.innerHTML = '<div class="glass-card"><p class="card-desc">Não foi possível carregar o painel de Revisão de Lore.</p></div>';
+        }
+    }
 }

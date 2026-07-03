@@ -185,6 +185,10 @@ const es = new EventSource('/api/logs/stream');
 es.addEventListener('traducao', (e) => console.log(e.data));
 ```
 
+Cada painel da SPA renderiza seu canal nesta mesma caixa "Logs do..." (exemplo abaixo: canal `analise`, painel Análise de Mídia):
+
+![Console de logs em tempo real (SSE) — mesmo componente em todos os painéis](../src/main/resources/static/img/screenshots/analise-midia.png)
+
 ---
 
 ## SSE — `/api/telemetria/stream`

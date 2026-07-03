@@ -77,11 +77,8 @@ public class RevisaoLoreController {
                 System.out.println("\u001B[36m  • Arquivos analisados  : " + resultado.arquivosAnalisados() + "\u001B[0m");
                 System.out.println("\u001B[36m  • Arquivos alterados   : " + resultado.arquivosAlterados() + "\u001B[0m");
                 System.out.println("\u001B[32m  • Falas corrigidas     : " + resultado.falasCorrigidas() + "\u001B[0m");
-                if (resultado.caminhoLogSessao() != null) {
-                    System.out.println("\u001B[36m  • Log da sessao        : " + resultado.caminhoLogSessao() + "\u001B[0m");
-                }
-                if (resultado.caminhoRelatorio() != null) {
-                    System.out.println("\u001B[36m  • Relatorio/telemetria : " + resultado.caminhoRelatorio() + "\u001B[0m");
+                if (resultado.caminhoRelatorioJson() != null) {
+                    System.out.println("\u001B[36m  • Relatorio JSON       : " + resultado.caminhoRelatorioJson() + "\u001B[0m");
                 }
                 System.out.println("\u001B[32m========================================================================\n\u001B[0m");
             } catch (RevisaoLoreException e) {

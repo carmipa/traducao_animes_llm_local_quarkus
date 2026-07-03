@@ -35,6 +35,8 @@ graph TD
 
 > **Quando usar qual:** se a legenda final ainda tem falas 100% em inglês, comece por `/corrigir-cache` + rodar `/traduzir` de novo (mais barato, reaproveita o LLM já configurado). Se restarem resíduos depois disso, `/corrigir-scraping` dá um resultado melhor que "sem tradução nenhuma", sem custo. Para erros sutis de gênero/concordância que passam despercebidos numa leitura rápida, use `/revisar-legendas-concordancia` (mais lento, mas entende a lore do contexto).
 
+![Painel de Correção de Cache — reúne os fluxos 1, 2 e 3 sobre o cache](../src/main/resources/static/img/screenshots/correcao-cache.png)
+
 ---
 
 ## Fluxo 1 — Limpeza de cache (`traducaoCorrige`)
@@ -85,6 +87,8 @@ sequenceDiagram
 3. `DetectorConcordanciaService` — erro de gênero PT-BR
 
 `RevisarLegendasUseCase` também conserta **"karaoke quebrado"** — chaves `{texto}` sem `\`/`=` na frente — via regex, antes de qualquer chamada externa.
+
+![Painel de Revisão de Legendas — fluxos 2 (Google) e 3 (LLM/concordância) sobre .ass já traduzidos](../src/main/resources/static/img/screenshots/revisao-legendas.png)
 
 ---
 

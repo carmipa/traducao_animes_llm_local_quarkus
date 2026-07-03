@@ -8,6 +8,8 @@
 
 Última etapa do pipeline: combina o **vídeo original** com a **legenda traduzida** (já revisada/curada) num novo arquivo `.mkv`, via `mkvmerge` (MKVToolNix), preservando todas as faixas de vídeo/áudio originais e adicionando a faixa de legenda PT-BR — sem re-encodar nada (remuxagem, não transcodificação: rápido e sem perda de qualidade).
 
+![Painel do Remuxer](../src/main/resources/static/img/screenshots/remuxer.png)
+
 ---
 
 ## Pacote e classes principais

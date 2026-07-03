@@ -55,6 +55,14 @@ Retorna a lista que popula os `<select>` de contexto em cada painel da UI:
 
 ---
 
+## Painel de Revisão de Lore (UI)
+
+O painel **"8. Revisão de Lore"** da SPA usa o contexto ativo para revisar nomes próprios, locais e termos de lore em legendas `.ass` já traduzidas, comparando com a legenda original em inglês (`RevisarLoreUseCase` + `DetectorTermosLoreService`, `traducao/revisaoLore/**`).
+
+![Painel de Revisão de Lore](../src/main/resources/static/img/screenshots/revisao-lore.png)
+
+---
+
 ## Navegação
 
 | Anterior | Próximo |

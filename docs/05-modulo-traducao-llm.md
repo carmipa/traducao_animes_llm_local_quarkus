@@ -8,6 +8,8 @@
 
 O núcleo do pipeline: traduz cada fala de uma legenda `.ass`/`.ssa` do inglês para PT-BR usando um **LLM rodando 100% localmente** via [LM Studio](https://lmstudio.ai/), com **cache persistente** (evita retraduzir falas já processadas) e **contexto/lore por anime** (nomes próprios, gênero de personagens, terminologia).
 
+![Painel de Tradução Local](../src/main/resources/static/img/screenshots/traducao-local.png)
+
 ---
 
 ## Pacote e classes principais

@@ -24,8 +24,13 @@ public final class PromptRevisaoLore {
 
             Regras:
             - Preserve marcadores [[TAGn]] literalmente (nao traduza nem remova).
-            - Mantenha termos tecnicos UC/Gundam/obra em ingles quando a lore assim indicar (mobile suit, Newtype, etc.).
-            - Corrija transliteracoes erradas, nomes anglicizados indevidos e localizacoes fora do padrao.
+            - Trate nomes canonicos como texto protegido: personagens, sobrenomes, apelidos, lugares, faccoes,
+              organizacoes, naves, mechas, armas, operacoes, titulos de obra e termos de mundo NAO devem ser traduzidos.
+            - Quando uma palavra comum fizer parte de um nome oficial, mantenha a palavra no idioma original
+              (ex.: Narrative Gundam, Unicorn Gundam, Freedom Gundam, War in the Pocket, The 08th MS Team).
+            - Mantenha termos tecnicos da obra em ingles quando a lore assim indicar (mobile suit, Newtype, Handler, etc.).
+            - Corrija transliteracoes erradas, nomes anglicizados indevidos, traducao literal de nomes oficiais e localizacoes fora do padrao.
+            - Se apenas uma parte do nome foi traduzida, restaure o nome oficial completo conforme a lore.
             - Se a traducao ja estiver correta segundo a lore, devolva-a sem alteracoes.
             - Nao adicione explicacoes, aspas ou comentarios.
 
@@ -45,6 +50,8 @@ public final class PromptRevisaoLore {
         return """
             Revise a traducao em portugues comparando com o original em ingles.
             Foque em nomes de personagens, lugares, faccoes, mechas e termos de lore.
+            Se o original contem um nome oficial da lore, preserve esse nome no idioma original,
+            sem traduzir partes internas do nome.
 
             Original (ingles):
             %s

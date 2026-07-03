@@ -16,6 +16,10 @@
 [![MKVToolNix](https://img.shields.io/badge/MKVToolNix-Remux-3B82F6?style=for-the-badge)](https://mkvtoolnix.download/)
 [![FFmpeg](https://img.shields.io/badge/FFmpeg-Analysis-007808?style=for-the-badge&logo=ffmpeg&logoColor=white)](https://ffmpeg.org/)
 
+[![Repository](https://img.shields.io/badge/GitHub-carmipa%2Ftraducao__animes__llm__local__quarkus-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/carmipa/traducao_animes_llm_local_quarkus)
+[![Autor](https://img.shields.io/badge/Autor-Paulo_André_Carminati-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/paulo-andr%C3%A9-carminati-47712340/)
+[![GitHub](https://img.shields.io/badge/GitHub-carmipa-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/carmipa?tab=repositories)
+
 </div>
 
 ---
@@ -34,11 +38,19 @@ O **KRONOS CORE** é uma plataforma de automação para **tradução industrial 
 
 Tudo rodando sobre **Java 25 + Quarkus** com uma SPA própria (HTML/CSS/JS puro, sem framework de frontend), pensado para operação **desktop-first e 100% offline** — a única dependência de rede é opcional (metadados de anime via Jikan/TMDB).
 
+![Painel Inicial do KRONOS CORE](src/main/resources/static/img/screenshots/painel-inicial.png)
+
 ---
 
 ## Navegação da Documentação
 
 > Clique em qualquer seção para ir à documentação detalhada.
+
+[![Arquitetura](https://img.shields.io/badge/Docs-Arquitetura-3B82F6?style=flat-square&logo=readthedocs&logoColor=white)](docs/01-arquitetura.md)
+[![Instalação](https://img.shields.io/badge/Docs-Instalação-10B981?style=flat-square&logo=bookstack&logoColor=white)](docs/02-instalacao.md)
+[![API REST](https://img.shields.io/badge/Docs-API_REST-8B5CF6?style=flat-square&logo=swagger&logoColor=white)](docs/13-api-endpoints.md)
+[![Configuração](https://img.shields.io/badge/Docs-Configuração-F59E0B?style=flat-square&logo=gnometerminal&logoColor=white)](docs/14-configuracao.md)
+[![Troubleshooting](https://img.shields.io/badge/Docs-Solução_de_Problemas-F43F5E?style=flat-square&logo=githubactions&logoColor=white)](docs/15-solucao-problemas.md)
 
 | # | Módulo | Descrição |
 |---|--------|-----------|
@@ -178,6 +190,8 @@ A aplicação web tem 11 painéis navegáveis pela barra lateral — cada um map
 `Início` · `Análise de Mídia` · `Extração` · `Tradução Local` · `Correção` · `Revisão` · `Cura de Legendas` · `Remuxer` · `Mapa do Projeto` · `Telemetria` · **`Documentação`**
 
 O menu **Documentação** renderiza esta mesma pasta `docs/` dentro da própria aplicação (incluindo os diagramas Mermaid), sem precisar sair do app ou abrir o GitHub.
+
+![Painel de Documentação dentro do app](src/main/resources/static/img/screenshots/documentacao.png)
 
 ---
 

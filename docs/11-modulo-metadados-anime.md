@@ -8,6 +8,8 @@
 
 Módulo **decorativo/informativo** — não afeta tradução, cache ou lore. Busca pôster, título, sinopse, ano, episódios e score de um anime a partir do caminho da pasta informada em qualquer painel, para que o operador confirme visualmente que está prestes a processar o anime certo antes de disparar uma operação em lote.
 
+![Cartão de metadados exibido ao selecionar uma obra (exemplo: DanMachi Season 4)](../src/main/resources/static/img/screenshots/metadados-anime.png)
+
 ---
 
 ## Fluxo de resolução

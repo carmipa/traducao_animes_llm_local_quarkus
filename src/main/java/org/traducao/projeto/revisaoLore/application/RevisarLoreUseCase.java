@@ -3,6 +3,8 @@ package org.traducao.projeto.revisaoLore.application;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.traducao.projeto.revisaoLore.domain.LogEventoRevisaoLore;
+import org.traducao.projeto.revisaoLore.domain.RevisaoLoreRelatorioJson;
 import org.traducao.projeto.revisaoLore.domain.ResultadoDeteccaoLore;
 import org.traducao.projeto.revisaoLore.domain.ResultadoRevisaoLore;
 import org.traducao.projeto.revisaoLore.domain.exceptions.RevisaoLoreException;
@@ -23,6 +25,7 @@ import org.traducao.projeto.traducao.presentation.ui.AnsiCores;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,7 +46,7 @@ public class RevisarLoreUseCase {
     private final TelemetriaService telemetriaService;
     private final RevisaoLoreLogPersistencia logPersistencia;
 
-    private final List<String> logSessao = new ArrayList<>();
+    private final List<LogEventoRevisaoLore> eventosSessao = new ArrayList<>();
     private Path pastaOriginalRef;
     private Path pastaTraduzidaRef;
     private String contextoIdRef;
@@ -77,7 +80,7 @@ public class RevisarLoreUseCase {
         String contextoId,
         boolean revisarTodasFalas
     ) {
-        logSessao.clear();
+        eventosSessao.clear();
         pastaOriginalRef = pastaOriginal;
         pastaTraduzidaRef = pastaTraduzida;
         contextoIdRef = contextoId;
@@ -128,14 +131,7 @@ public class RevisarLoreUseCase {
             throw new RevisaoLoreException("Falha ao percorrer pasta original: " + pastaOriginal, e);
         }
 
-        String caminhoRelatorio = registrarTelemetria(
-            pastaOriginal, pastaTraduzida, inicioMs,
-            arquivosAnalisados[0], arquivosAlterados[0],
-            falasAuditadas[0], falasSinalizadas[0], falasCorrigidas[0],
-            falasSemAlteracao[0], erros
-        );
-
-        String caminhoLogSessao = salvarLogSessaoEmDisco(pastaTraduzida);
+        long duracaoMs = System.currentTimeMillis() - inicioMs;
 
         out("Arquivos analisados: " + arquivosAnalisados[0]);
         out("Arquivos alterados: " + arquivosAlterados[0]);
@@ -153,11 +149,15 @@ public class RevisarLoreUseCase {
             }
         }
 
-        if (caminhoLogSessao != null) {
-            out("Log da sessao salvo em: " + caminhoLogSessao);
-        }
-        if (caminhoRelatorio != null) {
-            out("Relatorio e telemetria salvos em: " + TelemetriaService.resolverPastaRelatorios(pastaTraduzida));
+        String caminhoRelatorioJson = persistirRelatorioJson(
+            pastaOriginal, pastaTraduzida, duracaoMs,
+            arquivosAnalisados[0], arquivosAlterados[0],
+            falasAuditadas[0], falasSinalizadas[0], falasCorrigidas[0],
+            falasSemAlteracao[0], erros
+        );
+
+        if (caminhoRelatorioJson != null) {
+            out("Relatorio JSON (log + telemetria) salvo em: " + caminhoRelatorioJson);
         }
 
         return new ResultadoRevisaoLore(
@@ -169,8 +169,7 @@ public class RevisarLoreUseCase {
             falasSemAlteracao[0],
             erros.size(),
             erros,
-            caminhoRelatorio,
-            caminhoLogSessao
+            caminhoRelatorioJson
         );
     }
 
@@ -317,10 +316,10 @@ public class RevisarLoreUseCase {
         }
     }
 
-    private String registrarTelemetria(
+    private String persistirRelatorioJson(
         Path pastaOriginal,
         Path pastaTraduzida,
-        long inicioMs,
+        long duracaoMs,
         int arquivosAnalisados,
         int arquivosAlterados,
         int falasAuditadas,
@@ -329,7 +328,6 @@ public class RevisarLoreUseCase {
         int falasSemAlteracao,
         List<String> erros
     ) {
-        long duracaoMs = System.currentTimeMillis() - inicioMs;
         String detalhe = pastaTraduzida.toAbsolutePath()
             + " | contexto=" + gerenciadorContexto.obterNomeContextoAtivo();
 
@@ -342,57 +340,42 @@ public class RevisarLoreUseCase {
             falasCorrigidas
         );
 
-        StringBuilder errosBloco = new StringBuilder();
-        if (!erros.isEmpty()) {
-            errosBloco.append("\nAvisos/erros:\n");
-            for (String erro : erros) {
-                errosBloco.append("  - ").append(erro).append('\n');
-            }
-        }
-
-        String relatorio = """
-            REVISAO DE LORE (.ass via LLM)
-            ==============================
-            Contexto: %s (%s)
-            Pasta original (EN): %s
-            Pasta traduzida (PT-BR): %s
-            Modo: %s
-            Duracao: %s
-            Arquivos analisados: %d
-            Arquivos alterados: %d
-            Falas auditadas: %d
-            Falas sinalizadas (heuristica): %d
-            Falas corrigidas via LLM: %d
-            Falas ja conformes: %d
-            %s
-            """.formatted(
-            gerenciadorContexto.obterNomeContextoAtivo(),
-            contextoIdRef,
-            pastaOriginal.toAbsolutePath(),
-            pastaTraduzida.toAbsolutePath(),
-            revisarTodasFalasRef ? "todas as falas" : "apenas falas sinalizadas",
-            formatarDuracaoMs(duracaoMs),
-            arquivosAnalisados,
-            arquivosAlterados,
-            falasAuditadas,
-            falasSinalizadas,
-            falasCorrigidas,
-            falasSemAlteracao,
-            errosBloco.toString()
+        RevisaoLoreRelatorioJson relatorio = new RevisaoLoreRelatorioJson(
+            "revisao_lore",
+            operacao,
+            new RevisaoLoreRelatorioJson.ContextoObra(
+                contextoIdRef,
+                gerenciadorContexto.obterNomeContextoAtivo()
+            ),
+            new RevisaoLoreRelatorioJson.PastasOperacao(
+                pastaOriginal.toAbsolutePath().toString(),
+                pastaTraduzida.toAbsolutePath().toString()
+            ),
+            revisarTodasFalasRef ? "todas_as_falas" : "apenas_sinalizadas",
+            new RevisaoLoreRelatorioJson.MetricasRevisaoLore(
+                duracaoMs,
+                formatarDuracaoMs(duracaoMs),
+                arquivosAnalisados,
+                arquivosAlterados,
+                falasAuditadas,
+                falasSinalizadas,
+                falasCorrigidas,
+                falasSemAlteracao,
+                erros.size()
+            ),
+            List.copyOf(erros),
+            List.copyOf(eventosSessao)
         );
 
-        telemetriaService.finalizarOperacao(
-            operacao, pastaTraduzida, "revisao_lore", relatorio);
-
-        return TelemetriaService.resolverPastaRelatorios(pastaTraduzida).toString();
-    }
-
-    private String salvarLogSessaoEmDisco(Path pastaTraduzida) {
         try {
-            return logPersistencia.salvarLogSessao(pastaTraduzida, logSessao).toString();
+            Path arquivo = logPersistencia.salvarRelatorioJson(pastaTraduzida, relatorio);
+            telemetriaService.registrarOperacao(operacao);
+            telemetriaService.salvar(TelemetriaService.resolverPastaRelatorios(pastaTraduzida));
+            return arquivo.toString();
         } catch (IOException e) {
-            log.warn("Falha ao salvar log de sessao da revisao de lore: {}", e.getMessage());
-            out(AnsiCores.YELLOW + "Aviso: nao foi possivel salvar o log da sessao em disco." + AnsiCores.RESET);
+            log.warn("Falha ao salvar relatorio JSON da revisao de lore: {}", e.getMessage());
+            out(AnsiCores.YELLOW + "Aviso: nao foi possivel salvar o relatorio JSON em disco." + AnsiCores.RESET);
+            telemetriaService.registrarOperacao(operacao);
             return null;
         }
     }
@@ -406,7 +389,24 @@ public class RevisarLoreUseCase {
         System.out.println(msg);
         String limpo = removerAnsi(msg);
         log.info(limpo);
-        logSessao.add(limpo);
+        eventosSessao.add(new LogEventoRevisaoLore(
+            Instant.now().toString(),
+            inferirNivel(limpo),
+            limpo
+        ));
+    }
+
+    private static String inferirNivel(String mensagem) {
+        if (mensagem.contains("[Erro]") || mensagem.contains("Falha")) {
+            return "ERROR";
+        }
+        if (mensagem.contains("[Pulado]") || mensagem.contains("Aviso:")) {
+            return "WARN";
+        }
+        if (mensagem.contains("[Revisado]") || mensagem.contains("concluida com sucesso")) {
+            return "SUCCESS";
+        }
+        return "INFO";
     }
 
     private static String removerAnsi(String texto) {

@@ -74,6 +74,10 @@
                     <svg class="nav-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
                     <span>📖 Documentação</span>
                 </button>
+                <button class="nav-item" data-target="sobre" id="btn-menu-sobre" data-tooltip="Conheça o autor do KRONOS CORE — Paulo André Carminati (carmipa).">
+                    <svg class="nav-icon" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span>Sobre</span>
+                </button>
             </nav>
             
             <div class="sidebar-footer">
@@ -633,69 +637,8 @@
                     </div>
                 </div>
 
-                <!-- 8. PAINEL DE REVISÃO DE LORE -->
-                <div class="panel" id="panel-revisao-lore">
-                    <div class="glass-card">
-                        <h2>Revisão de Lore</h2>
-                        <p class="card-desc">Compara legendas traduzidas com as originais em inglês e corrige <strong>nomes de personagens, locais, facções, mechas e termos de mundo</strong> que estejam fora do padrão oficial da obra, usando o LLM local com a lore do contexto selecionado.</p>
-                        <p class="card-hint">Selecione obrigatoriamente a obra no menu abaixo — isso carrega a lore canônica e exibe os metadados do anime/filme via API.</p>
-
-                        <div class="anime-meta-banner hidden" id="meta-banner-revisao-lore"></div>
-
-                        <form id="form-revisao-lore" class="standard-form">
-                            <div class="form-group">
-                                <label for="revisao-lore-entrada-original">Pasta com legendas ORIGINAIS (.ass, em inglês): <span class="help-icon" data-tooltip="Legendas de referência em inglês para comparar nomes e termos.">?</span></label>
-                                <div class="input-with-button">
-                                    <input type="text" id="revisao-lore-entrada-original" autocomplete="off" spellcheck="false" placeholder="Ex: E:\animes\Gundam\0083\legendas_eng" required>
-                                    <button type="button" class="btn-procurar" data-target="revisao-lore-entrada-original" data-type="pasta">📂 Procurar...</button>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="revisao-lore-entrada-traduzida">Pasta com legendas TRADUZIDAS (PT-BR): <span class="help-icon" data-tooltip="Legendas em português que serão revisadas e gravadas no lugar.">?</span></label>
-                                <div class="input-with-button">
-                                    <input type="text" id="revisao-lore-entrada-traduzida" autocomplete="off" spellcheck="false" placeholder="Ex: E:\animes\Gundam\0083\legendas_eng\traducao_ptbr" required>
-                                    <button type="button" class="btn-procurar" data-target="revisao-lore-entrada-traduzida" data-type="pasta">📂 Procurar...</button>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="revisao-lore-contexto">Obra / Contexto (obrigatório): <span class="help-icon" data-tooltip="Define a lore oficial usada pelo LLM para padronizar nomes e termos. Também exibe capa e sinopse do anime.">?</span></label>
-                                <select id="revisao-lore-contexto" required>
-                                    <option value="" disabled selected>Carregando contextos...</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" id="revisao-lore-todas-falas">
-                                    Revisar todas as falas (mais lento — por padrão só falas sinalizadas pela heurística)
-                                </label>
-                            </div>
-                            <div class="correcao-actions">
-                                <button type="button" class="btn btn-primary btn-purple" id="btn-iniciar-revisao-lore" data-tooltip="Inicia revisão de terminologia/lore via LLM local">
-                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                                    <span>Iniciar Revisão de Lore</span>
-                                </button>
-                                <button type="button" class="btn btn-secondary btn-clear-form" data-form="form-revisao-lore" data-tooltip="Limpa os campos e oculta o cartão do anime">
-                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                                    <span>Limpar Campos</span>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <div class="glass-card console-card">
-                        <div class="console-header">
-                            <h3>Logs da Revisão de Lore</h3>
-                            <div class="console-actions">
-                                <button class="btn-toggle-console" data-target="console-revisao-lore" data-tooltip="Alternar altura expandida do console">↕ Expandir</button>
-                                <button class="btn-copy-console" data-target="console-revisao-lore" data-tooltip="Copiar conteúdo do console">📋 Copiar</button>
-                                <button class="btn-clear-console" data-target="console-revisao-lore">Limpar</button>
-                            </div>
-                        </div>
-                        <div class="console-body" id="console-revisao-lore">
-                            <div class="system-message">Aguardando execução...</div>
-                        </div>
-                    </div>
-                </div>
+                <!-- 8. PAINEL DE REVISÃO DE LORE (conteúdo em revisaoLore/revisaoLore.html) -->
+                <div class="panel" id="panel-revisao-lore" data-modulo="revisaoLore"></div>
 
                 <!-- 9. PAINEL DE REMUXER -->
                 <div class="panel" id="panel-remuxer">
@@ -860,6 +803,41 @@
                                 <strong id="t-chamadas-llm">0</strong>
                             </article>
                         </div>
+
+                        <section class="telemetry-lore-strip glass-card" aria-label="Métricas de Revisão de Lore">
+                            <div class="lore-strip-header">
+                                <div class="lore-strip-title">
+                                    <span class="insight-kicker accent-magenta">Revisão de Lore</span>
+                                    <h3>Terminologia e nomes canônicos</h3>
+                                    <p class="lore-strip-hint" id="t-lore-hint">Aguardando sessões de revisão de lore.</p>
+                                </div>
+                                <button type="button" class="btn btn-secondary btn-compact" id="btn-filtrar-lore-historico" hidden>
+                                    Ver no histórico
+                                </button>
+                            </div>
+                            <div class="lore-strip-metrics">
+                                <div class="lore-metric">
+                                    <span class="lore-metric-label">Sessões</span>
+                                    <strong id="t-lore-sessoes">0</strong>
+                                </div>
+                                <div class="lore-metric">
+                                    <span class="lore-metric-label">Arquivos</span>
+                                    <strong id="t-lore-arquivos">0</strong>
+                                </div>
+                                <div class="lore-metric">
+                                    <span class="lore-metric-label">Falas sinalizadas</span>
+                                    <strong id="t-lore-sinalizadas">0</strong>
+                                </div>
+                                <div class="lore-metric">
+                                    <span class="lore-metric-label">Falas corrigidas</span>
+                                    <strong id="t-lore-corrigidas">0</strong>
+                                </div>
+                                <div class="lore-metric">
+                                    <span class="lore-metric-label">Taxa de correção</span>
+                                    <strong id="t-lore-taxa">—</strong>
+                                </div>
+                            </div>
+                        </section>
 
                         <div class="telemetry-insights-grid">
                             <section class="telemetry-insight-card">
@@ -1065,14 +1043,17 @@
                     </div>
                 </div>
 
+                <!-- SOBRE — AUTOR DO PROJETO (conteúdo em sobre/sobre.html) -->
+                <div class="panel" id="panel-sobre" data-modulo="sobre"></div>
+
             </section>
 
             <!-- Rodapé Global -->
             <footer class="app-footer">
                 <div class="footer-creator-line">
-                    <span class="sparkle-effect">✦</span> Desenvolvido por <strong class="creator-name">Paulo André Carminati</strong>
-                    <a href="https://github.com/carmipa/traducao_animes_llm_local_java" target="_blank" style="display: inline-flex; align-items: center; margin-left: 4px;">
-                        <img src="https://img.shields.io/badge/GitHub-Repository-181717?style=flat-square&logo=github&logoColor=white" alt="GitHub Repo">
+                    <span class="sparkle-effect">✦</span> Desenvolvido por <strong class="creator-name"><a href="#" class="creator-link" id="link-footer-autor" data-tooltip="Abrir página Sobre">Paulo André Carminati</a></strong>
+                    <a href="https://github.com/carmipa/traducao_animes_llm_local_quarkus" target="_blank" style="display: inline-flex; align-items: center; margin-left: 4px;">
+                        <img src="https://img.shields.io/badge/GitHub-Quarkus_Repo-181717?style=flat-square&logo=github&logoColor=white" alt="GitHub Repo">
                     </a>
                 </div>
             </footer>

@@ -4,7 +4,13 @@ Este documento serve como mapa de contexto para LLMs atualizarem a documentaçã
 Memória viva e estado recente: veja **CEREBRO_IA.md** na raiz do repositório.
 ---
 
+## 📁 Pasta: `.codex-run/`
+*(Nenhum script Python ou Java nesta pasta)*
+
 ## 📁 Pasta: `.vscode/`
+*(Nenhum script Python ou Java nesta pasta)*
+
+## 📁 Pasta: `downloads/`
 *(Nenhum script Python ou Java nesta pasta)*
 
 ## 📁 Pasta: `gradle/`
@@ -339,16 +345,25 @@ Monta os prompts de sistema e usuario para revisao de terminologia/lore
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/domain/exceptions/RevisaoLoreException.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/domain/LogEventoRevisaoLore.java`
+```text
+Entrada estruturada do log de sessao da revisao de lore (serializavel em JSON).
+```
+
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/domain/ResultadoDeteccaoLore.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/domain/ResultadoRevisaoLore.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/domain/RevisaoLoreRelatorioJson.java`
+```text
+Relatorio completo da revisao de lore em JSON: telemetria, metricas, contexto e log da sessao.
+```
+
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/infrastructure/RevisaoLoreLogPersistencia.java`
 ```text
-Persiste o log linha a linha da sessao de revisao de lore em disco,
-no mesmo padrao de relatorios das demais operacoes do pipeline.
+Persiste relatorio e log de sessao da revisao de lore exclusivamente em JSON.
 ```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/presentation/RevisaoLoreController.java`
@@ -369,6 +384,11 @@ Uma linha da tabela de histórico de operações exibida no painel de Telemetria
 ```text
 Registro persistido de operações do pipeline que não passam pelo LLM de tradução
 (revisão de legendas, correção Google, limpeza de cache, etc.).
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/telemetria/RevisaoLoreTelemetriaResumo.java`
+```text
+Métricas agregadas das sessões de Revisão de Lore para o painel de Telemetria.
 ```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/telemetria/TelemetriaResumo.java`
@@ -886,6 +906,12 @@ não tem nenhuma checagem prévia que intercepte esse caso. Isso o torna o
 único, entre as lacunas de exceção corrigidas nesta auditoria, em que a
 falha real é reproduzível de forma determinística e portátil num teste.
 ```
+
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/revisaoLore/application/DetectorTermosLoreServiceTest.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/telemetria/TelemetriaServiceRevisaoLoreTest.java`
+*(Sem docstring ou cabeçalho explicativo)*
 
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/traducao/presentation/web/ConsoleRedirectorTest.java`
 ```text

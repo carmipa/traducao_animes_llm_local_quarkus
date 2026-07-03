@@ -92,6 +92,8 @@ Ver [Configuração — Referência Completa](14-configuracao.md) para todas as 
    - **Orquestrador**: `Java Quarkus` — badge verde "Online"
    - **LLM de Tradução**: badge indicando se o LM Studio respondeu
    - **Cache de Legendas**: contagem de arquivos `.cache.json` já existentes
+
+   ![Painel Inicial com os três widgets de status (Orquestrador, LLM, Cache)](../src/main/resources/static/img/screenshots/painel-inicial.png)
 2. Vá ao painel **Análise de Mídia**, aponte para uma pasta com um `.mkv` de teste e clique em auditar — se o relatório aparecer no console com as faixas de vídeo/áudio/legenda, `ffprobe` está configurado corretamente.
 3. Vá ao painel **Tradução Local**, escolha um contexto (ex.: "DanMachi") e uma pasta com uma legenda `.ass` de teste — se a tradução iniciar sem erro de "Servidor LLM indisponível", o LM Studio está acessível.
 

@@ -45,3 +45,6 @@ application-local.yml
 /cache/
 /relatorios/
 /logs/
+
+# Playwright MCP (screenshots/snapshots de sessões de teste)
+/.playwright-mcp/

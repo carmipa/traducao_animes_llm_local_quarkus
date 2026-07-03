@@ -27,7 +27,9 @@ class ApiEndpointsTest {
             .statusCode(200)
             .body("cacheCount", greaterThanOrEqualTo(0))
             .body("totalEpisodios", greaterThanOrEqualTo(0))
-            .body("historicoOperacoes", notNullValue());
+            .body("historicoOperacoes", notNullValue())
+            .body("revisaoLore", notNullValue())
+            .body("revisaoLore.totalSessoes", greaterThanOrEqualTo(0));
     }
 
     @Test

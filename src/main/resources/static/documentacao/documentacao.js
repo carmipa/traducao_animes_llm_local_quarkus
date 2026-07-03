@@ -78,6 +78,17 @@ export function initDocumentacao() {
         );
     }
 
+    // Imagens em docs/*.md apontam para "../src/main/resources/static/img/..."
+    // (caminho relativo correto para o GitHub renderizar o arquivo dentro de
+    // docs/). Aqui reescreve para a URL raiz "/img/..." que o Quarkus
+    // realmente serve, já que o markdown é injetado na página em "/".
+    function sanitizarImagens(html) {
+        return html.replace(
+            /src="(?:\.\.\/)+src\/main\/resources\/static\/(img\/[^"]+)"/g,
+            'src="/$1"'
+        );
+    }
+
     function renderizarMermaid() {
         elMarkdown.querySelectorAll('pre code.language-mermaid').forEach((code) => {
             const pre = code.parentElement;
@@ -126,6 +137,7 @@ export function initDocumentacao() {
 
                 let html = marked.parse(mdLimpo);
                 html = sanitizarLinks(html);
+                html = sanitizarImagens(html);
                 elMarkdown.innerHTML = html;
 
                 elMarkdown.querySelectorAll('a.doc-md-link').forEach(a => {

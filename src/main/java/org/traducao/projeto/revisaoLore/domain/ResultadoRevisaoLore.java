@@ -11,8 +11,7 @@ public record ResultadoRevisaoLore(
     int falasSemAlteracao,
     int totalErros,
     List<String> erros,
-    String caminhoRelatorio,
-    String caminhoLogSessao
+    String caminhoRelatorioJson
 ) {
     public boolean teveErros() {
         return totalErros > 0;

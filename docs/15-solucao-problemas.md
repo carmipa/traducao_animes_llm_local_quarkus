@@ -57,6 +57,8 @@
 
 **Correção aplicada:** o canal agora é armazenado em `ThreadLocal`, escopado por thread do executor — cada operação em background mantém seu próprio canal, mesmo com várias rodando simultaneamente.
 
+![Console "Logs do Analisador" — mesma caixa de log de todos os painéis](../src/main/resources/static/img/screenshots/analise-midia.png)
+
 ---
 
 ## Extração de legenda com formato inesperado
@@ -74,6 +76,8 @@ O que **de fato** podia acontecer (e foi corrigido): se o campo `formato` da req
 1. Confira o [relatório de Análise de Mídia](03-modulo-analise-midia.md) do arquivo envolvido — ele geralmente aponta a causa raiz antes de qualquer outra etapa.
 2. Verifique `logs/console-web.log` para o histórico completo de logs da sessão.
 3. Verifique `logs/telemetria_compartilhada.json` (ou o painel [Telemetria](10-modulo-telemetria.md)) para o histórico de operações já executadas.
+
+![Painel de Telemetria — histórico de operações, hits de cache e tokens](../src/main/resources/static/img/screenshots/telemetria.png)
 
 ---
 

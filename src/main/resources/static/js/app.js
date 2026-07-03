@@ -15,6 +15,7 @@ import { initRemuxer } from '../remuxer/remuxer.js';
 import { initMapa } from '../mapa/mapa.js';
 import { initTelemetria } from '../telemetria/telemetria.js?v=2.4';
 import { initDocumentacao } from '../documentacao/documentacao.js';
+import { initSobre } from '../sobre/sobre.js';
 
 // Definições de Títulos e Subtítulos por seção do menu
 const CONFIG_SECOES = {
@@ -61,15 +62,24 @@ const CONFIG_SECOES = {
     telemetria: {
         titulo: "11. Telemetria KRONOS",
         subtitulo: "Observabilidade da traducao, cache local e historico operacional"
+    },
+    sobre: {
+        titulo: "Sobre o Autor",
+        subtitulo: "Paulo André Carminati, contatos, formação e repositórios"
     }
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     inicializarNavegacao();
-    inicializarModulos();
+    await inicializarModulos();
     atualizarStatusConexao();
     buscarContadoresGlobais();
     conectarFluxoLugsSSE();
+
+    inicializarMetadadosDinamicos();
+    inicializarBotoesLimpezaFormularios();
+    inicializarControlesConsole();
+    inicializarBotoesProcurarCaminho();
 });
 
 /**
@@ -114,18 +124,19 @@ function inicializarNavegacao() {
 /**
  * Inicializa cada um dos módulos JavaScript específicos das pastas
  */
-function inicializarModulos() {
+async function inicializarModulos() {
     initAnalise();
     initExtracao();
     initTraducao();
     initCorrecao();
     initRevisao();
     initCura();
-    initRevisaoLore();
+    await initRevisaoLore();
     initRemuxer();
     initMapa();
     initTelemetria();
     initDocumentacao();
+    await initSobre();
 }
 
 /**
@@ -520,9 +531,14 @@ function inicializarMetadadosDinamicos() {
     };
 
     // Popula automaticamente todos os selects de contexto (análise, tradução, correção, revisão e cura)
-    carregarContextosAuxiliares(['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto'], () => {
-        mapeamentoFormularios.forEach(atualizarItem);
-    });
+    const popularContextos = () => {
+        carregarContextosAuxiliares(['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto'], () => {
+            mapeamentoFormularios.forEach(atualizarItem);
+        });
+    };
+
+    popularContextos();
+    document.addEventListener('revisao-lore:painel-carregado', popularContextos);
 
     mapeamentoFormularios.forEach(item => {
         const input = document.getElementById(item.inputId);
@@ -738,10 +754,4 @@ function inicializarBotoesProcurarCaminho() {
     });
 }
 
-// Inicializa no carregamento do DOM
-document.addEventListener('DOMContentLoaded', () => {
-    inicializarMetadadosDinamicos();
-    inicializarBotoesLimpezaFormularios();
-    inicializarControlesConsole();
-    inicializarBotoesProcurarCaminho();
-});
+// Metadados e utilitários de formulário são inicializados no DOMContentLoaded principal acima.
