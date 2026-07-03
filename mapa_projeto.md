@@ -121,23 +121,32 @@ pai ainda le o outro stream) e aplica um timeout que mata o processo (destroyFor
 caso ele nao termine a tempo, em vez de travar o pipeline indefinidamente.
 ```
 
-### 📄 Arquivo: `src/main/java/org/traducao/projeto/curatags/CorretorTraducaoLlmService.java`
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/CorrecaoLegendasController.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/CorrecaoLegendasLogPersistencia.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/CorrecaoLegendasRelatorioJson.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/CorretorTraducaoLlmService.java`
 ```text
 Retorna a tradução corrigida via LLM apenas se a tradução atual estiver com
 resíduo em inglês/preâmbulo (ValidadorTraducaoService) — evita chamar o LLM
 para falas que já estão corretas.
 ```
 
-### 📄 Arquivo: `src/main/java/org/traducao/projeto/curatags/CuraTagsController.java`
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/CorrigirLegendasUseCase.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
-### 📄 Arquivo: `src/main/java/org/traducao/projeto/curatags/CuraTagsUseCase.java`
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/LogEventoCorrecaoLegendas.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
-### 📄 Arquivo: `src/main/java/org/traducao/projeto/curatags/ResultadoCuraTags.java`
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/ResultadoCorrecaoLegendas.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
-### 📄 Arquivo: `src/main/java/org/traducao/projeto/curatags/SanitizadorTagsService.java`
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/SanitizadorTagsService.java`
 ```text
 LLM costuma alucinar chaves {texto} como marcação de pensamento, o que quebra a linha no Aegisub.
 Legado: LLM (ou versões antigas deste código) corrompiam a tag do Kara Templater

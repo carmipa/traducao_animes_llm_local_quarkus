@@ -44,8 +44,8 @@ const CONFIG_SECOES = {
         subtitulo: "Concordância PT-BR via LLM local e correção de inglês residual via Google"
     },
     cura: {
-        titulo: "7. Cura de Legendas",
-        subtitulo: "Saneamento estrutural de formatações complexas e reinjeção de tags originais ASS"
+        titulo: "7. Correção de Legendas",
+        subtitulo: "Corrige a legenda PT-BR usando a original como referência imutável"
     },
     "revisao-lore": {
         titulo: "8. Revisão de Lore",
@@ -157,6 +157,7 @@ function conectarFluxoLugsSSE() {
         'correcao': 'console-correcao',
         'revisao': 'console-revisao',
         'revisao-lore': 'console-revisao-lore',
+        'correcao-legendas': 'console-cura',
         'cura': 'console-cura',
         'remuxer': 'console-remuxer'
     };
@@ -530,7 +531,7 @@ function inicializarMetadadosDinamicos() {
         }
     };
 
-    // Popula automaticamente todos os selects de contexto (análise, tradução, correção, revisão e cura)
+    // Popula automaticamente todos os selects de contexto dos módulos auxiliares.
     const popularContextos = () => {
         carregarContextosAuxiliares(['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto'], () => {
             mapeamentoFormularios.forEach(atualizarItem);

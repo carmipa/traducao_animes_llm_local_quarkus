@@ -169,6 +169,17 @@ class ApiEndpointsTest {
     }
 
     @Test
+    void correcaoLegendasSemDiretoriosRetornaBadRequest() {
+        given()
+            .contentType("application/json")
+            .body("{\"diretorioOriginal\":\"\",\"diretorioTraduzido\":\"\"}")
+            .when().post("/api/correcao-legendas")
+            .then()
+            .statusCode(400)
+            .body("erro", containsString("originais"));
+    }
+
+    @Test
     void curaTagsSemTraduzidoRetornaBadRequest() {
         given()
             .contentType("application/json")

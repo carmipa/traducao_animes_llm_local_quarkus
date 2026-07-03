@@ -1,4 +1,4 @@
-package org.traducao.projeto.curatags;
+package org.traducao.projeto.correcaoLegendas;
 
 import org.springframework.stereotype.Service;
 import org.traducao.projeto.traducao.application.ValidadorTraducaoService;

@@ -1,4 +1,4 @@
-package org.traducao.projeto.curatags;
+package org.traducao.projeto.correcaoLegendas;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.traducao.projeto.traducao.infrastructure.contexto.GerenciadorContexto;
+import org.traducao.projeto.traducao.presentation.web.LogStreamService;
 
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
@@ -14,22 +15,38 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-public class CuraTagsController {
+public class CorrecaoLegendasController {
 
-    private final CuraTagsUseCase curaTagsUseCase;
+    private final CorrigirLegendasUseCase corrigirLegendasUseCase;
     private final GerenciadorContexto gerenciadorContexto;
+    private final LogStreamService logStreamService;
 
-    public CuraTagsController(CuraTagsUseCase curaTagsUseCase, GerenciadorContexto gerenciadorContexto) {
-        this.curaTagsUseCase = curaTagsUseCase;
+    public CorrecaoLegendasController(
+        CorrigirLegendasUseCase corrigirLegendasUseCase,
+        GerenciadorContexto gerenciadorContexto,
+        LogStreamService logStreamService
+    ) {
+        this.corrigirLegendasUseCase = corrigirLegendasUseCase;
         this.gerenciadorContexto = gerenciadorContexto;
+        this.logStreamService = logStreamService;
+    }
+
+    @PostMapping("/correcao-legendas")
+    public ResponseEntity<Map<String, Object>> iniciarCorrecaoLegendas(@RequestBody Map<String, String> payload) {
+        return executarCorrecaoLegendas(payload);
     }
 
     @PostMapping("/cura-tags")
-    public ResponseEntity<Map<String, Object>> iniciarCuraTags(@RequestBody Map<String, String> payload) {
+    public ResponseEntity<Map<String, Object>> iniciarCuraTagsLegado(@RequestBody Map<String, String> payload) {
+        return executarCorrecaoLegendas(payload);
+    }
+
+    private ResponseEntity<Map<String, Object>> executarCorrecaoLegendas(Map<String, String> payload) {
+        logStreamService.definirCanalAtual("correcao-legendas");
         String diretorioOriginal = payload.get("diretorioOriginal");
         String diretorioTraduzido = payload.get("diretorioTraduzido");
         if (diretorioOriginal == null || diretorioOriginal.trim().isEmpty()) {
-            return ResponseEntity.badRequest().body(Map.of("erro", "Pasta com as legendas originais (inglês) não informada."));
+            return ResponseEntity.badRequest().body(Map.of("erro", "Pasta com as legendas originais/referência não informada."));
         }
         if (diretorioTraduzido == null || diretorioTraduzido.trim().isEmpty()) {
             return ResponseEntity.badRequest().body(Map.of("erro", "Pasta com as legendas traduzidas (PT-BR) não informada."));
@@ -51,23 +68,31 @@ public class CuraTagsController {
         }
 
         try {
-            ResultadoCuraTags resultado = curaTagsUseCase.curarPasta(pastaOriginal, pastaTraduzida, contextoId);
+            ResultadoCorrecaoLegendas resultado = corrigirLegendasUseCase.corrigirPasta(pastaOriginal, pastaTraduzida, contextoId);
 
             String mensagem = String.format(
-                "Cura finalizada: %d curado(s), %d corrigido(s) via LLM, %d já perfeito(s), %d sem tradução pareada, %d erro(s) de %d arquivo(s).",
+                "Correção de legendas finalizada: %d arquivo(s) corrigido(s), %d fala(s) corrigida(s) via LLM, %d já perfeito(s), %d sem tradução pareada, %d erro(s) de %d arquivo(s).",
                 resultado.curados(), resultado.corrigidosLlm(), resultado.semAlteracao(), resultado.semPar(),
-                resultado.totalErros(), resultado.totalArquivos() + resultado.semPar());
+                resultado.totalErros(), resultado.totalArquivosAnalisados());
 
             if (resultado.teveErros()) {
                 return ResponseEntity.internalServerError().body(Map.of(
                     "erro", mensagem,
-                    "detalhesErros", resultado.erros()
+                    "detalhesErros", resultado.erros(),
+                    "relatorioJson", valorOuVazio(resultado.relatorioJson())
                 ));
             }
-            return ResponseEntity.ok(Map.of("mensagem", mensagem));
+            return ResponseEntity.ok(Map.of(
+                "mensagem", mensagem,
+                "relatorioJson", valorOuVazio(resultado.relatorioJson())
+            ));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.internalServerError().body(Map.of("erro", "Falha ao curar tags: " + e.getMessage()));
+            return ResponseEntity.internalServerError().body(Map.of("erro", "Falha ao corrigir legendas: " + e.getMessage()));
         }
+    }
+
+    private String valorOuVazio(String valor) {
+        return valor != null ? valor : "";
     }
 }

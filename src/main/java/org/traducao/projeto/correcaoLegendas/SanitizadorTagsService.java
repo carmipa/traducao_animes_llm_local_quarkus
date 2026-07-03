@@ -1,4 +1,4 @@
-package org.traducao.projeto.curatags;
+package org.traducao.projeto.correcaoLegendas;
 
 import org.springframework.stereotype.Service;
 
@@ -55,7 +55,7 @@ public class SanitizadorTagsService {
 
             if (texto.charAt(pos) == '{') {
                 int fechamento = texto.indexOf('}', pos);
-                if (fechamento != -1) {
+                if (fechamento != -1 && ehTagAssValida(texto, pos, fechamento)) {
                     prefixo.append(texto.substring(pos, fechamento + 1));
                     pos = fechamento + 1;
                 } else {
@@ -78,7 +78,7 @@ public class SanitizadorTagsService {
             
             if (texto.charAt(pos) == '{') {
                 int fechamento = texto.indexOf('}', pos);
-                if (fechamento != -1) {
+                if (fechamento != -1 && ehTagAssValida(texto, pos, fechamento)) {
                     pos = fechamento + 1;
                 } else {
                     break;
@@ -88,5 +88,13 @@ public class SanitizadorTagsService {
             }
         }
         return texto.substring(pos).trim();
+    }
+
+    private boolean ehTagAssValida(String texto, int abertura, int fechamento) {
+        if (fechamento <= abertura + 1) {
+            return false;
+        }
+        char primeiroConteudo = texto.charAt(abertura + 1);
+        return primeiroConteudo == '\\' || primeiroConteudo == '=';
     }
 }
