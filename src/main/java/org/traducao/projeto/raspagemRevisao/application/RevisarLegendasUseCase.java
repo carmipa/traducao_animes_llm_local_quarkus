@@ -20,6 +20,7 @@ import org.traducao.projeto.traducao.infrastructure.legenda.EscritorLegendaAss;
 import org.traducao.projeto.traducao.infrastructure.legenda.LeitorLegendaAss;
 import org.traducao.projeto.traducao.infrastructure.legenda.MascaradorTags;
 import org.traducao.projeto.traducao.presentation.ui.AnsiCores;
+import org.traducao.projeto.traducao.infrastructure.config.TradutorProperties;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -60,6 +61,7 @@ public class RevisarLegendasUseCase {
     private final GerenciadorContexto gerenciadorContexto;
     private final TelemetriaService telemetriaService;
     private final SanitizadorTagsService sanitizadorTags;
+    private final TradutorProperties propriedades;
 
     public RevisarLegendasUseCase(
         LeitorLegendaAss leitor,
@@ -72,7 +74,8 @@ public class RevisarLegendasUseCase {
         MascaradorTags mascaradorTags,
         GerenciadorContexto gerenciadorContexto,
         TelemetriaService telemetriaService,
-        SanitizadorTagsService sanitizadorTags
+        SanitizadorTagsService sanitizadorTags,
+        TradutorProperties propriedades
     ) {
         this.leitor = leitor;
         this.escritor = escritor;
@@ -85,6 +88,7 @@ public class RevisarLegendasUseCase {
         this.gerenciadorContexto = gerenciadorContexto;
         this.telemetriaService = telemetriaService;
         this.sanitizadorTags = sanitizadorTags;
+        this.propriedades = propriedades;
     }
 
     /**
@@ -493,6 +497,9 @@ public class RevisarLegendasUseCase {
     }
 
     private boolean deveIgnorarAuditoria(EventoLegenda evento, String texto) {
+        if (evento.estilo() != null && propriedades.estiloIgnorado(evento.estilo())) {
+            return true;
+        }
         String estilo = evento.estilo() != null ? evento.estilo().toLowerCase() : "";
         if (estilo.contains("sign")) {
             return true;

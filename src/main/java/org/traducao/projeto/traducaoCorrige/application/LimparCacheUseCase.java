@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.traducao.projeto.telemetria.OperacaoTelemetria;
 import org.traducao.projeto.telemetria.TelemetriaService;
 import org.traducao.projeto.traducao.presentation.ui.AnsiCores;
+import org.traducao.projeto.traducao.infrastructure.config.TradutorProperties;
 import org.traducao.projeto.traducaoCorrige.domain.exceptions.CorretorCacheException;
 
 import java.io.IOException;
@@ -24,10 +25,12 @@ public class LimparCacheUseCase {
     private static final Logger log = LoggerFactory.getLogger(LimparCacheUseCase.class);
     private final ObjectMapper mapper;
     private final TelemetriaService telemetriaService;
+    private final TradutorProperties propriedades;
 
-    public LimparCacheUseCase(ObjectMapper mapper, TelemetriaService telemetriaService) {
+    public LimparCacheUseCase(ObjectMapper mapper, TelemetriaService telemetriaService, TradutorProperties propriedades) {
         this.mapper = mapper.copy().enable(SerializationFeature.INDENT_OUTPUT);
         this.telemetriaService = telemetriaService;
+        this.propriedades = propriedades;
     }
 
     public int executar(Path diretorioCache) {
@@ -111,6 +114,11 @@ public class LimparCacheUseCase {
             for (Map<String, Object> entrada : entradas) {
                 String original = (String) entrada.get("original");
                 String traduzido = (String) entrada.get("traduzido");
+                String estilo = (String) entrada.get("estilo");
+
+                if (estilo != null && propriedades.estiloIgnorado(estilo)) {
+                    continue;
+                }
 
                 if (original != null && !original.isBlank() && original.equals(traduzido)) {
                     entrada.put("traduzido", "");

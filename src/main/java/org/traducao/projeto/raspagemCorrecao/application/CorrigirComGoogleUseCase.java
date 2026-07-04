@@ -11,6 +11,7 @@ import org.traducao.projeto.raspagemCorrecao.infrastructure.GoogleTranslateScrap
 import org.traducao.projeto.telemetria.OperacaoTelemetria;
 import org.traducao.projeto.telemetria.TelemetriaService;
 import org.traducao.projeto.traducao.presentation.ui.AnsiCores;
+import org.traducao.projeto.traducao.infrastructure.config.TradutorProperties;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -28,6 +29,7 @@ public class CorrigirComGoogleUseCase {
     private final ObjectMapper mapper;
     private final GoogleTranslateScraper googleScraper;
     private final TelemetriaService telemetriaService;
+    private final TradutorProperties propriedades;
 
     private static final Set<String> TERMOS_IGNORADOS = Set.of(
         "fire bolt", "argo vesta", "caelus hildr", "hildrsleif", "dios aedes vesta",
@@ -39,11 +41,13 @@ public class CorrigirComGoogleUseCase {
     public CorrigirComGoogleUseCase(
         ObjectMapper mapper,
         GoogleTranslateScraper googleScraper,
-        TelemetriaService telemetriaService
+        TelemetriaService telemetriaService,
+        TradutorProperties propriedades
     ) {
         this.mapper = mapper.copy().enable(SerializationFeature.INDENT_OUTPUT);
         this.googleScraper = googleScraper;
         this.telemetriaService = telemetriaService;
+        this.propriedades = propriedades;
     }
 
     public int executar(Path diretorioCache) {
@@ -127,6 +131,11 @@ public class CorrigirComGoogleUseCase {
             for (Map<String, Object> entrada : entradas) {
                 String original = (String) entrada.get("original");
                 String traduzido = (String) entrada.get("traduzido");
+                String estilo = (String) entrada.get("estilo");
+
+                if (estilo != null && propriedades.estiloIgnorado(estilo)) {
+                    continue;
+                }
 
                 if (original != null && !original.isBlank() && original.equals(traduzido)) {
                     if (deveIgnorar(original)) {

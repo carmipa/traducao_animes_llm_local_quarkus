@@ -16,6 +16,7 @@ import org.traducao.projeto.traducao.infrastructure.legenda.MascaradorTags;
 import org.traducao.projeto.telemetria.OperacaoTelemetria;
 import org.traducao.projeto.telemetria.TelemetriaService;
 import org.traducao.projeto.traducao.presentation.ui.AnsiCores;
+import org.traducao.projeto.traducao.infrastructure.config.TradutorProperties;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -37,6 +38,7 @@ public class RevisarCacheUseCase {
     private final MascaradorTags mascaradorTags;
     private final GerenciadorContexto gerenciadorContexto;
     private final TelemetriaService telemetriaService;
+    private final TradutorProperties propriedades;
 
     public RevisarCacheUseCase(
         ObjectMapper mapper,
@@ -45,7 +47,8 @@ public class RevisarCacheUseCase {
         ValidadorTraducaoService validador,
         MascaradorTags mascaradorTags,
         GerenciadorContexto gerenciadorContexto,
-        TelemetriaService telemetriaService
+        TelemetriaService telemetriaService,
+        TradutorProperties propriedades
     ) {
         this.mapper = mapper.copy().enable(SerializationFeature.INDENT_OUTPUT);
         this.detector = detector;
@@ -54,6 +57,7 @@ public class RevisarCacheUseCase {
         this.mascaradorTags = mascaradorTags;
         this.gerenciadorContexto = gerenciadorContexto;
         this.telemetriaService = telemetriaService;
+        this.propriedades = propriedades;
     }
 
     public int executar(Path diretorioCache) {
@@ -159,6 +163,11 @@ public class RevisarCacheUseCase {
             for (Map<String, Object> entrada : entradas) {
                 String original = (String) entrada.get("original");
                 String traduzido = (String) entrada.get("traduzido");
+                String estilo = (String) entrada.get("estilo");
+
+                if (estilo != null && propriedades.estiloIgnorado(estilo)) {
+                    continue;
+                }
 
                 if (original == null || original.isBlank()
                     || traduzido == null || traduzido.isBlank()
