@@ -133,9 +133,15 @@ public class ProcessarArquivoUseCase {
             cacheReaproveitavel.size(), cacheSuspeito, textosPendentes.size());
         uiLogger.registrarFalasCache(cacheReaproveitavel.size());
 
+        // Avisos de falas que ficaram sem tradução confiável (tags corrompidas,
+        // resíduo detectado na revalidação final). Alimenta o campo
+        // errosOcorridos da telemetria para o painel refletir o que exige
+        // revisão manual — antes era sempre uma lista vazia.
+        List<String> avisos = new ArrayList<>();
+
         Map<String, String> traducoesNovas;
         try {
-            traducoesNovas = traduzirPendentes(textosPendentes, arquivoEntrada.getFileName().toString());
+            traducoesNovas = traduzirPendentes(textosPendentes, arquivoEntrada.getFileName().toString(), avisos);
             uiLogger.registrarFalasNovas(traducoesNovas.size());
         } catch (TraducaoParcialException e) {
             Map<String, String> traducoesParciais = e.getDicionarioParcial();
@@ -187,6 +193,7 @@ public class ProcessarArquivoUseCase {
                 log.warn("Fala suspeita mantida na revalidação final do evento {}: {}. Texto: \"{}\"",
                     evento.indice(), e.getMessage(), textoFinal);
                 uiLogger.log("[ WARN ] Fala suspeita mantida (revise manualmente no cache): " + textoFinal);
+                avisos.add("Evento " + evento.indice() + " suspeito na revalidação final: " + e.getMessage());
             }
             eventosFinais.add(evento.comTexto(textoFinal));
             entradasCache.add(new EntradaCache(
@@ -210,16 +217,18 @@ public class ProcessarArquivoUseCase {
             traducoesNovas.size(),
             cacheReaproveitavel.size(),
             tempoTotalMs,
-            List.of(),
+            List.copyOf(avisos),
             animeNome,
-            temporadaAPartirDoNome(animeNome)
+            temporadaAPartirDoNome(animeNome),
+            java.time.Instant.now().toString()
         ));
 
         log.info("Arquivo traduzido salvo em {} (cache em {})", arquivoSaida, arquivoCache);
         return arquivoSaida;
     }
 
-    private Map<String, String> traduzirPendentes(LinkedHashSet<String> textosPendentes, String nomeArquivo)
+    private Map<String, String> traduzirPendentes(
+            LinkedHashSet<String> textosPendentes, String nomeArquivo, List<String> avisos)
             throws InterruptedException, ExecutionException {
         if (textosPendentes.isEmpty()) {
             return Map.of();
@@ -260,7 +269,7 @@ public class ProcessarArquivoUseCase {
                         for (int j = 0; j < chunkOriginais.size(); j++) {
                             String original = chunkOriginais.get(j);
                             String traduzidoMascarado = traduzidoMascaradoLinhas.get(j);
-                            traducoesParciais.put(original, desmascararComFallback(original, traduzidoMascarado, tagsPorTexto.get(original)));
+                            traducoesParciais.put(original, desmascararComFallback(original, traduzidoMascarado, tagsPorTexto.get(original), avisos));
                         }
                     }
                 }
@@ -277,7 +286,7 @@ public class ProcessarArquivoUseCase {
             for (int j = 0; j < chunkOriginais.size(); j++) {
                 String original = chunkOriginais.get(j);
                 String traduzidoMascarado = traduzidoMascaradoLinhas.get(j);
-                traducoesNovas.put(original, desmascararComFallback(original, traduzidoMascarado, tagsPorTexto.get(original)));
+                traducoesNovas.put(original, desmascararComFallback(original, traduzidoMascarado, tagsPorTexto.get(original), avisos));
             }
         }
         return traducoesNovas;
@@ -289,7 +298,7 @@ public class ProcessarArquivoUseCase {
      * inteiro por causa disso: mantém o texto original (sem tradução) só para essa
      * fala e sinaliza para revisão manual no cache.
      */
-    private String desmascararComFallback(String original, String traduzidoMascarado, List<String> tags) {
+    private String desmascararComFallback(String original, String traduzidoMascarado, List<String> tags, List<String> avisos) {
         try {
             return mascarador.desmascarar(traduzidoMascarado, tags);
         } catch (AlucinacaoDetectadaException e) {
@@ -297,6 +306,7 @@ public class ProcessarArquivoUseCase {
             log.warn("Tags corrompidas pelo LLM nesta fala — mantendo o texto original sem tradução. Motivo: {}. Original: \"{}\"",
                 e.getMessage(), original);
             uiLogger.log("[ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): " + original);
+            avisos.add("Fala mantida sem tradução (tags corrompidas pelo LLM): " + original);
             return original;
         }
     }

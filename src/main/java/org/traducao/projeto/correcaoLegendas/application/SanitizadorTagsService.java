@@ -11,6 +11,9 @@ public class SanitizadorTagsService {
     // LLM costuma alucinar chaves {texto} como marcação de pensamento, o que quebra a linha no Aegisub.
     private static final Pattern TAG_INVALIDA_PATTERN = Pattern.compile("\\{([^\\\\=}][^}]*)\\}");
 
+    // Tags de timing de karaoke ASS: \k, \K, \kf, \ko seguidas de duração (centissegundos).
+    private static final Pattern TAG_KARAOKE_PATTERN = Pattern.compile("\\\\[kK][fo]?\\d");
+
     public String curarTags(String originalEn, String traduzidoPt) {
         if (originalEn == null || traduzidoPt == null) {
             return traduzidoPt;
@@ -31,12 +34,7 @@ public class SanitizadorTagsService {
         String textoTraduzidoSemPrefixo = removerPrefixo(resultado);
         resultado = prefixoOriginal + textoTraduzidoSemPrefixo;
 
-        // Chaves remanescentes que não são tags válidas do ASS são alucinação do LLM;
-        // escapamos para quebra de linha em vez de apagar o texto.
-        Matcher matcher = TAG_INVALIDA_PATTERN.matcher(resultado);
-        if (matcher.find()) {
-            resultado = matcher.replaceAll("\\\\N$1");
-        }
+        resultado = escaparChavesInvalidas(resultado, originalEn);
 
         // Nao remover espaco em branco apos "}" aqui: falas de karaoke (OP/ED) tem
         // tags validas no meio da linha, uma por silaba/palavra (ex.: "{\k50}Ka {\k30}ra"),
@@ -45,6 +43,55 @@ public class SanitizadorTagsService {
         // trim() em removerPrefixo(...) acima.
 
         return resultado;
+    }
+
+    /**
+     * Converte chaves {texto} que não são tags válidas do ASS em quebra de
+     * linha + texto ({@code \Ntexto}), preservando o conteúdo em vez de
+     * apagá-lo — em geral são alucinação do LLM. Exceção: se o MESMO bloco
+     * {...} existe verbatim no original, é um comentário legítimo do arquivo
+     * (nota de fansub, marcador do Kara Templater) e é mantido intacto —
+     * escapá-lo tornaria visível na tela um texto que o autor deixou oculto.
+     * <p>
+     * Também usado pela revisão de legendas (raspagemRevisao) para consertar
+     * karaokê quebrado — regra única, sem regex duplicada entre módulos.
+     */
+    public String escaparChavesInvalidas(String texto, String originalReferencia) {
+        if (texto == null) {
+            return null;
+        }
+        Matcher matcher = TAG_INVALIDA_PATTERN.matcher(texto);
+        if (!matcher.find()) {
+            return texto;
+        }
+        StringBuilder sb = new StringBuilder();
+        matcher.reset();
+        while (matcher.find()) {
+            String bloco = matcher.group();
+            boolean comentarioLegitimo = originalReferencia != null && originalReferencia.contains(bloco);
+            String substituto = comentarioLegitimo ? bloco : "\\N" + matcher.group(1);
+            matcher.appendReplacement(sb, Matcher.quoteReplacement(substituto));
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
+    }
+
+    /**
+     * Conta as tags de timing de karaokê (\k, \K, \kf, \ko) da fala. Serve
+     * para detectar traduções antigas que perderam o timing por sílaba no
+     * meio da linha — a cura estrutural só restaura o prefixo, então a perda
+     * precisa ao menos ser sinalizada no relatório para revisão manual.
+     */
+    public int contarTagsKaraoke(String texto) {
+        if (texto == null) {
+            return 0;
+        }
+        Matcher matcher = TAG_KARAOKE_PATTERN.matcher(texto);
+        int contagem = 0;
+        while (matcher.find()) {
+            contagem++;
+        }
+        return contagem;
     }
 
     private String extrairPrefixo(String texto) {

@@ -10,7 +10,8 @@ public record MidiaTelemetria(
     String codecVideo,
     String resolucao,
     Double fps,
-    List<LegendaTelemetria> legendas
+    List<LegendaTelemetria> legendas,
+    String registradoEm
 ) {
     public record LegendaTelemetria(
         Integer indexRelativo,

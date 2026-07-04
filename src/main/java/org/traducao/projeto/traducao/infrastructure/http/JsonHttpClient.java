@@ -93,11 +93,16 @@ public class JsonHttpClient {
         return objectMapper.readValue(response.body(), responseType);
     }
 
-    public static boolean isErroRedeOuTimeout(Exception e) {
+    // Recebe Throwable (não Exception): o cast cego da causa para Exception
+    // estourava ClassCastException quando a cadeia continha um Error.
+    public static boolean isErroRedeOuTimeout(Throwable e) {
+        if (e == null) {
+            return false;
+        }
         return e instanceof HttpTimeoutException
             || e instanceof java.net.ConnectException
             || e instanceof java.net.UnknownHostException
-            || (e.getCause() != null && isErroRedeOuTimeout((Exception) e.getCause()));
+            || isErroRedeOuTimeout(e.getCause());
     }
 
     private HttpResponse<String> enviar(HttpRequest request) throws IOException, InterruptedException {

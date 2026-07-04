@@ -9,6 +9,7 @@ import org.traducao.projeto.legendasExtracao.domain.FaixaLegenda;
 import org.traducao.projeto.legendasExtracao.domain.FormatoLegenda;
 import org.traducao.projeto.legendasExtracao.domain.RelatorioExtracao;
 import org.traducao.projeto.legendasExtracao.domain.ports.ExtratorVideoPort;
+import org.traducao.projeto.telemetria.TelemetriaService;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,10 +27,15 @@ public class ExtrairLegendaUseCase {
 
     private final List<ExtratorVideoPort> adaptadoresVideo;
     private final List<ExtratorStrategy> strategies;
+    private final TelemetriaService telemetriaService;
 
-    public ExtrairLegendaUseCase(List<ExtratorVideoPort> adaptadoresVideo, List<ExtratorStrategy> strategies) {
+    public ExtrairLegendaUseCase(
+            List<ExtratorVideoPort> adaptadoresVideo,
+            List<ExtratorStrategy> strategies,
+            TelemetriaService telemetriaService) {
         this.adaptadoresVideo = adaptadoresVideo;
         this.strategies = strategies;
+        this.telemetriaService = telemetriaService;
     }
 
     public RelatorioExtracao executar(Path pastaVideos, FormatoLegenda formato) {
@@ -37,6 +43,7 @@ public class ExtrairLegendaUseCase {
     }
 
     public RelatorioExtracao executar(Path pastaVideos, Path pastaSaidaCustomizada, FormatoLegenda formato) {
+        long inicioMs = System.currentTimeMillis();
         RelatorioExtracao relatorio = new RelatorioExtracao(formato);
 
         if (!Files.exists(pastaVideos)) {
@@ -96,6 +103,17 @@ public class ExtrairLegendaUseCase {
                 log.error("Erro inesperado em {}: {}", video.getFileName(), e.getMessage(), e);
             }
         }
+
+        // Registra a operação no painel de telemetria, como os demais módulos:
+        // detectados = faixas que tentamos extrair; corrigidos = extraídas.
+        telemetriaService.registrarOperacao(TelemetriaService.criarOperacao(
+            "Extracao de Legendas (" + formato.name() + ")",
+            pastaVideos.toAbsolutePath().toString(),
+            System.currentTimeMillis() - inicioMs,
+            relatorio.getArquivosDetectados(),
+            relatorio.getLegendasExtraidas() + relatorio.getFalhasInesperadas(),
+            relatorio.getLegendasExtraidas()
+        ));
 
         return relatorio;
     }

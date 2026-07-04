@@ -48,12 +48,35 @@ public class RevisarLoreUseCase {
     private final TelemetriaService telemetriaService;
     private final RevisaoLoreLogPersistencia logPersistencia;
 
-    private final List<LogEventoRevisaoLore> eventosSessao = new ArrayList<>();
-    private Path pastaOriginalRef;
-    private Path pastaTraduzidaRef;
-    private String contextoIdRef;
-    private boolean revisarTodasFalasRef;
-    private long inicioSessaoMs;
+    /**
+     * Estado de UMA execução de revisão (log de eventos + relógio da sessão).
+     * Vive num objeto local, nunca em campos do bean: este use case é um
+     * singleton e campos de instância seriam compartilhados — e corrompidos —
+     * entre execuções.
+     */
+    private static final class SessaoRevisao {
+        final List<LogEventoRevisaoLore> eventos = new ArrayList<>();
+        final long inicioMs = System.currentTimeMillis();
+
+        void out(String msg) {
+            String limpo = removerAnsi(msg);
+            String prefixo = prefixoLog();
+            String mensagemComPrefixo = prefixo + " " + msg;
+            String limpoComPrefixo = prefixo + " " + limpo;
+            System.out.println(mensagemComPrefixo);
+            log.info(limpoComPrefixo);
+            eventos.add(new LogEventoRevisaoLore(
+                Instant.now().toString(),
+                inferirNivel(limpoComPrefixo),
+                limpoComPrefixo
+            ));
+        }
+
+        private String prefixoLog() {
+            long decorridoMs = Math.max(0, System.currentTimeMillis() - inicioMs);
+            return "[UTC " + UTC_FORMATTER.format(Instant.now()) + " | +" + formatarDuracaoDetalhada(decorridoMs) + "]";
+        }
+    }
 
     public RevisarLoreUseCase(
         LeitorLegendaAss leitor,
@@ -83,12 +106,7 @@ public class RevisarLoreUseCase {
         String contextoId,
         boolean revisarTodasFalas
     ) {
-        eventosSessao.clear();
-        pastaOriginalRef = pastaOriginal;
-        pastaTraduzidaRef = pastaTraduzida;
-        contextoIdRef = contextoId;
-        revisarTodasFalasRef = revisarTodasFalas;
-        inicioSessaoMs = System.currentTimeMillis();
+        SessaoRevisao sessao = new SessaoRevisao();
 
         validarEntrada(pastaOriginal, pastaTraduzida, contextoId);
 
@@ -99,14 +117,13 @@ public class RevisarLoreUseCase {
 
         String nomePromptRevisao = gerenciadorPromptRevisaoLore.obterNome(contextoId);
         String promptSistemaRevisaoLore = gerenciadorPromptRevisaoLore.obterPromptSistema(contextoId);
-        long inicioMs = inicioSessaoMs;
 
-        out(AnsiCores.CYAN + "\n=== Revisao de Lore (nomes, locais e terminologia) ===" + AnsiCores.RESET);
-        out("Inicio UTC: " + UTC_FORMATTER.format(Instant.now()));
-        out("Pasta original (EN): " + pastaOriginal.toAbsolutePath());
-        out("Pasta traduzida (PT-BR): " + pastaTraduzida.toAbsolutePath());
-        out("Prompt de revisao de lore ativo: " + nomePromptRevisao + " (" + contextoId + ")");
-        out(revisarTodasFalas
+        sessao.out(AnsiCores.CYAN + "\n=== Revisao de Lore (nomes, locais e terminologia) ===" + AnsiCores.RESET);
+        sessao.out("Inicio UTC: " + UTC_FORMATTER.format(Instant.now()));
+        sessao.out("Pasta original (EN): " + pastaOriginal.toAbsolutePath());
+        sessao.out("Pasta traduzida (PT-BR): " + pastaTraduzida.toAbsolutePath());
+        sessao.out("Prompt de revisao de lore ativo: " + nomePromptRevisao + " (" + contextoId + ")");
+        sessao.out(revisarTodasFalas
             ? "Modo: revisar TODAS as falas com dialogo"
             : "Modo: revisar apenas falas sinalizadas pela heuristica");
 
@@ -124,11 +141,11 @@ public class RevisarLoreUseCase {
                 .filter(p -> p.toString().toLowerCase().endsWith(".ass"))
                 .toList();
 
-            out("Arquivos .ass encontrados na pasta original: " + originais.size());
+            sessao.out("Arquivos .ass encontrados na pasta original: " + originais.size());
 
             for (Path arqOriginal : originais) {
                 processarArquivo(
-                    arqOriginal, pastaTraduzida, revisarTodasFalas, promptSistemaRevisaoLore,
+                    sessao, arqOriginal, pastaTraduzida, revisarTodasFalas, promptSistemaRevisaoLore,
                     arquivosAnalisados, arquivosAlterados, falasAuditadas, falasSinalizadas,
                     falasCorrigidas, falasSemAlteracao, erros
                 );
@@ -137,25 +154,26 @@ public class RevisarLoreUseCase {
             throw new RevisaoLoreException("Falha ao percorrer pasta original: " + pastaOriginal, e);
         }
 
-        long duracaoMs = System.currentTimeMillis() - inicioMs;
+        long duracaoMs = System.currentTimeMillis() - sessao.inicioMs;
 
-        out("Arquivos analisados: " + arquivosAnalisados[0]);
-        out("Arquivos alterados: " + arquivosAlterados[0]);
-        out("Falas auditadas: " + falasAuditadas[0]);
-        out("Falas sinalizadas (heuristica/LLM): " + falasSinalizadas[0]);
-        out("Falas corrigidas: " + falasCorrigidas[0]);
-        out("Falas ja conformes: " + falasSemAlteracao[0]);
+        sessao.out("Arquivos analisados: " + arquivosAnalisados[0]);
+        sessao.out("Arquivos alterados: " + arquivosAlterados[0]);
+        sessao.out("Falas auditadas: " + falasAuditadas[0]);
+        sessao.out("Falas sinalizadas (heuristica/LLM): " + falasSinalizadas[0]);
+        sessao.out("Falas corrigidas: " + falasCorrigidas[0]);
+        sessao.out("Falas ja conformes: " + falasSemAlteracao[0]);
 
         if (erros.isEmpty()) {
-            out(AnsiCores.GREEN + "\nRevisao de lore concluida com sucesso." + AnsiCores.RESET);
+            sessao.out(AnsiCores.GREEN + "\nRevisao de lore concluida com sucesso." + AnsiCores.RESET);
         } else {
-            out(AnsiCores.YELLOW + "\nRevisao de lore concluida com " + erros.size() + " aviso(s)/erro(s)." + AnsiCores.RESET);
+            sessao.out(AnsiCores.YELLOW + "\nRevisao de lore concluida com " + erros.size() + " aviso(s)/erro(s)." + AnsiCores.RESET);
             for (String erro : erros) {
-                out(AnsiCores.YELLOW + "  - " + erro + AnsiCores.RESET);
+                sessao.out(AnsiCores.YELLOW + "  - " + erro + AnsiCores.RESET);
             }
         }
 
         String caminhoRelatorioJson = persistirRelatorioJson(
+            sessao, contextoId, revisarTodasFalas,
             pastaOriginal, pastaTraduzida, duracaoMs,
             arquivosAnalisados[0], arquivosAlterados[0],
             falasAuditadas[0], falasSinalizadas[0], falasCorrigidas[0],
@@ -163,7 +181,7 @@ public class RevisarLoreUseCase {
         );
 
         if (caminhoRelatorioJson != null) {
-            out("Relatorio JSON (log + telemetria) salvo em: " + caminhoRelatorioJson);
+            sessao.out("Relatorio JSON (log + telemetria) salvo em: " + caminhoRelatorioJson);
         }
 
         return new ResultadoRevisaoLore(
@@ -196,6 +214,7 @@ public class RevisarLoreUseCase {
     }
 
     private void processarArquivo(
+        SessaoRevisao sessao,
         Path arqOriginal,
         Path pastaTraduzida,
         boolean revisarTodasFalas,
@@ -220,23 +239,23 @@ public class RevisarLoreUseCase {
         if (!Files.exists(arqTraduzido)) {
             String msg = "Sem par traduzido para: " + nomeOriginal;
             erros.add(msg);
-            out(AnsiCores.YELLOW + "  [Pulado] " + msg + AnsiCores.RESET);
+            sessao.out(AnsiCores.YELLOW + "  [Pulado] " + msg + AnsiCores.RESET);
             return;
         }
 
         arquivosAnalisados[0]++;
-        out("\n[Arquivo] Analisando: " + arqTraduzido.getFileName());
+        sessao.out("\n[Arquivo] Analisando: " + arqTraduzido.getFileName());
 
         try {
             DocumentoLegenda docOriginal = leitor.ler(arqOriginal);
             DocumentoLegenda docTraduzido = leitor.ler(arqTraduzido);
-            out("[Arquivo] Eventos original/traduzido: " + docOriginal.eventos().size()
+            sessao.out("[Arquivo] Eventos original/traduzido: " + docOriginal.eventos().size()
                 + "/" + docTraduzido.eventos().size());
 
             if (docOriginal.eventos().size() != docTraduzido.eventos().size()) {
                 String msg = arqTraduzido.getFileName() + ": contagem de eventos divergente ("
                     + docOriginal.eventos().size() + " vs " + docTraduzido.eventos().size() + ") — arquivo pulado.";
-                out(AnsiCores.YELLOW + "  [Pulado] " + msg + AnsiCores.RESET);
+                sessao.out(AnsiCores.YELLOW + "  [Pulado] " + msg + AnsiCores.RESET);
                 erros.add(msg);
                 return;
             }
@@ -264,7 +283,7 @@ public class RevisarLoreUseCase {
 
                 String marcadorFala = "[Fala " + dialogoAtual + "/" + totalDialogos
                     + " | evento " + (i + 1) + "]";
-                out(AnsiCores.DIM + marcadorFala + " auditando lore | EN: "
+                sessao.out(AnsiCores.DIM + marcadorFala + " auditando lore | EN: "
                     + trecho(textoEn) + " | PT: " + trecho(textoPt) + AnsiCores.RESET);
 
                 MascaradorTags.Mascarado mascaraEn = mascarador.mascarar(textoEn);
@@ -273,13 +292,13 @@ public class RevisarLoreUseCase {
                 ResultadoDeteccaoLore deteccao = detector.auditar(mascaraEn.texto(), mascaraPt.texto());
                 if (!revisarTodasFalas && !deteccao.suspeito()) {
                     falasSemAlteracao[0]++;
-                    out(AnsiCores.DIM + marcadorFala + " limpo pela heuristica" + AnsiCores.RESET);
+                    sessao.out(AnsiCores.DIM + marcadorFala + " limpo pela heuristica" + AnsiCores.RESET);
                     novosEventos.add(evtTraduzido);
                     continue;
                 }
 
                 falasSinalizadas[0]++;
-                out(AnsiCores.YELLOW + marcadorFala + " enviada ao LLM | motivos: "
+                sessao.out(AnsiCores.YELLOW + marcadorFala + " enviada ao LLM | motivos: "
                     + formatarMotivos(deteccao.motivos()) + AnsiCores.RESET);
 
                 Optional<String> revisadaOpt = mistralPort.revisarLore(
@@ -290,7 +309,7 @@ public class RevisarLoreUseCase {
                 );
 
                 if (revisadaOpt.isEmpty()) {
-                    out(AnsiCores.YELLOW + marcadorFala + " LLM sem resposta valida; mantendo traducao atual" + AnsiCores.RESET);
+                    sessao.out(AnsiCores.YELLOW + marcadorFala + " LLM sem resposta valida; mantendo traducao atual" + AnsiCores.RESET);
                     novosEventos.add(evtTraduzido);
                     continue;
                 }
@@ -298,7 +317,7 @@ public class RevisarLoreUseCase {
                 String revisada = mascarador.desmascarar(revisadaOpt.get(), mascaraPt.tags());
                 if (revisada.equals(textoPt)) {
                     falasSemAlteracao[0]++;
-                    out(AnsiCores.DIM + marcadorFala + " conforme apos revisao LLM" + AnsiCores.RESET);
+                    sessao.out(AnsiCores.DIM + marcadorFala + " conforme apos revisao LLM" + AnsiCores.RESET);
                     novosEventos.add(evtTraduzido);
                     continue;
                 }
@@ -307,7 +326,7 @@ public class RevisarLoreUseCase {
                     validador.validarFala(revisada);
                 } catch (Exception e) {
                     log.warn("Revisao de lore descartada (validacao): {}", e.getMessage());
-                    out(AnsiCores.YELLOW + marcadorFala + " revisao descartada pela validacao: "
+                    sessao.out(AnsiCores.YELLOW + marcadorFala + " revisao descartada pela validacao: "
                         + e.getMessage() + AnsiCores.RESET);
                     novosEventos.add(evtTraduzido);
                     continue;
@@ -317,7 +336,7 @@ public class RevisarLoreUseCase {
                 houveModificacao = true;
                 corrigidasNoArquivo++;
                 falasCorrigidas[0]++;
-                out(AnsiCores.GREEN + marcadorFala + " corrigida | Antes: "
+                sessao.out(AnsiCores.GREEN + marcadorFala + " corrigida | Antes: "
                     + trecho(textoPt) + " | Depois: " + trecho(revisada) + AnsiCores.RESET);
             }
 
@@ -330,21 +349,24 @@ public class RevisarLoreUseCase {
                 );
                 escritor.escrever(arqTraduzido, revisado);
                 arquivosAlterados[0]++;
-                out(AnsiCores.GREEN + "  [Revisado] " + arqTraduzido.getFileName()
+                sessao.out(AnsiCores.GREEN + "  [Revisado] " + arqTraduzido.getFileName()
                     + " (" + corrigidasNoArquivo + " fala(s) corrigida(s))" + AnsiCores.RESET);
             } else {
-                out(AnsiCores.DIM + "  [OK]     " + arqTraduzido.getFileName() + " (lore conforme)" + AnsiCores.RESET);
+                sessao.out(AnsiCores.DIM + "  [OK]     " + arqTraduzido.getFileName() + " (lore conforme)" + AnsiCores.RESET);
             }
 
         } catch (Exception e) {
             String msg = "Falha ao revisar lore em " + arqTraduzido.getFileName() + ": " + e.getMessage();
             log.error(msg, e);
-            out(AnsiCores.RED + "  [Erro] " + msg + AnsiCores.RESET);
+            sessao.out(AnsiCores.RED + "  [Erro] " + msg + AnsiCores.RESET);
             erros.add(msg);
         }
     }
 
     private String persistirRelatorioJson(
+        SessaoRevisao sessao,
+        String contextoId,
+        boolean revisarTodasFalas,
         Path pastaOriginal,
         Path pastaTraduzida,
         long duracaoMs,
@@ -357,7 +379,7 @@ public class RevisarLoreUseCase {
         List<String> erros
     ) {
         String detalhe = pastaTraduzida.toAbsolutePath()
-            + " | promptRevisaoLore=" + gerenciadorPromptRevisaoLore.obterNome(contextoIdRef);
+            + " | promptRevisaoLore=" + gerenciadorPromptRevisaoLore.obterNome(contextoId);
 
         OperacaoTelemetria operacao = TelemetriaService.criarOperacao(
             "Revisao de Lore (.ass LLM)",
@@ -372,14 +394,14 @@ public class RevisarLoreUseCase {
             "revisao_lore",
             operacao,
             new RevisaoLoreRelatorioJson.ContextoObra(
-                contextoIdRef,
-                gerenciadorPromptRevisaoLore.obterNome(contextoIdRef)
+                contextoId,
+                gerenciadorPromptRevisaoLore.obterNome(contextoId)
             ),
             new RevisaoLoreRelatorioJson.PastasOperacao(
                 pastaOriginal.toAbsolutePath().toString(),
                 pastaTraduzida.toAbsolutePath().toString()
             ),
-            revisarTodasFalasRef ? "todas_as_falas" : "apenas_sinalizadas",
+            revisarTodasFalas ? "todas_as_falas" : "apenas_sinalizadas",
             new RevisaoLoreRelatorioJson.MetricasRevisaoLore(
                 duracaoMs,
                 formatarDuracaoMs(duracaoMs),
@@ -392,7 +414,7 @@ public class RevisarLoreUseCase {
                 erros.size()
             ),
             List.copyOf(erros),
-            List.copyOf(eventosSessao)
+            List.copyOf(sessao.eventos)
         );
 
         try {
@@ -402,7 +424,7 @@ public class RevisarLoreUseCase {
             return arquivo.toString();
         } catch (IOException e) {
             log.warn("Falha ao salvar relatorio JSON da revisao de lore: {}", e.getMessage());
-            out(AnsiCores.YELLOW + "Aviso: nao foi possivel salvar o relatorio JSON em disco." + AnsiCores.RESET);
+            sessao.out(AnsiCores.YELLOW + "Aviso: nao foi possivel salvar o relatorio JSON em disco." + AnsiCores.RESET);
             telemetriaService.registrarOperacao(operacao);
             return null;
         }
@@ -413,26 +435,7 @@ public class RevisarLoreUseCase {
         return segundos >= 60 ? (segundos / 60) + "min " + (segundos % 60) + "s" : segundos + "s";
     }
 
-    private void out(String msg) {
-        String limpo = removerAnsi(msg);
-        String prefixo = prefixoLog();
-        String mensagemComPrefixo = prefixo + " " + msg;
-        String limpoComPrefixo = prefixo + " " + limpo;
-        System.out.println(mensagemComPrefixo);
-        log.info(limpoComPrefixo);
-        eventosSessao.add(new LogEventoRevisaoLore(
-            Instant.now().toString(),
-            inferirNivel(limpoComPrefixo),
-            limpoComPrefixo
-        ));
-    }
-
-    private String prefixoLog() {
-        long decorridoMs = Math.max(0, System.currentTimeMillis() - inicioSessaoMs);
-        return "[UTC " + UTC_FORMATTER.format(Instant.now()) + " | +" + formatarDuracaoDetalhada(decorridoMs) + "]";
-    }
-
-    private String formatarDuracaoDetalhada(long ms) {
+    private static String formatarDuracaoDetalhada(long ms) {
         long totalSegundos = ms / 1000;
         long minutos = totalSegundos / 60;
         long segundos = totalSegundos % 60;
@@ -493,6 +496,6 @@ public class RevisarLoreUseCase {
     }
 
     private static String removerAnsi(String texto) {
-        return texto.replaceAll("\u001B\\[[0-9;]*m", "");
+        return texto.replaceAll((char) 27 + "\\[[0-9;]*m", "");
     }
 }

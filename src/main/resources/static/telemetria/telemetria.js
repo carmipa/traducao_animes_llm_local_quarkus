@@ -101,16 +101,64 @@ export function initTelemetria() {
         });
     }
 
-    // Atualiza automaticamente a cada 10 segundos se o painel estiver visível ( JVM tempo real )
+    // Atualizações em tempo real via SSE (o servidor emite a cada registro de
+    // telemetria e num heartbeat de 5s com CPU/heap da JVM).
+    iniciarStreamTelemetria();
+
+    // Fallback: se o stream SSE cair/não conectar, mantém o polling de 10s.
     setInterval(() => {
         const panel = document.getElementById('panel-telemetria');
-        if (panel && panel.classList.contains('active')) {
+        if (!sseAtivo && panel && panel.classList.contains('active')) {
             carregarDadosTelemetria();
         }
     }, 10000);
 }
 
+let sseAtivo = false;
+
+function iniciarStreamTelemetria() {
+    if (typeof EventSource === 'undefined') return;
+    try {
+        const stream = new EventSource('/api/telemetria/stream');
+        stream.addEventListener('telemetria', (evento) => {
+            sseAtivo = true;
+            const panel = document.getElementById('panel-telemetria');
+            if (!panel || !panel.classList.contains('active')) return;
+            try {
+                aplicarDadosTelemetria(JSON.parse(evento.data), null);
+            } catch (err) {
+                console.error('Erro ao aplicar telemetria SSE:', err);
+            }
+        });
+        stream.onerror = () => {
+            // O navegador reconecta sozinho; enquanto isso o polling assume.
+            sseAtivo = false;
+        };
+    } catch (err) {
+        console.error('Não foi possível abrir o stream SSE de telemetria:', err);
+        sseAtivo = false;
+    }
+}
+
 async function carregarDadosTelemetria() {
+    const tableBody = document.getElementById('telemetria-table-body');
+    try {
+        const inicio = performance.now();
+        const res = await fetch('/api/telemetria');
+        if (!res.ok) throw new Error('Não foi possível obter dados de telemetria');
+
+        const data = await res.json();
+        const latenciaMs = Math.round(performance.now() - inicio);
+        aplicarDadosTelemetria(data, latenciaMs);
+    } catch (err) {
+        console.error('Erro ao atualizar telemetria:', err);
+        if (tableBody && tableBody.children.length === 0) {
+            renderizarLinhaVazia(tableBody, 'Nao foi possivel carregar a telemetria agora.');
+        }
+    }
+}
+
+function aplicarDadosTelemetria(data, latenciaMs) {
     const episodiosVal = document.getElementById('t-episodios');
     const linhasVal = document.getElementById('t-linhas');
     const tempoLinhaVal = document.getElementById('t-tempo-linha');
@@ -125,16 +173,8 @@ async function carregarDadosTelemetria() {
     const auditLineVal = document.getElementById('t-audit-line');
     const errosVal = document.getElementById('t-erros');
     const chamadasLlmVal = document.getElementById('t-chamadas-llm');
-    const tableBody = document.getElementById('telemetria-table-body');
 
-    try {
-        const inicio = performance.now();
-        const res = await fetch('/api/telemetria');
-        if (!res.ok) throw new Error('Não foi possível obter dados de telemetria');
-
-        const data = await res.json();
-        const latenciaMs = Math.round(performance.now() - inicio);
-        const totalLinhas = Number(data.totalLinhas ?? 0);
+    const totalLinhas = Number(data.totalLinhas ?? 0);
         const cacheHits = Number(data.totalCacheHits ?? 0);
         const cacheRate = totalLinhas > 0 ? Math.min(100, (cacheHits / totalLinhas) * 100) : 0;
         const historico = Array.isArray(data.historicoOperacoes) ? data.historicoOperacoes : [];
@@ -149,7 +189,10 @@ async function carregarDadosTelemetria() {
         if (cacheRateVal) cacheRateVal.textContent = `${cacheRate.toFixed(1)}%`;
         if (cacheStatusVal) cacheStatusVal.textContent = statusCache;
         if (cacheMeterVal) cacheMeterVal.style.width = `${cacheRate}%`;
-        if (latenciaVal) latenciaVal.textContent = `${latenciaMs} ms`;
+        // No caminho SSE não há latência de request para medir.
+        if (latenciaVal && latenciaMs !== null && latenciaMs !== undefined) {
+            latenciaVal.textContent = `${latenciaMs} ms`;
+        }
         if (cacheSavedVal) cacheSavedVal.textContent = `${formatarNumero(cacheHits)} chamadas`;
         if (operacoesVal) operacoesVal.textContent = formatarNumero(historico.length);
         if (errosVal) errosVal.textContent = formatarNumero(data.totalErros ?? 0);
@@ -187,13 +230,6 @@ async function carregarDadosTelemetria() {
         renderizarChipsFiltro();
         paginaAtualTabela = Math.min(paginaAtualTabela, Math.max(1, Math.ceil(filtrarHistorico().length / ITENS_POR_PAGINA)));
         renderizarTabelaHistorico();
-
-    } catch (err) {
-        console.error('Erro ao atualizar telemetria:', err);
-        if (tableBody && tableBody.children.length === 0) {
-            renderizarLinhaVazia(tableBody, 'Nao foi possivel carregar a telemetria agora.');
-        }
-    }
 }
 
 function rotuloExibicaoOperacao(nome) {

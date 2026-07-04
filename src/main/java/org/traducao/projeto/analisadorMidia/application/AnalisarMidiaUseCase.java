@@ -445,7 +445,8 @@ public class AnalisarMidiaUseCase {
             codecVideo,
             resolucao,
             fps,
-            legTels
+            legTels,
+            java.time.Instant.now().toString()
         );
 
         telemetriaService.registrarMidia(tel);

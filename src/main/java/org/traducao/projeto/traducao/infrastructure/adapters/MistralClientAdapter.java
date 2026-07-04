@@ -122,6 +122,11 @@ public class MistralClientAdapter implements MistralPort {
 
     @Override
     public TraducaoLote traduzir(Lote lote) {
+        return traduzir(lote, null);
+    }
+
+    @Override
+    public TraducaoLote traduzir(Lote lote, Double temperaturaOverride) {
         String prompt = montarPrompt(lote);
         ChatRequest request = new ChatRequest(
             propriedades.model(),
@@ -129,7 +134,7 @@ public class MistralClientAdapter implements MistralPort {
                 new Mensagem("system", gerenciadorContexto.obterPromptAtivo()),
                 new Mensagem("user", prompt)
             ),
-            propriedades.temperature(),
+            temperaturaOverride != null ? temperaturaOverride : propriedades.temperature(),
             propriedades.maxTokens()
         );
 
@@ -155,6 +160,7 @@ public class MistralClientAdapter implements MistralPort {
                 }
 
                 List<String> linhasTraduzidas = extrairLinhasTraduzidas(traduzidoText);
+                linhasTraduzidas = removerNumeracaoAlucinada(linhasTraduzidas, lote.linhasOriginais());
                 log.info("Lote {} traduzido em {} ms ({} -> {} linha(s))",
                     lote.idLote(), duracaoMs, lote.linhasOriginais().size(), linhasTraduzidas.size());
 
@@ -400,6 +406,36 @@ public class MistralClientAdapter implements MistralPort {
             resultado.add(linha.stripTrailing());
         }
         return resultado;
+    }
+
+    private static final java.util.regex.Pattern PADRAO_LINHA_NUMERADA =
+        java.util.regex.Pattern.compile("^\\s*(\\d+)[.)]\\s+(.*)$");
+
+    /**
+     * Alguns modelos enumeram a resposta ("1. fala", "2. fala") mesmo
+     * instruídos a não fazê-lo. A contagem de linhas bate, então a validação
+     * não pega — e o "1." iria parar na legenda final. Remove a numeração
+     * apenas quando TODAS as linhas vêm numeradas em sequência 1..N e os
+     * originais correspondentes NÃO começam numerados (se começam, o número é
+     * conteúdo real da fala, ex.: itens de uma lista, e deve ficar).
+     */
+    private List<String> removerNumeracaoAlucinada(List<String> traduzidas, List<String> originais) {
+        if (traduzidas.size() != originais.size() || traduzidas.size() < 2) {
+            return traduzidas;
+        }
+        List<String> semNumeracao = new ArrayList<>(traduzidas.size());
+        for (int i = 0; i < traduzidas.size(); i++) {
+            var matcher = PADRAO_LINHA_NUMERADA.matcher(traduzidas.get(i));
+            if (!matcher.matches() || Integer.parseInt(matcher.group(1)) != i + 1) {
+                return traduzidas;
+            }
+            if (PADRAO_LINHA_NUMERADA.matcher(originais.get(i)).matches()) {
+                return traduzidas;
+            }
+            semNumeracao.add(matcher.group(2));
+        }
+        log.info("Numeração de linhas alucinada pelo LLM detectada e removida ({} linha(s)).", traduzidas.size());
+        return semNumeracao;
     }
 
     private String removerCercaMarkdown(String texto) {

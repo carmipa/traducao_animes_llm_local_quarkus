@@ -10,28 +10,32 @@ import org.traducao.projeto.revisaoLore.application.GerenciadorPromptRevisaoLore
 import org.traducao.projeto.revisaoLore.application.RevisarLoreUseCase;
 import org.traducao.projeto.revisaoLore.domain.ResultadoRevisaoLore;
 import org.traducao.projeto.revisaoLore.domain.exceptions.RevisaoLoreException;
+import org.traducao.projeto.core.execucao.FilaExecucaoPipeline;
 import org.traducao.projeto.traducao.presentation.web.LogStreamService;
 
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @RestController
 @RequestMapping("/api")
 public class RevisaoLoreController {
 
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    // Fila única compartilhada do pipeline: impede que a revisão de lore rode
+    // em paralelo com uma tradução/correção e troque o contexto LLM global no
+    // meio do outro job (ver FilaExecucaoPipeline).
+    private final FilaExecucaoPipeline filaExecucao;
     private final RevisarLoreUseCase revisarLoreUseCase;
     private final GerenciadorPromptRevisaoLore gerenciadorPromptRevisaoLore;
     private final LogStreamService logStreamService;
 
     public RevisaoLoreController(
+        FilaExecucaoPipeline filaExecucao,
         RevisarLoreUseCase revisarLoreUseCase,
         GerenciadorPromptRevisaoLore gerenciadorPromptRevisaoLore,
         LogStreamService logStreamService
     ) {
+        this.filaExecucao = filaExecucao;
         this.revisarLoreUseCase = revisarLoreUseCase;
         this.gerenciadorPromptRevisaoLore = gerenciadorPromptRevisaoLore;
         this.logStreamService = logStreamService;
@@ -78,7 +82,7 @@ public class RevisaoLoreController {
         Path pastaTraduzida = Path.of(req.diretorioTraduzido().trim());
         boolean revisarTodas = req.revisarTodasFalas();
 
-        executor.submit(() -> {
+        filaExecucao.submeter(() -> {
             logStreamService.definirCanalAtual("revisao-lore");
             try {
                 ResultadoRevisaoLore resultado = revisarLoreUseCase.executar(

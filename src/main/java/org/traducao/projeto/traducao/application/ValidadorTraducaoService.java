@@ -47,12 +47,18 @@ public class ValidadorTraducaoService {
         Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS
     );
 
+    // Palavras do PADRAO_RESIDUO que também são nomes próprios comuns em
+    // anime/mangá (ex.: o personagem "Will"). Uma ocorrência Capitalizada
+    // dessas palavras numa frase PT-BR é quase sempre nome, não resíduo —
+    // sem esta exceção a fala inteira era rejeitada e mantida sem tradução.
+    private static final java.util.Set<String> RESIDUOS_TAMBEM_NOMES = java.util.Set.of("will");
+
     public void validarFala(String textoTraduzido) {
         if (textoTraduzido == null || textoTraduzido.trim().isEmpty()) {
             return;
         }
 
-        if (PADRAO_RESIDUO.matcher(textoTraduzido).find()) {
+        if (temResiduoRelevante(textoTraduzido)) {
             throw new AlucinacaoDetectadaException("Resíduo gringo detectado: " + textoTraduzido);
         }
 
@@ -63,5 +69,27 @@ public class ValidadorTraducaoService {
         if (PADRAO_PREAMBULO.matcher(textoTraduzido).find()) {
             throw new AlucinacaoDetectadaException("Preâmbulo detectado: " + textoTraduzido);
         }
+    }
+
+    /**
+     * true quando há resíduo em inglês de verdade: qualquer palavra do padrão
+     * conta, EXCETO quando todas as ocorrências são palavras de
+     * {@link #RESIDUOS_TAMBEM_NOMES} escritas Capitalizadas (não CAIXA ALTA),
+     * o que indica nome próprio e não fala sem traduzir.
+     */
+    private boolean temResiduoRelevante(String texto) {
+        var matcher = PADRAO_RESIDUO.matcher(texto);
+        while (matcher.find()) {
+            String palavra = matcher.group(1);
+            boolean capitalizada = palavra.length() > 1
+                && Character.isUpperCase(palavra.charAt(0))
+                && !palavra.equals(palavra.toUpperCase());
+            boolean nomeProprioProvavel = capitalizada
+                && RESIDUOS_TAMBEM_NOMES.contains(palavra.toLowerCase());
+            if (!nomeProprioProvavel) {
+                return true;
+            }
+        }
+        return false;
     }
 }

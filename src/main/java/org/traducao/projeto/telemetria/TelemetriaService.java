@@ -42,6 +42,16 @@ public class TelemetriaService {
     private static final Logger log = LoggerFactory.getLogger(TelemetriaService.class);
     private static final String NOME_ARQUIVO_TELEMETRIA = "telemetria_compartilhada.json";
 
+    // O histórico de operações é append-only e o JSON canônico inteiro é
+    // regravado a cada registro; sem um teto, o custo de serialização e o
+    // payload do painel cresceriam para sempre. 500 cobre meses de uso.
+    private static final int LIMITE_OPERACOES_HISTORICO = 500;
+
+    // A contagem de arquivos .cache.json exige um Files.walk no diretório de
+    // cache; com o SSE emitindo resumos periódicos, recontar a cada chamada
+    // varreria o disco continuamente segurando o lock do serviço.
+    private static final long TTL_CONTAGEM_CACHE_MS = 30_000;
+
     // Local canônico dentro do próprio projeto onde a telemetria é sempre
     // mesclada e persistida a cada registro, para sobreviver a restarts do
     // servidor e não depender só do lote em memória (que é limpo a cada
@@ -62,12 +72,18 @@ public class TelemetriaService {
     private volatile Path ultimoDiretorioCache = Path.of("cache");
     private ScheduledExecutorService scheduler;
 
+    // Cache da contagem de arquivos .cache.json (ver TTL_CONTAGEM_CACHE_MS)
+    private volatile int contagemCacheUltima = 0;
+    private volatile long contagemCacheExpiraEmMs = 0;
+    private volatile Path contagemCacheDiretorio;
+
     @Inject
     Sse sse;
 
     public void registrarAlucinacaoPrevenida() {
         alucinacoesPrevenidas.incrementAndGet();
-        log.info("Alucinação de tradução interceptada e corrigida. Total acumulado na sessão: {}", alucinacoesPrevenidas.get());
+        log.info("Alucinação de tradução interceptada e corrigida. Total acumulado: {}", alucinacoesPrevenidas.get());
+        persistirCanonico();
         broadcast();
     }
 
@@ -79,13 +95,16 @@ public class TelemetriaService {
     public void init() {
         carregarBancoPersistido(PASTA_TELEMETRIA_PROJETO.resolve(NOME_ARQUIVO_TELEMETRIA), bancoMidia, bancoLlm, bancoOperacoes);
 
-        // Agendador daemon em segundo plano que envia atualizações contínuas de CPU/Memória JVM a cada 1 segundo
+        // Agendador daemon em segundo plano que envia atualizações contínuas de
+        // CPU/Memória JVM aos clientes SSE. 5s é suficiente para os medidores da
+        // interface sem re-serializar o resumo inteiro a cada segundo (mudanças
+        // reais de dados já disparam broadcast() nos métodos registrar*).
         this.scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
             Thread t = new Thread(r, "telemetria-sse-scheduler");
             t.setDaemon(true);
             return t;
         });
-        this.scheduler.scheduleAtFixedRate(this::broadcast, 1000, 1000, TimeUnit.MILLISECONDS);
+        this.scheduler.scheduleAtFixedRate(this::broadcast, 5000, 5000, TimeUnit.MILLISECONDS);
     }
 
     @jakarta.annotation.PreDestroy
@@ -114,6 +133,9 @@ public class TelemetriaService {
     public synchronized void registrarOperacao(OperacaoTelemetria operacao) {
         if (operacao != null) {
             bancoOperacoes.add(operacao);
+            while (bancoOperacoes.size() > LIMITE_OPERACOES_HISTORICO) {
+                bancoOperacoes.remove(0);
+            }
             persistirCanonico();
             log.info("Telemetria de operação registrada: {} — {} ({} arquivos, {} detectados, {} corrigidos)",
                 operacao.tipo(), operacao.detalhe(), valorOuZero(operacao.arquivosProcessados()),
@@ -174,10 +196,15 @@ public class TelemetriaService {
         log.info("Relatório JSON salvo em: {}", arquivoJson);
     }
 
+    /**
+     * Zera apenas o lote de mídias em memória no início de uma nova análise.
+     * O histórico de traduções LLM e de operações NUNCA é limpo aqui: ele é o
+     * acumulado permanente do projeto (persistido em
+     * {@code logs/telemetria_compartilhada.json}) e limpá-lo — como já
+     * aconteceu — apagava todo o histórico do painel a cada análise de mídia.
+     */
     public synchronized void limparLote() {
         this.bancoMidia.clear();
-        this.bancoLlm.clear();
-        this.bancoOperacoes.clear();
         persistirCanonico();
         broadcast();
     }
@@ -220,6 +247,7 @@ public class TelemetriaService {
             rootNode.set("midias", objectMapper.valueToTree(new ArrayList<>(this.bancoMidia.values())));
             rootNode.set("traducoesLlm", objectMapper.valueToTree(new ArrayList<>(this.bancoLlm.values())));
             rootNode.set("operacoes", objectMapper.valueToTree(this.bancoOperacoes));
+            rootNode.put("alucinacoesPrevenidas", this.alucinacoesPrevenidas.get());
 
             // Grava em arquivo temporário e move atomicamente para evitar que uma
             // interrupção no meio da escrita (o arquivo é regravado a cada registro)
@@ -229,7 +257,7 @@ public class TelemetriaService {
             Files.move(arquivoTemp, caminhoTelemetria,
                 StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
 
-            log.info("Telemetria unificada salva com sucesso: {} mídias, {} traduções, {} operações em: {}",
+            log.debug("Telemetria unificada salva com sucesso: {} mídias, {} traduções, {} operações em: {}",
                 this.bancoMidia.size(), this.bancoLlm.size(), this.bancoOperacoes.size(), caminhoTelemetria);
 
             return caminhoTelemetria;
@@ -312,37 +340,41 @@ public class TelemetriaService {
         Map<String, LlmTelemetria> traducoes,
         Map<String, MidiaTelemetria> midias
     ) {
-        List<OperacaoHistorico> historico = new ArrayList<>();
+        // Operações, traduções e mídias são intercaladas numa única linha do
+        // tempo (mais recente primeiro). Entradas antigas persistidas antes de
+        // existir o campo registradoEm ficam no fim, em vez de embaralhadas.
+        record ItemHistorico(String registradoEm, OperacaoHistorico linha) {}
+        List<ItemHistorico> itens = new ArrayList<>();
 
-        List<OperacaoTelemetria> operacoesOrdenadas = new ArrayList<>(operacoes);
-        operacoesOrdenadas.sort(Comparator.comparing(
-            OperacaoTelemetria::registradoEm,
-            Comparator.nullsLast(Comparator.reverseOrder())
-        ));
-        for (OperacaoTelemetria op : operacoesOrdenadas) {
-            historico.add(new OperacaoHistorico(
+        for (OperacaoTelemetria op : operacoes) {
+            itens.add(new ItemHistorico(op.registradoEm(), new OperacaoHistorico(
                 op.tipo(),
                 formatarDetalheOperacao(op),
                 formatarDuracaoMs(op.tempoTotalMs()),
                 calcularTaxaSucesso(op.itensDetectados(), op.itensCorrigidos()),
                 inferirOrigem(op.tipo()),
                 op.tempoTotalMs()
-            ));
+            )));
         }
 
         for (LlmTelemetria l : traducoes.values()) {
-            historico.add(new OperacaoHistorico(
+            itens.add(new ItemHistorico(l.registradoEm(), new OperacaoHistorico(
                 "Tradução LLM", l.nomeEpisodio(), formatarDuracaoMs(l.tempoTotalMs()), null,
                 inferirOrigem("Tradução LLM"), l.tempoTotalMs()
-            ));
+            )));
         }
         for (MidiaTelemetria m : midias.values()) {
-            historico.add(new OperacaoHistorico(
+            itens.add(new ItemHistorico(m.registradoEm(), new OperacaoHistorico(
                 "Análise de Mídia", m.nomeArquivo(), null, null,
                 inferirOrigem("Análise de Mídia"), null
-            ));
+            )));
         }
-        return historico;
+
+        itens.sort(Comparator.comparing(
+            ItemHistorico::registradoEm,
+            Comparator.nullsLast(Comparator.reverseOrder())
+        ));
+        return itens.stream().map(ItemHistorico::linha).toList();
     }
 
     /**
@@ -484,7 +516,16 @@ public class TelemetriaService {
                     operacoesNode,
                     objectMapper.getTypeFactory().constructCollectionType(List.class, OperacaoTelemetria.class)
                 );
+                if (anterioresOperacoes.size() > LIMITE_OPERACOES_HISTORICO) {
+                    anterioresOperacoes = anterioresOperacoes.subList(
+                        anterioresOperacoes.size() - LIMITE_OPERACOES_HISTORICO, anterioresOperacoes.size());
+                }
                 bancoOperacoes.addAll(anterioresOperacoes);
+            }
+
+            JsonNode alucinacoesNode = root.get("alucinacoesPrevenidas");
+            if (alucinacoesNode != null && alucinacoesNode.isInt()) {
+                alucinacoesPrevenidas.set(alucinacoesNode.asInt());
             }
 
             log.info("Carregadas entradas anteriores: {} mídias, {} traduções, {} operações do arquivo {}.",
@@ -494,18 +535,24 @@ public class TelemetriaService {
         }
     }
 
-    private void carregarBancoPersistido(Path caminho, Map<String, MidiaTelemetria> bancoMidia, Map<String, LlmTelemetria> bancoLlm) {
-        carregarBancoPersistido(caminho, bancoMidia, bancoLlm, new ArrayList<>());
-    }
-
     private int contarArquivosCache(Path diretorioCache) {
         if (diretorioCache == null || !Files.isDirectory(diretorioCache)) {
             return 0;
         }
+
+        long agora = System.currentTimeMillis();
+        if (diretorioCache.equals(contagemCacheDiretorio) && agora < contagemCacheExpiraEmMs) {
+            return contagemCacheUltima;
+        }
+
         try (Stream<Path> walk = Files.walk(diretorioCache)) {
-            return (int) walk.filter(Files::isRegularFile)
+            int contagem = (int) walk.filter(Files::isRegularFile)
                 .filter(p -> p.getFileName().toString().endsWith(".cache.json"))
                 .count();
+            contagemCacheUltima = contagem;
+            contagemCacheDiretorio = diretorioCache;
+            contagemCacheExpiraEmMs = agora + TTL_CONTAGEM_CACHE_MS;
+            return contagem;
         } catch (IOException e) {
             log.warn("Não foi possível contar os arquivos de cache em {}: {}", diretorioCache, e.getMessage());
             return 0;

@@ -11,5 +11,6 @@ public record LlmTelemetria(
     Long tempoTotalMs,
     List<String> errosOcorridos,
     String animeNome,
-    String temporada
+    String temporada,
+    String registradoEm
 ) {}

@@ -71,7 +71,7 @@ public class CorrigirLegendasUseCase {
         if (!Files.isDirectory(pastaOriginal) || !Files.isDirectory(pastaTraduzida)) {
             String msg = "Pastas não encontradas — esperava " + pastaOriginal + " e " + pastaTraduzida;
             out(eventos, inicio, "WARN", null, msg, AnsiCores.YELLOW);
-            ResultadoCorrecaoLegendas resultado = new ResultadoCorrecaoLegendas(0, 0, 0, 0, 0, 1, List.of(msg), null);
+            ResultadoCorrecaoLegendas resultado = new ResultadoCorrecaoLegendas(0, 0, 0, 0, 0, 0, 1, List.of(msg), null);
             registrarTelemetria(pastaOriginal, pastaTraduzida, inicio, false, null, resultado, eventos);
             return resultado;
         }
@@ -88,6 +88,7 @@ public class CorrigirLegendasUseCase {
         }
 
         int[] curados = {0};
+        int[] falasCuradas = {0};
         int[] corrigidosLlm = {0};
         int[] semAlteracao = {0};
         int[] semPar = {0};
@@ -95,13 +96,18 @@ public class CorrigirLegendasUseCase {
         List<String> erros = new ArrayList<>();
 
         try (Stream<Path> stream = Files.walk(pastaOriginal)) {
+            // Ignora os próprios arquivos traduzidos (*_PT-BR.ass): quando a
+            // pasta original é a mesma da traduzida, tratá-los como "originais"
+            // fazia cada um procurar um par *_PT-BR_PT-BR.ass inexistente e
+            // inflar o contador "sem par" com ruído.
             List<Path> originais = stream.filter(Files::isRegularFile)
                     .filter(p -> p.toString().toLowerCase().endsWith(".ass"))
+                    .filter(p -> !ehLegendaTraduzida(p))
                     .toList();
 
             for (Path arqOriginal : originais) {
                 corrigirArquivo(arqOriginal, pastaTraduzida, llmHabilitado, inicio, eventos,
-                    curados, corrigidosLlm, semAlteracao, semPar, traducaoAusente, erros);
+                    curados, falasCuradas, corrigidosLlm, semAlteracao, semPar, traducaoAusente, erros);
             }
         } catch (IOException e) {
             log.error("Erro ao percorrer pasta original de legendas: {}", pastaOriginal, e);
@@ -111,21 +117,26 @@ public class CorrigirLegendasUseCase {
         }
 
         ResultadoCorrecaoLegendas resultado = new ResultadoCorrecaoLegendas(
-            curados[0], corrigidosLlm[0], semAlteracao[0], semPar[0], traducaoAusente[0], erros.size(), erros, null);
+            curados[0], falasCuradas[0], corrigidosLlm[0], semAlteracao[0], semPar[0], traducaoAusente[0], erros.size(), erros, null);
         resultado = registrarTelemetria(pastaOriginal, pastaTraduzida, inicio, llmHabilitado, contextoAtivo, resultado, eventos);
 
         if (erros.isEmpty()) {
             out(eventos, inicio, "INFO", null, "Correcao de legendas concluida: " + curados[0]
-                + " curado(s), " + corrigidosLlm[0] + " corrigido(s) via LLM, "
+                + " arquivo(s) curado(s) (" + falasCuradas[0] + " fala(s)), " + corrigidosLlm[0] + " fala(s) corrigida(s) via LLM, "
                 + semAlteracao[0] + " ja perfeito(s), " + traducaoAusente[0] + " fala(s) sem traducao.", AnsiCores.GREEN);
         } else {
             out(eventos, inicio, "WARN", null, "Correcao de legendas concluida com " + erros.size()
-                + " erro(s): " + curados[0] + " curado(s), " + corrigidosLlm[0] + " corrigido(s) via LLM, "
+                + " erro(s): " + curados[0] + " arquivo(s) curado(s) (" + falasCuradas[0] + " fala(s)), " + corrigidosLlm[0] + " fala(s) corrigida(s) via LLM, "
                 + semAlteracao[0] + " ja perfeito(s), " + traducaoAusente[0] + " fala(s) sem traducao.", AnsiCores.RED);
         }
-        log.info("Correcao de legendas finalizada em {}: {} curados, {} corrigidos via LLM, {} sem alteração, {} sem par traduzido, {} fala(s) sem traducao, {} erro(s)",
-            pastaOriginal.getFileName(), curados[0], corrigidosLlm[0], semAlteracao[0], semPar[0], traducaoAusente[0], erros.size());
+        log.info("Correcao de legendas finalizada em {}: {} arquivo(s) curado(s) ({} fala(s)), {} corrigida(s) via LLM, {} sem alteração, {} sem par traduzido, {} fala(s) sem traducao, {} erro(s)",
+            pastaOriginal.getFileName(), curados[0], falasCuradas[0], corrigidosLlm[0], semAlteracao[0], semPar[0], traducaoAusente[0], erros.size());
         return resultado;
+    }
+
+    private boolean ehLegendaTraduzida(Path arquivo) {
+        String nome = arquivo.getFileName().toString().toLowerCase();
+        return nome.contains("_pt-br") || nome.contains("_ptbr");
     }
 
     /**
@@ -153,6 +164,7 @@ public class CorrigirLegendasUseCase {
         Instant inicio,
         List<LogEventoCorrecaoLegendas> eventos,
         int[] curados,
+        int[] falasCuradas,
         int[] corrigidosLlm,
         int[] semAlteracao,
         int[] semPar,
@@ -216,6 +228,19 @@ public class CorrigirLegendasUseCase {
                     String textoCurado = sanitizador.curarTags(textoOriginal, textoPtBrAntigo);
                     boolean corrigidoPorLlm = false;
 
+                    // A cura estrutural só restaura o prefixo; timing de karaokê
+                    // (\k por sílaba) perdido no meio da linha não tem restauração
+                    // automática — sinaliza para revisão manual no Aegisub.
+                    int karaokeOriginal = sanitizador.contarTagsKaraoke(textoOriginal);
+                    int karaokeTraduzido = sanitizador.contarTagsKaraoke(textoCurado);
+                    if (karaokeOriginal > 0 && karaokeTraduzido < karaokeOriginal) {
+                        out(eventos, inicio, "WARN", arqTraduzido.getFileName().toString(),
+                            "Fala " + (i + 1) + ": original tem " + karaokeOriginal
+                                + " tag(s) de karaoke (\\k), traducao tem " + karaokeTraduzido
+                                + " — timing por silaba possivelmente perdido; revise manualmente.",
+                            AnsiCores.YELLOW);
+                    }
+
                     if (llmHabilitado) {
                         Optional<String> corrigidoLlm = corretorLlm.corrigirSeNecessario(textoOriginal, textoCurado);
                         if (corrigidoLlm.isPresent()) {
@@ -263,6 +288,7 @@ public class CorrigirLegendasUseCase {
                 );
                 escritor.escrever(arqTraduzido, documentoCurado);
                 curados[0]++;
+                falasCuradas[0] += linhasCuradas;
                 corrigidosLlm[0] += linhasCorrigidasLlm;
                 out(eventos, inicio, "INFO", arqTraduzido.getFileName().toString(), "[Corrigido] "
                     + arqTraduzido.getFileName() + " (" + linhasCuradas + " tags restauradas, "
@@ -317,8 +343,10 @@ public class CorrigirLegendasUseCase {
         List<LogEventoCorrecaoLegendas> eventos
     ) {
         long tempoTotalMs = Duration.between(inicio, Instant.now()).toMillis();
-        int itensDetectados = resultado.curados() + resultado.corrigidosLlm() + resultado.traducaoAusente() + resultado.totalErros();
-        int itensCorrigidos = resultado.curados() + resultado.corrigidosLlm();
+        // Unidade única: FALAS. Antes somava curados (arquivos) com corrigidosLlm
+        // (falas), o que distorcia a taxa de sucesso exibida no painel.
+        int itensDetectados = resultado.falasCuradas() + resultado.corrigidosLlm() + resultado.traducaoAusente();
+        int itensCorrigidos = resultado.falasCuradas() + resultado.corrigidosLlm();
         OperacaoTelemetria operacao = TelemetriaService.criarOperacao(
             TIPO_OPERACAO,
             "Original: " + pastaOriginal + " | Traduzida: " + pastaTraduzida,
@@ -349,6 +377,7 @@ public class CorrigirLegendasUseCase {
         telemetriaService.salvar(TelemetriaService.resolverPastaRelatorios(pastaTraduzida));
         return new ResultadoCorrecaoLegendas(
             resultado.curados(),
+            resultado.falasCuradas(),
             resultado.corrigidosLlm(),
             resultado.semAlteracao(),
             resultado.semPar(),

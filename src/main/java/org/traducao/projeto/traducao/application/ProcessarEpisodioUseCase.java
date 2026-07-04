@@ -28,6 +28,12 @@ public class ProcessarEpisodioUseCase {
     // (lote de tamanho 1) antes de desistir e manter o texto original sem traducao.
     private static final int MAX_TENTATIVAS_LINHA_UNICA = 2;
 
+    // Temperatura por tentativa numa fala isolada: null = a configurada.
+    // Repetir a mesma requisicao com a mesma temperatura tende a reproduzir a
+    // mesma alucinacao; subir a temperatura muda a amostragem e da chance real
+    // de recuperacao antes de desistir da fala.
+    private static final Double[] TEMPERATURA_POR_TENTATIVA = {null, 0.5, 0.7};
+
     private final MistralPort mistralPort;
     private final ValidadorTraducaoService validador;
     private final ConsoleUILogger uiLogger;
@@ -103,7 +109,7 @@ public class ProcessarEpisodioUseCase {
         }
 
         try {
-            return traduzirERevalidarBruto(lote);
+            return traduzirERevalidarBruto(lote, null);
         } catch (DivergenciaLinhasException | AlucinacaoDetectadaException e) {
             int total = lote.linhasOriginais().size();
             int meio = total / 2;
@@ -135,7 +141,9 @@ public class ProcessarEpisodioUseCase {
         RuntimeException ultimaFalha = null;
         for (int tentativa = 1; tentativa <= 1 + MAX_TENTATIVAS_LINHA_UNICA; tentativa++) {
             try {
-                return traduzirERevalidarBruto(lote);
+                Double temperatura = TEMPERATURA_POR_TENTATIVA[
+                    Math.min(tentativa - 1, TEMPERATURA_POR_TENTATIVA.length - 1)];
+                return traduzirERevalidarBruto(lote, temperatura);
             } catch (DivergenciaLinhasException | AlucinacaoDetectadaException e) {
                 ultimaFalha = e;
             }
@@ -150,8 +158,8 @@ public class ProcessarEpisodioUseCase {
         return List.of(original);
     }
 
-    private List<String> traduzirERevalidarBruto(Lote lote) {
-        TraducaoLote resultado = mistralPort.traduzir(lote);
+    private List<String> traduzirERevalidarBruto(Lote lote, Double temperaturaOverride) {
+        TraducaoLote resultado = mistralPort.traduzir(lote, temperaturaOverride);
 
         if (!resultado.sucesso() || resultado.linhasTraduzidas() == null) {
             throw new TradutorException("Lote " + lote.idLote() + " falhou na comunicação: " + resultado.mensagemErro());

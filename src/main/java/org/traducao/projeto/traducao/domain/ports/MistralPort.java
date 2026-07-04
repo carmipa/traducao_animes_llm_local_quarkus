@@ -11,6 +11,16 @@ public interface MistralPort {
     TraducaoLote traduzir(Lote lote);
 
     /**
+     * Variante com temperatura explícita, usada nas retentativas de uma fala
+     * isolada: repetir a MESMA requisição com a mesma temperatura tende a
+     * reproduzir a mesma alucinação; subir a temperatura muda a amostragem e
+     * dá chance real de recuperação. {@code null} usa a temperatura configurada.
+     */
+    default TraducaoLote traduzir(Lote lote, Double temperaturaOverride) {
+        return traduzir(lote);
+    }
+
+    /**
      * Verifica, antes de iniciar a tradução, se o servidor LLM local está
      * online e se o modelo configurado está efetivamente carregado em
      * memória — evita descobrir isso só depois de várias tentativas/timeouts

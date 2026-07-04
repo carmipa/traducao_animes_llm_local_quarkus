@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.traducao.projeto.correcaoLegendas.application.CorrigirLegendasUseCase;
 import org.traducao.projeto.correcaoLegendas.domain.ResultadoCorrecaoLegendas;
+import org.traducao.projeto.core.execucao.FilaExecucaoPipeline;
 import org.traducao.projeto.traducao.infrastructure.contexto.GerenciadorContexto;
 import org.traducao.projeto.traducao.presentation.web.LogStreamService;
 
@@ -19,18 +20,23 @@ import java.util.Map;
 @RequestMapping("/api")
 public class CorrecaoLegendasController {
 
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(CorrecaoLegendasController.class);
+
     private final CorrigirLegendasUseCase corrigirLegendasUseCase;
     private final GerenciadorContexto gerenciadorContexto;
     private final LogStreamService logStreamService;
+    private final FilaExecucaoPipeline filaExecucao;
 
     public CorrecaoLegendasController(
         CorrigirLegendasUseCase corrigirLegendasUseCase,
         GerenciadorContexto gerenciadorContexto,
-        LogStreamService logStreamService
+        LogStreamService logStreamService,
+        FilaExecucaoPipeline filaExecucao
     ) {
         this.corrigirLegendasUseCase = corrigirLegendasUseCase;
         this.gerenciadorContexto = gerenciadorContexto;
         this.logStreamService = logStreamService;
+        this.filaExecucao = filaExecucao;
     }
 
     @PostMapping("/correcao-legendas")
@@ -69,12 +75,27 @@ public class CorrecaoLegendasController {
             return ResponseEntity.badRequest().body(Map.of("erro", "Caminho de pasta inválido: " + e.getMessage()));
         }
 
+        // Correção com LLM entra na fila única do pipeline: ela muta o contexto
+        // de tradução global e disputa a GPU, então não pode rodar em paralelo
+        // com uma tradução/revisão em andamento. Sem contextoId a cura é 100%
+        // estrutural (regex, sem LLM) e pode rodar direto na thread do request.
+        boolean usaLlm = contextoId != null && !contextoId.isBlank();
+        if (usaLlm && filaExecucao.ocupada()) {
+            return ResponseEntity.status(409).body(Map.of(
+                "erro", "Outra operação do pipeline (tradução/revisão) está em andamento. "
+                    + "Aguarde a conclusão antes de iniciar a correção via LLM."));
+        }
+
         try {
-            ResultadoCorrecaoLegendas resultado = corrigirLegendasUseCase.corrigirPasta(pastaOriginal, pastaTraduzida, contextoId);
+            final Path fOriginal = pastaOriginal;
+            final Path fTraduzida = pastaTraduzida;
+            ResultadoCorrecaoLegendas resultado = usaLlm
+                ? filaExecucao.executarEAguardar(() -> corrigirLegendasUseCase.corrigirPasta(fOriginal, fTraduzida, contextoId))
+                : corrigirLegendasUseCase.corrigirPasta(pastaOriginal, pastaTraduzida, contextoId);
 
             String mensagem = String.format(
-                "Correção de legendas finalizada: %d arquivo(s) corrigido(s), %d fala(s) corrigida(s) via LLM, %d já perfeito(s), %d sem tradução pareada, %d fala(s) sem tradução (vazia), %d erro(s) de %d arquivo(s).",
-                resultado.curados(), resultado.corrigidosLlm(), resultado.semAlteracao(), resultado.semPar(),
+                "Correção de legendas finalizada: %d arquivo(s) corrigido(s) (%d fala(s) curada(s)), %d fala(s) corrigida(s) via LLM, %d já perfeito(s), %d sem tradução pareada, %d fala(s) sem tradução (vazia), %d erro(s) de %d arquivo(s).",
+                resultado.curados(), resultado.falasCuradas(), resultado.corrigidosLlm(), resultado.semAlteracao(), resultado.semPar(),
                 resultado.traducaoAusente(), resultado.totalErros(), resultado.totalArquivosAnalisados());
 
             if (resultado.teveErros()) {
@@ -89,7 +110,7 @@ public class CorrecaoLegendasController {
                 "relatorioJson", valorOuVazio(resultado.relatorioJson())
             ));
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Falha ao corrigir legendas", e);
             return ResponseEntity.internalServerError().body(Map.of("erro", "Falha ao corrigir legendas: " + e.getMessage()));
         }
     }

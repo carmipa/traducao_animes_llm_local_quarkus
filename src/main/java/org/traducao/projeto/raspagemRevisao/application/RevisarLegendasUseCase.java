@@ -3,6 +3,7 @@ package org.traducao.projeto.raspagemRevisao.application;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
+import org.traducao.projeto.correcaoLegendas.application.SanitizadorTagsService;
 import org.traducao.projeto.raspagemCorrecao.infrastructure.GoogleTranslateScraper;
 import org.traducao.projeto.raspagemRevisao.domain.ResultadoDeteccaoConcordancia;
 import org.traducao.projeto.raspagemRevisao.domain.exceptions.RaspagemRevisaoException;
@@ -58,6 +59,7 @@ public class RevisarLegendasUseCase {
     private final MascaradorTags mascaradorTags;
     private final GerenciadorContexto gerenciadorContexto;
     private final TelemetriaService telemetriaService;
+    private final SanitizadorTagsService sanitizadorTags;
 
     public RevisarLegendasUseCase(
         LeitorLegendaAss leitor,
@@ -69,7 +71,8 @@ public class RevisarLegendasUseCase {
         MistralPort mistralPort,
         MascaradorTags mascaradorTags,
         GerenciadorContexto gerenciadorContexto,
-        TelemetriaService telemetriaService
+        TelemetriaService telemetriaService,
+        SanitizadorTagsService sanitizadorTags
     ) {
         this.leitor = leitor;
         this.escritor = escritor;
@@ -81,6 +84,7 @@ public class RevisarLegendasUseCase {
         this.mascaradorTags = mascaradorTags;
         this.gerenciadorContexto = gerenciadorContexto;
         this.telemetriaService = telemetriaService;
+        this.sanitizadorTags = sanitizadorTags;
     }
 
     /**
@@ -363,8 +367,18 @@ public class RevisarLegendasUseCase {
                 continue;
             }
 
+            // Localiza o original EN ANTES da correção de karaokê: a busca por
+            // texto traduzido usa o texto como está no cache (pré-correção), e o
+            // original serve de referência para preservar comentários {...}
+            // legítimos em vez de escapá-los como alucinação.
             String textoNormalizado = evento.texto();
-            String textoCorrigidoKaraoke = consertarKaraokeQuebrado(textoNormalizado);
+            String originalEn = originaisPorIndice.get(evento.indice());
+            if (originalEn == null || originalEn.isBlank()) {
+                originalEn = originalPorTraduzido.get(normalizarTexto(textoNormalizado));
+            }
+            boolean temOriginalEn = originalEn != null && !originalEn.isBlank();
+
+            String textoCorrigidoKaraoke = sanitizadorTags.escaparChavesInvalidas(textoNormalizado, originalEn);
             if (!textoNormalizado.equals(textoCorrigidoKaraoke)) {
                 evento = evento.comTexto(textoCorrigidoKaraoke);
                 modificado = true;
@@ -375,11 +389,6 @@ public class RevisarLegendasUseCase {
             }
 
             String traducaoAtual = evento.texto();
-            String originalEn = originaisPorIndice.get(evento.indice());
-            if (originalEn == null || originalEn.isBlank()) {
-                originalEn = originalPorTraduzido.get(normalizarTexto(traducaoAtual));
-            }
-            boolean temOriginalEn = originalEn != null && !originalEn.isBlank();
             if (!temOriginalEn) {
                 falasSemOriginal++;
                 totalSemOriginal[0]++;
@@ -490,14 +499,6 @@ public class RevisarLegendasUseCase {
         }
         String visivel = extrairTextoVisivel(texto);
         return estilo.contains("romaji") && visivel.equalsIgnoreCase("you");
-    }
-
-    private String consertarKaraokeQuebrado(String texto) {
-        if (texto == null) return null;
-        // Se encontrar chaves que contêm texto não iniciando com \ ou = (ex: {=2})
-        // e substituí-las por \N seguido do texto.
-        // O regex \{([^\\=}][^}]*)\} captura {conteúdo} onde 'conteúdo' não inicia com \, = ou }
-        return texto.replaceAll("\\{([^\\\\=}][^}]*)\\}", "\\\\N$1");
     }
 
     private String extrairTextoVisivel(String texto) {
@@ -650,17 +651,6 @@ public class RevisarLegendasUseCase {
         }
 
         return pastaLegendasEn.resolve(baseSemPt + ext);
-    }
-
-    private String sugerirNomeOriginal(Path arquivoPt) {
-        String nome = arquivoPt.getFileName().toString();
-        String ext = extensaoLegenda(nome);
-        String base = nome.substring(0, nome.length() - ext.length());
-        Matcher ptbrTrack = SUFIXO_PTBR_TRACK.matcher(base);
-        if (ptbrTrack.find()) {
-            return base.substring(0, ptbrTrack.start()) + "_Track2" + ext;
-        }
-        return normalizarBaseLegenda(base) + "_Track2" + ext;
     }
 
     private int preferenciaArquivoOriginal(String nome) {

@@ -112,6 +112,19 @@ manualmente. O {@code errorId} permite cruzar a resposta HTTP com a
 entrada correspondente no log do servidor.
 ```
 
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/core/execucao/FilaExecucaoPipeline.java`
+```text
+Fila única (single-thread) para todos os jobs pesados do pipeline —
+tradução, correção, revisões (concordância/lore), análise, extração, remux.
+<p>
+Ter UMA fila compartilhada é requisito de corretude, não só de desempenho:
+o contexto de tradução ativo ({@code GerenciadorContexto}) e o modelo LLM
+configurado são estado global mutado no início de cada job. Quando cada
+controller tinha seu próprio executor (ou rodava na thread HTTP), dois jobs
+podiam rodar em paralelo e um trocava a lore/modelo no meio do outro — além
+de disputarem a GPU do LM Studio, que atende uma inferência por vez.
+```
+
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/core/util/ProcessoExternoUtil.java`
 ```text
 Executa processos externos (ffmpeg, ffprobe, mkvmerge, mkvextract) de forma segura:
@@ -134,14 +147,15 @@ para falas que já estão corretas.
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/application/SanitizadorTagsService.java`
 ```text
 LLM costuma alucinar chaves {texto} como marcação de pensamento, o que quebra a linha no Aegisub.
+Tags de timing de karaoke ASS: \k, \K, \kf, \ko seguidas de duração (centissegundos).
 Legado: LLM (ou versões antigas deste código) corrompiam a tag do Kara Templater
 "{=X}" para "\N=X".
 Formatação de tela (pos, cor, an8 etc.) sempre fica no prefixo {...} do início da linha.
 Forçamos a tradução a ter exatamente o mesmo prefixo do original — inclusive quando o
 original não tem prefixo nenhum, caso em que qualquer {...} que apareça na tradução é
 alucinação do LLM e precisa ser descartado, não preservado.
-Chaves remanescentes que não são tags válidas do ASS são alucinação do LLM;
-escapamos para quebra de linha em vez de apagar o texto.
+Nao remover espaco em branco apos "}" aqui: falas de karaoke (OP/ED) tem
+tags validas no meio da linha, uma por silaba/palavra (ex.: "{\k50}Ka {\k30}ra"),
 ```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/domain/CorrecaoLegendasRelatorioJson.java`
@@ -151,7 +165,11 @@ escapamos para quebra de linha em vez de apagar o texto.
 *(Sem docstring ou cabeçalho explicativo)*
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/domain/ResultadoCorrecaoLegendas.java`
-*(Sem docstring ou cabeçalho explicativo)*
+```text
+Resultado da correção: {@code curados} conta ARQUIVOS modificados;
+{@code falasCuradas} e {@code corrigidosLlm} contam FALAS (linhas) — a
+telemetria usa apenas contagens de falas para não misturar unidades.
+```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/infrastructure/CorrecaoLegendasLogPersistencia.java`
 *(Sem docstring ou cabeçalho explicativo)*
@@ -409,7 +427,11 @@ Persiste relatorio e log de sessao da revisao de lore exclusivamente em JSON.
 ```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/presentation/RevisaoLoreController.java`
-*(Sem docstring ou cabeçalho explicativo)*
+```text
+Fila única compartilhada do pipeline: impede que a revisão de lore rode
+em paralelo com uma tradução/correção e troque o contexto LLM global no
+meio do outro job (ver FilaExecucaoPipeline).
+```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/telemetria/LlmTelemetria.java`
 *(Sem docstring ou cabeçalho explicativo)*
@@ -487,6 +509,10 @@ Correções manuais feitas pelo usuário no JSON de cache são respeitadas na
 ```text
 Quantas tentativas extras (alem da primeira) sao feitas numa fala isolada
 (lote de tamanho 1) antes de desistir e manter o texto original sem traducao.
+Temperatura por tentativa numa fala isolada: null = a configurada.
+Repetir a mesma requisicao com a mesma temperatura tende a reproduzir a
+mesma alucinacao; subir a temperatura muda a amostragem e da chance real
+de recuperacao antes de desistir da fala.
 ```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducao/application/ValidadorTraducaoService.java`
@@ -732,15 +758,16 @@ Construtor usado pela camada de Arquivo (nível de Falas Mascaradas)
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducao/domain/ports/MistralPort.java`
 ```text
+Variante com temperatura explícita, usada nas retentativas de uma fala
+isolada: repetir a MESMA requisição com a mesma temperatura tende a
+reproduzir a mesma alucinação; subir a temperatura muda a amostragem e
+dá chance real de recuperação. {@code null} usa a temperatura configurada.
 Verifica, antes de iniciar a tradução, se o servidor LLM local está
 online e se o modelo configurado está efetivamente carregado em
 memória — evita descobrir isso só depois de várias tentativas/timeouts
 já no meio da tradução do primeiro episódio.
 Revisa uma fala já traduzida, corrigindo concordância de gênero/pronomes.
 Retorna vazio se o LLM falhar ou a resposta for inválida.
-Retraduz uma fala cuja tradução existente ficou com resíduo em inglês,
-incompleta ou alucinada, usando o prompt completo (lore + regras) do
-contexto ativo. Retorna vazio se o LLM falhar ou a resposta for inválida.
 ```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducao/domain/ports/ProvedorContexto.java`

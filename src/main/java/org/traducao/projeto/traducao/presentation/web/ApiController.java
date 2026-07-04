@@ -30,6 +30,8 @@ import org.traducao.projeto.traducao.presentation.ui.AnsiCores;
 import org.traducao.projeto.traducao.presentation.ui.PastasExecucao;
 import org.traducao.projeto.traducaoCorrige.application.LimparCacheUseCase;
 
+import org.traducao.projeto.core.execucao.FilaExecucaoPipeline;
+
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Files;
@@ -39,8 +41,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Stream;
 
 /**
@@ -54,8 +54,10 @@ public class ApiController {
     private static final Logger log = LoggerFactory.getLogger(ApiController.class);
     private static final Set<String> EXTENSOES_SUPORTADAS = Set.of(".ass", ".ssa");
 
-    // SingleThreadExecutor garante a execução sequencial em segundo plano (evita concorrência na GPU/mídias)
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    // Fila única compartilhada por todos os módulos (ver FilaExecucaoPipeline):
+    // garante execução sequencial em segundo plano e impede que outro endpoint
+    // troque o contexto/modelo LLM no meio de um job em andamento.
+    private final FilaExecucaoPipeline filaExecucao;
 
     private final AnalisarMidiaUseCase analisarMidiaUseCase;
     private final ExtrairLegendaUseCase extrairLegendaUseCase;
@@ -74,6 +76,7 @@ public class ApiController {
     private final GerenciadorContexto gerenciadorContexto;
 
     public ApiController(
+            FilaExecucaoPipeline filaExecucao,
             AnalisarMidiaUseCase analisarMidiaUseCase,
             ExtrairLegendaUseCase extrairLegendaUseCase,
             ProcessarArquivoUseCase processarArquivoUseCase,
@@ -89,6 +92,7 @@ public class ApiController {
             PastasExecucao pastasExecucao,
             MistralPort mistralPort,
             GerenciadorContexto gerenciadorContexto) {
+        this.filaExecucao = filaExecucao;
         this.analisarMidiaUseCase = analisarMidiaUseCase;
         this.extrairLegendaUseCase = extrairLegendaUseCase;
         this.processarArquivoUseCase = processarArquivoUseCase;
@@ -179,7 +183,7 @@ public class ApiController {
             return ResponseEntity.badRequest().body(new RespostaPadrao("Caminho de entrada obrigatório."));
         }
 
-        executor.submit(() -> {
+        filaExecucao.submeter(() -> {
             logStreamService.definirCanalAtual("analise");
             try {
                 Path pathEntrada = normalizarCaminho(req.entrada());
@@ -243,7 +247,7 @@ public class ApiController {
             return ResponseEntity.badRequest().body(new RespostaPadrao(e.getMessage()));
         }
 
-        executor.submit(() -> {
+        filaExecucao.submeter(() -> {
             logStreamService.definirCanalAtual("extracao");
             try {
                 Path pathEntrada = normalizarCaminho(req.entrada());
@@ -312,7 +316,7 @@ public class ApiController {
                     "Contexto de tradução desconhecido: \"" + req.contextoId() + "\". Recarregue a página e selecione um contexto válido."));
         }
 
-        executor.submit(() -> {
+        filaExecucao.submeter(() -> {
             logStreamService.definirCanalAtual("traducao");
             try {
                 Path pathEntrada = normalizarCaminho(req.entrada());
@@ -397,7 +401,7 @@ public class ApiController {
             return ResponseEntity.badRequest().body(new RespostaPadrao("Caminho de cache inválido: " + cacheDir));
         }
 
-        executor.submit(() -> {
+        filaExecucao.submeter(() -> {
             logStreamService.definirCanalAtual("correcao");
             try {
                 limparCacheUseCase.executar(pathCache);
@@ -425,7 +429,7 @@ public class ApiController {
             return ResponseEntity.badRequest().body(new RespostaPadrao("Caminho de cache inválido: " + cacheDir));
         }
 
-        executor.submit(() -> {
+        filaExecucao.submeter(() -> {
             logStreamService.definirCanalAtual("correcao");
             try {
                 corrigirComGoogleUseCase.executar(pathCache);
@@ -458,7 +462,7 @@ public class ApiController {
                 "Contexto desconhecido: \"" + req.contextoId() + "\"."));
         }
 
-        executor.submit(() -> {
+        filaExecucao.submeter(() -> {
             logStreamService.definirCanalAtual("correcao");
             try {
                 StatusLlm status = mistralPort.verificarDisponibilidade();
@@ -516,7 +520,7 @@ public class ApiController {
             return ResponseEntity.badRequest().body(new RespostaPadrao(erroValidacao.get()));
         }
 
-        executor.submit(() -> {
+        filaExecucao.submeter(() -> {
             logStreamService.definirCanalAtual("revisao");
             try {
                 ResultadoRevisaoLegendas resultado = revisarLegendasUseCase.executar(
@@ -584,7 +588,7 @@ public class ApiController {
             return ResponseEntity.badRequest().body(new RespostaPadrao(erroValidacao.get()));
         }
 
-        executor.submit(() -> {
+        filaExecucao.submeter(() -> {
             logStreamService.definirCanalAtual("revisao");
             try {
                 StatusLlm status = mistralPort.verificarDisponibilidade();
@@ -634,7 +638,7 @@ public class ApiController {
             return ResponseEntity.badRequest().body(new RespostaPadrao("Pasta de vídeos de entrada obrigatória."));
         }
 
-        executor.submit(() -> {
+        filaExecucao.submeter(() -> {
             logStreamService.definirCanalAtual("remuxer");
             try {
                 Path pathVideos = normalizarCaminho(req.entrada());
