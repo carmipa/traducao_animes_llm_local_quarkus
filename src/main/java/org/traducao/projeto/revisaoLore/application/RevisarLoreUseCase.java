@@ -20,6 +20,7 @@ import org.traducao.projeto.traducao.infrastructure.legenda.EscritorLegendaAss;
 import org.traducao.projeto.traducao.infrastructure.legenda.LeitorLegendaAss;
 import org.traducao.projeto.traducao.infrastructure.legenda.MascaradorTags;
 import org.traducao.projeto.traducao.presentation.ui.AnsiCores;
+import org.traducao.projeto.traducao.infrastructure.config.TradutorProperties;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -37,6 +38,8 @@ public class RevisarLoreUseCase {
     private static final Logger log = LoggerFactory.getLogger(RevisarLoreUseCase.class);
     private static final DateTimeFormatter UTC_FORMATTER = DateTimeFormatter.ISO_INSTANT;
     private static final int TAMANHO_TRECHO_LOG = 120;
+    // Detecta tags de timing de karaoke ASS (\k, \kf, \ko, etc.)
+    private static final java.util.regex.Pattern TAG_KARAOKE_PATTERN = java.util.regex.Pattern.compile("\\\\[kK][fo]?\\d");
 
     private final LeitorLegendaAss leitor;
     private final EscritorLegendaAss escritor;
@@ -47,6 +50,7 @@ public class RevisarLoreUseCase {
     private final GerenciadorPromptRevisaoLore gerenciadorPromptRevisaoLore;
     private final TelemetriaService telemetriaService;
     private final RevisaoLoreLogPersistencia logPersistencia;
+    private final TradutorProperties propriedades;
 
     /**
      * Estado de UMA execução de revisão (log de eventos + relógio da sessão).
@@ -87,7 +91,8 @@ public class RevisarLoreUseCase {
         MistralPort mistralPort,
         GerenciadorPromptRevisaoLore gerenciadorPromptRevisaoLore,
         TelemetriaService telemetriaService,
-        RevisaoLoreLogPersistencia logPersistencia
+        RevisaoLoreLogPersistencia logPersistencia,
+        TradutorProperties propriedades
     ) {
         this.leitor = leitor;
         this.escritor = escritor;
@@ -98,6 +103,7 @@ public class RevisarLoreUseCase {
         this.gerenciadorPromptRevisaoLore = gerenciadorPromptRevisaoLore;
         this.telemetriaService = telemetriaService;
         this.logPersistencia = logPersistencia;
+        this.propriedades = propriedades;
     }
 
     public ResultadoRevisaoLore executar(
@@ -269,6 +275,15 @@ public class RevisarLoreUseCase {
             for (int i = 0; i < docOriginal.eventos().size(); i++) {
                 EventoLegenda evtOriginal = docOriginal.eventos().get(i);
                 EventoLegenda evtTraduzido = docTraduzido.eventos().get(i);
+
+                if (evtOriginal.estilo() != null && propriedades.estiloIgnorado(evtOriginal.estilo())) {
+                    novosEventos.add(evtTraduzido);
+                    continue;
+                }
+                if (evtOriginal.texto() != null && TAG_KARAOKE_PATTERN.matcher(evtOriginal.texto()).find()) {
+                    novosEventos.add(evtTraduzido);
+                    continue;
+                }
 
                 if (!evtOriginal.isDialogo() || !evtTraduzido.isDialogo()
                     || !evtOriginal.temTexto() || !evtTraduzido.temTexto()) {
