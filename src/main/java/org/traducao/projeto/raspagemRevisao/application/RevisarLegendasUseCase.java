@@ -9,6 +9,7 @@ import org.traducao.projeto.raspagemRevisao.domain.ResultadoDeteccaoConcordancia
 import org.traducao.projeto.raspagemRevisao.domain.exceptions.RaspagemRevisaoException;
 import org.traducao.projeto.telemetria.OperacaoTelemetria;
 import org.traducao.projeto.telemetria.TelemetriaService;
+import org.traducao.projeto.traducao.application.DetectorEfeitoKaraokeService;
 import org.traducao.projeto.traducao.application.ValidadorTraducaoService;
 import org.traducao.projeto.traducao.domain.exceptions.AlucinacaoDetectadaException;
 import org.traducao.projeto.traducao.domain.legenda.DocumentoLegenda;
@@ -49,8 +50,6 @@ public class RevisarLegendasUseCase {
     private static final long PAUSA_GOOGLE_MS = 400;
     private static final Pattern CODIGO_EPISODIO = Pattern.compile("(?i)(S\\d{1,2}E\\d{1,3})");
     private static final Pattern SUFIXO_PTBR_TRACK = Pattern.compile("(?i)_PT-?BR(_Track\\d+)?$");
-    // Detecta tags de timing de karaoke ASS (\k, \kf, \ko, etc.)
-    private static final Pattern TAG_KARAOKE_PATTERN = Pattern.compile("\\\\[kK][fo]?\\d");
 
     private final LeitorLegendaAss leitor;
     private final EscritorLegendaAss escritor;
@@ -64,6 +63,7 @@ public class RevisarLegendasUseCase {
     private final TelemetriaService telemetriaService;
     private final SanitizadorTagsService sanitizadorTags;
     private final TradutorProperties propriedades;
+    private final DetectorEfeitoKaraokeService detectorKaraoke;
 
     public RevisarLegendasUseCase(
         LeitorLegendaAss leitor,
@@ -77,7 +77,8 @@ public class RevisarLegendasUseCase {
         GerenciadorContexto gerenciadorContexto,
         TelemetriaService telemetriaService,
         SanitizadorTagsService sanitizadorTags,
-        TradutorProperties propriedades
+        TradutorProperties propriedades,
+        DetectorEfeitoKaraokeService detectorKaraoke
     ) {
         this.leitor = leitor;
         this.escritor = escritor;
@@ -91,6 +92,7 @@ public class RevisarLegendasUseCase {
         this.telemetriaService = telemetriaService;
         this.sanitizadorTags = sanitizadorTags;
         this.propriedades = propriedades;
+        this.detectorKaraoke = detectorKaraoke;
     }
 
     /**
@@ -502,7 +504,7 @@ public class RevisarLegendasUseCase {
         if (evento.estilo() != null && propriedades.estiloIgnorado(evento.estilo())) {
             return true;
         }
-        if (texto != null && TAG_KARAOKE_PATTERN.matcher(texto).find()) {
+        if (detectorKaraoke.eEfeitoKaraoke(texto)) {
             return true;
         }
         String estilo = evento.estilo() != null ? evento.estilo().toLowerCase() : "";

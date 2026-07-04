@@ -43,7 +43,9 @@ public class DetectorTraducaoIdenticaService {
         String textoLimpo = PADRAO_REMOVE_TAGS_ASS.matcher(texto).replaceAll("").strip();
         textoLimpo = textoLimpo.replaceAll("[^\\w\\s\\d]", "").strip();
 
-        if (textoLimpo.isEmpty()) {
+        // Um único caractere visível (letra de karaokê por letra, interjeição
+        // "A", numeral) não dá base para julgar tradução — manter idêntico.
+        if (textoLimpo.length() <= 1) {
             return true;
         }
 

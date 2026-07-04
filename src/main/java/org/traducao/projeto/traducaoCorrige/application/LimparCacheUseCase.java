@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.traducao.projeto.telemetria.OperacaoTelemetria;
 import org.traducao.projeto.telemetria.TelemetriaService;
+import org.traducao.projeto.traducao.application.DetectorEfeitoKaraokeService;
 import org.traducao.projeto.traducao.presentation.ui.AnsiCores;
 import org.traducao.projeto.traducao.infrastructure.config.TradutorProperties;
 import org.traducao.projeto.traducaoCorrige.domain.exceptions.CorretorCacheException;
@@ -23,16 +24,17 @@ import java.util.stream.Stream;
 public class LimparCacheUseCase {
 
     private static final Logger log = LoggerFactory.getLogger(LimparCacheUseCase.class);
-    // Detecta tags de timing de karaoke ASS (\k, \kf, \ko, etc.)
-    private static final java.util.regex.Pattern TAG_KARAOKE_PATTERN = java.util.regex.Pattern.compile("\\\\[kK][fo]?\\d");
     private final ObjectMapper mapper;
     private final TelemetriaService telemetriaService;
     private final TradutorProperties propriedades;
+    private final DetectorEfeitoKaraokeService detectorKaraoke;
 
-    public LimparCacheUseCase(ObjectMapper mapper, TelemetriaService telemetriaService, TradutorProperties propriedades) {
+    public LimparCacheUseCase(ObjectMapper mapper, TelemetriaService telemetriaService,
+                              TradutorProperties propriedades, DetectorEfeitoKaraokeService detectorKaraoke) {
         this.mapper = mapper.copy().enable(SerializationFeature.INDENT_OUTPUT);
         this.telemetriaService = telemetriaService;
         this.propriedades = propriedades;
+        this.detectorKaraoke = detectorKaraoke;
     }
 
     public int executar(Path diretorioCache) {
@@ -121,7 +123,7 @@ public class LimparCacheUseCase {
                 if (estilo != null && propriedades.estiloIgnorado(estilo)) {
                     continue;
                 }
-                if (original != null && TAG_KARAOKE_PATTERN.matcher(original).find()) {
+                if (detectorKaraoke.eEfeitoKaraoke(original)) {
                     continue;
                 }
 

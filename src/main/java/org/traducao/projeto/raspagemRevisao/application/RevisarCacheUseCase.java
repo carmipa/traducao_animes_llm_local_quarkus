@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.traducao.projeto.raspagemRevisao.domain.ResultadoDeteccaoConcordancia;
 import org.traducao.projeto.raspagemRevisao.domain.exceptions.RaspagemRevisaoException;
+import org.traducao.projeto.traducao.application.DetectorEfeitoKaraokeService;
 import org.traducao.projeto.traducao.application.ValidadorTraducaoService;
 import org.traducao.projeto.traducao.domain.exceptions.AlucinacaoDetectadaException;
 import org.traducao.projeto.traducao.domain.ports.MistralPort;
@@ -30,8 +31,6 @@ import java.util.stream.Stream;
 public class RevisarCacheUseCase {
 
     private static final Logger log = LoggerFactory.getLogger(RevisarCacheUseCase.class);
-    // Detecta tags de timing de karaoke ASS (\k, \kf, \ko, etc.)
-    private static final java.util.regex.Pattern TAG_KARAOKE_PATTERN = java.util.regex.Pattern.compile("\\\\[kK][fo]?\\d");
 
     private final ObjectMapper mapper;
     private final DetectorConcordanciaService detector;
@@ -41,6 +40,7 @@ public class RevisarCacheUseCase {
     private final GerenciadorContexto gerenciadorContexto;
     private final TelemetriaService telemetriaService;
     private final TradutorProperties propriedades;
+    private final DetectorEfeitoKaraokeService detectorKaraoke;
 
     public RevisarCacheUseCase(
         ObjectMapper mapper,
@@ -50,7 +50,8 @@ public class RevisarCacheUseCase {
         MascaradorTags mascaradorTags,
         GerenciadorContexto gerenciadorContexto,
         TelemetriaService telemetriaService,
-        TradutorProperties propriedades
+        TradutorProperties propriedades,
+        DetectorEfeitoKaraokeService detectorKaraoke
     ) {
         this.mapper = mapper.copy().enable(SerializationFeature.INDENT_OUTPUT);
         this.detector = detector;
@@ -60,6 +61,7 @@ public class RevisarCacheUseCase {
         this.gerenciadorContexto = gerenciadorContexto;
         this.telemetriaService = telemetriaService;
         this.propriedades = propriedades;
+        this.detectorKaraoke = detectorKaraoke;
     }
 
     public int executar(Path diretorioCache) {
@@ -170,7 +172,7 @@ public class RevisarCacheUseCase {
                 if (estilo != null && propriedades.estiloIgnorado(estilo)) {
                     continue;
                 }
-                if (original != null && TAG_KARAOKE_PATTERN.matcher(original).find()) {
+                if (detectorKaraoke.eEfeitoKaraoke(original)) {
                     continue;
                 }
 

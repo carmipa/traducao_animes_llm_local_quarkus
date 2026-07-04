@@ -147,6 +147,8 @@ para falas que já estão corretas.
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/application/SanitizadorTagsService.java`
 ```text
 LLM costuma alucinar chaves {texto} como marcação de pensamento, o que quebra a linha no Aegisub.
+Início válido de bloco ASS: "\" (override), "=" (marcador do Kara Templater)
+ou "*" (loop do Kara Templater, ex.: {*\c&H24249D&} — visto no Gundam 0083).
 Tags de timing de karaoke ASS: \k, \K, \kf, \ko seguidas de duração (centissegundos).
 Legado: LLM (ou versões antigas deste código) corrompiam a tag do Kara Templater
 "{=X}" para "\N=X".
@@ -154,8 +156,6 @@ Formatação de tela (pos, cor, an8 etc.) sempre fica no prefixo {...} do iníci
 Forçamos a tradução a ter exatamente o mesmo prefixo do original — inclusive quando o
 original não tem prefixo nenhum, caso em que qualquer {...} que apareça na tradução é
 alucinação do LLM e precisa ser descartado, não preservado.
-Nao remover espaco em branco apos "}" aqui: falas de karaoke (OP/ED) tem
-tags validas no meio da linha, uma por silaba/palavra (ex.: "{\k50}Ka {\k30}ra"),
 ```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/correcaoLegendas/domain/CorrecaoLegendasRelatorioJson.java`
@@ -489,6 +489,23 @@ Utilitarios de inicializacao compartilhados entre modos CLI.
 O Quarkus e o container principal; nao ha {@code SpringApplication.run} aqui.
 ```
 
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducao/application/DetectorEfeitoKaraokeService.java`
+```text
+Reconhece eventos que são efeito de karaokê/música, e não fala de diálogo.
+Cobre as duas formas em que o karaokê aparece nos arquivos .ass:
+<ul>
+<li>Karaokê "cru": tags de timing {@code \k}, {@code \kf}, {@code \ko}
+por sílaba, como sai do fansub antes de aplicar template.</li>
+<li>Saída do Kara Templater do Aegisub: as tags {@code \k} são consumidas
+na aplicação do template e viram uma linha por sílaba/letra com
+transformações animadas ({@code \t(...)}, {@code \frx}, {@code \fad},
+{@code \pos}) e quase nenhum texto visível.</li>
+</ul>
+Regra única compartilhada pelos módulos de tradução, revisão e correção —
+nenhum deles deve mexer em música; isso é responsabilidade do módulo de
+karaokê.
+```
+
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducao/application/DetectorTraducaoIdenticaService.java`
 ```text
 Decide se uma fala pode legitimamente permanecer idêntica ao original (nomes
@@ -525,11 +542,10 @@ UNICODE_CHARACTER_CLASS e necessario aqui: sem ela, \b no Java so reconhece
 [a-zA-Z0-9_] como caractere de palavra, entao letras acentuadas (ç, ã, é...)
 contam como "fronteira", e palavras em portugues como "força" ou "esforço"
 batem com "\bfor\b" e disparam falso positivo de "resíduo em inglês".
-Palavras inequívocas de francês (sem colisão com vocabulário PT-BR) que pegam
-o LLM local "vazando" pra francês em vez de inglês — caso observado em
-produção: "WITH SHINING BLUE FIRE" foi "corrigido" para "AURA BLEU BRILLANTE"
-e passou batido pelo PADRAO_RESIDUO, que só cobre inglês. Espanhol não entra
-aqui: nunca foi observado como idioma de origem/vazamento neste projeto.
+Contrações inglesas: resíduo inequívoco (nenhuma colide com PT-BR) que a
+lista de palavras soltas não pega — caso real do 86: "Se você terminou sua
+missão, it's seu dever me dar um relatório." passava sem disparar nada.
+Aceita apóstrofo ASCII (') e tipográfico (’).
 ```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducao/contexto/ContextoPrompt.java`
@@ -981,6 +997,19 @@ falha real é reproduzível de forma determinística e portátil num teste.
 
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/telemetria/TelemetriaServiceRevisaoLoreTest.java`
 *(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/traducao/application/DetectorEfeitoKaraokeServiceTest.java`
+```text
+Linha real que escapou da revisão: letra "I" afogada em transformações.
+\t presente, mas o texto visível domina a linha: é fala, não karaokê.
+```
+
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/traducao/application/ValidadorTraducaoServiceTest.java`
+```text
+Caso real (Gundam Narrative): LLM rotulou a resposta em vez de só traduzir.
+Caso real (G-Reconguista): marcador do pipeline Python antigo na legenda final.
+Caso real (86): linha metade PT, metade EN.
+```
 
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/traducao/presentation/web/ConsoleRedirectorTest.java`
 ```text

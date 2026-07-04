@@ -51,8 +51,6 @@ public class ProcessarArquivoUseCase {
     private static final Pattern PADRAO_DESENHO_VETORIAL = Pattern.compile("\\\\p[1-9]\\d*");
     // Remove blocos de override ASS ({\tag...}) para isolar o texto visível.
     private static final Pattern PADRAO_REMOVE_TAGS_ASS = Pattern.compile("\\{[^}]+}");
-    // Detecta tags de timing de karaoke ASS (\k, \kf, \ko, etc.)
-    private static final Pattern TAG_KARAOKE_PATTERN = Pattern.compile("\\\\[kK][fo]?\\d");
     // Um letreiro/título animado quadro a quadro reaparece muitas vezes com o
     // mesmo texto visível (só a tag de efeito muda a cada quadro). Abaixo
     // disso é mais provável ser só uma fala com efeito visual pontual (ex.:
@@ -71,6 +69,7 @@ public class ProcessarArquivoUseCase {
     private final ConsoleUILogger uiLogger;
     private final PastasExecucao pastasExecucao;
     private final TelemetriaService telemetriaService;
+    private final DetectorEfeitoKaraokeService detectorKaraoke;
 
     public ProcessarArquivoUseCase(
         LeitorLegendaAss leitor,
@@ -84,7 +83,8 @@ public class ProcessarArquivoUseCase {
         LlmProperties llmPropriedades,
         ConsoleUILogger uiLogger,
         PastasExecucao pastasExecucao,
-        TelemetriaService telemetriaService
+        TelemetriaService telemetriaService,
+        DetectorEfeitoKaraokeService detectorKaraoke
     ) {
         this.leitor = leitor;
         this.escritor = escritor;
@@ -98,6 +98,7 @@ public class ProcessarArquivoUseCase {
         this.uiLogger = uiLogger;
         this.pastasExecucao = pastasExecucao;
         this.telemetriaService = telemetriaService;
+        this.detectorKaraoke = detectorKaraoke;
     }
 
     public Path processar(Path arquivoEntrada) throws InterruptedException, ExecutionException {
@@ -345,8 +346,12 @@ public class ProcessarArquivoUseCase {
 
         String texto = evento.texto();
 
-        // Blindagem Contra Tags de Karaoke Sincronizadas (\k, \kf, \ko, etc.)
-        if (TAG_KARAOKE_PATTERN.matcher(texto).find()) {
+        // Blindagem contra karaokê cru (\k, \kf, \ko). Só as tags de timing:
+        // a detecção agressiva de pós-template (eEfeitoKaraoke) pegaria também
+        // letreiros/títulos com \t e texto curto, que aqui DEVEM ser traduzidos
+        // — o caso karaokê pós-template é coberto pela heurística de letreiro
+        // animado logo abaixo (que exige repetição).
+        if (detectorKaraoke.temTagKaraoke(texto)) {
             return false;
         }
 

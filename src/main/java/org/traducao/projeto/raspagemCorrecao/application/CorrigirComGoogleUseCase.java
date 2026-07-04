@@ -10,6 +10,7 @@ import org.traducao.projeto.raspagemCorrecao.domain.exceptions.RaspagemCorrecaoE
 import org.traducao.projeto.raspagemCorrecao.infrastructure.GoogleTranslateScraper;
 import org.traducao.projeto.telemetria.OperacaoTelemetria;
 import org.traducao.projeto.telemetria.TelemetriaService;
+import org.traducao.projeto.traducao.application.DetectorEfeitoKaraokeService;
 import org.traducao.projeto.traducao.presentation.ui.AnsiCores;
 import org.traducao.projeto.traducao.infrastructure.config.TradutorProperties;
 
@@ -25,13 +26,12 @@ import java.util.stream.Stream;
 public class CorrigirComGoogleUseCase {
 
     private static final Logger log = LoggerFactory.getLogger(CorrigirComGoogleUseCase.class);
-    // Detecta tags de timing de karaoke ASS (\k, \kf, \ko, etc.)
-    private static final java.util.regex.Pattern TAG_KARAOKE_PATTERN = java.util.regex.Pattern.compile("\\\\[kK][fo]?\\d");
 
     private final ObjectMapper mapper;
     private final GoogleTranslateScraper googleScraper;
     private final TelemetriaService telemetriaService;
     private final TradutorProperties propriedades;
+    private final DetectorEfeitoKaraokeService detectorKaraoke;
 
     private static final Set<String> TERMOS_IGNORADOS = Set.of(
         "fire bolt", "argo vesta", "caelus hildr", "hildrsleif", "dios aedes vesta",
@@ -44,12 +44,14 @@ public class CorrigirComGoogleUseCase {
         ObjectMapper mapper,
         GoogleTranslateScraper googleScraper,
         TelemetriaService telemetriaService,
-        TradutorProperties propriedades
+        TradutorProperties propriedades,
+        DetectorEfeitoKaraokeService detectorKaraoke
     ) {
         this.mapper = mapper.copy().enable(SerializationFeature.INDENT_OUTPUT);
         this.googleScraper = googleScraper;
         this.telemetriaService = telemetriaService;
         this.propriedades = propriedades;
+        this.detectorKaraoke = detectorKaraoke;
     }
 
     public int executar(Path diretorioCache) {
@@ -138,7 +140,7 @@ public class CorrigirComGoogleUseCase {
                 if (estilo != null && propriedades.estiloIgnorado(estilo)) {
                     continue;
                 }
-                if (original != null && TAG_KARAOKE_PATTERN.matcher(original).find()) {
+                if (detectorKaraoke.eEfeitoKaraoke(original)) {
                     continue;
                 }
 

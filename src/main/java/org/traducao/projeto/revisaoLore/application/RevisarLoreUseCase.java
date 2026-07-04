@@ -11,6 +11,7 @@ import org.traducao.projeto.revisaoLore.domain.exceptions.RevisaoLoreException;
 import org.traducao.projeto.revisaoLore.infrastructure.RevisaoLoreLogPersistencia;
 import org.traducao.projeto.telemetria.OperacaoTelemetria;
 import org.traducao.projeto.telemetria.TelemetriaService;
+import org.traducao.projeto.traducao.application.DetectorEfeitoKaraokeService;
 import org.traducao.projeto.traducao.application.ValidadorTraducaoService;
 import org.traducao.projeto.traducao.domain.StatusLlm;
 import org.traducao.projeto.traducao.domain.legenda.DocumentoLegenda;
@@ -38,8 +39,6 @@ public class RevisarLoreUseCase {
     private static final Logger log = LoggerFactory.getLogger(RevisarLoreUseCase.class);
     private static final DateTimeFormatter UTC_FORMATTER = DateTimeFormatter.ISO_INSTANT;
     private static final int TAMANHO_TRECHO_LOG = 120;
-    // Detecta tags de timing de karaoke ASS (\k, \kf, \ko, etc.)
-    private static final java.util.regex.Pattern TAG_KARAOKE_PATTERN = java.util.regex.Pattern.compile("\\\\[kK][fo]?\\d");
 
     private final LeitorLegendaAss leitor;
     private final EscritorLegendaAss escritor;
@@ -51,6 +50,7 @@ public class RevisarLoreUseCase {
     private final TelemetriaService telemetriaService;
     private final RevisaoLoreLogPersistencia logPersistencia;
     private final TradutorProperties propriedades;
+    private final DetectorEfeitoKaraokeService detectorKaraoke;
 
     /**
      * Estado de UMA execução de revisão (log de eventos + relógio da sessão).
@@ -92,7 +92,8 @@ public class RevisarLoreUseCase {
         GerenciadorPromptRevisaoLore gerenciadorPromptRevisaoLore,
         TelemetriaService telemetriaService,
         RevisaoLoreLogPersistencia logPersistencia,
-        TradutorProperties propriedades
+        TradutorProperties propriedades,
+        DetectorEfeitoKaraokeService detectorKaraoke
     ) {
         this.leitor = leitor;
         this.escritor = escritor;
@@ -104,6 +105,7 @@ public class RevisarLoreUseCase {
         this.telemetriaService = telemetriaService;
         this.logPersistencia = logPersistencia;
         this.propriedades = propriedades;
+        this.detectorKaraoke = detectorKaraoke;
     }
 
     public ResultadoRevisaoLore executar(
@@ -280,7 +282,7 @@ public class RevisarLoreUseCase {
                     novosEventos.add(evtTraduzido);
                     continue;
                 }
-                if (evtOriginal.texto() != null && TAG_KARAOKE_PATTERN.matcher(evtOriginal.texto()).find()) {
+                if (detectorKaraoke.eEfeitoKaraoke(evtOriginal.texto())) {
                     novosEventos.add(evtTraduzido);
                     continue;
                 }

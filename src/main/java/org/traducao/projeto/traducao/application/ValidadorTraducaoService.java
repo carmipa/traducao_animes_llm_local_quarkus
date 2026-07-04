@@ -29,6 +29,18 @@ public class ValidadorTraducaoService {
         Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS
     );
 
+    // Contrações inglesas: resíduo inequívoco (nenhuma colide com PT-BR) que a
+    // lista de palavras soltas não pega — caso real do 86: "Se você terminou sua
+    // missão, it's seu dever me dar um relatório." passava sem disparar nada.
+    // Aceita apóstrofo ASCII (') e tipográfico (’).
+    private static final Pattern PADRAO_CONTRACAO_INGLES = Pattern.compile(
+        "\\b(?:it|that|there|what|here|he|she|let)['’]s\\b"
+            + "|\\b(?:don|can|won|ain|didn|doesn|isn|aren|wasn|weren|couldn|wouldn|shouldn|hasn|haven)['’]t\\b"
+            + "|\\b(?:i|you|we|they)['’](?:m|ll|ve|re|d)\\b"
+            + "|\\b(?:gonna|gotta|wanna)\\b",
+        Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS
+    );
+
     // Palavras inequívocas de francês (sem colisão com vocabulário PT-BR) que pegam
     // o LLM local "vazando" pra francês em vez de inglês — caso observado em
     // produção: "WITH SHINING BLUE FIRE" foi "corrigido" para "AURA BLEU BRILLANTE"
@@ -41,9 +53,11 @@ public class ValidadorTraducaoService {
         Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS
     );
 
-    // Evita os falsos positivos de "Abaixo a tirania" bloqueando apenas preâmbulos óbvios
+    // Evita os falsos positivos de "Abaixo a tirania" bloqueando apenas preâmbulos óbvios.
+    // "tradução:" no início cobre o LLM rotulando a resposta (caso real: linha de
+    // karaokê do Gundam Narrative entregue como "Tradução: {\r\pos(488,23)...}ep").
     private static final Pattern PADRAO_PREAMBULO = Pattern.compile(
-        "^(esta [ée] a tradu|abaixo seguem|aqui está a|tradução solicitada|a tradução seria)",
+        "^(esta [ée] a tradu|abaixo seguem|aqui está a|tradução solicitada|a tradução seria|tradu[çc][ãa]o\\s*:)",
         Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS
     );
 
@@ -62,12 +76,24 @@ public class ValidadorTraducaoService {
             throw new AlucinacaoDetectadaException("Resíduo gringo detectado: " + textoTraduzido);
         }
 
+        if (PADRAO_CONTRACAO_INGLES.matcher(textoTraduzido).find()) {
+            throw new AlucinacaoDetectadaException("Resíduo gringo detectado (contração): " + textoTraduzido);
+        }
+
         if (PADRAO_OUTRO_IDIOMA.matcher(textoTraduzido).find()) {
             throw new AlucinacaoDetectadaException("Idioma incorreto detectado (não é PT-BR): " + textoTraduzido);
         }
 
         if (PADRAO_PREAMBULO.matcher(textoTraduzido).find()) {
             throw new AlucinacaoDetectadaException("Preâmbulo detectado: " + textoTraduzido);
+        }
+
+        // Marcador de falha do pipeline Python antigo encontrado em legendas
+        // legadas (ex.: "[ERRO_TRADUCAO: The Garanden!]" na G-Reconguista).
+        // Garante retradução na revisão mesmo quando o conteúdo não dispara
+        // o padrão de resíduo em inglês.
+        if (textoTraduzido.contains("ERRO_TRADUCAO")) {
+            throw new AlucinacaoDetectadaException("Marcador de erro de tradução detectado: " + textoTraduzido);
         }
     }
 

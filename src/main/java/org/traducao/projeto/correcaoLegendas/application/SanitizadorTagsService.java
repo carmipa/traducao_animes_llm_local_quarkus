@@ -9,7 +9,9 @@ import java.util.regex.Pattern;
 public class SanitizadorTagsService {
 
     // LLM costuma alucinar chaves {texto} como marcação de pensamento, o que quebra a linha no Aegisub.
-    private static final Pattern TAG_INVALIDA_PATTERN = Pattern.compile("\\{([^\\\\=}][^}]*)\\}");
+    // Início válido de bloco ASS: "\" (override), "=" (marcador do Kara Templater)
+    // ou "*" (loop do Kara Templater, ex.: {*\c&H24249D&} — visto no Gundam 0083).
+    private static final Pattern TAG_INVALIDA_PATTERN = Pattern.compile("\\{([^\\\\=*}][^}]*)\\}");
 
     // Tags de timing de karaoke ASS: \k, \K, \kf, \ko seguidas de duração (centissegundos).
     private static final Pattern TAG_KARAOKE_PATTERN = Pattern.compile("\\\\[kK][fo]?\\d");
@@ -146,6 +148,6 @@ public class SanitizadorTagsService {
             return false;
         }
         char primeiroConteudo = texto.charAt(abertura + 1);
-        return primeiroConteudo == '\\' || primeiroConteudo == '=';
+        return primeiroConteudo == '\\' || primeiroConteudo == '=' || primeiroConteudo == '*';
     }
 }
