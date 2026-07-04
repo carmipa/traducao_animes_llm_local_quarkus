@@ -388,6 +388,28 @@ document.querySelectorAll('.btn-clear-console').forEach(btn => {
     });
 });
 
+// Botão "Parar Execução" dos menus: interrompe o trabalho em execução na
+// fila única do pipeline. A parada é cooperativa — o job encerra no próximo
+// ponto seguro e o progresso já salvo (cache, arquivos concluídos) é
+// preservado. Todos os menus usam o mesmo endpoint porque só um job roda
+// por vez na fila.
+// Delegação no document: o painel de Revisão de Lore é injetado
+// dinamicamente (revisaoLore.html), então listeners registrados no load da
+// página não alcançariam o botão dele.
+document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.btn-parar-pipeline');
+    if (!btn) return;
+    const consoleId = btn.getAttribute('data-console');
+    logNoConsole(consoleId, 'Solicitando parada do trabalho em execução...', 'aviso');
+    try {
+        const res = await fetch('/api/pipeline/parar', { method: 'POST' });
+        const data = await res.json();
+        logNoConsole(consoleId, data.mensagem || 'Parada solicitada.', 'aviso');
+    } catch (err) {
+        logNoConsole(consoleId, `Erro ao solicitar parada: ${err.message}`, 'erro');
+    }
+});
+
 // Configura funcionalidade de copiar o conteúdo de um console/relatório
 document.querySelectorAll('.btn-copy-console').forEach(btn => {
     btn.addEventListener('click', async () => {

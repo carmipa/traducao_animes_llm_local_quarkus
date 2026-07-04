@@ -403,6 +403,12 @@ public class MistralClientAdapter implements MistralPort {
         String[] linhas = normalizado.split("\n", -1);
         List<String> resultado = new ArrayList<>(linhas.length);
         for (String linha : linhas) {
+            // Linha em branco nunca é tradução: os lotes só contêm falas com
+            // texto. É o modelo separando as respostas com linha vazia — sem
+            // este filtro a contagem diverge e o lote é dividido/retentado à toa.
+            if (linha.isBlank()) {
+                continue;
+            }
             resultado.add(linha.stripTrailing());
         }
         return resultado;
@@ -418,9 +424,13 @@ public class MistralClientAdapter implements MistralPort {
      * apenas quando TODAS as linhas vêm numeradas em sequência 1..N e os
      * originais correspondentes NÃO começam numerados (se começam, o número é
      * conteúdo real da fala, ex.: itens de uma lista, e deve ficar).
+     * <p>
+     * Vale também para lote de UMA linha (o tamanho-lote padrão do projeto é
+     * 1): "1. fala" numa resposta única é numeração alucinada do mesmo jeito,
+     * e era exatamente o caso que escapava quando este método exigia 2+ linhas.
      */
     private List<String> removerNumeracaoAlucinada(List<String> traduzidas, List<String> originais) {
-        if (traduzidas.size() != originais.size() || traduzidas.size() < 2) {
+        if (traduzidas.size() != originais.size() || traduzidas.isEmpty()) {
             return traduzidas;
         }
         List<String> semNumeracao = new ArrayList<>(traduzidas.size());

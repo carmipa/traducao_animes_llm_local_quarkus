@@ -133,6 +133,13 @@ public class CorrigirComGoogleUseCase {
             boolean modificado = false;
 
             for (Map<String, Object> entrada : entradas) {
+                // Parada cooperativa (botão "Parar" da UI): o que já foi
+                // corrigido neste arquivo é salvo logo abaixo.
+                if (Thread.currentThread().isInterrupted()) {
+                    System.out.println(AnsiCores.YELLOW
+                        + "  [STOP] Correção interrompida pelo usuário." + AnsiCores.RESET);
+                    break;
+                }
                 String original = (String) entrada.get("original");
                 String traduzido = (String) entrada.get("traduzido");
                 String estilo = (String) entrada.get("estilo");

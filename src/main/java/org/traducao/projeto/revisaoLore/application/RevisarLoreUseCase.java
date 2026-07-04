@@ -274,9 +274,23 @@ public class RevisarLoreUseCase {
             int dialogoAtual = 0;
             List<EventoLegenda> novosEventos = new ArrayList<>(docTraduzido.eventos().size());
 
+            boolean interrompido = false;
             for (int i = 0; i < docOriginal.eventos().size(); i++) {
                 EventoLegenda evtOriginal = docOriginal.eventos().get(i);
                 EventoLegenda evtTraduzido = docTraduzido.eventos().get(i);
+
+                // Parada cooperativa (botão "Parar" da UI): falas restantes
+                // entram sem alteração e o já revisado é gravado normalmente.
+                if (interrompido || Thread.currentThread().isInterrupted()) {
+                    if (!interrompido) {
+                        sessao.out(AnsiCores.YELLOW
+                            + "[STOP] Revisão de lore interrompida pelo usuário — falas restantes mantidas."
+                            + AnsiCores.RESET);
+                        interrompido = true;
+                    }
+                    novosEventos.add(evtTraduzido);
+                    continue;
+                }
 
                 if (evtOriginal.estilo() != null && propriedades.estiloIgnorado(evtOriginal.estilo())) {
                     novosEventos.add(evtTraduzido);

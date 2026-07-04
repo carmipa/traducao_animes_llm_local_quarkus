@@ -53,6 +53,14 @@ public class ProcessarEpisodioUseCase {
         
         java.util.List<TraducaoLote> resultado = new java.util.ArrayList<>();
         for (Lote lote : lotes) {
+            // Parada cooperativa (botão "Parar" da UI interrompe a thread da
+            // fila): sai pelo mesmo caminho de tradução parcial, que salva no
+            // cache tudo que já foi traduzido antes de encerrar.
+            if (Thread.currentThread().isInterrupted()) {
+                uiLogger.log("[ STOP ] Tradução interrompida pelo usuário — salvando progresso parcial.");
+                throw new TraducaoParcialException(
+                    "Tradução interrompida pelo usuário.", resultado, null);
+            }
             try {
                 TraducaoLote tl = traduzirEValidar(lote);
                 resultado.add(tl);

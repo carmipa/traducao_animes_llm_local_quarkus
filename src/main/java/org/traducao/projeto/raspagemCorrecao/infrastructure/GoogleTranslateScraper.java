@@ -27,6 +27,11 @@ public class GoogleTranslateScraper {
 
     private static final Logger log = LoggerFactory.getLogger(GoogleTranslateScraper.class);
 
+    // Marcador [Tn]/[B] (com mutilações comuns de espaçamento/parênteses) que
+    // sobrou depois da restauração das tags — sinal de resposta corrompida.
+    private static final Pattern PADRAO_MARCADOR_RESIDUAL =
+        Pattern.compile("(?i)[\\[(]\\s*[tb]\\s*\\d*\\s*[\\])]");
+
     private final ObjectMapper mapper;
     private final HttpClient httpClient;
 
@@ -115,6 +120,22 @@ public class GoogleTranslateScraper {
             }
 
             traduzido = traduzido.replace("\\ N", "\\N").replace("\\ n", "\\N");
+
+            // O Google às vezes mutila os marcadores ("[ T0 ]", "(T0)", "[b ]"...).
+            // Nesse caso o replace acima não casa: sobraria marcador VISÍVEL na
+            // legenda e/ou a tag ASS original seria perdida. Melhor devolver o
+            // texto original intacto (os chamadores tratam igualdade como
+            // "sem alteração") do que gravar uma linha corrompida.
+            if (PADRAO_MARCADOR_RESIDUAL.matcher(traduzido).find()) {
+                log.warn("Google Translate mutilou marcadores de tag/quebra; mantendo texto original: {}", traduzido);
+                return textoOriginal;
+            }
+            for (String tag : tags) {
+                if (!traduzido.contains(tag)) {
+                    log.warn("Google Translate perdeu a tag ASS {}; mantendo texto original.", tag);
+                    return textoOriginal;
+                }
+            }
 
             return traduzido;
 

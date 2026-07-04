@@ -126,6 +126,36 @@ public class ApiController {
     }
 
     /**
+     * Para o trabalho em execução na fila do pipeline e descarta os
+     * enfileirados. A parada é cooperativa: o job interrompido encerra no
+     * próximo ponto seguro (entre falas/arquivos), preservando o progresso já
+     * salvo — cache de tradução e arquivos concluídos não se perdem.
+     */
+    @PostMapping("/pipeline/parar")
+    public ResponseEntity<RespostaPadrao> pararPipeline() {
+        if (!filaExecucao.ocupada()) {
+            return ResponseEntity.ok(new RespostaPadrao("Nenhum trabalho em execução no pipeline."));
+        }
+        int canceladas = filaExecucao.parar();
+        log.info("Pipeline interrompido pelo usuário ({} tarefa(s) cancelada(s)).", canceladas);
+        System.out.println(AnsiCores.YELLOW
+            + "[STOP] Interrupção solicitada pelo usuário — o trabalho atual encerra no próximo ponto seguro."
+            + AnsiCores.RESET);
+        return ResponseEntity.ok(new RespostaPadrao(
+            "Parada solicitada (" + canceladas + " tarefa(s) cancelada(s)). "
+                + "O trabalho atual encerra no próximo ponto seguro, preservando o progresso já salvo."));
+    }
+
+    /**
+     * Estado da fila do pipeline — usado pela UI para habilitar/desabilitar o
+     * botão "Parar" dos menus.
+     */
+    @GetMapping("/pipeline/status")
+    public ResponseEntity<RespostaPadrao> statusPipeline() {
+        return ResponseEntity.ok(new RespostaPadrao(filaExecucao.ocupada() ? "ocupada" : "livre"));
+    }
+
+    /**
      * Lista os contextos de tradução disponíveis (animes).
      */
     @GetMapping("/contextos")

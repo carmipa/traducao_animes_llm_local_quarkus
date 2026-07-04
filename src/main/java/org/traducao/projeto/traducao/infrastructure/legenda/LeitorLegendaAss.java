@@ -1,11 +1,17 @@
 package org.traducao.projeto.traducao.infrastructure.legenda;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.traducao.projeto.traducao.domain.exceptions.ArquivoLegendaException;
 import org.traducao.projeto.traducao.domain.legenda.DocumentoLegenda;
 import org.traducao.projeto.traducao.domain.legenda.EventoLegenda;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,12 +28,14 @@ import java.util.List;
 @Component
 public class LeitorLegendaAss {
 
+    private static final Logger log = LoggerFactory.getLogger(LeitorLegendaAss.class);
+
     private static final char BOM = '﻿';
 
     public DocumentoLegenda ler(Path arquivo) {
         String conteudo;
         try {
-            conteudo = Files.readString(arquivo, StandardCharsets.UTF_8);
+            conteudo = decodificar(Files.readAllBytes(arquivo), arquivo);
         } catch (IOException e) {
             throw new ArquivoLegendaException("Falha ao ler arquivo de legenda: " + arquivo, e);
         }
@@ -83,6 +91,38 @@ public class LeitorLegendaAss {
         }
 
         return new DocumentoLegenda(cabecalho, eventos, quebraDeLinha, comBom);
+    }
+
+    /**
+     * Decodifica detectando o encoding real: UTF-16 via BOM (comum em legendas
+     * extraídas de BDs antigos), UTF-8 estrito e, como último recurso,
+     * Windows-1252 (legados ANSI). Antes o leitor assumia UTF-8 e qualquer
+     * arquivo UTF-16/ANSI morria com "Falha ao ler arquivo" genérico.
+     * Fontes UTF-16 ganham o marcador BOM no texto decodificado para que o
+     * documento seja gravado de volta como UTF-8 COM BOM (players detectam o
+     * encoding pelo BOM).
+     */
+    private String decodificar(byte[] bytes, Path arquivo) {
+        if (bytes.length >= 2) {
+            int b0 = bytes[0] & 0xFF;
+            int b1 = bytes[1] & 0xFF;
+            if ((b0 == 0xFF && b1 == 0xFE) || (b0 == 0xFE && b1 == 0xFF)) {
+                log.info("Legenda {} em UTF-16 (BOM detectado); convertendo para UTF-8 com BOM.", arquivo.getFileName());
+                // O charset UTF-16 escolhe o endianness pelo BOM e o consome.
+                return BOM + new String(bytes, StandardCharsets.UTF_16);
+            }
+        }
+        try {
+            return StandardCharsets.UTF_8.newDecoder()
+                .onMalformedInput(CodingErrorAction.REPORT)
+                .onUnmappableCharacter(CodingErrorAction.REPORT)
+                .decode(ByteBuffer.wrap(bytes))
+                .toString();
+        } catch (CharacterCodingException e) {
+            log.warn("Legenda {} não é UTF-8 válido; decodificando como Windows-1252 (melhor esforço).",
+                arquivo.getFileName());
+            return new String(bytes, Charset.forName("windows-1252"));
+        }
     }
 
     private EventoLegenda parseLinha(String linha, int indice, int numCampos, int indiceEstilo) {

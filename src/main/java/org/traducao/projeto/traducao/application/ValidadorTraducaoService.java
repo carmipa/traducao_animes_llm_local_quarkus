@@ -67,24 +67,36 @@ public class ValidadorTraducaoService {
     // sem esta exceção a fala inteira era rejeitada e mantida sem tradução.
     private static final java.util.Set<String> RESIDUOS_TAMBEM_NOMES = java.util.Set.of("will");
 
+    // Blocos {...} do ASS (tags de override e comentários de fansub) não são
+    // texto exibido: valida-los como fala gerava falso positivo (comentário
+    // legítimo em inglês tipo "{Yes, ma'am}" disparava resíduo e queimava uma
+    // chamada de LLM à toa) e falso negativo (preâmbulo depois de tag, como
+    // "{\i1}Tradução: ...", escapava da âncora ^ do padrão de preâmbulo).
+    private static final Pattern PADRAO_BLOCO_ASS = Pattern.compile("\\{[^}]*\\}");
+
     public void validarFala(String textoTraduzido) {
         if (textoTraduzido == null || textoTraduzido.trim().isEmpty()) {
             return;
         }
 
-        if (temResiduoRelevante(textoTraduzido)) {
+        String visivel = PADRAO_BLOCO_ASS.matcher(textoTraduzido).replaceAll("").trim();
+        if (visivel.isEmpty()) {
+            return;
+        }
+
+        if (temResiduoRelevante(visivel)) {
             throw new AlucinacaoDetectadaException("Resíduo gringo detectado: " + textoTraduzido);
         }
 
-        if (PADRAO_CONTRACAO_INGLES.matcher(textoTraduzido).find()) {
+        if (PADRAO_CONTRACAO_INGLES.matcher(visivel).find()) {
             throw new AlucinacaoDetectadaException("Resíduo gringo detectado (contração): " + textoTraduzido);
         }
 
-        if (PADRAO_OUTRO_IDIOMA.matcher(textoTraduzido).find()) {
+        if (PADRAO_OUTRO_IDIOMA.matcher(visivel).find()) {
             throw new AlucinacaoDetectadaException("Idioma incorreto detectado (não é PT-BR): " + textoTraduzido);
         }
 
-        if (PADRAO_PREAMBULO.matcher(textoTraduzido).find()) {
+        if (PADRAO_PREAMBULO.matcher(visivel).find()) {
             throw new AlucinacaoDetectadaException("Preâmbulo detectado: " + textoTraduzido);
         }
 
@@ -92,7 +104,7 @@ public class ValidadorTraducaoService {
         // legadas (ex.: "[ERRO_TRADUCAO: The Garanden!]" na G-Reconguista).
         // Garante retradução na revisão mesmo quando o conteúdo não dispara
         // o padrão de resíduo em inglês.
-        if (textoTraduzido.contains("ERRO_TRADUCAO")) {
+        if (visivel.contains("ERRO_TRADUCAO")) {
             throw new AlucinacaoDetectadaException("Marcador de erro de tradução detectado: " + textoTraduzido);
         }
     }

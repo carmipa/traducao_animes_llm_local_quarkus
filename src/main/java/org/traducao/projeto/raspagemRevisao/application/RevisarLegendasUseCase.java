@@ -203,6 +203,13 @@ public class RevisarLegendasUseCase {
                 + " (se existir) + cache/ em " + cacheDir.toAbsolutePath());
 
             for (Path arquivoPt : arquivos) {
+                // Parada cooperativa (botão "Parar" da UI): arquivos já
+                // revisados ficaram salvos; os restantes não são tocados.
+                if (Thread.currentThread().isInterrupted()) {
+                    out(AnsiCores.YELLOW + "Revisão interrompida pelo usuário — "
+                        + "arquivos restantes não foram processados." + AnsiCores.RESET);
+                    break;
+                }
                 processarArquivo(
                     arquivoPt, pastaEn, cacheDir, saidaDir, modo,
                     arquivosProcessados, falasCorrigidas, falasComProblema,
@@ -364,7 +371,20 @@ public class RevisarLegendasUseCase {
         int falasSemOriginal = 0;
         boolean modificado = false;
 
+        boolean interrompido = false;
         for (EventoLegenda evento : documentoPt.eventos()) {
+            // Parada cooperativa no meio do arquivo: as falas restantes entram
+            // sem alteração e o que já foi corrigido é gravado normalmente.
+            if (interrompido || Thread.currentThread().isInterrupted()) {
+                if (!interrompido) {
+                    out("  " + AnsiCores.YELLOW
+                        + "[STOP] Interrompido pelo usuário — falas restantes mantidas como estão."
+                        + AnsiCores.RESET);
+                    interrompido = true;
+                }
+                eventosAtualizados.add(evento);
+                continue;
+            }
             if (!evento.isDialogo() || evento.texto() == null || evento.texto().isBlank()) {
                 eventosAtualizados.add(evento);
                 continue;

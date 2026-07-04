@@ -44,4 +44,22 @@ class ValidadorTraducaoServiceTest {
         assertDoesNotThrow(() ->
             validador.validarFala("Com força e esforço, vamos vencer esta batalha."));
     }
+
+    @Test
+    void aceitaComentarioAssEmInglesDentroDeChaves() {
+        // Caso real (DanMachi): comentários de fansub no original são preservados
+        // e não são texto visível — não podem disparar resíduo.
+        assertDoesNotThrow(() ->
+            validador.validarFala("Melhor levar-me com você. {Yes, ma'am}"));
+        assertDoesNotThrow(() ->
+            validador.validarFala("Vamos embora daqui. {it's a pun with the previous line}"));
+    }
+
+    @Test
+    void rejeitaPreambuloDepoisDeTagAss() {
+        // A âncora ^ do padrão de preâmbulo deve valer para o texto VISÍVEL,
+        // não para a string crua começando com {\i1}.
+        assertThrows(AlucinacaoDetectadaException.class, () ->
+            validador.validarFala("{\\i1}Tradução: Ele nunca vai desistir.{\\i0}"));
+    }
 }

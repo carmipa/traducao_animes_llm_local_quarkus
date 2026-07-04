@@ -22,8 +22,10 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -105,8 +107,22 @@ public class CorrigirLegendasUseCase {
                     .filter(p -> !ehLegendaTraduzida(p))
                     .toList();
 
+            // Os originais são varridos recursivamente; o par traduzido também
+            // precisa ser procurado em subpastas (ex.: Season 04\legendas_eng
+            // vs Season 04\legendas_ptbr) — resolver só contra a raiz da pasta
+            // traduzida dava "sem par" em acervos organizados por subpasta.
+            Map<String, List<Path>> indiceTraduzidas = indexarLegendasTraduzidas(pastaTraduzida);
+
             for (Path arqOriginal : originais) {
-                corrigirArquivo(arqOriginal, pastaTraduzida, llmHabilitado, inicio, eventos,
+                // Parada cooperativa (botão "Parar" da UI): arquivos já
+                // corrigidos ficaram salvos; os restantes não são tocados.
+                if (Thread.currentThread().isInterrupted()) {
+                    out(eventos, inicio, "WARN", null,
+                        "[STOP] Correção interrompida pelo usuário — arquivos restantes não processados.",
+                        AnsiCores.YELLOW);
+                    break;
+                }
+                corrigirArquivo(arqOriginal, pastaTraduzida, indiceTraduzidas, llmHabilitado, inicio, eventos,
                     curados, falasCuradas, corrigidosLlm, semAlteracao, semPar, traducaoAusente, erros);
             }
         } catch (IOException e) {
@@ -160,6 +176,7 @@ public class CorrigirLegendasUseCase {
     private void corrigirArquivo(
         Path arqOriginal,
         Path pastaTraduzida,
+        Map<String, List<Path>> indiceTraduzidas,
         boolean llmHabilitado,
         Instant inicio,
         List<LogEventoCorrecaoLegendas> eventos,
@@ -172,7 +189,7 @@ public class CorrigirLegendasUseCase {
         List<String> erros
     ) {
         String nomeOriginal = arqOriginal.getFileName().toString();
-        Path arqTraduzido = localizarArquivoTraduzido(arqOriginal, pastaTraduzida);
+        Path arqTraduzido = localizarArquivoTraduzido(arqOriginal, pastaTraduzida, indiceTraduzidas);
 
         if (!Files.exists(arqTraduzido)) {
             semPar[0]++;
@@ -307,7 +324,9 @@ public class CorrigirLegendasUseCase {
         }
     }
 
-    private Path localizarArquivoTraduzido(Path arqOriginal, Path pastaTraduzida) {
+    private Path localizarArquivoTraduzido(
+        Path arqOriginal, Path pastaTraduzida, Map<String, List<Path>> indiceTraduzidas
+    ) {
         String nomeOriginal = arqOriginal.getFileName().toString();
         String nomeBase = nomeOriginal.substring(0, nomeOriginal.lastIndexOf("."));
         Set<String> candidatos = new LinkedHashSet<>();
@@ -324,13 +343,44 @@ public class CorrigirLegendasUseCase {
         candidatos.add(nomeBase.replace("_en", "_PTBR") + ".ass");
 
         for (String candidato : candidatos) {
-            Path caminho = pastaTraduzida.resolve(candidato);
-            if (Files.exists(caminho)) {
-                return caminho;
+            // 1. Ao lado do próprio original (pastas mistas EN+PT).
+            Path aoLado = arqOriginal.resolveSibling(candidato);
+            if (Files.exists(aoLado)) {
+                return aoLado;
+            }
+            // 2. Raiz da pasta traduzida (layout plano, comportamento original).
+            Path naRaiz = pastaTraduzida.resolve(candidato);
+            if (Files.exists(naRaiz)) {
+                return naRaiz;
+            }
+            // 3. Qualquer subpasta da pasta traduzida, via índice pré-computado.
+            List<Path> nomeIgual = indiceTraduzidas.get(candidato.toLowerCase());
+            if (nomeIgual != null && !nomeIgual.isEmpty()) {
+                return nomeIgual.get(0);
             }
         }
 
         return pastaTraduzida.resolve(nomeBase + "_PT-BR.ass");
+    }
+
+    /**
+     * Indexa (nome de arquivo em minúsculas -> caminhos) todas as legendas
+     * traduzidas sob a pasta, para o pareamento funcionar em acervos
+     * organizados por subpasta sem varrer o disco a cada original.
+     */
+    private Map<String, List<Path>> indexarLegendasTraduzidas(Path pastaTraduzida) {
+        Map<String, List<Path>> indice = new HashMap<>();
+        try (Stream<Path> stream = Files.walk(pastaTraduzida)) {
+            stream.filter(Files::isRegularFile)
+                .filter(p -> p.toString().toLowerCase().endsWith(".ass"))
+                .filter(this::ehLegendaTraduzida)
+                .forEach(p -> indice
+                    .computeIfAbsent(p.getFileName().toString().toLowerCase(), k -> new ArrayList<>())
+                    .add(p));
+        } catch (IOException e) {
+            log.warn("Falha ao indexar legendas traduzidas em {}: {}", pastaTraduzida, e.getMessage());
+        }
+        return indice;
     }
 
     private ResultadoCorrecaoLegendas registrarTelemetria(

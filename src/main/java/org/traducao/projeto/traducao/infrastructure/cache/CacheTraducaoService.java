@@ -9,6 +9,7 @@ import org.traducao.projeto.traducao.domain.exceptions.ArquivoLegendaException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +60,18 @@ public class CacheTraducaoService {
             if (pasta != null) {
                 Files.createDirectories(pasta);
             }
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(arquivoCache.toFile(), entradas);
+            // Mesmo padrão do EscritorLegendaAss: escreve num temporário e só
+            // substitui o destino com move atômico. Uma queda no meio da
+            // escrita não pode corromper o cache — ele guarda horas de
+            // tradução via LLM, e um JSON truncado seria ignorado no load
+            // (retradução do episódio inteiro).
+            Path temp = Files.createTempFile(pasta, arquivoCache.getFileName().toString(), ".tmp");
+            try {
+                objectMapper.writerWithDefaultPrettyPrinter().writeValue(temp.toFile(), entradas);
+                Files.move(temp, arquivoCache, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+            } finally {
+                Files.deleteIfExists(temp);
+            }
             log.info("Cache de traducao salvo em {} ({} entradas)", arquivoCache, entradas.size());
         } catch (IOException e) {
             throw new ArquivoLegendaException("Falha ao salvar cache de traducao: " + arquivoCache, e);
