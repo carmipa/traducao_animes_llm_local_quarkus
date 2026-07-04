@@ -51,6 +51,8 @@ public class ProcessarArquivoUseCase {
     private static final Pattern PADRAO_DESENHO_VETORIAL = Pattern.compile("\\\\p[1-9]\\d*");
     // Remove blocos de override ASS ({\tag...}) para isolar o texto visível.
     private static final Pattern PADRAO_REMOVE_TAGS_ASS = Pattern.compile("\\{[^}]+}");
+    // Detecta tags de timing de karaoke ASS (\k, \kf, \ko, etc.)
+    private static final Pattern TAG_KARAOKE_PATTERN = Pattern.compile("\\\\[kK][fo]?\\d");
     // Um letreiro/título animado quadro a quadro reaparece muitas vezes com o
     // mesmo texto visível (só a tag de efeito muda a cada quadro). Abaixo
     // disso é mais provável ser só uma fala com efeito visual pontual (ex.:
@@ -342,6 +344,11 @@ public class ProcessarArquivoUseCase {
         }
 
         String texto = evento.texto();
+
+        // Blindagem Contra Tags de Karaoke Sincronizadas (\k, \kf, \ko, etc.)
+        if (TAG_KARAOKE_PATTERN.matcher(texto).find()) {
+            return false;
+        }
 
         // 1. Blindagem Contra Lixo Vetorial Absoluto (modo de desenho \p1, \p2, ... do Aegisub)
         if (PADRAO_DESENHO_VETORIAL.matcher(texto).find()) {

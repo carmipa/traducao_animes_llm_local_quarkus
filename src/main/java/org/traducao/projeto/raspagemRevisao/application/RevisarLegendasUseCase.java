@@ -49,6 +49,8 @@ public class RevisarLegendasUseCase {
     private static final long PAUSA_GOOGLE_MS = 400;
     private static final Pattern CODIGO_EPISODIO = Pattern.compile("(?i)(S\\d{1,2}E\\d{1,3})");
     private static final Pattern SUFIXO_PTBR_TRACK = Pattern.compile("(?i)_PT-?BR(_Track\\d+)?$");
+    // Detecta tags de timing de karaoke ASS (\k, \kf, \ko, etc.)
+    private static final Pattern TAG_KARAOKE_PATTERN = Pattern.compile("\\\\[kK][fo]?\\d");
 
     private final LeitorLegendaAss leitor;
     private final EscritorLegendaAss escritor;
@@ -498,6 +500,9 @@ public class RevisarLegendasUseCase {
 
     private boolean deveIgnorarAuditoria(EventoLegenda evento, String texto) {
         if (evento.estilo() != null && propriedades.estiloIgnorado(evento.estilo())) {
+            return true;
+        }
+        if (texto != null && TAG_KARAOKE_PATTERN.matcher(texto).find()) {
             return true;
         }
         String estilo = evento.estilo() != null ? evento.estilo().toLowerCase() : "";

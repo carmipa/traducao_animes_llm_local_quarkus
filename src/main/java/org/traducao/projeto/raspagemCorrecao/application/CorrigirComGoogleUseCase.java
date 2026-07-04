@@ -25,6 +25,8 @@ import java.util.stream.Stream;
 public class CorrigirComGoogleUseCase {
 
     private static final Logger log = LoggerFactory.getLogger(CorrigirComGoogleUseCase.class);
+    // Detecta tags de timing de karaoke ASS (\k, \kf, \ko, etc.)
+    private static final java.util.regex.Pattern TAG_KARAOKE_PATTERN = java.util.regex.Pattern.compile("\\\\[kK][fo]?\\d");
 
     private final ObjectMapper mapper;
     private final GoogleTranslateScraper googleScraper;
@@ -134,6 +136,9 @@ public class CorrigirComGoogleUseCase {
                 String estilo = (String) entrada.get("estilo");
 
                 if (estilo != null && propriedades.estiloIgnorado(estilo)) {
+                    continue;
+                }
+                if (original != null && TAG_KARAOKE_PATTERN.matcher(original).find()) {
                     continue;
                 }
 
