@@ -41,25 +41,16 @@ export function initCura() {
 
             if (!res.ok) {
                 const erro = await res.json();
-                if (erro.relatorioJson) {
-                    logNoConsole('console-cura', `Relatório JSON: ${erro.relatorioJson}`, 'info');
-                }
-                if (Array.isArray(erro.detalhesErros)) {
-                    erro.detalhesErros.forEach(detalhe => logNoConsole('console-cura', detalhe, 'erro'));
-                }
                 throw new Error(erro.erro || 'Falha desconhecida no servidor');
             }
 
             const data = await res.json();
-            logNoConsole('console-cura', data.mensagem || 'Correção concluída.', 'sucesso');
-            if (data.relatorioJson) {
-                logNoConsole('console-cura', `Relatório JSON: ${data.relatorioJson}`, 'info');
-            }
-            mostrarAlerta('Correção de legendas finalizada!', 'sucesso');
+            logNoConsole('console-cura', data.mensagem || 'Correção de legendas iniciada em segundo plano.', 'sucesso');
+            mostrarAlerta('Correção de legendas iniciada com sucesso em segundo plano!', 'sucesso');
 
         } catch (err) {
-            logNoConsole('console-cura', `Erro durante a correção: ${err.message}`, 'erro');
-            mostrarAlerta('Erro ao corrigir legendas.', 'erro');
+            logNoConsole('console-cura', `Erro ao iniciar a correção: ${err.message}`, 'erro');
+            mostrarAlerta(`Erro: ${err.message}`, 'erro');
         } finally {
             btnIniciarCura.disabled = false;
             if (textoBotao) textoBotao.textContent = textoOriginalBotao;

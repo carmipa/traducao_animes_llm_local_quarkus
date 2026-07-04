@@ -79,40 +79,29 @@ public class CorrecaoLegendasController {
         // de tradução global e disputa a GPU, então não pode rodar em paralelo
         // com uma tradução/revisão em andamento. Sem contextoId a cura é 100%
         // estrutural (regex, sem LLM) e pode rodar direto na thread do request.
-        boolean usaLlm = contextoId != null && !contextoId.isBlank();
-        if (usaLlm && filaExecucao.ocupada()) {
+        if (filaExecucao.ocupada()) {
             return ResponseEntity.status(409).body(Map.of(
-                "erro", "Outra operação do pipeline (tradução/revisão) está em andamento. "
-                    + "Aguarde a conclusão antes de iniciar a correção via LLM."));
+                "erro", "Outra operação do pipeline está em andamento. "
+                    + "Aguarde a conclusão antes de iniciar a correção de legendas."));
         }
 
-        try {
-            final Path fOriginal = pastaOriginal;
-            final Path fTraduzida = pastaTraduzida;
-            ResultadoCorrecaoLegendas resultado = usaLlm
-                ? filaExecucao.executarEAguardar(() -> corrigirLegendasUseCase.corrigirPasta(fOriginal, fTraduzida, contextoId))
-                : corrigirLegendasUseCase.corrigirPasta(pastaOriginal, pastaTraduzida, contextoId);
+        final Path fOriginal = pastaOriginal;
+        final Path fTraduzida = pastaTraduzida;
+        final String fContextoId = contextoId;
 
-            String mensagem = String.format(
-                "Correção de legendas finalizada: %d arquivo(s) corrigido(s) (%d fala(s) curada(s)), %d fala(s) corrigida(s) via LLM, %d já perfeito(s), %d sem tradução pareada, %d fala(s) sem tradução (vazia), %d erro(s) de %d arquivo(s).",
-                resultado.curados(), resultado.falasCuradas(), resultado.corrigidosLlm(), resultado.semAlteracao(), resultado.semPar(),
-                resultado.traducaoAusente(), resultado.totalErros(), resultado.totalArquivosAnalisados());
-
-            if (resultado.teveErros()) {
-                return ResponseEntity.internalServerError().body(Map.of(
-                    "erro", mensagem,
-                    "detalhesErros", resultado.erros(),
-                    "relatorioJson", valorOuVazio(resultado.relatorioJson())
-                ));
+        filaExecucao.submeter(() -> {
+            logStreamService.definirCanalAtual("correcao-legendas");
+            try {
+                corrigirLegendasUseCase.corrigirPasta(fOriginal, fTraduzida, fContextoId);
+            } catch (Exception e) {
+                log.error("Falha ao executar correção de legendas em background", e);
+                System.out.println("\u001B[31m[FAIL] Erro na correção de legendas: " + e.getMessage() + "\u001B[0m");
             }
-            return ResponseEntity.ok(Map.of(
-                "mensagem", mensagem,
-                "relatorioJson", valorOuVazio(resultado.relatorioJson())
-            ));
-        } catch (Exception e) {
-            log.error("Falha ao corrigir legendas", e);
-            return ResponseEntity.internalServerError().body(Map.of("erro", "Falha ao corrigir legendas: " + e.getMessage()));
-        }
+        });
+
+        return ResponseEntity.accepted().body(Map.of(
+            "mensagem", "Correção de legendas enviada para a fila de execução em segundo plano."
+        ));
     }
 
     private String valorOuVazio(String valor) {
