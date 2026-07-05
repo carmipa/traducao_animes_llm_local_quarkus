@@ -435,7 +435,18 @@ public class RevisarLegendasUseCase {
             String textoMascOriginal = mascOriginal.texto();
             if (cacheRevisaoMasc.containsKey(textoMascOriginal)) {
                 String respostaMascCorrigida = cacheRevisaoMasc.get(textoMascOriginal);
-                String novaTraducaoCache = mascaradorTags.desmascarar(respostaMascCorrigida, mascOriginal.tags());
+                MascaradorTags.Mascarado mascTraducaoAtual = mascaradorTags.mascarar(traducaoAtual);
+                String novaTraducaoCache;
+                try {
+                    novaTraducaoCache = mascaradorTags.desmascarar(respostaMascCorrigida, mascTraducaoAtual.tags());
+                } catch (AlucinacaoDetectadaException e) {
+                    out("  " + AnsiCores.YELLOW
+                        + "Cache local ignorado na linha " + evento.indice()
+                        + ": marcadores de tags incompatíveis com a tradução atual."
+                        + AnsiCores.RESET);
+                    eventosAtualizados.add(evento);
+                    continue;
+                }
 
                 if (novaTraducaoCache.equals(originalEn) || novaTraducaoCache.equals(traducaoAtual)) {
                     eventosAtualizados.add(evento);

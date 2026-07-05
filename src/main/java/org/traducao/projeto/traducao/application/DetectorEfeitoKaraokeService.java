@@ -26,8 +26,10 @@ public class DetectorEfeitoKaraokeService {
     private static final Pattern TAG_KARAOKE_PATTERN = Pattern.compile("\\\\[kK][fo]?\\d");
     // Transformação animada \t(...): diálogo comum praticamente nunca usa;
     // templates de karaokê e letreiros animados sempre usam.
-    private static final Pattern TAG_TRANSFORMACAO_PATTERN = Pattern.compile("\\\\(t|pos|move|clip|org)\\(");
+    private static final Pattern TAG_TRANSFORMACAO_PATTERN = Pattern.compile("\\\\t\\(");
+    private static final Pattern TAG_POSICIONAMENTO_COMPLEXO_PATTERN = Pattern.compile("\\\\(pos|move|i?clip|org)\\(");
     private static final Pattern PADRAO_REMOVE_TAGS_ASS = Pattern.compile("\\{[^}]*\\}");
+    private static final int MIN_CHARS_TAGS_POSICIONAMENTO_COMPLEXO = 45;
 
     /**
      * Karaokê cru: só as tags de timing {@code \k}. Usado onde ignorar demais
@@ -60,12 +62,20 @@ public class DetectorEfeitoKaraokeService {
      * proporção inversa — mais texto do que tag.
      */
     private boolean eSaidaDeTemplateKaraoke(String texto) {
-        if (!TAG_TRANSFORMACAO_PATTERN.matcher(texto).find()) {
+        boolean temTransformacao = TAG_TRANSFORMACAO_PATTERN.matcher(texto).find();
+        boolean temPosicionamentoComplexo = TAG_POSICIONAMENTO_COMPLEXO_PATTERN.matcher(texto).find();
+        if (!temTransformacao && !temPosicionamentoComplexo) {
             return false;
         }
         String visivel = PADRAO_REMOVE_TAGS_ASS.matcher(texto).replaceAll("")
             .replace("\\N", " ")
             .strip();
-        return visivel.length() * 3 < texto.length();
+        boolean altaDensidadeTags = visivel.length() * 3 < texto.length();
+        if (temTransformacao) {
+            return altaDensidadeTags;
+        }
+
+        int tamanhoTags = texto.length() - visivel.length();
+        return altaDensidadeTags && tamanhoTags >= MIN_CHARS_TAGS_POSICIONAMENTO_COMPLEXO;
     }
 }

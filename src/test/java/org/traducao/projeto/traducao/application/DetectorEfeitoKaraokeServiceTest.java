@@ -37,6 +37,11 @@ class DetectorEfeitoKaraokeServiceTest {
     }
 
     @Test
+    void naoSinalizaFalaCurtaComPosicionamentoSimples() {
+        assertFalse(detector.eEfeitoKaraoke("{\\pos(100,100)}Sai!"));
+    }
+
+    @Test
     void naoSinalizaDialogoComEfeitoPontualETextoLongo() {
         // \t presente, mas o texto visível domina a linha: é fala, não karaokê.
         assertFalse(detector.eEfeitoKaraoke(
