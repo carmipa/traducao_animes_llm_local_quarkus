@@ -7,6 +7,9 @@ Memória viva e estado recente: veja **CEREBRO_IA.md** na raiz do repositório.
 ## 📁 Pasta: `.codex-run/`
 *(Nenhum script Python ou Java nesta pasta)*
 
+## 📁 Pasta: `.playwright-mcp/`
+*(Nenhum script Python ou Java nesta pasta)*
+
 ## 📁 Pasta: `.vscode/`
 *(Nenhum script Python ou Java nesta pasta)*
 
@@ -431,6 +434,24 @@ Persiste relatorio e log de sessao da revisao de lore exclusivamente em JSON.
 Fila única compartilhada do pipeline: impede que a revisão de lore rode
 em paralelo com uma tradução/correção e troque o contexto LLM global no
 meio do outro job (ver FilaExecucaoPipeline).
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/sistema/application/EncerrarAplicacaoUseCase.java`
+```text
+Encerra a aplicação de forma ordenada a partir do botão "Sair" da UI.
+<p>
+Sequência: sinaliza parada cooperativa da fila do pipeline (o job em
+execução encerra no próximo ponto seguro, preservando cache e arquivos já
+concluídos), espera um curto período para a resposta HTTP chegar ao
+navegador e então derruba o Quarkus. Se o shutdown normal não terminar o
+processo (ex.: modo dev segura a JVM viva), um fallback força a saída.
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/sistema/presentation/SistemaController.java`
+```text
+Endpoints de controle do processo da aplicação (menu "Sair" da UI).
+Operações de trabalho do pipeline ficam nos controllers de cada módulo;
+aqui entra apenas o ciclo de vida do servidor em si.
 ```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/telemetria/LlmTelemetria.java`
@@ -1001,7 +1022,7 @@ falha real é reproduzível de forma determinística e portátil num teste.
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/traducao/application/DetectorEfeitoKaraokeServiceTest.java`
 ```text
 Linha real que escapou da revisão: letra "I" afogada em transformações.
-\t presente, mas o texto visível domina a linha: é fala, não karaokê.
+Linha com \pos e fscx/fscy onde o texto visível é curto em relação às tags.
 ```
 
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/traducao/application/ValidadorTraducaoServiceTest.java`

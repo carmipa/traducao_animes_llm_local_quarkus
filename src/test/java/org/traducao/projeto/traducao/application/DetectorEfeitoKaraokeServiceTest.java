@@ -22,8 +22,15 @@ class DetectorEfeitoKaraokeServiceTest {
             "{\\r\\pos(369,23)\\t(1160,1450,\\frx-50\\fry50\\bord6\\blur5\\3c&HFFE7C7&"
                 + "\\fad(50,50))\\t(1450,1450,\\frx0\\fry0\\bord3\\blur0\\3c&HFEA32F&)}I"));
     }
+ 
+     @Test
+     void detectaLetreiroFrameAFramePorDensidadeTags() {
+         // Linha com \pos e fscx/fscy onde o texto visível é curto em relação às tags.
+         String letreiroFrame = "{\\fscx100\\fscy100\\blur0.8\\fs60\\c&H010101&\\pos(452,444)}THE 08TH MS TEAM";
+         assertTrue(detector.eEfeitoKaraoke(letreiroFrame));
+     }
 
-    @Test
+     @Test
     void naoSinalizaDialogoComum() {
         assertFalse(detector.eEfeitoKaraoke("What are you doing here?!"));
         assertFalse(detector.eEfeitoKaraoke("{\\i1}Bell, cuidado!{\\i0}"));

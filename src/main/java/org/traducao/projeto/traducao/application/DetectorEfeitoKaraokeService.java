@@ -26,7 +26,7 @@ public class DetectorEfeitoKaraokeService {
     private static final Pattern TAG_KARAOKE_PATTERN = Pattern.compile("\\\\[kK][fo]?\\d");
     // Transformação animada \t(...): diálogo comum praticamente nunca usa;
     // templates de karaokê e letreiros animados sempre usam.
-    private static final Pattern TAG_TRANSFORMACAO_PATTERN = Pattern.compile("\\\\t\\(");
+    private static final Pattern TAG_TRANSFORMACAO_PATTERN = Pattern.compile("\\\\(t|pos|move|clip|org)\\(");
     private static final Pattern PADRAO_REMOVE_TAGS_ASS = Pattern.compile("\\{[^}]*\\}");
 
     /**

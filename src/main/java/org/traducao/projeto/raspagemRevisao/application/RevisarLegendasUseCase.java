@@ -365,6 +365,7 @@ public class RevisarLegendasUseCase {
         }
 
         List<EventoLegenda> eventosAtualizados = new ArrayList<>();
+        Map<String, String> cacheRevisaoMasc = new HashMap<>();
         int corrigidasNesteArquivo = 0;
         int problemasNesteArquivo = 0;
         int falasAuditadas = 0;
@@ -429,6 +430,29 @@ public class RevisarLegendasUseCase {
             falasAuditadas++;
             totalAuditadas[0]++;
 
+            // Verificar cache local de revisão em memória (com base no texto original mascarado)
+            MascaradorTags.Mascarado mascOriginal = mascaradorTags.mascarar(originalEn != null ? originalEn : "");
+            String textoMascOriginal = mascOriginal.texto();
+            if (cacheRevisaoMasc.containsKey(textoMascOriginal)) {
+                String respostaMascCorrigida = cacheRevisaoMasc.get(textoMascOriginal);
+                String novaTraducaoCache = mascaradorTags.desmascarar(respostaMascCorrigida, mascOriginal.tags());
+
+                if (novaTraducaoCache.equals(originalEn) || novaTraducaoCache.equals(traducaoAtual)) {
+                    eventosAtualizados.add(evento);
+                    continue;
+                }
+
+                out("  -> Linha " + evento.indice() + " [" + evento.estilo() + "] (Reutilizando correção do cache local):");
+                out("     EN: " + AnsiCores.YELLOW + originalEn + AnsiCores.RESET);
+                out("     PT: " + AnsiCores.YELLOW + traducaoAtual + AnsiCores.RESET);
+                out("     PT corrigido: " + AnsiCores.GREEN + novaTraducaoCache + AnsiCores.RESET);
+
+                eventosAtualizados.add(evento.comTexto(novaTraducaoCache));
+                corrigidasNesteArquivo++;
+                modificado = true;
+                continue;
+            }
+
             ResultadoDeteccaoConcordancia auditoria = auditor.auditar(originalEn, traducaoAtual);
             if (!auditoria.suspeito()) {
                 eventosAtualizados.add(evento);
@@ -458,6 +482,7 @@ public class RevisarLegendasUseCase {
                 novaTraducao = revisadoOpt.get();
                 if (novaTraducao.equals(traducaoAtual)) {
                     out("     " + AnsiCores.DIM + "LLM manteve o texto original." + AnsiCores.RESET);
+                    cacheRevisaoMasc.put(textoMascOriginal, textoMascOriginal);
                     eventosAtualizados.add(evento);
                     continue;
                 }
@@ -467,6 +492,7 @@ public class RevisarLegendasUseCase {
 
                 if (novaTraducao.equals(originalEn) || novaTraducao.equals(traducaoAtual)) {
                     out("     " + AnsiCores.DIM + "Google manteve texto igual; sem alteração." + AnsiCores.RESET);
+                    cacheRevisaoMasc.put(textoMascOriginal, textoMascOriginal);
                     eventosAtualizados.add(evento);
                     continue;
                 }
@@ -476,6 +502,7 @@ public class RevisarLegendasUseCase {
                 validador.validarFala(novaTraducao);
             } catch (AlucinacaoDetectadaException e) {
                 out("     " + AnsiCores.RED + "Correção descartada: " + e.getMessage() + AnsiCores.RESET);
+                cacheRevisaoMasc.put(textoMascOriginal, textoMascOriginal);
                 eventosAtualizados.add(evento);
                 continue;
             }
@@ -486,6 +513,7 @@ public class RevisarLegendasUseCase {
                     ? "Correção descartada: LLM não melhorou o problema."
                     : "Correção descartada: Google não melhorou o problema.";
                 out("     " + AnsiCores.YELLOW + motivo + AnsiCores.RESET);
+                cacheRevisaoMasc.put(textoMascOriginal, textoMascOriginal);
                 eventosAtualizados.add(evento);
                 continue;
             }
@@ -494,6 +522,9 @@ public class RevisarLegendasUseCase {
             eventosAtualizados.add(evento.comTexto(novaTraducao));
             corrigidasNesteArquivo++;
             modificado = true;
+
+            MascaradorTags.Mascarado mascNova = mascaradorTags.mascarar(novaTraducao);
+            cacheRevisaoMasc.put(textoMascOriginal, mascNova.texto());
         }
 
         if (modificado) {
