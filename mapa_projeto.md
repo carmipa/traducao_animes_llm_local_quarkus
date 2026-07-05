@@ -402,6 +402,11 @@ Monta os prompts de sistema e usuario para revisao de terminologia/lore
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/contexto/ContextoRevisaoLoreGundamNT.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/domain/EntradaAuditoriaRevisaoLore.java`
+```text
+Registro granular, append-only, de cada fala enviada ao LLM na revisão de lore.
+```
+
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/domain/exceptions/RevisaoLoreException.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
@@ -422,6 +427,11 @@ Entrada estruturada do log de sessao da revisao de lore (serializavel em JSON).
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/domain/RevisaoLoreRelatorioJson.java`
 ```text
 Relatorio completo da revisao de lore em JSON: telemetria, metricas, contexto e log da sessao.
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/infrastructure/RevisaoLoreAuditoriaCache.java`
+```text
+Cache append-only para mineração posterior das decisões da revisão de lore.
 ```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/infrastructure/RevisaoLoreLogPersistencia.java`
@@ -1002,6 +1012,9 @@ Rota mapeada especificamente para evitar colisões com o Controller Spring.
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/core/exception/BasePipelineExceptionTest.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/correcaoLegendas/application/CorrigirLegendasUseCaseTest.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/mapaProjeto/application/GeradorMapaProjetoUseCaseTest.java`
 ```text
 {@code Files.list} (usado por {@code executar}, diferente de
@@ -1013,7 +1026,16 @@ não tem nenhuma checagem prévia que intercepte esse caso. Isso o torna o
 falha real é reproduzível de forma determinística e portátil num teste.
 ```
 
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/remuxer/application/MapeadorMidiaServiceTest.java`
+```text
+Criar arquivos de vídeo MKV com padrão "EpsXX" (como nos arquivos de 86 do usuário)
+Criar arquivos de legenda ASS com padrão "_-_XX" e colchetes
+```
+
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/revisaoLore/application/DetectorTermosLoreServiceTest.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/revisaoLore/infrastructure/RevisaoLoreAuditoriaCacheTest.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/telemetria/TelemetriaServiceRevisaoLoreTest.java`

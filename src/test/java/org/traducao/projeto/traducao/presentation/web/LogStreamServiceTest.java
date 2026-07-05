@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -34,12 +35,26 @@ class LogStreamServiceTest {
         String marcador = "marcador-teste-" + UUID.randomUUID();
         String mensagemComAnsi = ESC + "[32m[ OK ] " + marcador + ESC + "[0m";
 
-        logStreamService.publicarLog("console-teste", mensagemComAnsi);
+        try {
+            logStreamService.publicarLog("console-teste", mensagemComAnsi);
 
-        String conteudo = Files.readString(ARQUIVO_LOG, StandardCharsets.UTF_8);
-        assertTrue(conteudo.contains("[console-teste] [ OK ] " + marcador),
-            "Linha persistida deveria conter o canal e a mensagem sem códigos ANSI");
-        assertFalse(conteudo.contains("[32m" + marcador),
-            "Códigos ANSI não deveriam sobreviver à persistência em arquivo");
+            String conteudo = Files.readString(ARQUIVO_LOG, StandardCharsets.UTF_8);
+            assertTrue(conteudo.contains("[console-teste] [ OK ] " + marcador),
+                "Linha persistida deveria conter o canal e a mensagem sem códigos ANSI");
+            assertFalse(conteudo.contains("[32m" + marcador),
+                "Códigos ANSI não deveriam sobreviver à persistência em arquivo");
+        } finally {
+            removerLinhasDoMarcador(marcador);
+        }
+    }
+
+    private void removerLinhasDoMarcador(String marcador) throws IOException {
+        if (!Files.exists(ARQUIVO_LOG)) {
+            return;
+        }
+        List<String> linhasMantidas = Files.readAllLines(ARQUIVO_LOG, StandardCharsets.UTF_8).stream()
+            .filter(linha -> !linha.contains(marcador))
+            .toList();
+        Files.write(ARQUIVO_LOG, linhasMantidas, StandardCharsets.UTF_8);
     }
 }

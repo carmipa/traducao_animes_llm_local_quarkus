@@ -41,4 +41,77 @@ class DetectorTermosLoreServiceTest {
 
         assertFalse(resultado.suspeito());
     }
+
+    @Test
+    void naoConsideraTagsComoNomesPropriosDivergentes() {
+        ResultadoDeteccaoLore resultado = detector.auditar(
+            "[[TAG0]]Beans never seem to go down smoothly for me.[[TAG1]]",
+            "Os feijões nunca parecem descer suavemente para mim."
+        );
+
+        assertFalse(resultado.suspeito());
+    }
+
+    @Test
+    void naoSinalizaPalavrasComunsCapitalizadasNoInicioDaFala() {
+        ResultadoDeteccaoLore resultado = detector.auditar(
+            "Passing defense line one! Beginning countdown!",
+            "Passando pela primeira linha de defesa! Iniciando a contagem regressiva!"
+        );
+
+        assertFalse(resultado.suspeito());
+    }
+
+    @Test
+    void naoDetectaPalavraInglesaDentroDePalavraPortuguesa() {
+        ResultadoDeteccaoLore resultado = detector.auditar(
+            "Just a vaporization bomb. What else would it be?",
+            "Apenas uma bomba de vaporização. O que mais seria?"
+        );
+
+        assertFalse(resultado.suspeito());
+    }
+
+    @Test
+    void aceitaVariantesPtBrDeEarthFederation() {
+        ResultadoDeteccaoLore federacaoTerrestre = detector.auditar(
+            "Two Earth Federation units are approaching.",
+            "Duas unidades da Federação Terrestre estão se aproximando."
+        );
+        ResultadoDeteccaoLore federacaoDaTerra = detector.auditar(
+            "Two Earth Federation units are approaching.",
+            "Duas unidades da Federação da Terra estão se aproximando."
+        );
+
+        assertFalse(federacaoTerrestre.suspeito());
+        assertFalse(federacaoDaTerra.suspeito());
+    }
+
+    @Test
+    void sinalizaFederationQuandoFicaEmInglesNaTraducao() {
+        ResultadoDeteccaoLore resultado = detector.auditar(
+            "Let the Federation have Odessa and the Earth!",
+            "Deixe a Federation ficar com Odessa e a Terra!"
+        );
+
+        assertTrue(resultado.suspeito());
+        assertTrue(resultado.motivos().stream().anyMatch(m -> m.contains("traduzivel permaneceu em ingles")));
+    }
+
+    @Test
+    void sinalizaTermosRelevantesDeLoreNoInicioDaFalaQuandoDivergentes() {
+        ResultadoDeteccaoLore gundamOmitido = detector.auditar(
+            "Gundam is approaching!",
+            "O robo gigante está se aproximando!"
+        );
+        ResultadoDeteccaoLore zeonOmitido = detector.auditar(
+            "Zeon forces are attacking.",
+            "As forças inimigas estão atacando."
+        );
+
+        assertTrue(gundamOmitido.suspeito());
+        assertTrue(gundamOmitido.motivos().stream().anyMatch(m -> m.contains("inconsistente")));
+        assertTrue(zeonOmitido.suspeito());
+        assertTrue(zeonOmitido.motivos().stream().anyMatch(m -> m.contains("inconsistente")));
+    }
 }

@@ -24,13 +24,24 @@ public final class PromptRevisaoLore {
 
             Regras:
             - Preserve marcadores [[TAGn]] literalmente (nao traduza nem remova).
-            - Trate nomes canonicos como texto protegido: personagens, sobrenomes, apelidos, lugares, faccoes,
-              organizacoes, naves, mechas, armas, operacoes, titulos de obra e termos de mundo NAO devem ser traduzidos.
-            - Quando uma palavra comum fizer parte de um nome oficial, mantenha a palavra no idioma original
+            - Trate nomes canonicos como texto protegido: personagens, sobrenomes, apelidos, lugares,
+              naves, mechas, armas, operacoes e titulos de obra NAO devem ser traduzidos.
+            - Faccoes e organizacoes consagradas que possuem traducao padrao estabelecida para o portugues devem ser traduzidas
+              quando o texto em portugues ja estiver nessa convencao. Aceite variantes naturais e corretas em PT-BR:
+              "Federation" pode ser "Federacao"; "Earth Federation" pode ser "Federacao Terrestre" ou
+              "Federacao da Terra"; "Principality of Zeon" pode ser "Principado de Zeon".
+              NAO force uma unica variante se a traducao atual ja estiver natural, consistente e correta.
+              Nomes de faccoes especificas sem traducao consagrada (ex.: "08th MS Team", "Londo Bell") devem ser mantidos no original.
+            - Quando uma palavra comum fizer parte de um nome oficial protegido, mantenha a palavra no idioma original
               (ex.: Narrative Gundam, Unicorn Gundam, Freedom Gundam, War in the Pocket, The 08th MS Team).
             - Mantenha termos tecnicos da obra em ingles quando a lore assim indicar (mobile suit, Newtype, Handler, etc.).
             - Corrija transliteracoes erradas, nomes anglicizados indevidos, traducao literal de nomes oficiais e localizacoes fora do padrao.
             - Se apenas uma parte do nome foi traduzida, restaure o nome oficial completo conforme a lore.
+            - NAO altere verbos, adjetivos, metaforas ou expressoes comuns de dialogo que ja estejam bem traduzidas para o portugues
+              (ex.: mantenha termos fluidos e naturais como "salvacao", nao mude para traducoes literais e engessadas como "linha de vida" baseando-se no ingles "life line").
+              O foco da revisao e estritamente a terminologia da lore.
+            - Nao use o original em ingles para retraduzir, melhorar estilo, trocar sinonimos ou ajustar fluidez geral.
+              Use o original apenas para identificar nomes/termos de lore que estejam errados na traducao atual.
             - Se a traducao ja estiver correta segundo a lore, devolva-a sem alteracoes.
             - Nao adicione explicacoes, aspas ou comentarios.
 
@@ -48,10 +59,11 @@ public final class PromptRevisaoLore {
             : String.join("\n- ", problemasDetectados);
 
         return """
-            Revise a traducao em portugues comparando com o original em ingles.
-            Foque em nomes de personagens, lugares, faccoes, mechas e termos de lore.
-            Se o original contem um nome oficial da lore, preserve esse nome no idioma original,
-            sem traduzir partes internas do nome.
+            Audite SOMENTE a terminologia de lore da fala em portugues.
+            Use o original em ingles apenas como referencia para localizar nomes de personagens, lugares,
+            faccoes, mechas, patentes, armas e termos protegidos.
+            Nao retraduza a fala, nao melhore estilo, nao troque sinonimos e nao corrija expressoes comuns.
+            Se a traducao atual ja estiver aceitavel em PT-BR, devolva exatamente a mesma linha.
 
             Original (ingles):
             %s

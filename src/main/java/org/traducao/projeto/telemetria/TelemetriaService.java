@@ -410,7 +410,7 @@ public class TelemetriaService {
         int sinalizadas = 0;
         int corrigidas = 0;
         for (OperacaoTelemetria op : operacoes) {
-            if (!ehRevisaoLore(op.tipo())) {
+            if (!ehRevisaoLoreComTrabalho(op)) {
                 continue;
             }
             sessoes++;
@@ -432,6 +432,19 @@ public class TelemetriaService {
             return false;
         }
         return tipo.contains(TIPO_REVISAO_LORE) || tipo.toUpperCase(java.util.Locale.ROOT).contains("REVISAO DE LORE");
+    }
+
+    static boolean ehRevisaoLoreComTrabalho(OperacaoTelemetria operacao) {
+        if (operacao == null || !ehRevisaoLore(operacao.tipo())) {
+            return false;
+        }
+        return valorOuZeroEstatico(operacao.arquivosProcessados()) > 0
+            || valorOuZeroEstatico(operacao.itensDetectados()) > 0
+            || valorOuZeroEstatico(operacao.itensCorrigidos()) > 0;
+    }
+
+    private static int valorOuZeroEstatico(Integer valor) {
+        return valor != null ? valor : 0;
     }
 
     private String formatarDetalheOperacao(OperacaoTelemetria op) {

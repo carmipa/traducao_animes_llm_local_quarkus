@@ -144,10 +144,13 @@ public class CorrigirComGoogleUseCase {
                 String traduzido = (String) entrada.get("traduzido");
                 String estilo = (String) entrada.get("estilo");
 
-                if (estilo != null && propriedades.estiloIgnorado(estilo)) {
+                if (estilo != null
+                    && propriedades.estiloIgnorado(estilo)
+                    && !detectorKaraoke.eKaraokeOuMusicaTraduzivel(estilo, original)) {
                     continue;
                 }
-                if (detectorKaraoke.eEfeitoKaraoke(original)) {
+                if (detectorKaraoke.eEfeitoKaraoke(original)
+                    && !detectorKaraoke.eKaraokeOuMusicaTraduzivel(estilo, original)) {
                     continue;
                 }
 

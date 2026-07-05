@@ -19,7 +19,6 @@ import java.util.stream.Stream;
 public class MapeadorMidiaService {
     
     private static final Logger log = LoggerFactory.getLogger(MapeadorMidiaService.class);
-    private static final Pattern PATTERN_EPISODIO = Pattern.compile("(?i)(S\\d{1,2}E\\d{1,3}|E\\d{1,3})");
 
     public List<RemuxTarefa> construirFilaProcessamento(Path pastaVideos, Path pastaLegendas, Path pastaSaida) {
         log.debug("Escaneando diretório de vídeos: {}", pastaVideos);
@@ -104,10 +103,51 @@ public class MapeadorMidiaService {
     }
 
     private String extrairTagEpisodio(String nome) {
-        Matcher m = PATTERN_EPISODIO.matcher(nome);
-        if (m.find()) {
-            return m.group(1).toUpperCase();
+        if (nome == null) {
+            return null;
         }
+
+        // 1. Tenta padrão ocidental completo: S01E02 ou E02 (ex: S01E02_, E02_)
+        Pattern p1 = Pattern.compile("(?i)(?:S\\d{1,2})?E(\\d{1,3})(?!\\d)");
+        Matcher m1 = p1.matcher(nome);
+        if (m1.find()) {
+            return padLeft(m1.group(1));
+        }
+
+        // 2. Tenta padrão abreviado de anime: Ep02, Eps02, Episode 02, Ep.02
+        Pattern p2 = Pattern.compile("(?i)\\b(?:ep|eps|episode|ep\\.|eps\\.)\\s*?(\\d{1,3})(?!\\d)");
+        Matcher m2 = p2.matcher(nome);
+        if (m2.find()) {
+            return padLeft(m2.group(1));
+        }
+
+        // 3. Tenta padrão de separador de anime: " - 02" ou "_-_02" ou "_- 02" ou " -_02"
+        Pattern p3 = Pattern.compile("(?i)(?:\\s+-\\s+|_- _|\\s*-\\s*|_-_|_[\\s]*-[-_\\s]*)\\s*?(\\d{1,3})(?!\\d)");
+        Matcher m3 = p3.matcher(nome);
+        if (m3.find()) {
+            return padLeft(m3.group(1));
+        }
+
+        // 4. Caso não encontre nenhum dos acima, tenta achar um número solto de 2 a 3 dígitos no nome
+        // (evitando pegar o "86" do nome do anime pegando o último número de 2 a 3 dígitos).
+        Pattern p4 = Pattern.compile("(?<!\\d)(\\d{2,3})(?!\\d)");
+        Matcher m4 = p4.matcher(nome);
+        String ultimoNumero = null;
+        while (m4.find()) {
+            ultimoNumero = m4.group(1);
+        }
+        if (ultimoNumero != null) {
+            return padLeft(ultimoNumero);
+        }
+
         return null;
+    }
+
+    private String padLeft(String num) {
+        if (num == null) return null;
+        if (num.length() == 1) {
+            return "0" + num;
+        }
+        return num;
     }
 }

@@ -9,12 +9,16 @@ import org.traducao.projeto.correcaoLegendas.domain.ResultadoCorrecaoLegendas;
 import org.traducao.projeto.correcaoLegendas.infrastructure.CorrecaoLegendasLogPersistencia;
 import org.traducao.projeto.telemetria.OperacaoTelemetria;
 import org.traducao.projeto.telemetria.TelemetriaService;
+import org.traducao.projeto.traducao.domain.exceptions.AlucinacaoDetectadaException;
 import org.traducao.projeto.traducao.domain.legenda.DocumentoLegenda;
 import org.traducao.projeto.traducao.domain.legenda.EventoLegenda;
 import org.traducao.projeto.traducao.infrastructure.contexto.GerenciadorContexto;
 import org.traducao.projeto.traducao.infrastructure.legenda.EscritorLegendaAss;
 import org.traducao.projeto.traducao.infrastructure.legenda.LeitorLegendaAss;
 import org.traducao.projeto.traducao.presentation.ui.AnsiCores;
+import org.traducao.projeto.traducao.application.DetectorEfeitoKaraokeService;
+import org.traducao.projeto.traducao.infrastructure.config.TradutorProperties;
+import org.traducao.projeto.traducao.infrastructure.legenda.MascaradorTags;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -43,6 +47,9 @@ public class CorrigirLegendasUseCase {
     private final GerenciadorContexto gerenciadorContexto;
     private final TelemetriaService telemetriaService;
     private final CorrecaoLegendasLogPersistencia logPersistencia;
+    private final DetectorEfeitoKaraokeService detectorKaraoke;
+    private final TradutorProperties propriedades;
+    private final MascaradorTags mascarador;
 
     public CorrigirLegendasUseCase(
         LeitorLegendaAss leitor,
@@ -51,7 +58,10 @@ public class CorrigirLegendasUseCase {
         CorretorTraducaoLlmService corretorLlm,
         GerenciadorContexto gerenciadorContexto,
         TelemetriaService telemetriaService,
-        CorrecaoLegendasLogPersistencia logPersistencia
+        CorrecaoLegendasLogPersistencia logPersistencia,
+        DetectorEfeitoKaraokeService detectorKaraoke,
+        TradutorProperties propriedades,
+        MascaradorTags mascarador
     ) {
         this.leitor = leitor;
         this.escritor = escritor;
@@ -60,6 +70,9 @@ public class CorrigirLegendasUseCase {
         this.gerenciadorContexto = gerenciadorContexto;
         this.telemetriaService = telemetriaService;
         this.logPersistencia = logPersistencia;
+        this.detectorKaraoke = detectorKaraoke;
+        this.propriedades = propriedades;
+        this.mascarador = mascarador;
     }
 
     public ResultadoCorrecaoLegendas corrigirPasta(Path pastaBase, String contextoId) {
@@ -219,6 +232,7 @@ public class CorrigirLegendasUseCase {
             int linhasCuradas = 0;
             int linhasCorrigidasLlm = 0;
             List<EventoLegenda> novosEventos = new ArrayList<>(docTraduzido.eventos().size());
+            Map<String, String> cacheCorrecaoMasc = new HashMap<>();
 
             for (int i = 0; i < docOriginal.eventos().size(); i++) {
                 EventoLegenda evtOriginal = docOriginal.eventos().get(i);
@@ -259,14 +273,41 @@ public class CorrigirLegendasUseCase {
                     }
 
                     if (llmHabilitado) {
-                        Optional<String> corrigidoLlm = corretorLlm.corrigirSeNecessario(textoOriginal, textoCurado);
-                        if (corrigidoLlm.isPresent()) {
-                            // Passagem estrutural final: garante que a retradução do LLM
-                            // não perdeu/alucinou as tags de formatação do original.
-                            textoCurado = sanitizador.curarTags(textoOriginal, corrigidoLlm.get());
-                            corrigidoPorLlm = true;
-                            out(eventos, "INFO", arqTraduzido.getFileName().toString(),
-                                "Fala " + (i + 1) + " corrigida via LLM apos validacao.", AnsiCores.MAGENTA);
+                        MascaradorTags.Mascarado mascOriginal = mascarador.mascarar(textoOriginal);
+                        String textoMascOriginal = mascOriginal.texto();
+
+                        if (deveIgnorarCuraLlm(evtOriginal, textoOriginal)) {
+                            // Letreiros e karaokê pulam a correção estrutural/semântica da LLM
+                        } else if (cacheCorrecaoMasc.containsKey(textoMascOriginal)) {
+                            String respostaMascCorrigida = cacheCorrecaoMasc.get(textoMascOriginal);
+                            if (!respostaMascCorrigida.equals(textoMascOriginal)) {
+                                try {
+                                    String textoCorrigidoCache = mascarador.desmascarar(respostaMascCorrigida, mascOriginal.tags());
+                                    textoCurado = sanitizador.curarTags(textoOriginal, textoCorrigidoCache);
+                                    corrigidoPorLlm = true;
+                                    out(eventos, "INFO", arqTraduzido.getFileName().toString(),
+                                        "Fala " + (i + 1) + " corrigida via LLM (Reutilizando cache local).", AnsiCores.MAGENTA);
+                                } catch (AlucinacaoDetectadaException e) {
+                                    out(eventos, "WARN", arqTraduzido.getFileName().toString(),
+                                        "Fala " + (i + 1) + ": cache local ignorado por marcadores de tags incompatíveis.",
+                                        AnsiCores.YELLOW);
+                                }
+                            }
+                        } else {
+                            Optional<String> corrigidoLlm = corretorLlm.corrigirSeNecessario(textoOriginal, textoCurado);
+                            if (corrigidoLlm.isPresent()) {
+                                // Passagem estrutural final: garante que a retradução do LLM
+                                // não perdeu/alucinou as tags de formatação do original.
+                                textoCurado = sanitizador.curarTags(textoOriginal, corrigidoLlm.get());
+                                corrigidoPorLlm = true;
+                                out(eventos, "INFO", arqTraduzido.getFileName().toString(),
+                                    "Fala " + (i + 1) + " corrigida via LLM apos validacao.", AnsiCores.MAGENTA);
+
+                                MascaradorTags.Mascarado mascNova = mascarador.mascarar(corrigidoLlm.get());
+                                cacheCorrecaoMasc.put(textoMascOriginal, mascNova.texto());
+                            } else {
+                                cacheCorrecaoMasc.put(textoMascOriginal, textoMascOriginal);
+                            }
                         }
                     }
 
@@ -322,6 +363,23 @@ public class CorrigirLegendasUseCase {
             out(eventos, "ERROR", arqTraduzido.getFileName().toString(), "[Erro] " + msg, AnsiCores.RED);
             erros.add(msg);
         }
+    }
+
+    private boolean deveIgnorarCuraLlm(EventoLegenda evento, String texto) {
+        if (evento.estilo() != null
+            && propriedades.estiloIgnorado(evento.estilo())
+            && !detectorKaraoke.eKaraokeOuMusicaTraduzivel(evento.estilo(), texto)) {
+            return true;
+        }
+        if (detectorKaraoke.eEfeitoKaraoke(texto)
+            && !detectorKaraoke.eKaraokeOuMusicaTraduzivel(evento.estilo(), texto)) {
+            return true;
+        }
+        String estilo = evento.estilo() != null ? evento.estilo().toLowerCase() : "";
+        if (estilo.contains("sign")) {
+            return true;
+        }
+        return false;
     }
 
     private Path localizarArquivoTraduzido(

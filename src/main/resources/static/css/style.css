@@ -229,6 +229,18 @@ span.console-action-icon.material-symbols-outlined {
     display: inline-block;
     vertical-align: middle;
 }
+/* Ícone do toast (info/erro/sucesso/aviso) gerado via JS */
+.toast .material-symbols-outlined.toast-icon {
+    font-size: 18px;
+    vertical-align: middle;
+    line-height: 1;
+}
+/* Ícone (estrela) dentro dos meta-badges do cartão do anime */
+.meta-badge .material-symbols-outlined {
+    font-size: 0.95rem;
+    line-height: 1;
+    vertical-align: middle;
+}
 .card-icon-container .material-symbols-outlined {
     font-size: 22px;
 }
@@ -2540,6 +2552,12 @@ span.console-action-icon.material-symbols-outlined {
 .toast-aviso {
     border-left-color: var(--accent-yellow);
 }
+
+/* Ícone do toast na cor do tipo (coerente com o design "por operação") */
+.toast-erro .toast-icon { color: #ef4444; }
+.toast-sucesso .toast-icon { color: var(--accent-green); }
+.toast-info .toast-icon { color: var(--accent-blue); }
+.toast-aviso .toast-icon { color: var(--accent-yellow); }
 
 .toast-content {
     flex-grow: 1;

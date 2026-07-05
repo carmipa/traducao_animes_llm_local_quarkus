@@ -460,14 +460,15 @@ export function mostrarAlerta(mensagem, tipo = 'info') {
     const toast = document.createElement('div');
     toast.className = `toast toast-${tipo}`;
 
-    let icon = 'ℹ️';
-    if (tipo === 'erro') icon = '❌';
-    if (tipo === 'sucesso') icon = '✅';
-    if (tipo === 'aviso') icon = '⚠️';
+    // Ícone do toast em Material Symbols (regra do design: nunca emojis)
+    let icon = 'info';
+    if (tipo === 'erro') icon = 'error';
+    if (tipo === 'sucesso') icon = 'check_circle';
+    if (tipo === 'aviso') icon = 'warning';
 
     toast.innerHTML = `
         <div class="toast-content">
-            <strong>${icon}</strong> &nbsp; ${escapeHtml(mensagem)}
+            <span class="material-symbols-outlined toast-icon">${icon}</span> &nbsp; ${escapeHtml(mensagem)}
         </div>
         <button class="toast-close" title="Fechar">&times;</button>
     `;
@@ -687,9 +688,9 @@ function renderizarBannerMetadata(banner, meta) {
         ? `<div class="meta-poster-container"><img src="${escapeHtml(meta.posterUrl)}" alt="${escapeHtml(meta.titulo)}" class="meta-poster-img" onerror="this.src='img/kronos_logo.png'"></div>`
         : '';
 
-    const scoreHtml = meta.score ? `<span class="meta-badge score">⭐ ${meta.score}</span>` : '';
-    const anoHtml = meta.ano ? `<span class="meta-badge">📅 ${meta.ano}</span>` : '';
-    const epsHtml = meta.episodios ? `<span class="meta-badge">📺 ${meta.episodios} eps</span>` : '';
+    const scoreHtml = meta.score ? `<span class="meta-badge score"><span class="material-symbols-outlined">star</span> ${meta.score}</span>` : '';
+    const anoHtml = meta.ano ? `<span class="meta-badge">${meta.ano}</span>` : '';
+    const epsHtml = meta.episodios ? `<span class="meta-badge">${meta.episodios} eps</span>` : '';
     const subTitle = meta.tituloJapones || meta.tituloIngles || '';
 
     let generosHtml = '';
@@ -748,10 +749,11 @@ function inicializarControlesConsole() {
             if (!consoleBody) return;
 
             consoleBody.classList.toggle('expanded');
+            // innerHTML (não textContent) para preservar o ícone Material Symbols do botão
             if (consoleBody.classList.contains('expanded')) {
-                btn.textContent = '🗜️ Encolher';
+                btn.innerHTML = '<span class="material-symbols-outlined console-action-icon">unfold_less</span>Encolher';
             } else {
-                btn.textContent = '↕ Expandir';
+                btn.innerHTML = '<span class="material-symbols-outlined console-action-icon">unfold_more</span>Expandir';
             }
         });
     });

@@ -563,10 +563,13 @@ public class RevisarLegendasUseCase {
     }
 
     private boolean deveIgnorarAuditoria(EventoLegenda evento, String texto) {
-        if (evento.estilo() != null && propriedades.estiloIgnorado(evento.estilo())) {
+        if (evento.estilo() != null
+            && propriedades.estiloIgnorado(evento.estilo())
+            && !detectorKaraoke.eKaraokeOuMusicaTraduzivel(evento.estilo(), texto)) {
             return true;
         }
-        if (detectorKaraoke.eEfeitoKaraoke(texto)) {
+        if (detectorKaraoke.eEfeitoKaraoke(texto)
+            && !detectorKaraoke.eKaraokeOuMusicaTraduzivel(evento.estilo(), texto)) {
             return true;
         }
         String estilo = evento.estilo() != null ? evento.estilo().toLowerCase() : "";

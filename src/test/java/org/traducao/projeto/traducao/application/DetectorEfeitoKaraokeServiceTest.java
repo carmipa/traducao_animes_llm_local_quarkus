@@ -63,4 +63,19 @@ class DetectorEfeitoKaraokeServiceTest {
         assertTrue(detector.eEfeitoKaraoke(tituloDeTela));
         assertFalse(detector.temTagKaraoke(tituloDeTela));
     }
+
+    @Test
+    void preservaKaraokeEmJaponesOuRomaji() {
+        assertTrue(detector.devePreservarKaraokeOriginal("Song JP", "{\\k30}君 {\\k20}の名は"));
+        assertTrue(detector.devePreservarKaraokeOriginal("Romaji", "{\\k30}kimi {\\k20}no na wa"));
+        assertFalse(detector.eKaraokeOuMusicaTraduzivel("Song JP", "{\\k30}君 {\\k20}の名は"));
+        assertFalse(detector.eKaraokeOuMusicaTraduzivel("Romaji", "{\\k30}kimi {\\k20}no na wa"));
+    }
+
+    @Test
+    void permiteKaraokeEmInglesOuOutroIdiomaLatino() {
+        assertFalse(detector.devePreservarKaraokeOriginal("Song EN", "{\\k30}Fly {\\k20}me to the moon"));
+        assertTrue(detector.eKaraokeOuMusicaTraduzivel("Song EN", "{\\k30}Fly {\\k20}me to the moon"));
+        assertTrue(detector.eKaraokeOuMusicaTraduzivel("Karaoke", "{\\k30}Bonjour {\\k20}mon amour"));
+    }
 }

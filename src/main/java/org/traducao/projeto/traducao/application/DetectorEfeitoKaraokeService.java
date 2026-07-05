@@ -29,6 +29,12 @@ public class DetectorEfeitoKaraokeService {
     private static final Pattern TAG_TRANSFORMACAO_PATTERN = Pattern.compile("\\\\t\\(");
     private static final Pattern TAG_POSICIONAMENTO_COMPLEXO_PATTERN = Pattern.compile("\\\\(pos|move|i?clip|org)\\(");
     private static final Pattern PADRAO_REMOVE_TAGS_ASS = Pattern.compile("\\{[^}]*\\}");
+    private static final Pattern ESCRITA_JAPONESA_PATTERN = Pattern.compile("[\\p{IsHiragana}\\p{IsKatakana}\\p{IsHan}]");
+    private static final Pattern TEXTO_ALFANUMERICO_PATTERN = Pattern.compile("[\\p{L}\\d]");
+    private static final Pattern ESTILO_MUSICA_PATTERN = Pattern.compile(
+        "(?i)\\b(song|music|karaoke|opening|ending|theme|insert|op|ed|sing|lyrics?)\\b");
+    private static final Pattern ESTILO_JAPONES_ROMAJI_PATTERN = Pattern.compile(
+        "(?i)\\b(romaji|jp|jpn|japanese|japones|japon[eê]s|kana|kanji)\\b");
     private static final int MIN_CHARS_TAGS_POSICIONAMENTO_COMPLEXO = 45;
 
     /**
@@ -56,6 +62,33 @@ public class DetectorEfeitoKaraokeService {
     }
 
     /**
+     * Karaoke/música que deve ficar intacto: letra em japonês (kana/kanji) ou
+     * estilos explicitamente marcados como japonês/romaji. Karaoke em inglês,
+     * francês etc. não entra aqui e pode seguir para tradução/revisão.
+     */
+    public boolean devePreservarKaraokeOriginal(String estilo, String texto) {
+        if (!temIndicadorDeMusica(estilo, texto)) {
+            return false;
+        }
+        if (estilo != null && ESTILO_JAPONES_ROMAJI_PATTERN.matcher(estilo).find()) {
+            return true;
+        }
+        return ESCRITA_JAPONESA_PATTERN.matcher(extrairTextoVisivel(texto)).find();
+    }
+
+    /**
+     * Indica letra de música/karaokê com texto visível traduzível e sem sinal
+     * claro de japonês/romaji original. Usado para não bloquear OP/ED em inglês
+     * ou outros idiomas latinos só porque o estilo contém "song/karaoke".
+     */
+    public boolean eKaraokeOuMusicaTraduzivel(String estilo, String texto) {
+        if (!temIndicadorDeMusica(estilo, texto) || devePreservarKaraokeOriginal(estilo, texto)) {
+            return false;
+        }
+        return TEXTO_ALFANUMERICO_PATTERN.matcher(extrairTextoVisivel(texto)).find();
+    }
+
+    /**
      * Sílaba/letra de música pós-template: há transformação animada e o texto
      * visível é ínfimo perto do bloco de tags (ex.: {@code {\r\pos(369,23)
      * \t(1160,1450,\frx-50...)}I}). Uma fala real com efeito pontual tem
@@ -77,5 +110,22 @@ public class DetectorEfeitoKaraokeService {
 
         int tamanhoTags = texto.length() - visivel.length();
         return altaDensidadeTags && tamanhoTags >= MIN_CHARS_TAGS_POSICIONAMENTO_COMPLEXO;
+    }
+
+    private boolean temIndicadorDeMusica(String estilo, String texto) {
+        return temTagKaraoke(texto)
+            || (estilo != null && ESTILO_MUSICA_PATTERN.matcher(estilo).find());
+    }
+
+    private String extrairTextoVisivel(String texto) {
+        if (texto == null) {
+            return "";
+        }
+        return PADRAO_REMOVE_TAGS_ASS.matcher(texto)
+            .replaceAll("")
+            .replace("\\N", " ")
+            .replace("\\n", " ")
+            .replace("\\h", " ")
+            .strip();
     }
 }

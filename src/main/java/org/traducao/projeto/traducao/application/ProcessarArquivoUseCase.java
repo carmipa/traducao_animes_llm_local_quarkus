@@ -340,18 +340,18 @@ public class ProcessarArquivoUseCase {
         if (!evento.isDialogo() || !evento.temTexto()) {
             return false;
         }
-        if (propriedades.estiloIgnorado(evento.estilo())) {
+        String texto = evento.texto();
+        if (propriedades.estiloIgnorado(evento.estilo())
+            && !detectorKaraoke.eKaraokeOuMusicaTraduzivel(evento.estilo(), texto)) {
             return false;
         }
-
-        String texto = evento.texto();
 
         // Blindagem contra karaokê cru (\k, \kf, \ko). Só as tags de timing:
         // a detecção agressiva de pós-template (eEfeitoKaraoke) pegaria também
         // letreiros/títulos com \t e texto curto, que aqui DEVEM ser traduzidos
         // — o caso karaokê pós-template é coberto pela heurística de letreiro
         // animado logo abaixo (que exige repetição).
-        if (detectorKaraoke.temTagKaraoke(texto)) {
+        if (detectorKaraoke.devePreservarKaraokeOriginal(evento.estilo(), texto)) {
             return false;
         }
 
