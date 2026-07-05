@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.traducao.projeto.correcaoLegendas.application.CorrigirLegendasUseCase;
-import org.traducao.projeto.correcaoLegendas.domain.ResultadoCorrecaoLegendas;
 import org.traducao.projeto.core.execucao.FilaExecucaoPipeline;
 import org.traducao.projeto.traducao.infrastructure.contexto.GerenciadorContexto;
 import org.traducao.projeto.traducao.presentation.web.LogStreamService;
@@ -50,7 +49,6 @@ public class CorrecaoLegendasController {
     }
 
     private ResponseEntity<Map<String, Object>> executarCorrecaoLegendas(Map<String, String> payload) {
-        logStreamService.definirCanalAtual("correcao-legendas");
         String diretorioOriginal = payload.get("diretorioOriginal");
         String diretorioTraduzido = payload.get("diretorioTraduzido");
         if (diretorioOriginal == null || diretorioOriginal.trim().isEmpty()) {
@@ -75,10 +73,11 @@ public class CorrecaoLegendasController {
             return ResponseEntity.badRequest().body(Map.of("erro", "Caminho de pasta inválido: " + e.getMessage()));
         }
 
-        // Correção com LLM entra na fila única do pipeline: ela muta o contexto
-        // de tradução global e disputa a GPU, então não pode rodar em paralelo
-        // com uma tradução/revisão em andamento. Sem contextoId a cura é 100%
-        // estrutural (regex, sem LLM) e pode rodar direto na thread do request.
+        // Toda correção entra na fila única do pipeline, mesmo a 100%
+        // estrutural (sem contextoId/LLM): com contextoId ela muta o contexto
+        // de tradução global e disputa a GPU; e em qualquer modo roda em
+        // segundo plano publicando logs no canal SSE da aba — dois jobs em
+        // paralelo misturariam consoles e estado.
         if (filaExecucao.ocupada()) {
             return ResponseEntity.status(409).body(Map.of(
                 "erro", "Outra operação do pipeline está em andamento. "
@@ -102,9 +101,5 @@ public class CorrecaoLegendasController {
         return ResponseEntity.accepted().body(Map.of(
             "mensagem", "Correção de legendas enviada para a fila de execução em segundo plano."
         ));
-    }
-
-    private String valorOuVazio(String valor) {
-        return valor != null ? valor : "";
     }
 }

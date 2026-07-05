@@ -80,6 +80,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     inicializarBotoesLimpezaFormularios();
     inicializarControlesConsole();
     inicializarBotoesProcurarCaminho();
+    inicializarBotaoSair();
 });
 
 /**
@@ -92,6 +93,9 @@ function inicializarNavegacao() {
     const subtituloPagina = document.getElementById('page-subtitle');
 
     botoesMenu.forEach(botao => {
+        // "Sair" é uma ação, não uma aba — não participa da troca de painéis
+        // (ver inicializarBotaoSair()).
+        if (botao.id === 'btn-menu-sair') return;
         botao.addEventListener('click', () => {
             const target = botao.getAttribute('data-target');
             
@@ -783,6 +787,63 @@ function inicializarBotoesProcurarCaminho() {
         } finally {
             btn.innerHTML = textoOriginal;
             btn.disabled = false;
+        }
+    });
+}
+
+/**
+ * Menu "Sair": encerra a aplicação inteira (servidor + trabalho em execução).
+ * Fluxo: abre o modal de confirmação (avisando se a fila do pipeline está
+ * ocupada), chama POST /api/sistema/sair e cobre a tela com o aviso final.
+ * A parada do job em execução é cooperativa — mesmo comportamento do botão
+ * "Parar Execução" dos menus.
+ */
+function inicializarBotaoSair() {
+    const btnMenu = document.getElementById('btn-menu-sair');
+    const modal = document.getElementById('modal-sair');
+    const avisoPipeline = document.getElementById('modal-sair-aviso-pipeline');
+    const btnCancelar = document.getElementById('btn-sair-cancelar');
+    const btnConfirmar = document.getElementById('btn-sair-confirmar');
+    const overlayEncerrado = document.getElementById('overlay-encerrado');
+    if (!btnMenu || !modal || !btnCancelar || !btnConfirmar || !overlayEncerrado) return;
+
+    btnMenu.addEventListener('click', async () => {
+        modal.classList.remove('hidden');
+        if (avisoPipeline) {
+            avisoPipeline.classList.add('hidden');
+            try {
+                const res = await fetch('/api/pipeline/status');
+                const data = await res.json();
+                if (data.mensagem === 'ocupada') {
+                    avisoPipeline.classList.remove('hidden');
+                }
+            } catch (e) {
+                // Status indisponível não impede a confirmação de saída.
+            }
+        }
+    });
+
+    btnCancelar.addEventListener('click', () => modal.classList.add('hidden'));
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.classList.add('hidden');
+    });
+
+    btnConfirmar.addEventListener('click', async () => {
+        btnConfirmar.disabled = true;
+        btnCancelar.disabled = true;
+        try {
+            const res = await fetch('/api/sistema/sair', { method: 'POST' });
+            const data = await res.json();
+            mostrarAlerta(data.mensagem || 'Encerrando a aplicação...', 'aviso');
+            modal.classList.add('hidden');
+            overlayEncerrado.classList.remove('hidden');
+            // Navegadores só permitem window.close() em janelas abertas por
+            // script; se não fechar, o overlay orienta a fechar manualmente.
+            setTimeout(() => window.close(), 1500);
+        } catch (err) {
+            mostrarAlerta(`Erro ao encerrar a aplicação: ${err.message}`, 'erro');
+            btnConfirmar.disabled = false;
+            btnCancelar.disabled = false;
         }
     });
 }
