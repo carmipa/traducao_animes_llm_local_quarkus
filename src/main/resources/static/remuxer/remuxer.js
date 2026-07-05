@@ -4,9 +4,20 @@ export function initRemuxer() {
     const form = document.getElementById('form-remuxer');
     if (!form) return;
 
+    // Evita duplicar o listener se a inicialização for executada múltiplas vezes
+    if (form.dataset.listenerRegistered === 'true') return;
+    form.dataset.listenerRegistered = 'true';
+
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.6';
+            submitBtn.style.cursor = 'not-allowed';
+        }
+
         const entrada = document.getElementById('remuxer-videos').value.trim();
         const saida = document.getElementById('remuxer-legendas').value.trim();
         const syncOffsetRaw = document.getElementById('remuxer-sync-offset').value.trim();
@@ -37,6 +48,15 @@ export function initRemuxer() {
 
         } catch (err) {
             logNoConsole('console-remuxer', `Erro ao iniciar remuxer: ${err.message}`, 'erro');
+        } finally {
+            // Re-habilita após 3 segundos para evitar cliques múltiplos em rajada (debounce)
+            setTimeout(() => {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '';
+                    submitBtn.style.cursor = '';
+                }
+            }, 3000);
         }
     });
 }
