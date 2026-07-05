@@ -62,12 +62,14 @@ public class RevisarLoreUseCase {
         final List<LogEventoRevisaoLore> eventos = new ArrayList<>();
         final long inicioMs = System.currentTimeMillis();
 
+        // O console web carimba a hora local no navegador, então a linha vai
+        // para System.out sem prefixo de relógio. O prefixo UTC + tempo
+        // decorrido permanece no log do servidor e nos eventos persistidos.
         void out(String msg) {
             String limpo = removerAnsi(msg);
             String prefixo = prefixoLog();
-            String mensagemComPrefixo = prefixo + " " + msg;
             String limpoComPrefixo = prefixo + " " + limpo;
-            System.out.println(mensagemComPrefixo);
+            System.out.println(msg);
             log.info(limpoComPrefixo);
             eventos.add(new LogEventoRevisaoLore(
                 Instant.now().toString(),

@@ -383,6 +383,14 @@ function renderizarTabelaHistorico() {
             const origem = op.origem ?? 'SISTEMA';
             const cor = CORES_ORIGEM[origem] ?? CORES_ORIGEM.SISTEMA;
 
+            // registradoEm chega em UTC (ISO-8601); o Date converte para o
+            // fuso local do navegador na exibição.
+            const tdData = document.createElement('td');
+            tdData.className = 'op-datetime';
+            tdData.textContent = op.registradoEm
+                ? new Date(op.registradoEm).toLocaleString('pt-BR')
+                : '-';
+
             const tdOperacao = document.createElement('td');
             tdOperacao.innerHTML = `<span class="op-name"><span class="chip-dot" style="background:${cor}"></span>${rotuloExibicaoOperacao(op.nomeOperacao)}</span>`;
 
@@ -400,7 +408,7 @@ function renderizarTabelaHistorico() {
             const tdTaxa = document.createElement('td');
             tdTaxa.textContent = op.taxaSucesso === null || op.taxaSucesso === undefined ? '-' : `${op.taxaSucesso}%`;
 
-            row.append(tdOperacao, tdOrigem, tdDetalhe, tdDuracao, tdTaxa);
+            row.append(tdData, tdOperacao, tdOrigem, tdDetalhe, tdDuracao, tdTaxa);
             tableBody.appendChild(row);
         });
     }
@@ -553,7 +561,7 @@ function renderizarLinhaVazia(tableBody, mensagem) {
     tableBody.innerHTML = '';
     const row = document.createElement('tr');
     const cell = document.createElement('td');
-    cell.colSpan = 5;
+    cell.colSpan = 6;
     cell.className = 'table-empty';
     cell.textContent = mensagem;
     row.appendChild(cell);

@@ -63,8 +63,13 @@ public class ConsoleRedirector {
             this.consumer = consumer;
         }
 
+        // synchronized: o buffer de linha é um só para todas as threads que
+        // imprimem em System.out (pipeline, threads HTTP, libs). O PrintStream
+        // serializa as chamadas na prática, mas isso é detalhe de implementação
+        // da JDK — o lock explícito garante que bytes de threads concorrentes
+        // não se entrelacem numa mesma linha nem saiam no canal SSE errado.
         @Override
-        public void write(int b) throws IOException {
+        public synchronized void write(int b) throws IOException {
             original.write(b);
             if (b == '\n') {
                 flushBuffer();
@@ -74,7 +79,7 @@ public class ConsoleRedirector {
         }
 
         @Override
-        public void write(byte[] b, int off, int len) throws IOException {
+        public synchronized void write(byte[] b, int off, int len) throws IOException {
             original.write(b, off, len);
             for (int i = 0; i < len; i++) {
                 int ch = b[off + i];

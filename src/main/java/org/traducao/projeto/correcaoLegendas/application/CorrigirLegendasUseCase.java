@@ -72,7 +72,7 @@ public class CorrigirLegendasUseCase {
 
         if (!Files.isDirectory(pastaOriginal) || !Files.isDirectory(pastaTraduzida)) {
             String msg = "Pastas não encontradas — esperava " + pastaOriginal + " e " + pastaTraduzida;
-            out(eventos, inicio, "WARN", null, msg, AnsiCores.YELLOW);
+            out(eventos, "WARN", null, msg, AnsiCores.YELLOW);
             ResultadoCorrecaoLegendas resultado = new ResultadoCorrecaoLegendas(0, 0, 0, 0, 0, 0, 1, List.of(msg), null);
             registrarTelemetria(pastaOriginal, pastaTraduzida, inicio, false, null, resultado, eventos);
             return resultado;
@@ -81,11 +81,11 @@ public class CorrigirLegendasUseCase {
         boolean llmHabilitado = aplicarContextoLlm(contextoId);
         String contextoAtivo = llmHabilitado ? gerenciadorContexto.obterNomeContextoAtivo() : null;
 
-        out(eventos, inicio, "INFO", null, "=== Iniciando Correcao de Legendas ===", AnsiCores.CYAN);
-        out(eventos, inicio, "INFO", null, "Pasta original/ref: " + pastaOriginal, AnsiCores.WHITE);
-        out(eventos, inicio, "INFO", null, "Pasta traduzida/alvo: " + pastaTraduzida, AnsiCores.WHITE);
+        out(eventos, "INFO", null, "=== Iniciando Correcao de Legendas ===", AnsiCores.CYAN);
+        out(eventos, "INFO", null, "Pasta original/ref: " + pastaOriginal, AnsiCores.WHITE);
+        out(eventos, "INFO", null, "Pasta traduzida/alvo: " + pastaTraduzida, AnsiCores.WHITE);
         if (llmHabilitado) {
-            out(eventos, inicio, "INFO", null, "Correcao de traducao via LLM ativa (contexto: "
+            out(eventos, "INFO", null, "Correcao de traducao via LLM ativa (contexto: "
                 + contextoAtivo + ")", AnsiCores.CYAN);
         }
 
@@ -117,7 +117,7 @@ public class CorrigirLegendasUseCase {
                 // Parada cooperativa (botão "Parar" da UI): arquivos já
                 // corrigidos ficaram salvos; os restantes não são tocados.
                 if (Thread.currentThread().isInterrupted()) {
-                    out(eventos, inicio, "WARN", null,
+                    out(eventos, "WARN", null,
                         "[STOP] Correção interrompida pelo usuário — arquivos restantes não processados.",
                         AnsiCores.YELLOW);
                     break;
@@ -129,7 +129,7 @@ public class CorrigirLegendasUseCase {
             log.error("Erro ao percorrer pasta original de legendas: {}", pastaOriginal, e);
             String msg = "Erro ao percorrer pasta original: " + e.getMessage();
             erros.add(msg);
-            out(eventos, inicio, "ERROR", null, msg, AnsiCores.RED);
+            out(eventos, "ERROR", null, msg, AnsiCores.RED);
         }
 
         ResultadoCorrecaoLegendas resultado = new ResultadoCorrecaoLegendas(
@@ -137,11 +137,11 @@ public class CorrigirLegendasUseCase {
         resultado = registrarTelemetria(pastaOriginal, pastaTraduzida, inicio, llmHabilitado, contextoAtivo, resultado, eventos);
 
         if (erros.isEmpty()) {
-            out(eventos, inicio, "INFO", null, "Correcao de legendas concluida: " + curados[0]
+            out(eventos, "INFO", null, "Correcao de legendas concluida: " + curados[0]
                 + " arquivo(s) curado(s) (" + falasCuradas[0] + " fala(s)), " + corrigidosLlm[0] + " fala(s) corrigida(s) via LLM, "
                 + semAlteracao[0] + " ja perfeito(s), " + traducaoAusente[0] + " fala(s) sem traducao.", AnsiCores.GREEN);
         } else {
-            out(eventos, inicio, "WARN", null, "Correcao de legendas concluida com " + erros.size()
+            out(eventos, "WARN", null, "Correcao de legendas concluida com " + erros.size()
                 + " erro(s): " + curados[0] + " arquivo(s) curado(s) (" + falasCuradas[0] + " fala(s)), " + corrigidosLlm[0] + " fala(s) corrigida(s) via LLM, "
                 + semAlteracao[0] + " ja perfeito(s), " + traducaoAusente[0] + " fala(s) sem traducao.", AnsiCores.RED);
         }
@@ -193,7 +193,7 @@ public class CorrigirLegendasUseCase {
 
         if (!Files.exists(arqTraduzido)) {
             semPar[0]++;
-            out(eventos, inicio, "WARN", nomeOriginal, "Sem legenda traduzida pareada para " + nomeOriginal, AnsiCores.YELLOW);
+            out(eventos, "WARN", nomeOriginal, "Sem legenda traduzida pareada para " + nomeOriginal, AnsiCores.YELLOW);
             return;
         }
 
@@ -210,7 +210,7 @@ public class CorrigirLegendasUseCase {
                     + docOriginal.eventos().size() + " no original vs " + docTraduzido.eventos().size()
                     + " na tradução) — arquivo pulado, nenhuma alteração feita.";
                 log.warn(msg);
-                out(eventos, inicio, "WARN", arqTraduzido.getFileName().toString(), "[Pulado] " + msg, AnsiCores.YELLOW);
+                out(eventos, "WARN", arqTraduzido.getFileName().toString(), "[Pulado] " + msg, AnsiCores.YELLOW);
                 erros.add(msg);
                 return;
             }
@@ -236,7 +236,7 @@ public class CorrigirLegendasUseCase {
                         // sem nenhum texto — reportar como pendente em vez de mascarar.
                         traducaoAusente[0]++;
                         novosEventos.add(evtTraduzido);
-                        out(eventos, inicio, "WARN", arqTraduzido.getFileName().toString(),
+                        out(eventos, "WARN", arqTraduzido.getFileName().toString(),
                             "Fala " + (i + 1) + " sem traducao (vazia) — original possui texto; nao corrigido, revisao manual necessaria.",
                             AnsiCores.YELLOW);
                         continue;
@@ -251,7 +251,7 @@ public class CorrigirLegendasUseCase {
                     int karaokeOriginal = sanitizador.contarTagsKaraoke(textoOriginal);
                     int karaokeTraduzido = sanitizador.contarTagsKaraoke(textoCurado);
                     if (karaokeOriginal > 0 && karaokeTraduzido < karaokeOriginal) {
-                        out(eventos, inicio, "WARN", arqTraduzido.getFileName().toString(),
+                        out(eventos, "WARN", arqTraduzido.getFileName().toString(),
                             "Fala " + (i + 1) + ": original tem " + karaokeOriginal
                                 + " tag(s) de karaoke (\\k), traducao tem " + karaokeTraduzido
                                 + " — timing por silaba possivelmente perdido; revise manualmente.",
@@ -265,7 +265,7 @@ public class CorrigirLegendasUseCase {
                             // não perdeu/alucinou as tags de formatação do original.
                             textoCurado = sanitizador.curarTags(textoOriginal, corrigidoLlm.get());
                             corrigidoPorLlm = true;
-                            out(eventos, inicio, "INFO", arqTraduzido.getFileName().toString(),
+                            out(eventos, "INFO", arqTraduzido.getFileName().toString(),
                                 "Fala " + (i + 1) + " corrigida via LLM apos validacao.", AnsiCores.MAGENTA);
                         }
                     }
@@ -288,7 +288,7 @@ public class CorrigirLegendasUseCase {
                         // mesmo indice nao e reconhecido como dialogo/texto (tipo de linha
                         // divergente). Contagem de eventos bateu, mas o alinhamento 1:1
                         // pode estar quebrado — melhor avisar do que corrigir as cegas.
-                        out(eventos, inicio, "WARN", arqTraduzido.getFileName().toString(),
+                        out(eventos, "WARN", arqTraduzido.getFileName().toString(),
                             "Fala " + (i + 1) + ": estrutura do evento traduzido diverge da original (tipo/texto ausente) — mantido sem alteracao.",
                             AnsiCores.YELLOW);
                     }
@@ -307,19 +307,19 @@ public class CorrigirLegendasUseCase {
                 curados[0]++;
                 falasCuradas[0] += linhasCuradas;
                 corrigidosLlm[0] += linhasCorrigidasLlm;
-                out(eventos, inicio, "INFO", arqTraduzido.getFileName().toString(), "[Corrigido] "
+                out(eventos, "INFO", arqTraduzido.getFileName().toString(), "[Corrigido] "
                     + arqTraduzido.getFileName() + " (" + linhasCuradas + " tags restauradas, "
                     + linhasCorrigidasLlm + " corrigidas via LLM)", AnsiCores.GREEN);
             } else {
                 semAlteracao[0]++;
-                out(eventos, inicio, "INFO", arqTraduzido.getFileName().toString(), "[OK] "
+                out(eventos, "INFO", arqTraduzido.getFileName().toString(), "[OK] "
                     + arqTraduzido.getFileName() + " (sem alteracao)", AnsiCores.DIM);
             }
 
         } catch (Exception e) {
             String msg = "Falha ao curar " + arqTraduzido.getFileName() + ": " + e.getMessage();
             log.error(msg, e);
-            out(eventos, inicio, "ERROR", arqTraduzido.getFileName().toString(), "[Erro] " + msg, AnsiCores.RED);
+            out(eventos, "ERROR", arqTraduzido.getFileName().toString(), "[Erro] " + msg, AnsiCores.RED);
             erros.add(msg);
         }
     }
@@ -418,7 +418,7 @@ public class CorrigirLegendasUseCase {
                 List.copyOf(eventos)
             );
             relatorioJson = logPersistencia.salvarRelatorioJson(pastaTraduzida, relatorio).toString();
-            out(eventos, inicio, "INFO", null, "Relatorio JSON salvo em: " + relatorioJson, AnsiCores.CYAN);
+            out(eventos, "INFO", null, "Relatorio JSON salvo em: " + relatorioJson, AnsiCores.CYAN);
         } catch (Exception e) {
             log.warn("Falha ao salvar relatorio JSON de correcao de legendas: {}", e.getMessage());
         }
@@ -438,17 +438,17 @@ public class CorrigirLegendasUseCase {
         );
     }
 
+    // O console web carimba a hora local no navegador; a linha sai sem prefixo
+    // de relógio. O instante UTC preciso segue registrado no campo próprio de
+    // cada LogEventoCorrecaoLegendas persistido.
     private void out(
         List<LogEventoCorrecaoLegendas> eventos,
-        Instant inicio,
         String nivel,
         String arquivo,
         String mensagem,
         String cor
     ) {
-        String prefixo = "[UTC " + Instant.now() + " | +" + Duration.between(inicio, Instant.now()).toMillis() + "ms]";
-        String linha = prefixo + " " + mensagem;
-        System.out.println(cor + linha + AnsiCores.RESET);
+        System.out.println(cor + mensagem + AnsiCores.RESET);
         eventos.add(new LogEventoCorrecaoLegendas(Instant.now().toString(), nivel, arquivo, mensagem));
         if ("ERROR".equals(nivel)) {
             log.error(mensagem);

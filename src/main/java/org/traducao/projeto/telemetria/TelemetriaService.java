@@ -353,20 +353,21 @@ public class TelemetriaService {
                 formatarDuracaoMs(op.tempoTotalMs()),
                 calcularTaxaSucesso(op.itensDetectados(), op.itensCorrigidos()),
                 inferirOrigem(op.tipo()),
-                op.tempoTotalMs()
+                op.tempoTotalMs(),
+                op.registradoEm()
             )));
         }
 
         for (LlmTelemetria l : traducoes.values()) {
             itens.add(new ItemHistorico(l.registradoEm(), new OperacaoHistorico(
                 "Tradução LLM", l.nomeEpisodio(), formatarDuracaoMs(l.tempoTotalMs()), null,
-                inferirOrigem("Tradução LLM"), l.tempoTotalMs()
+                inferirOrigem("Tradução LLM"), l.tempoTotalMs(), l.registradoEm()
             )));
         }
         for (MidiaTelemetria m : midias.values()) {
             itens.add(new ItemHistorico(m.registradoEm(), new OperacaoHistorico(
                 "Análise de Mídia", m.nomeArquivo(), null, null,
-                inferirOrigem("Análise de Mídia"), null
+                inferirOrigem("Análise de Mídia"), null, m.registradoEm()
             )));
         }
 

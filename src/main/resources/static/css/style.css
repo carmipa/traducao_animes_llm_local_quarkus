@@ -3391,6 +3391,90 @@ span.console-action-icon.material-symbols-outlined {
     filter: brightness(1.1);
 }
 
+/* Chips minimalistas de rede — substituem os shields.io coloridos */
+.net-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 11px;
+    border: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    transition: var(--transition-fast);
+}
+
+.net-chip .material-symbols-outlined {
+    font-size: 18px !important;
+    color: var(--c, var(--accent-blue));
+}
+
+.net-chip:hover {
+    transform: translateY(-2px);
+    color: var(--text-primary);
+    border-color: color-mix(in srgb, var(--c, var(--accent-blue)) 55%, transparent);
+    background: color-mix(in srgb, var(--c, var(--accent-blue)) 10%, transparent);
+}
+
+/* Chips minimalistas de stack — ponto de marca + versão em mono */
+.tech-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tech-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 13px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.015);
+    color: var(--text-primary);
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: var(--transition-fast);
+}
+
+.tech-chip::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--c, var(--accent-cyan));
+    box-shadow: 0 0 7px color-mix(in srgb, var(--c, var(--accent-cyan)) 80%, transparent);
+    flex-shrink: 0;
+}
+
+.tech-chip small {
+    font-family: var(--font-code);
+    font-size: 0.66rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    padding: 1px 5px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.tech-chip:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--c, var(--accent-cyan)) 55%, transparent);
+    background: color-mix(in srgb, var(--c, var(--accent-cyan)) 8%, transparent);
+}
+
+/* Coluna Data/Hora do Historico Operacional (telemetria) */
+.op-datetime {
+    font-family: var(--font-code);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
 .sobre-two-col {
     display: grid;
     grid-template-columns: 1fr 1fr;

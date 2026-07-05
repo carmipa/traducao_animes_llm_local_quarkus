@@ -9,5 +9,7 @@ public record OperacaoHistorico(
     String duracaoFormatada,
     Integer taxaSucesso,
     String origem,
-    Long duracaoMs
+    Long duracaoMs,
+    /** Instante UTC (ISO-8601) do registro; o navegador converte para hora local. */
+    String registradoEm
 ) {}
