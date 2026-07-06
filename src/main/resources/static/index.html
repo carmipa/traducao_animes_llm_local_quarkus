@@ -31,58 +31,109 @@
                     <span class="material-symbols-outlined nav-icon">dashboard</span>
                     <span>Painel Inicial</span>
                 </button>
-                <button class="nav-item" data-target="analise" id="btn-menu-analise" data-tooltip="Audite faixas, codecs e bitrate dos arquivos de vídeo.">
-                    <span class="material-symbols-outlined nav-icon">analytics</span>
-                    <span>1. Análise de Mídia</span>
-                </button>
-                <button class="nav-item" data-target="extracao" id="btn-menu-extracao" data-tooltip="Extraia faixas de legendas (ASS/SRT/PGS) em lote de vídeos (MKV/WebM/MP4/MOV/AVI...).">
-                    <span class="material-symbols-outlined nav-icon">download_for_offline</span>
-                    <span>2. Extração</span>
-                </button>
-                <button class="nav-item" data-target="traducao" id="btn-menu-traducao" data-tooltip="Traduza legendas usando IA local com proteção de tags.">
-                    <span class="material-symbols-outlined nav-icon">translate</span>
-                    <span>3. Tradução Local</span>
-                </button>
-                <button class="nav-item" data-target="correcao" id="btn-menu-correcao" data-tooltip="Corrija falhas de cache ou traduções ausentes.">
-                    <span class="material-symbols-outlined nav-icon">find_replace</span>
-                    <span>4. Correção Cache</span>
-                </button>
-                <button class="nav-item" data-target="revisao" id="btn-menu-revisao" data-tooltip="Revise legendas .ass já traduzidas: inglês residual, concordância PT-BR e correção via Google.">
-                    <span class="material-symbols-outlined nav-icon">spellcheck</span>
-                    <span>6. Revisão de Legendas</span>
-                </button>
-                <button class="nav-item" data-target="cura" id="btn-menu-cura" data-tooltip="Corrija a legenda traduzida usando a original como referência segura.">
-                    <span class="material-symbols-outlined nav-icon">music_note</span>
-                    <span>7. Correção de Karaoke</span>
-                </button>
-                <button class="nav-item" data-target="revisao-lore" id="btn-menu-revisao-lore" data-tooltip="Revise nomes, locais e termos de lore nas legendas traduzidas usando a lore oficial da obra.">
-                    <span class="material-symbols-outlined nav-icon">menu_book</span>
-                    <span>8. Revisão de Lore</span>
-                </button>
-                <button class="nav-item" data-target="troca-tipo-legenda" id="btn-menu-troca-tipo-legenda" data-tooltip="Audite e substitua fontes legadas (VNI/ANSI) por fontes Unicode seguras para evitar acentuação corrompida.">
-                    <span class="material-symbols-outlined nav-icon">font_download</span>
-                    <span>9. Troca Tipo legenda</span>
-                </button>
-                <button class="nav-item" data-target="remuxer" id="btn-menu-remuxer" data-tooltip="Recombine vídeos originais e as legendas traduzidas.">
-                    <span class="material-symbols-outlined nav-icon">layers</span>
-                    <span>10. Remuxer</span>
-                </button>
-                <button class="nav-item" data-target="mapa" id="btn-menu-mapa" data-tooltip="Exiba a árvore estrutural e taxonomia do código Java.">
-                    <span class="material-symbols-outlined nav-icon">account_tree</span>
-                    <span>11. Mapa do Projeto</span>
-                </button>
-                <button class="nav-item" data-target="telemetria" id="btn-menu-telemetria" data-tooltip="Monitore hits de cache, tokens e logs em tempo real.">
-                    <span class="material-symbols-outlined nav-icon">monitoring</span>
-                    <span>12. Telemetria</span>
-                </button>
-                <button class="nav-item" data-target="documentacao" id="btn-menu-documentacao" data-tooltip="Documentação técnica completa: arquitetura, módulos, API REST e diagramas.">
-                    <span class="material-symbols-outlined nav-icon">description</span>
-                    <span>Documentação</span>
-                </button>
-                <button class="nav-item" data-target="sobre" id="btn-menu-sobre" data-tooltip="Conheça o autor do KRONOS CORE — Paulo André Carminati (carmipa).">
-                    <span class="material-symbols-outlined nav-icon">person</span>
-                    <span>Sobre</span>
-                </button>
+
+                <div class="nav-group" data-grupo="preparacao">
+                    <button type="button" class="nav-group-header" aria-expanded="true">
+                        <span class="material-symbols-outlined nav-icon">movie</span>
+                        <span class="nav-group-titulo">Preparação</span>
+                        <span class="material-symbols-outlined nav-group-seta">expand_more</span>
+                    </button>
+                    <div class="nav-group-itens">
+                        <button class="nav-item" data-target="analise" id="btn-menu-analise" data-tooltip="Audite faixas, codecs e bitrate dos arquivos de vídeo.">
+                            <span class="material-symbols-outlined nav-icon">analytics</span>
+                            <span>1. Análise de Mídia</span>
+                        </button>
+                        <button class="nav-item" data-target="extracao" id="btn-menu-extracao" data-tooltip="Extraia faixas de legendas (ASS/SRT/PGS) em lote de vídeos (MKV/WebM/MP4/MOV/AVI...).">
+                            <span class="material-symbols-outlined nav-icon">download_for_offline</span>
+                            <span>2. Extração</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="nav-group" data-grupo="traducao">
+                    <button type="button" class="nav-group-header" aria-expanded="true">
+                        <span class="material-symbols-outlined nav-icon">language</span>
+                        <span class="nav-group-titulo">Tradução</span>
+                        <span class="material-symbols-outlined nav-group-seta">expand_more</span>
+                    </button>
+                    <div class="nav-group-itens">
+                        <button class="nav-item" data-target="traducao" id="btn-menu-traducao" data-tooltip="Traduza legendas usando IA local com proteção de tags.">
+                            <span class="material-symbols-outlined nav-icon">translate</span>
+                            <span>3. Tradução Local</span>
+                        </button>
+                        <button class="nav-item" data-target="correcao" id="btn-menu-correcao" data-tooltip="Corrija falhas de cache ou traduções ausentes.">
+                            <span class="material-symbols-outlined nav-icon">find_replace</span>
+                            <span>4. Correção Cache</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="nav-group" data-grupo="qualidade">
+                    <button type="button" class="nav-group-header" aria-expanded="true">
+                        <span class="material-symbols-outlined nav-icon">fact_check</span>
+                        <span class="nav-group-titulo">Qualidade</span>
+                        <span class="material-symbols-outlined nav-group-seta">expand_more</span>
+                    </button>
+                    <div class="nav-group-itens">
+                        <button class="nav-item" data-target="revisao" id="btn-menu-revisao" data-tooltip="Revise legendas .ass já traduzidas: inglês residual, concordância PT-BR e correção via Google.">
+                            <span class="material-symbols-outlined nav-icon">spellcheck</span>
+                            <span>5. Revisão de Legendas</span>
+                        </button>
+                        <button class="nav-item" data-target="cura" id="btn-menu-cura" data-tooltip="Corrija a legenda traduzida usando a original como referência segura.">
+                            <span class="material-symbols-outlined nav-icon">music_note</span>
+                            <span>6. Correção de Karaoke</span>
+                        </button>
+                        <button class="nav-item" data-target="revisao-lore" id="btn-menu-revisao-lore" data-tooltip="Revise nomes, locais e termos de lore nas legendas traduzidas usando a lore oficial da obra.">
+                            <span class="material-symbols-outlined nav-icon">menu_book</span>
+                            <span>7. Revisão de Lore</span>
+                        </button>
+                        <button class="nav-item" data-target="troca-tipo-legenda" id="btn-menu-troca-tipo-legenda" data-tooltip="Audite e substitua fontes legadas (VNI/ANSI) por fontes Unicode seguras para evitar acentuação corrompida.">
+                            <span class="material-symbols-outlined nav-icon">font_download</span>
+                            <span>8. Troca Tipo Legenda</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="nav-group" data-grupo="finalizacao">
+                    <button type="button" class="nav-group-header" aria-expanded="true">
+                        <span class="material-symbols-outlined nav-icon">inventory_2</span>
+                        <span class="nav-group-titulo">Finalização</span>
+                        <span class="material-symbols-outlined nav-group-seta">expand_more</span>
+                    </button>
+                    <div class="nav-group-itens">
+                        <button class="nav-item" data-target="remuxer" id="btn-menu-remuxer" data-tooltip="Recombine vídeos originais e as legendas traduzidas.">
+                            <span class="material-symbols-outlined nav-icon">layers</span>
+                            <span>9. Remuxer</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="nav-group" data-grupo="sistema">
+                    <button type="button" class="nav-group-header" aria-expanded="true">
+                        <span class="material-symbols-outlined nav-icon">settings</span>
+                        <span class="nav-group-titulo">Sistema</span>
+                        <span class="material-symbols-outlined nav-group-seta">expand_more</span>
+                    </button>
+                    <div class="nav-group-itens">
+                        <button class="nav-item" data-target="telemetria" id="btn-menu-telemetria" data-tooltip="Monitore hits de cache, tokens e logs em tempo real.">
+                            <span class="material-symbols-outlined nav-icon">monitoring</span>
+                            <span>Telemetria</span>
+                        </button>
+                        <button class="nav-item" data-target="mapa" id="btn-menu-mapa" data-tooltip="Exiba a árvore estrutural e taxonomia do código Java.">
+                            <span class="material-symbols-outlined nav-icon">account_tree</span>
+                            <span>Mapa do Projeto</span>
+                        </button>
+                        <button class="nav-item" data-target="documentacao" id="btn-menu-documentacao" data-tooltip="Documentação técnica completa: arquitetura, módulos, API REST e diagramas.">
+                            <span class="material-symbols-outlined nav-icon">description</span>
+                            <span>Documentação</span>
+                        </button>
+                        <button class="nav-item" data-target="sobre" id="btn-menu-sobre" data-tooltip="Conheça o autor do KRONOS CORE — Paulo André Carminati (carmipa).">
+                            <span class="material-symbols-outlined nav-icon">person</span>
+                            <span>Sobre</span>
+                        </button>
+                    </div>
+                </div>
+
                 <button class="nav-item nav-item-sair" id="btn-menu-sair" data-tooltip="Encerra a aplicação: o trabalho em execução para no próximo ponto seguro (progresso salvo é preservado) e o servidor é desligado.">
                     <span class="material-symbols-outlined nav-icon">logout</span>
                     <span>Sair</span>
