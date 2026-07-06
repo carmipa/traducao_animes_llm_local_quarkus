@@ -7,6 +7,12 @@
 
     <form id="form-revisao-lore" class="standard-form">
         <div class="form-group">
+            <label for="revisao-lore-contexto">Obra / Contexto (obrigatório): <span class="help-icon" data-tooltip="Define a lore oficial usada pelo LLM para padronizar nomes e termos. Também exibe capa e sinopse do anime.">?</span></label>
+            <select id="revisao-lore-contexto" required>
+                <option value="" disabled selected>Carregando contextos...</option>
+            </select>
+        </div>
+        <div class="form-group">
             <label for="revisao-lore-entrada-original">Pasta com legendas ORIGINAIS (.ass, em inglês): <span class="help-icon" data-tooltip="Legendas de referência em inglês para comparar nomes e termos.">?</span></label>
             <div class="input-with-button">
                 <input type="text" id="revisao-lore-entrada-original" autocomplete="off" spellcheck="false" placeholder="Ex: E:\animes\Gundam\0083\legendas_eng" required>
@@ -19,12 +25,6 @@
                 <input type="text" id="revisao-lore-entrada-traduzida" autocomplete="off" spellcheck="false" placeholder="Ex: E:\animes\Gundam\0083\legendas_eng\traducao_ptbr" required>
                 <button type="button" class="btn-procurar" data-target="revisao-lore-entrada-traduzida" data-type="pasta"><span class="material-symbols-outlined btn-inline-icon">folder_open</span>Procurar...</button>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="revisao-lore-contexto">Obra / Contexto (obrigatório): <span class="help-icon" data-tooltip="Define a lore oficial usada pelo LLM para padronizar nomes e termos. Também exibe capa e sinopse do anime.">?</span></label>
-            <select id="revisao-lore-contexto" required>
-                <option value="" disabled selected>Carregando contextos...</option>
-            </select>
         </div>
         <div class="form-group">
             <label class="checkbox-label">
@@ -41,7 +41,7 @@
                 <span class="material-symbols-outlined btn-icon">delete_sweep</span>
                 <span>Limpar Campos</span>
             </button>
-            <button type="button" class="btn btn-secondary btn-parar-pipeline" data-console="console-revisao-lore" data-tooltip="Interrompe o trabalho em execução no pipeline. Falas já revisadas são gravadas; as restantes ficam como estão.">
+            <button type="button" class="btn btn-secondary btn-parar-pipeline" data-console="console-revisao-lore" data-tooltip="Interrompe o trabalho de revisão de lore. O processo é interrompido de forma cooperativa no próximo ponto seguro.">
                 <span class="material-symbols-outlined btn-icon">stop</span>
                 <span>Parar Execução</span>
             </button>

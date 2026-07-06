@@ -324,6 +324,12 @@
 
                         <form id="form-analise" class="standard-form">
                             <div class="form-group">
+                                <label for="analise-contexto">Obra / Contexto (Opcional): <span class="help-icon" data-tooltip="Selecione a obra para exibir dados e capa do anime.">?</span></label>
+                                <select id="analise-contexto">
+                                    <option value="" disabled selected>Carregando contextos...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label for="analise-entrada">Caminho da pasta ou arquivo de vídeo: <span class="help-icon" data-tooltip="Caminho absoluto da pasta contendo os vídeos a serem auditados por codecs, faixas e sincronia.">?</span></label>
                                 <div class="input-with-button">
                                     <input type="text" id="analise-entrada" placeholder="Ex: C:\animes\[Sokudo] DanMachi\Season 04" required>
@@ -336,12 +342,6 @@
                                     <input type="text" id="analise-saida" placeholder="Deixe vazio p/ salvar em 'relatorios' na pasta da mídia">
                                     <button type="button" class="btn-procurar" data-target="analise-saida" data-type="pasta"><span class="material-symbols-outlined btn-inline-icon">folder_open</span>Procurar...</button>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="analise-contexto">Obra / Contexto (Opcional): <span class="help-icon" data-tooltip="Selecione a obra para exibir dados e capa do anime.">?</span></label>
-                                <select id="analise-contexto">
-                                    <option value="" disabled selected>Carregando contextos...</option>
-                                </select>
                             </div>
                             <div class="correcao-actions">
                                 <button type="submit" class="btn btn-primary" id="btn-submit-analise" data-tooltip="Iniciar varredura técnica de arquivos de mídia">
@@ -438,6 +438,12 @@
 
                         <form id="form-traducao" class="standard-form">
                             <div class="form-group">
+                                <label for="traducao-contexto">Contexto de Tradução (Lore): <span class="help-icon" data-tooltip="Define qual pacote de regras de lore será usado pela LLM.">?</span></label>
+                                <select id="traducao-contexto">
+                                    <option value="" disabled selected>Carregando contextos...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label for="traducao-entrada">Pasta com as legendas ORIGINAIS (.ass / .ssa): <span class="help-icon" data-tooltip="Pasta contendo os arquivos de legenda originais (geralmente em inglês) que serão traduzidos pela LLM.">?</span></label>
                                 <div class="input-with-button">
                                     <input type="text" id="traducao-entrada" placeholder="Ex: C:\animes\[Sokudo] DanMachi\Season 04\legendas_eng" required>
@@ -450,11 +456,6 @@
                                     <input type="text" id="traducao-saida" placeholder="Deixe vazio p/ salvar em 'traducao_ptbr' na pasta da mídia">
                                     <button type="button" class="btn-procurar" data-target="traducao-saida" data-type="pasta"><span class="material-symbols-outlined btn-inline-icon">folder_open</span>Procurar...</button>
                                 </div>
-
-                                <label for="traducao-contexto">Contexto de Tradução (Lore): <span class="help-icon" data-tooltip="Define qual pacote de regras de lore será usado pela LLM.">?</span></label>
-                                <select id="traducao-contexto">
-                                    <option value="" disabled selected>Carregando contextos...</option>
-                                </select>
                             </div>
                             <div class="correcao-actions">
                                 <button type="submit" class="btn btn-primary btn-green" data-tooltip="Iniciar tradução em lote pelo servidor local do LM Studio">
@@ -498,17 +499,17 @@
 
                         <form id="form-correcao" class="standard-form">
                             <div class="form-group">
+                                <label for="correcao-contexto">Obra / Contexto (Opcional): <span class="help-icon" data-tooltip="Selecione a obra para exibir dados e capa durante a correção do cache.">?</span></label>
+                                <select id="correcao-contexto">
+                                    <option value="" disabled selected>Carregando contextos...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label for="correcao-entrada">Pasta do cache de traduções (.cache.json): <span class="help-icon" data-tooltip="Caminho do diretório de cache. Deixe vazio para usar a pasta padrão 'cache'.">?</span></label>
                                 <div class="input-with-button">
                                     <input type="text" id="correcao-entrada" placeholder="Deixe em branco para usar a pasta de cache padrão 'cache'">
                                     <button type="button" class="btn-procurar" data-target="correcao-entrada" data-type="pasta"><span class="material-symbols-outlined btn-inline-icon">folder_open</span>Procurar...</button>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="correcao-contexto">Obra / Contexto (Opcional): <span class="help-icon" data-tooltip="Selecione a obra para exibir dados e capa durante a correção do cache.">?</span></label>
-                                <select id="correcao-contexto">
-                                    <option value="" disabled selected>Carregando contextos...</option>
-                                </select>
                             </div>
                             
                             <div class="correcao-actions">
@@ -565,6 +566,12 @@
 
                         <form id="form-revisao" class="standard-form">
                             <div class="form-group">
+                                <label for="revisao-contexto">Contexto de Lore (concordância LLM): <span class="help-icon" data-tooltip="Define gênero de personagens e regras de tratamento para a revisão de pronomes, artigos e adjetivos.">?</span></label>
+                                <select id="revisao-contexto">
+                                    <option value="" disabled selected>Carregando contextos...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label for="revisao-entrada">Pasta com legendas TRADUZIDAS (.ass / .ssa): <span class="help-icon" data-tooltip="Arquivos *_PT-BR.ass ou *_PTBR_TrackN.ass gerados pela tradução.">?</span></label>
                                 <div class="input-with-button">
                                     <input type="text" id="revisao-entrada" name="entrada" autocomplete="off" spellcheck="false" placeholder="Ex: E:\animes\DANMACHI\temporada_5\legendas_extraidas_ass" required>
@@ -577,12 +584,6 @@
                                     <input type="text" id="revisao-entrada-en" name="saida" autocomplete="off" spellcheck="false" placeholder="Opcional — mesma pasta do PT se vazio">
                                     <button type="button" class="btn-procurar" data-target="revisao-entrada-en" data-type="pasta"><span class="material-symbols-outlined btn-inline-icon">folder_open</span>Procurar...</button>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="revisao-contexto">Contexto de Lore (concordância LLM): <span class="help-icon" data-tooltip="Define gênero de personagens e regras de tratamento para a revisão de pronomes, artigos e adjetivos.">?</span></label>
-                                <select id="revisao-contexto">
-                                    <option value="" disabled selected>Carregando contextos...</option>
-                                </select>
                             </div>
                             <div class="correcao-actions">
                                 <button type="button" class="btn btn-primary btn-purple" id="btn-revisao-concordancia" data-tooltip="Corrige concordância PT-BR (gênero, pronomes, artigos, tratamentos) via LLM local">
@@ -630,6 +631,12 @@
 
                         <form id="form-cura" class="standard-form">
                             <div class="form-group">
+                                <label for="cura-contexto">Obra / Contexto (Opcional): <span class="help-icon" data-tooltip="Exibe a capa/dados da obra e ativa a correção de falas suspeitas via LLM local. Vazio = correção estrutural sem LLM.">?</span></label>
+                                <select id="cura-contexto">
+                                    <option value="" disabled selected>Carregando contextos...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label for="cura-entrada-original">Pasta com legendas ORIGINAIS (.ass): <span class="help-icon" data-tooltip="Pasta com as legendas originais usadas como referência. Estes arquivos não são alterados.">?</span></label>
                                 <div class="input-with-button">
                                     <input type="text" id="cura-entrada-original" name="entradaOriginal" autocomplete="off" spellcheck="false" placeholder="Ex: E:\animes\DANMACHI\temporada_4\legendas_extraidas_ass" required>
@@ -642,12 +649,6 @@
                                     <input type="text" id="cura-entrada-traduzida" name="entradaTraduzida" autocomplete="off" spellcheck="false" placeholder="Ex: E:\animes\DANMACHI\temporada_4\legendas_extraidas_ass\traducao_ptbr" required>
                                     <button type="button" class="btn-procurar" data-target="cura-entrada-traduzida" data-type="pasta"><span class="material-symbols-outlined btn-inline-icon">folder_open</span>Procurar...</button>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="cura-contexto">Obra / Contexto (Opcional): <span class="help-icon" data-tooltip="Exibe a capa/dados da obra e ativa a correção de falas suspeitas via LLM local. Vazio = correção estrutural sem LLM.">?</span></label>
-                                <select id="cura-contexto">
-                                    <option value="" disabled selected>Carregando contextos...</option>
-                                </select>
                             </div>
 
                             <div class="cura-actions" style="display: flex; gap: 15px; margin-top: 20px;">
