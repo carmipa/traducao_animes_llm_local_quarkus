@@ -144,6 +144,41 @@ class TrocaTipoLegendaUseCaseTest {
         // Verificar telemetria e cache
         assertTrue(telemetriaStub.operacaoRegistrada);
         assertEquals(1, cacheStub.registros);
+
+        Path relatorioMarkdown = Path.of(resultado.caminhoRelatorioJson().replace(".json", ".md"));
+        String markdown = Files.readString(relatorioMarkdown, StandardCharsets.UTF_8);
+        assertTrue(markdown.contains("# Troca de Fontes ASS"));
+        assertTrue(markdown.contains("| Arquivos analisados | 2 |"));
+        assertTrue(markdown.contains("Auditoria granular"));
+        assertFalse(markdown.contains("Logs de Execução"));
+        assertFalse(markdown.contains("[UTC "));
+    }
+
+    @Test
+    void aplicarSubstituicaoContaCadaEstiloProblematico(@TempDir Path tempDir) throws IOException {
+        String cabecalho = "[Script Info]\n" +
+            "Title: Test Legend\n" +
+            "Script Type: v4.00+\n\n" +
+            "[V4+ Styles]\n" +
+            "Format: Name, Fontname\n" +
+            "Style: Dialogue,.VnBook-Antiqua\n" +
+            "Style: Title,.VnBook-Antiqua\n\n" +
+            "[Events]\n" +
+            "Format: Layer, Start, End, Style, Text\n" +
+            "Dialogue: 0,0:00:01.00,0:00:03.00,Dialogue,Olá Mundo\n";
+        Files.writeString(tempDir.resolve("legenda-multi.ass"), cabecalho, StandardCharsets.UTF_8);
+
+        ResultadoTrocaFonte resultado = useCase.aplicar(tempDir);
+
+        assertEquals(1, resultado.totalAnalisados());
+        assertEquals(1, resultado.totalAlterados());
+        assertEquals(2, resultado.totalSubstituicoes());
+        assertEquals(2, cacheStub.registros);
+
+        String conteudoCorrigido = Files.readString(tempDir.resolve("legenda-multi.ass"), StandardCharsets.UTF_8);
+        assertTrue(conteudoCorrigido.contains("Style: Dialogue,Arial"));
+        assertTrue(conteudoCorrigido.contains("Style: Title,Arial"));
+        assertFalse(conteudoCorrigido.contains(".VnBook-Antiqua"));
     }
 
     private void criarLegendaDeTeste(Path pasta, String nome, String fonte) throws IOException {

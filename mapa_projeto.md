@@ -1003,7 +1003,6 @@ Rota mapeada especificamente para evitar colisões com o Controller Spring.
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/trocaTipoLegenda/application/AuditoriaFontesService.java`
 ```text
 Mapeamento de fontes vietnamitas/ANSI problemáticas para Arial como padrão seguro.
-Se não houver a seção [V4+ Styles], não há estilos para analisar
 ```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/trocaTipoLegenda/application/TrocaTipoLegendaUseCase.java`
@@ -1036,6 +1035,9 @@ Cache append-only para gravação de auditoria histórica e granular de cada alt
 *(Sem docstring ou cabeçalho explicativo)*
 
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/ApiControllerTest.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/apiDadosAnime/application/ObterMetadataAnimeUseCaseTest.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/ApiEndpointsTest.java`

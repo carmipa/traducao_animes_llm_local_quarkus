@@ -44,6 +44,7 @@
         <div class="stats-badges-container">
             <span class="meta-badge" id="badge-total-arquivos">0 arquivos</span>
             <span class="meta-badge" id="badge-arquivos-problemas">0 com problemas</span>
+            <button type="button" class="meta-badge hidden" id="btn-toggle-arquivos-ok">Mostrar OK</button>
         </div>
     </div>
     
@@ -52,10 +53,10 @@
             <thead>
                 <tr>
                     <th>Arquivo</th>
-                    <th>Estilo</th>
-                    <th>Fonte Atual</th>
-                    <th>Substituição Sugerida</th>
-                    <th>Status</th>
+                    <th>Diagnóstico</th>
+                    <th>Fonte(s)</th>
+                    <th>Ação Sugerida</th>
+                    <th>Decisão</th>
                 </tr>
             </thead>
             <tbody>
@@ -78,9 +79,9 @@
     <div class="mapeamentos-sugeridos-container">
         <h5>Mapeamentos que serão aplicados:</h5>
         <ul class="mapeamentos-lista">
-            <li><span class="fonte-antiga">.VnBook-Antiqua</span> <span class="seta-subst">&rarr;</span> <span class="fonte-nova">Book Antiqua</span></li>
+            <li><span class="fonte-antiga">.VnBook-Antiqua</span> <span class="seta-subst">&rarr;</span> <span class="fonte-nova">Arial</span></li>
             <li><span class="fonte-antiga">.VnArial</span> <span class="seta-subst">&rarr;</span> <span class="fonte-nova">Arial</span></li>
-            <li><span class="fonte-antiga">.VnTimes</span> <span class="seta-subst">&rarr;</span> <span class="fonte-nova">Times New Roman</span></li>
+            <li><span class="fonte-antiga">.VnTimes</span> <span class="seta-subst">&rarr;</span> <span class="fonte-nova">Arial</span></li>
         </ul>
         <p class="nota-backup"><em>* Nota: Um backup de segurança de todos os arquivos modificados será salvo na pasta <code>backups/</code> antes da gravação física.</em></p>
     </div>

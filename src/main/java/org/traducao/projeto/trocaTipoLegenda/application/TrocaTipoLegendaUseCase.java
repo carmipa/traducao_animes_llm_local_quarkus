@@ -29,7 +29,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 @Service
@@ -48,7 +47,6 @@ public class TrocaTipoLegendaUseCase {
 
     private static final class SessaoTroca {
         final long inicioMs = System.currentTimeMillis();
-        final List<String> logsSessao = new ArrayList<>();
 
         void out(String msg) {
             String limpa = msg.replaceAll("\\u001B\\[[0-9;]*m", "").replaceAll("\\033\\[[0-9;]*m", "");
@@ -58,7 +56,6 @@ public class TrocaTipoLegendaUseCase {
             
             System.out.println(msg);
             log.info(logCompleto);
-            logsSessao.add(logCompleto);
         }
 
         private String formatarDuracao(long ms) {
@@ -144,7 +141,6 @@ public class TrocaTipoLegendaUseCase {
 
         int totalAlterados = 0;
         int totalSubstituicoes = 0;
-        Map<String, String> mapaProblematicas = auditoriaService.getFontesProblematicas();
 
         for (Path arq : arquivos) {
             if (Thread.currentThread().isInterrupted()) {
@@ -156,6 +152,9 @@ public class TrocaTipoLegendaUseCase {
                 DocumentoLegenda doc = leitor.ler(arq);
                 List<AuditoriaFonteInfo> fontes = auditoriaService.analisarCabecalho(doc.cabecalho());
                 boolean temProblemas = fontes.stream().anyMatch(AuditoriaFonteInfo::problematica);
+                List<AuditoriaFonteInfo> fontesProblematicas = fontes.stream()
+                    .filter(AuditoriaFonteInfo::problematica)
+                    .toList();
 
                 if (!temProblemas) {
                     sessao.out("Arquivo " + arq.getFileName() + " [OK] - Sem fontes legadas problemáticas. Pulando.");
@@ -168,35 +167,10 @@ public class TrocaTipoLegendaUseCase {
 
                 // Executa a substituição no cabeçalho
                 String cabecalhoOriginal = doc.cabecalho();
-                String cabecalhoNovo = cabecalhoOriginal;
-                int substituicoesNoArquivo = 0;
-
-                // Registra o log granular para cada estilo de fonte problemática
-                for (AuditoriaFonteInfo fonteInfo : fontes) {
-                    if (fonteInfo.problematica()) {
-                        String fonteLegada = fonteInfo.fonteAtual();
-                        String fonteUnicode = fonteInfo.fonteSugerida();
-
-                        if (cabecalhoNovo.contains(fonteLegada)) {
-                            cabecalhoNovo = cabecalhoNovo.replace(fonteLegada, fonteUnicode);
-                            substituicoesNoArquivo++;
-                            
-                            // Registrar no cache granular de auditoria (JSONL append-only)
-                            EntradaAuditoriaTrocaFonte entrada = new EntradaAuditoriaTrocaFonte(
-                                Instant.now().toString(),
-                                arq.getFileName().toString(),
-                                fonteInfo.estilo(),
-                                fonteLegada,
-                                fonteUnicode,
-                                pastaBackup.toString(),
-                                "SUBSTITUIDO"
-                            );
-                            auditoriaCache.registrar(entrada);
-
-                            sessao.out("  -> No arquivo: " + arq.getFileName() + " estilo [" + fonteInfo.estilo() + "] substituído: " + fonteLegada + " -> " + fonteUnicode);
-                        }
-                    }
-                }
+                AuditoriaFontesService.ResultadoSubstituicaoCabecalho substituicao =
+                    auditoriaService.substituirFontesProblematicas(cabecalhoOriginal);
+                String cabecalhoNovo = substituicao.cabecalho();
+                int substituicoesNoArquivo = substituicao.substituicoes();
 
                 if (substituicoesNoArquivo > 0) {
                     DocumentoLegenda novoDoc = new DocumentoLegenda(
@@ -208,6 +182,26 @@ public class TrocaTipoLegendaUseCase {
                     
                     // Escreve com o escritor ASS
                     escritor.escrever(arq, novoDoc);
+
+                    // Registra auditoria granular apenas depois da gravação física
+                    // ser concluída, para o cache não marcar sucesso se o IO falhar.
+                    for (AuditoriaFonteInfo fonteInfo : fontesProblematicas) {
+                        String fonteLegada = fonteInfo.fonteAtual();
+                        String fonteUnicode = fonteInfo.fonteSugerida();
+                        EntradaAuditoriaTrocaFonte entrada = new EntradaAuditoriaTrocaFonte(
+                            Instant.now().toString(),
+                            arq.getFileName().toString(),
+                            fonteInfo.estilo(),
+                            fonteLegada,
+                            fonteUnicode,
+                            pastaBackup.toString(),
+                            "SUBSTITUIDO"
+                        );
+                        auditoriaCache.registrar(entrada);
+
+                        sessao.out("  -> No arquivo: " + arq.getFileName() + " estilo [" + fonteInfo.estilo() + "] substituído: " + fonteLegada + " -> " + fonteUnicode);
+                    }
+
                     totalAlterados++;
                     totalSubstituicoes += substituicoesNoArquivo;
                     sessao.out(AnsiCores.GREEN + "  [SUCESSO] Arquivo " + arq.getFileName() + " atualizado!" + AnsiCores.RESET);
@@ -231,7 +225,7 @@ public class TrocaTipoLegendaUseCase {
         }
 
         sessao.out(AnsiCores.GREEN + "\n========================================================================" + AnsiCores.RESET);
-        sessao.out(AnsiCores.GREEN + "  [SUCESSO] OPERAÇÃO DE SUBISTITUIÇÃO DE FONTES FINALIZADA!" + AnsiCores.RESET);
+        sessao.out(AnsiCores.GREEN + "  [SUCESSO] OPERAÇÃO DE SUBSTITUIÇÃO DE FONTES FINALIZADA!" + AnsiCores.RESET);
         sessao.out(AnsiCores.GREEN + "========================================================================" + AnsiCores.RESET);
         sessao.out("  • Arquivos analisados  : " + arquivos.size());
         sessao.out("  • Arquivos alterados   : " + totalAlterados);
@@ -259,7 +253,7 @@ public class TrocaTipoLegendaUseCase {
             objectMapper.writeValue(caminhoJson.toFile(), resultado);
             
             // Salvar Markdown
-            String markdown = gerarRelatorioMarkdown(resultado, sessao.logsSessao);
+            String markdown = gerarRelatorioMarkdown(resultado);
             Files.writeString(caminhoMd, markdown, StandardCharsets.UTF_8);
             
             sessao.out("Relatórios persistidos em: " + pastaRelatorios);
@@ -305,21 +299,29 @@ public class TrocaTipoLegendaUseCase {
         }
     }
 
-    private String gerarRelatorioMarkdown(ResultadoTrocaFonte res, List<String> logs) {
+    private String gerarRelatorioMarkdown(ResultadoTrocaFonte res) {
         StringBuilder sb = new StringBuilder();
-        sb.append("# Relatório de Auditoria e Troca de Fontes ASS\n\n");
-        sb.append("- **Data/Hora**: ").append(res.dataHora()).append("\n");
-        sb.append("- **Total de arquivos analisados**: ").append(res.totalAnalisados()).append("\n");
-        sb.append("- **Total de arquivos alterados**: ").append(res.totalAlterados()).append("\n");
-        sb.append("- **Total de substituições de fonte feitas**: ").append(res.totalSubstituicoes()).append("\n");
-        sb.append("- **Pasta de backup**: `").append(res.pastaBackup()).append("`\n\n");
-        
-        sb.append("## Logs de Execução\n");
-        sb.append("```text\n");
-        for (String logLine : logs) {
-            sb.append(logLine).append("\n");
+        sb.append("# Troca de Fontes ASS\n\n");
+        sb.append("## Resumo\n\n");
+        sb.append("| Métrica | Valor |\n");
+        sb.append("|---|---:|\n");
+        sb.append("| Arquivos analisados | ").append(res.totalAnalisados()).append(" |\n");
+        sb.append("| Arquivos alterados | ").append(res.totalAlterados()).append(" |\n");
+        sb.append("| Substituições aplicadas | ").append(res.totalSubstituicoes()).append(" |\n\n");
+
+        sb.append("## Arquivos\n\n");
+        sb.append("- Data/hora: `").append(res.dataHora()).append("`\n");
+        sb.append("- Backup: `").append(res.pastaBackup()).append("`\n");
+        sb.append("- JSON resumido: `").append(res.caminhoRelatorioJson()).append("`\n");
+        sb.append("- Auditoria granular: `").append(auditoriaCache.caminhoCanonico()).append("`\n\n");
+
+        sb.append("## Resultado\n\n");
+        if (res.totalSubstituicoes() > 0) {
+            sb.append("Fontes legacy detectadas foram substituídas por `Arial`. ");
+            sb.append("Use o backup para reverter arquivos específicos, se necessário.\n");
+        } else {
+            sb.append("Nenhuma substituição foi necessária.\n");
         }
-        sb.append("```\n");
         return sb.toString();
     }
 }

@@ -21,7 +21,7 @@ public class EscritorLegendaAss {
 
     private static final char BOM = '﻿';
     private static final String FONTE_VNI_BOOK_ANTIQUA = ".VnBook-Antiqua";
-    private static final String FONTE_UNICODE_BOOK_ANTIQUA = "Book Antiqua";
+    private static final String FONTE_UNICODE_SEGURA = "Arial";
 
     public void escrever(Path destino, DocumentoLegenda documento) {
         StringBuilder conteudo = new StringBuilder();
@@ -64,6 +64,6 @@ public class EscritorLegendaAss {
         if (cabecalho == null || cabecalho.isBlank()) {
             return cabecalho;
         }
-        return cabecalho.replace(FONTE_VNI_BOOK_ANTIQUA, FONTE_UNICODE_BOOK_ANTIQUA);
+        return cabecalho.replace(FONTE_VNI_BOOK_ANTIQUA, FONTE_UNICODE_SEGURA);
     }
 }

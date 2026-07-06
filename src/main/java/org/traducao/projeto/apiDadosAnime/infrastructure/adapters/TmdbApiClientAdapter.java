@@ -37,7 +37,11 @@ public class TmdbApiClientAdapter {
     }
 
     public boolean isConfigurado() {
-        return !apiKey.isBlank();
+        return !apiKey.isBlank()
+            && !apiKey.equalsIgnoreCase("dummy_key")
+            && !apiKey.equalsIgnoreCase("INSIRA_SUA_CHAVE_DO_TMDB_AQUI")
+            && !apiKey.equalsIgnoreCase("sua-chave-tmdb-aqui")
+            && !apiKey.equalsIgnoreCase("sua-chave-tmdb-real-aqui");
     }
 
     public Optional<AnimeMetadata> buscarPorNome(String termoBusca) {

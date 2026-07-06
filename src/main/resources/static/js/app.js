@@ -411,14 +411,15 @@ export function logNoConsole(consoleId, mensagem, tipo = 'info') {
 }
 
 // Configura funcionalidade de limpar os consoles
-document.querySelectorAll('.btn-clear-console').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const consoleId = btn.getAttribute('data-target');
-        const consoleDiv = document.getElementById(consoleId);
-        if (consoleDiv) {
-            consoleDiv.innerHTML = '<div class="system-message">Console limpo. Aguardando novos logs...</div>';
-        }
-    });
+document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.btn-clear-console');
+    if (!btn) return;
+
+    const consoleId = btn.getAttribute('data-target');
+    const consoleDiv = document.getElementById(consoleId);
+    if (consoleDiv) {
+        consoleDiv.innerHTML = '<div class="system-message">Console limpo. Aguardando novos logs...</div>';
+    }
 });
 
 // Botão "Parar Execução" dos menus: interrompe o trabalho em execução na
@@ -444,39 +445,40 @@ document.addEventListener('click', async (e) => {
 });
 
 // Configura funcionalidade de copiar o conteúdo de um console/relatório
-document.querySelectorAll('.btn-copy-console').forEach(btn => {
-    btn.addEventListener('click', async () => {
-        const consoleId = btn.getAttribute('data-target');
-        const consoleDiv = document.getElementById(consoleId);
-        if (!consoleDiv) return;
+document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.btn-copy-console');
+    if (!btn) return;
 
-        const texto = consoleDiv.innerText.trim();
-        if (!texto) {
-            mostrarAlerta('Não há conteúdo para copiar.', 'aviso');
-            return;
-        }
+    const consoleId = btn.getAttribute('data-target');
+    const consoleDiv = document.getElementById(consoleId);
+    if (!consoleDiv) return;
 
+    const texto = consoleDiv.innerText.trim();
+    if (!texto) {
+        mostrarAlerta('Não há conteúdo para copiar.', 'aviso');
+        return;
+    }
+
+    try {
+        await navigator.clipboard.writeText(texto);
+        mostrarAlerta('Conteúdo copiado para a área de transferência!', 'sucesso');
+    } catch (err) {
+        console.warn('Falha ao copiar via Clipboard API, usando fallback.', err);
+        const textarea = document.createElement('textarea');
+        textarea.value = texto;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
         try {
-            await navigator.clipboard.writeText(texto);
+            document.execCommand('copy');
             mostrarAlerta('Conteúdo copiado para a área de transferência!', 'sucesso');
-        } catch (err) {
-            console.warn('Falha ao copiar via Clipboard API, usando fallback.', err);
-            const textarea = document.createElement('textarea');
-            textarea.value = texto;
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-            document.body.appendChild(textarea);
-            textarea.select();
-            try {
-                document.execCommand('copy');
-                mostrarAlerta('Conteúdo copiado para a área de transferência!', 'sucesso');
-            } catch (fallbackErr) {
-                mostrarAlerta('Não foi possível copiar automaticamente. Selecione o texto manualmente.', 'erro');
-            } finally {
-                document.body.removeChild(textarea);
-            }
+        } catch (fallbackErr) {
+            mostrarAlerta('Não foi possível copiar automaticamente. Selecione o texto manualmente.', 'erro');
+        } finally {
+            document.body.removeChild(textarea);
         }
-    });
+    }
 });
 
 /**
@@ -548,6 +550,16 @@ export function verificarAlertaSSE(mensagem) {
 /**
  * Monitora inputs de caminho/pasta e selects de contexto para carregar dinamicamente os metadados e capas de animes
  */
+function limparTermoMetadata(texto) {
+    if (!texto) return '';
+
+    return texto
+        .replace(/\s*-\s*Revis[aã]o\s+de\s+Lore\s*$/i, '')
+        .replace(/\s+Revis[aã]o\s+de\s+Lore\s*$/i, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
 function inicializarMetadadosDinamicos() {
     const mapeamentoFormularios = [
         { inputId: 'analise-entrada', selectId: 'analise-contexto', bannerId: 'meta-banner-analise' },
@@ -566,9 +578,10 @@ function inicializarMetadadosDinamicos() {
 
         // Se houver select preenchido com obra válida, usa o contexto como fonte principal de lore
         if (select && select.value && select.selectedIndex >= 0) {
-            const optText = select.options[select.selectedIndex].text;
+            const option = select.options[select.selectedIndex];
+            const optText = option.text;
             if (optText && !optText.includes('Carregando') && !optText.includes('Selecione')) {
-                termo = optText;
+                termo = option.dataset.metadataQuery || limparTermoMetadata(optText);
             }
         }
 
@@ -622,7 +635,7 @@ function inicializarMetadadosDinamicos() {
     });
 
     // Emite carregado ao trocar de aba no menu lateral
-    document.querySelectorAll('.sidebar-nav .nav-item').forEach(nav => {
+    document.querySelectorAll('.nav-menu .nav-item, .sidebar-nav .nav-item').forEach(nav => {
         nav.addEventListener('click', () => {
             setTimeout(() => mapeamentoFormularios.forEach(atualizarItem), 150);
         });
@@ -675,6 +688,9 @@ async function carregarContextosAuxiliares(idsSelects, onComplete) {
                 const opt = document.createElement('option');
                 opt.value = ctx.id;
                 opt.textContent = ctx.nome;
+                if (ctx.termoMetadata) {
+                    opt.dataset.metadataQuery = ctx.termoMetadata;
+                }
                 if (!ehAuxiliar && !ehRevisaoLore && ctx.padrao) {
                     opt.selected = true;
                 }

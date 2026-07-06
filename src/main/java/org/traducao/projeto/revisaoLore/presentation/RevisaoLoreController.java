@@ -48,14 +48,28 @@ public class RevisaoLoreController {
         boolean revisarTodasFalas
     ) {}
 
-    public record RevisaoLoreContextoResponse(String id, String nome) {}
+    public record RevisaoLoreContextoResponse(String id, String nome, String termoMetadata) {}
 
     @GetMapping("/revisao-lore/contextos")
     public ResponseEntity<List<RevisaoLoreContextoResponse>> listarPromptsRevisaoLore() {
         List<RevisaoLoreContextoResponse> lista = gerenciadorPromptRevisaoLore.getProvedores().stream()
-            .map(p -> new RevisaoLoreContextoResponse(p.getId(), p.getNomeExibicao()))
+            .map(p -> new RevisaoLoreContextoResponse(
+                p.getId(),
+                p.getNomeExibicao(),
+                limparTermoMetadata(p.getNomeExibicao())))
             .toList();
         return ResponseEntity.ok(lista);
+    }
+
+    private String limparTermoMetadata(String nomeExibicao) {
+        if (nomeExibicao == null) {
+            return "";
+        }
+        return nomeExibicao
+            .replaceAll("(?i)\\s*-\\s*Revis[aã]o\\s+de\\s+Lore\\s*$", "")
+            .replaceAll("(?i)\\s+Revis[aã]o\\s+de\\s+Lore\\s*$", "")
+            .replaceAll("\\s+", " ")
+            .trim();
     }
 
     @PostMapping("/revisar-lore")

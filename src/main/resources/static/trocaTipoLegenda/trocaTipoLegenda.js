@@ -2,6 +2,15 @@ import { logNoConsole, mostrarAlerta } from '../js/app.js';
 
 const PAINEL_HTML = 'trocaTipoLegenda/trocaTipoLegenda.html';
 
+function escapeHtml(texto) {
+    return String(texto ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 async function carregarPainelHtml() {
     const painel = document.getElementById('panel-troca-tipo-legenda');
     if (!painel || painel.dataset.moduloCarregado === 'true') {
@@ -30,8 +39,103 @@ function vincularEventos() {
     
     const badgeTotal = document.getElementById('badge-total-arquivos');
     const badgeProblemas = document.getElementById('badge-arquivos-problemas');
+    const btnToggleOk = document.getElementById('btn-toggle-arquivos-ok');
 
     if (!btnEscanear || !inputEntrada || !tabelaFontesCorpo) return;
+
+    let ultimoResultadoAuditoria = null;
+    let mostrarArquivosOk = false;
+
+    const renderizarTabelaAuditoria = (data) => {
+        tabelaFontesCorpo.innerHTML = '';
+
+        if (!data.arquivos || data.arquivos.length === 0) {
+            tabelaFontesCorpo.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">Nenhum arquivo de legenda encontrado na pasta.</td></tr>`;
+            if (btnToggleOk) btnToggleOk.classList.add('hidden');
+            return;
+        }
+
+        const arquivosComProblemas = data.arquivos.filter(arq =>
+            (arq.fontes || []).some(fonteInfo => fonteInfo.problematica)
+        );
+        const arquivosOk = data.arquivos.filter(arq =>
+            !(arq.fontes || []).some(fonteInfo => fonteInfo.problematica)
+        );
+        const arquivosVisiveis = mostrarArquivosOk
+            ? [...arquivosComProblemas, ...arquivosOk]
+            : arquivosComProblemas;
+
+        if (btnToggleOk) {
+            if (arquivosOk.length > 0) {
+                btnToggleOk.classList.remove('hidden');
+                btnToggleOk.textContent = mostrarArquivosOk
+                    ? `Ocultar ${arquivosOk.length} OK`
+                    : `Mostrar ${arquivosOk.length} OK`;
+            } else {
+                btnToggleOk.classList.add('hidden');
+            }
+        }
+
+        if (arquivosVisiveis.length === 0) {
+            tabelaFontesCorpo.innerHTML = `
+                <tr>
+                    <td colspan="5" style="text-align:center; color: var(--accent-green); font-weight: 700;">
+                        Nenhuma legenda precisa de alteração. ${arquivosOk.length} arquivo(s) estão OK.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        arquivosVisiveis.forEach(arq => {
+            const nomeArq = arq.arquivo;
+            const nomeArqSeguro = escapeHtml(nomeArq);
+            const fontesProblematicas = (arq.fontes || []).filter(fonteInfo => fonteInfo.problematica);
+            const temProblema = fontesProblematicas.length > 0;
+            const tr = document.createElement('tr');
+            if (temProblema) {
+                tr.className = 'linha-auditoria-problema';
+            }
+
+            const diagnosticoHtml = temProblema
+                ? '<span class="status-badge pulse-red">Problema</span>'
+                : '<span class="status-badge pulse-green">OK</span>';
+
+            const fontesHtml = temProblema
+                ? fontesProblematicas.map(fonteInfo => {
+                    const estiloSeguro = escapeHtml(fonteInfo.estilo);
+                    const fonteAtualSegura = escapeHtml(fonteInfo.fonteAtual);
+                    const fonteSugeridaSegura = escapeHtml(fonteInfo.fonteSugerida);
+                    return `<code>${estiloSeguro}: ${fonteAtualSegura} -> ${fonteSugeridaSegura}</code>`;
+                }).join('<br>')
+                : '<span style="color: var(--text-muted);">Nenhuma fonte legacy detectada</span>';
+
+            const acaoHtml = temProblema
+                ? '<strong style="color: var(--accent-green);">Substituir por Arial</strong>'
+                : '<span style="color: var(--text-muted);">Manter arquivo</span>';
+
+            const decisaoHtml = temProblema
+                ? '<span class="status-badge pulse-red">Alterar se aplicar lote</span>'
+                : '<span class="status-badge pulse-green">Não alterar</span>';
+
+            tr.innerHTML = `
+                <td class="td-arquivo-legenda" title="${nomeArqSeguro}"><strong>${nomeArqSeguro}</strong></td>
+                <td>${diagnosticoHtml}</td>
+                <td>${fontesHtml}</td>
+                <td>${acaoHtml}</td>
+                <td>${decisaoHtml}</td>
+            `;
+            tabelaFontesCorpo.appendChild(tr);
+        });
+    };
+
+    if (btnToggleOk) {
+        btnToggleOk.addEventListener('click', () => {
+            if (!ultimoResultadoAuditoria) return;
+            mostrarArquivosOk = !mostrarArquivosOk;
+            renderizarTabelaAuditoria(ultimoResultadoAuditoria);
+        });
+    }
 
     // Ação do Botão: Escanear Fontes
     btnEscanear.addEventListener('click', async () => {
@@ -47,6 +151,14 @@ function vincularEventos() {
         // Oculta cards antigos
         areaResultado.classList.add('hidden');
         cardCorrecao.classList.add('hidden');
+        if (btnAplicar) {
+            btnAplicar.disabled = false;
+        }
+        if (btnToggleOk) {
+            btnToggleOk.classList.add('hidden');
+        }
+        ultimoResultadoAuditoria = null;
+        mostrarArquivosOk = false;
         tabelaFontesCorpo.innerHTML = '';
 
         try {
@@ -73,56 +185,15 @@ function vincularEventos() {
                 badgeProblemas.className = 'meta-badge genre'; // Destaca em verde
             }
 
-            // Popula a tabela
-            if (data.arquivos && data.arquivos.length > 0) {
-                data.arquivos.forEach(arq => {
-                    const nomeArq = arq.arquivo;
-                    
-                    if (!arq.fontes || arq.fontes.length === 0) {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td class="td-arquivo-legenda" title="${nomeArq}">${nomeArq}</td>
-                            <td colspan="4" style="color: var(--text-muted); font-style: italic; text-align: center;">Nenhum estilo/fonte cadastrada no cabeçalho.</td>
-                        `;
-                        tabelaFontesCorpo.appendChild(tr);
-                    } else {
-                        arq.fontes.forEach((fonteInfo, idx) => {
-                            const tr = document.createElement('tr');
-                            if (fonteInfo.problematica) {
-                                tr.className = 'linha-auditoria-problema';
-                            }
-                            
-                            // Apenas exibe o nome do arquivo na primeira linha do arquivo para limpeza visual
-                            const tdArquivo = idx === 0 
-                                ? `<td class="td-arquivo-legenda" rowspan="${arq.fontes.length}" title="${nomeArq}"><strong>${nomeArq}</strong></td>`
-                                : '';
-
-                            const statusHtml = fonteInfo.problematica
-                                ? `<span class="status-badge pulse-red">Risco Alto</span>`
-                                : `<span class="status-badge pulse-green">Unicode Seguro</span>`;
-
-                            const fonteSugeridaHtml = fonteInfo.problematica
-                                ? `<strong style="color: var(--accent-green);">${fonteInfo.fonteSugerida}</strong>`
-                                : `<span style="color: var(--text-muted);">${fonteInfo.fonteSugerida}</span>`;
-
-                            tr.innerHTML = `
-                                ${tdArquivo}
-                                <td><code>${fonteInfo.estilo}</code></td>
-                                <td>${fonteInfo.fonteAtual}</td>
-                                <td>${fonteSugeridaHtml}</td>
-                                <td>${statusHtml}</td>
-                            `;
-                            tabelaFontesCorpo.appendChild(tr);
-                        });
-                    }
-                });
-            } else {
-                tabelaFontesCorpo.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">Nenhum arquivo de legenda encontrado na pasta.</td></tr>`;
-            }
+            ultimoResultadoAuditoria = data;
+            renderizarTabelaAuditoria(data);
 
             // Desbloqueia a área de alteração se houver problemas
             if (data.totalComProblemas > 0) {
                 cardCorrecao.classList.remove('hidden');
+                if (btnAplicar) {
+                    btnAplicar.disabled = false;
+                }
                 logNoConsole('console-troca-tipo-legenda', `Auditoria concluída: ${data.totalComProblemas} de ${data.totalArquivosAnalisados} arquivos possuem fontes vietnamitas legadas de alto risco. Área de substituição liberada!`, 'aviso');
                 mostrarAlerta('Auditoria concluída! Fontes legadas problemáticas foram detectadas.', 'aviso');
             } else {
@@ -179,6 +250,11 @@ function vincularEventos() {
             areaResultado.classList.add('hidden');
             cardCorrecao.classList.add('hidden');
             tabelaFontesCorpo.innerHTML = '';
+            ultimoResultadoAuditoria = null;
+            mostrarArquivosOk = false;
+            if (btnToggleOk) {
+                btnToggleOk.classList.add('hidden');
+            }
             logNoConsole('console-troca-tipo-legenda', 'Formulário e resultados limpos.', 'info');
         });
     }

@@ -88,11 +88,12 @@ public class ObterMetadataAnimeUseCase {
 
         texto = texto.replaceAll("\\[[^\\]]*\\]", " ")
                      .replaceAll("\\([^\\)]*\\)", " ")
+                     .replaceAll("(?i)\\s*-?\\s*Revis[aã]o\\s+de\\s+Lore\\s*$", " ")
                      // Separadores primeiro: "_ENG" so e removido pela lista de ruido
                      // abaixo se o "_" já tiver virado espaço (\b não separa "_E").
                      .replaceAll("[_.-]", " ")
-                     .replaceAll("(?i)\\b(Season|S)\\s*\\d+\\b|\\bE\\d{1,3}\\b", " ")
-                     .replaceAll("(?i)\\b(1080p|720p|4k|BD|AV1|HEVC|x264|x265|Dual Audio|Multi-Audio|ENG|PTBR|PT-BR|Track\\d+)\\b", " ")
+                     .replaceAll("(?i)\\bS\\d{1,2}E\\d{1,3}\\b|\\b(Season|S)\\s*\\d+\\b|\\bE\\d{1,3}\\b", " ")
+                     .replaceAll("(?i)\\b(1080p|720p|4k|BD|AV1|HEVC|x264|x265|Dual Audio|Multi-Audio|ENG|PTBR|PT\\s*BR|Track\\d+)\\b", " ")
                      .replaceAll("\\s+", " ")
                      .trim();
 

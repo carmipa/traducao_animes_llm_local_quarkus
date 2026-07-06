@@ -77,4 +77,39 @@ class AuditoriaFontesServiceTest {
         assertEquals(1, resultado.size());
         assertEquals("Default", resultado.get(0).estilo());
     }
+
+    @Test
+    void aceitaSecaoV4StylesDeSsaEComparacaoCaseInsensitive() {
+        String cabecalho = """
+            [V4 Styles]
+            Format: Name, Fontname
+            Style: Dialogue,.vnbook-antiqua
+            """;
+
+        List<AuditoriaFonteInfo> resultado = service.analisarCabecalho(cabecalho);
+
+        assertEquals(1, resultado.size());
+        assertEquals(".vnbook-antiqua", resultado.get(0).fonteAtual());
+        assertEquals("Arial", resultado.get(0).fonteSugerida());
+        assertTrue(resultado.get(0).problematica());
+    }
+
+    @Test
+    void substituiApenasCampoFontnameDasLinhasStyle() {
+        String cabecalho = """
+            [V4+ Styles]
+            Format: Name, Fontname, Fontsize
+            Style: .VnBook-Antiqua,.VnArial,20
+            Style: Dialogue,.VnBook-Antiqua,75
+            Comment: .VnBook-Antiqua nao deve ser alterado fora de Style
+            """;
+
+        AuditoriaFontesService.ResultadoSubstituicaoCabecalho resultado =
+            service.substituirFontesProblematicas(cabecalho);
+
+        assertEquals(2, resultado.substituicoes());
+        assertTrue(resultado.cabecalho().contains("Style: .VnBook-Antiqua,Arial,20"));
+        assertTrue(resultado.cabecalho().contains("Style: Dialogue,Arial,75"));
+        assertTrue(resultado.cabecalho().contains("Comment: .VnBook-Antiqua nao deve ser alterado fora de Style"));
+    }
 }

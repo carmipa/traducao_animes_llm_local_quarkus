@@ -46,7 +46,7 @@ class EscritorLegendaAssTest {
         escritor.escrever(saida, documento);
 
         String conteudo = Files.readString(saida, StandardCharsets.UTF_8);
-        assertTrue(conteudo.contains("Style: Dialogue,Book Antiqua,75"));
+        assertTrue(conteudo.contains("Style: Dialogue,Arial,75"));
         assertTrue(conteudo.contains("Não é mais um sonho."));
         assertFalse(conteudo.contains(".VnBook-Antiqua"));
     }
