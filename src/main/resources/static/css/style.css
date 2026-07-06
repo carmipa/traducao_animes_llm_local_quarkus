@@ -3858,3 +3858,167 @@ span.console-action-icon.material-symbols-outlined {
     color: var(--text-muted);
 }
 
+
+/* ==========================================================================
+   MENU TROCA TIPO LEGENDA - ESTILOS ADICIONADOS
+   ========================================================================== */
+
+.card-header-com-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 12px;
+}
+
+.stats-badges-container {
+    display: flex;
+    gap: 8px;
+}
+
+.resultado-tabela-container {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: #080b13;
+}
+
+.tabela-auditoria-fontes {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-main);
+    font-size: 0.85rem;
+    text-align: left;
+}
+
+.tabela-auditoria-fontes th {
+    background-color: rgba(255, 255, 255, 0.02);
+    color: var(--text-secondary);
+    font-weight: 600;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    font-family: var(--font-title);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tabela-auditoria-fontes td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
+    vertical-align: middle;
+}
+
+.tabela-auditoria-fontes tr:last-child td {
+    border-bottom: none;
+}
+
+.tabela-auditoria-fontes tr.linha-auditoria-problema {
+    background-color: rgba(244, 63, 94, 0.03);
+}
+
+.tabela-auditoria-fontes tr.linha-auditoria-problema td {
+    border-bottom: 1px solid rgba(244, 63, 94, 0.15);
+}
+
+.td-arquivo-legenda {
+    font-family: var(--font-main);
+    font-weight: 500;
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Alertas e avisos de risco */
+.aviso-risco-container {
+    display: flex;
+    gap: 16px;
+    background-color: rgba(244, 63, 94, 0.06);
+    border-left: 4px solid var(--accent-red);
+    border-radius: 4px;
+    padding: 16px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+}
+
+.aviso-risco-icon {
+    color: var(--accent-red);
+    font-size: 24px !important;
+}
+
+.aviso-risco-texto h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.aviso-risco-texto p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* Container de mapeamentos */
+.mapeamentos-sugeridos-container {
+    margin-bottom: 24px;
+    background-color: rgba(255, 255, 255, 0.01);
+    border: 1px solid var(--border-color);
+    padding: 16px;
+    border-radius: 8px;
+}
+
+.mapeamentos-sugeridos-container h5 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.mapeamentos-lista {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.mapeamentos-lista li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-code);
+    font-size: 0.85rem;
+    background-color: #080b13;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    width: fit-content;
+}
+
+.fonte-antiga {
+    color: var(--accent-red);
+    text-decoration: line-through;
+}
+
+.seta-subst {
+    color: var(--text-muted);
+}
+
+.fonte-nova {
+    color: var(--accent-green);
+    font-weight: 600;
+}
+
+.nota-backup {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+}
+
+

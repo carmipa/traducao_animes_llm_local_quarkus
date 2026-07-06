@@ -11,6 +11,7 @@ import { initCorrecao } from '../correcao/correcao.js';
 import { initRevisao } from '../revisao/revisao.js';
 import { initCura } from '../cura/cura.js';
 import { initRevisaoLore } from '../revisaoLore/revisaoLore.js';
+import { initTrocaTipoLegenda } from '../trocaTipoLegenda/trocaTipoLegenda.js';
 import { initRemuxer } from '../remuxer/remuxer.js';
 import { initMapa } from '../mapa/mapa.js';
 import { initTelemetria } from '../telemetria/telemetria.js?v=2.4';
@@ -29,7 +30,7 @@ const CONFIG_SECOES = {
     },
     extracao: {
         titulo: "2. Extração de Legendas",
-        subtitulo: "Extração industrial de faixas de legendas embutidas em vídeos (MKV, MP4 e outros)"
+        subtitulo: "Extração industrial de faixas de legendas embutidas in vídeos (MKV, MP4 e outros)"
     },
     traducao: {
         titulo: "3. Tradução Local via LLM",
@@ -51,16 +52,20 @@ const CONFIG_SECOES = {
         titulo: "8. Revisão de Lore",
         subtitulo: "Padronização de nomes, locais e termos de mundo nas legendas via LLM e lore oficial"
     },
+    "troca-tipo-legenda": {
+        titulo: "9. Troca Tipo legenda",
+        subtitulo: "Auditoria e substituição em lote de fontes vietnamitas ou ANSI legadas por fontes Unicode seguras"
+    },
     remuxer: {
-        titulo: "9. Remuxer Industrial",
+        titulo: "10. Remuxer Industrial",
         subtitulo: "Junção de vídeos originais e novas legendas traduzidas em novos MKVs"
     },
     mapa: {
-        titulo: "10. Mapeamento do Projeto",
+        titulo: "11. Mapeamento do Projeto",
         subtitulo: "Auditoria de taxonomia e visualização da árvore de estrutura do código"
     },
     telemetria: {
-        titulo: "11. Telemetria KRONOS",
+        titulo: "12. Telemetria KRONOS",
         subtitulo: "Observabilidade da traducao, cache local e historico operacional"
     },
     sobre: {
@@ -139,6 +144,7 @@ async function inicializarModulos() {
     initRevisao();
     initCura();
     await initRevisaoLore();
+    await initTrocaTipoLegenda();
     initRemuxer();
     initMapa();
     initTelemetria();
@@ -173,6 +179,7 @@ function conectarFluxoLugsSSE() {
         'correcao': 'console-correcao',
         'revisao': 'console-revisao',
         'revisao-lore': 'console-revisao-lore',
+        'troca-tipo-legenda': 'console-troca-tipo-legenda',
         'correcao-legendas': 'console-cura',
         'cura': 'console-cura',
         'remuxer': 'console-remuxer'
@@ -548,7 +555,8 @@ function inicializarMetadadosDinamicos() {
         { inputId: 'correcao-entrada', selectId: 'correcao-contexto', bannerId: 'meta-banner-correcao' },
         { inputId: 'revisao-entrada', selectId: 'revisao-contexto', bannerId: 'meta-banner-revisao' },
         { inputId: 'cura-entrada-original', selectId: 'cura-contexto', bannerId: 'meta-banner-cura' },
-        { inputId: 'revisao-lore-entrada-original', selectId: 'revisao-lore-contexto', bannerId: 'meta-banner-revisao-lore' }
+        { inputId: 'revisao-lore-entrada-original', selectId: 'revisao-lore-contexto', bannerId: 'meta-banner-revisao-lore' },
+        { inputId: 'troca-tipo-legenda-entrada', selectId: null, bannerId: 'meta-banner-troca-tipo-legenda' }
     ];
 
     const atualizarItem = (item) => {
