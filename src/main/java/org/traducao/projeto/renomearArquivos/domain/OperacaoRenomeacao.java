@@ -1,4 +1,4 @@
-package org.traducao.projeto.limpaNomes.domain;
+package org.traducao.projeto.renomearArquivos.domain;
 
 import java.util.List;
 

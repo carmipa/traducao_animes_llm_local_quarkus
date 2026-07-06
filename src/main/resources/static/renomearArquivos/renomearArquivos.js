@@ -1,9 +1,9 @@
 import { mostrarAlerta, logNoConsole } from '../js/app.js?v=3.0';
 
-const PAINEL_HTML = 'limpaNomes/limpaNomes.html?v=3.0';
+const PAINEL_HTML = 'renomearArquivos/renomearArquivos.html?v=3.0';
 
 async function carregarPainelHtml() {
-    const painel = document.getElementById('panel-limpa-nome');
+    const painel = document.getElementById('panel-renomear-arquivos');
     if (!painel || painel.dataset.moduloCarregado === 'true') {
         return painel;
     }
@@ -18,30 +18,30 @@ async function carregarPainelHtml() {
     return painel;
 }
 
-export async function initLimpaNome() {
+export async function initRenomearArquivos() {
     try {
         await carregarPainelHtml();
         vincularEventos();
-        document.dispatchEvent(new CustomEvent('limpa-nome:painel-carregado'));
+        document.dispatchEvent(new CustomEvent('renomear-arquivos:painel-carregado'));
     } catch (err) {
-        console.error('[Limpa Nome] Erro ao carregar painel:', err);
-        const painel = document.getElementById('panel-limpa-nome');
+        console.error('[Renomear Arquivos] Erro ao carregar painel:', err);
+        const painel = document.getElementById('panel-renomear-arquivos');
         if (painel) {
-            painel.innerHTML = '<div class="glass-card"><p class="card-desc">Não foi possível carregar o painel de Limpa Nome.</p></div>';
+            painel.innerHTML = '<div class="glass-card"><p class="card-desc">Não foi possível carregar o painel de Renomear Arquivos.</p></div>';
         }
     }
 }
 
 function vincularEventos() {
-    const form = document.getElementById('form-limpa-nome');
+    const form = document.getElementById('form-renomear-arquivos');
     if (!form) return;
 
     const btnSimular = document.getElementById('btn-limpanome-simular');
     const btnAplicar = document.getElementById('btn-limpanome-aplicar');
     const btnReverter = document.getElementById('btn-limpanome-reverter');
-    const selectContexto = document.getElementById('limpanome-contexto');
+    const selectContexto = document.getElementById('renomear-arquivos-contexto');
     const inputPadrao = document.getElementById('limpanome-padrao');
-    const consoleId = 'console-limpa-nome';
+    const consoleId = 'console-renomear-arquivos';
 
     // Ao mudar o select, preencher automaticamente o nome padrão
     if (selectContexto && inputPadrao) {
@@ -59,7 +59,7 @@ function vincularEventos() {
     if (btnSimular) {
         btnSimular.addEventListener('click', async () => {
             if (!validarForm()) return;
-            await executarOperacao('/api/limpa-nomes/simular', 'Simulação de Renomeação (Dry-Run)');
+            await executarOperacao('/api/renomear-arquivos/simular', 'Simulação de Renomeação (Dry-Run)');
         });
     }
 
@@ -67,7 +67,7 @@ function vincularEventos() {
         btnAplicar.addEventListener('click', async (e) => {
             e.preventDefault();
             if (!validarForm()) return;
-            await executarOperacao('/api/limpa-nomes/aplicar', 'Aplicar Renomeação');
+            await executarOperacao('/api/renomear-arquivos/aplicar', 'Aplicar Renomeação');
         });
     }
 
@@ -79,7 +79,7 @@ function vincularEventos() {
                 return;
             }
             if (confirm('Tem certeza que deseja reverter a última renomeação nesta pasta?')) {
-                await executarOperacao('/api/limpa-nomes/reverter', 'Reverter Renomeação');
+                await executarOperacao('/api/renomear-arquivos/reverter', 'Reverter Renomeação');
             }
         });
     }

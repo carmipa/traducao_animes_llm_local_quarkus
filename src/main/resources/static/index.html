@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>KRONOS CORE Pipeline Industrial</title>
     <meta name="description" content="Interface web premium para gerenciar a tradução, extração, análise de mídia, remuxer e telemetria de legendas de animes.">
     <!-- Google Fonts -->
@@ -10,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
-    <link rel="stylesheet" href="css/style.css?v=2.9">
+    <link rel="stylesheet" href="css/style.css?v=3.1">
 </head>
 <body>
     <div class="app-container">
@@ -105,9 +108,9 @@
                             <span class="material-symbols-outlined nav-icon">layers</span>
                             <span>9. Remuxer</span>
                         </button>
-                        <button class="nav-item" data-target="limpa-nome" id="btn-menu-limpa-nome" data-tooltip="Limpe e renomeie arquivos de vídeo e legendas usando um padrão S01E01 com base nos metadados.">
+                        <button class="nav-item" data-target="renomear-arquivos" id="btn-menu-renomear-arquivos" data-tooltip="Limpe e renomeie arquivos de vídeo e legendas usando um padrão S01E01 com base nos metadados.">
                             <span class="material-symbols-outlined nav-icon">cleaning_services</span>
-                            <span>10. Limpa Nome</span>
+                            <span>10. Renomear Arquivos</span>
                         </button>
                     </div>
                 </div>
@@ -345,13 +348,13 @@
                              </div>
 
                              <!-- Card 10.5 -->
-                             <div class="pipeline-card card-limpa-nome" onclick="document.getElementById('btn-menu-limpa-nome').click()" data-tooltip="Clique para renomear e sanitizar arquivos de vídeos">
+                             <div class="pipeline-card card-renomear-arquivos" onclick="document.getElementById('btn-menu-renomear-arquivos').click()" data-tooltip="Clique para renomear e sanitizar arquivos de vídeos">
                                  <div class="card-glow-bg"></div>
                                  <div class="card-step-num">10</div>
                                  <div class="card-icon-container">
                                      <span class="material-symbols-outlined">cleaning_services</span>
                                  </div>
-                                 <h4>Limpa Nome</h4>
+                                 <h4>Renomear Arquivos</h4>
                                  <p>Sanitize e padronize nomes de arquivos usando regex e metadados oficiais.</p>
                                  <span class="card-action-link">Acessar Painel →</span>
                              </div>
@@ -814,7 +817,7 @@
                 </div>
 
                 <!-- 10. PAINEL DE LIMPA NOME (SANITIZADOR) -->
-                <div class="panel" id="panel-limpa-nome">
+                <div class="panel" id="panel-renomear-arquivos">
                 </div>
 
                 <!-- 8. PAINEL DE MAPA DO PROJETO -->
@@ -1219,12 +1222,11 @@
     </div>
 
     <!-- Scripts -->
-    <script src="js/chart.umd.min.js?v=2.4"></script>
-    <script src="js/marked.min.js?v=2.4"></script>
-    <script src="js/mermaid.min.js?v=2.4"></script>
-    <!-- IMPORTANTE: sem query string (?v=) aqui — os módulos importam '../js/app.js'
-         sem query, e URLs diferentes fariam o navegador criar DUAS instâncias do
-         módulo, duplicando listeners, submits e conexões SSE. -->
-    <script type="module" src="js/app.js"></script>
+    <script src="js/chart.umd.min.js?v=3.0"></script>
+    <script src="js/marked.min.js?v=3.0"></script>
+    <script src="js/mermaid.min.js?v=3.0"></script>
+    <!-- Mantenha esta versão igual aos imports '../js/app.js?v=...' dos módulos
+         filhos para evitar duas instâncias do orquestrador global. -->
+    <script type="module" src="js/app.js?v=3.0"></script>
 </body>
 </html>

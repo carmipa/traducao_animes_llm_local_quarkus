@@ -1,4 +1,4 @@
-import { logNoConsole, mostrarAlerta } from '../js/app.js';
+import { logNoConsole, mostrarAlerta } from '../js/app.js?v=3.0';
 
 export function initCura() {
     const btnIniciarCura = document.getElementById('btn-iniciar-cura');

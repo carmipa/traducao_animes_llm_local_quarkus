@@ -1,4 +1,4 @@
-import { logNoConsole, mostrarAlerta } from '../js/app.js';
+import { logNoConsole, mostrarAlerta } from '../js/app.js?v=3.0';
 
 let contextosCarregados = false;
 
@@ -69,7 +69,7 @@ async function carregarContextos() {
     if (!select) return;
 
     try {
-        const response = await fetch('/api/contextos');
+        const response = await fetch('/api/contextos', { cache: 'no-store' });
         if (!response.ok) {
             throw new Error('Resposta HTTP ' + response.status);
         }

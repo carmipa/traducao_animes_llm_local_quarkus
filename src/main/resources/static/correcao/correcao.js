@@ -1,4 +1,4 @@
-import { logNoConsole } from '../js/app.js';
+import { logNoConsole } from '../js/app.js?v=3.0';
 
 export function initCorrecao() {
     const btnLimpar = document.getElementById('btn-limpar-cache');

@@ -1,6 +1,6 @@
-import { logNoConsole, mostrarAlerta } from '../js/app.js';
+import { logNoConsole, mostrarAlerta } from '../js/app.js?v=3.0';
 
-const PAINEL_HTML = 'revisaoLore/revisaoLore.html';
+const PAINEL_HTML = 'revisaoLore/revisaoLore.html?v=3.0';
 
 async function carregarPainelHtml() {
     const painel = document.getElementById('panel-revisao-lore');

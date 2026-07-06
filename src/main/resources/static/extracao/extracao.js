@@ -1,4 +1,4 @@
-import { logNoConsole } from '../js/app.js';
+import { logNoConsole } from '../js/app.js?v=3.0';
 
 export function initExtracao() {
     const form = document.getElementById('form-extracao');

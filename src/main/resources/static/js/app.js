@@ -4,20 +4,20 @@
  * ==========================================================================
  */
 
-import { initAnalise } from '../analise/analise.js';
-import { initExtracao } from '../extracao/extracao.js';
-import { initTraducao } from '../traducao/traducao.js';
-import { initCorrecao } from '../correcao/correcao.js';
-import { initRevisao } from '../revisao/revisao.js';
-import { initCura } from '../cura/cura.js';
-import { initRevisaoLore } from '../revisaoLore/revisaoLore.js';
-import { initTrocaTipoLegenda } from '../trocaTipoLegenda/trocaTipoLegenda.js?v=2.9';
-import { initRemuxer } from '../remuxer/remuxer.js';
-import { initMapa } from '../mapa/mapa.js';
-import { initTelemetria } from '../telemetria/telemetria.js?v=2.4';
-import { initDocumentacao } from '../documentacao/documentacao.js';
-import { initSobre } from '../sobre/sobre.js';
-import { initLimpaNome } from '../limpaNomes/limpaNomes.js';
+import { initAnalise } from '../analise/analise.js?v=3.0';
+import { initExtracao } from '../extracao/extracao.js?v=3.0';
+import { initTraducao } from '../traducao/traducao.js?v=3.0';
+import { initCorrecao } from '../correcao/correcao.js?v=3.0';
+import { initRevisao } from '../revisao/revisao.js?v=3.0';
+import { initCura } from '../cura/cura.js?v=3.0';
+import { initRevisaoLore } from '../revisaoLore/revisaoLore.js?v=3.0';
+import { initTrocaTipoLegenda } from '../trocaTipoLegenda/trocaTipoLegenda.js?v=3.0';
+import { initRemuxer } from '../remuxer/remuxer.js?v=3.0';
+import { initMapa } from '../mapa/mapa.js?v=3.0';
+import { initTelemetria } from '../telemetria/telemetria.js?v=3.0';
+import { initDocumentacao } from '../documentacao/documentacao.js?v=3.0';
+import { initSobre } from '../sobre/sobre.js?v=3.0';
+import { initRenomearArquivos } from '../renomearArquivos/renomearArquivos.js?v=3.0';
 
 // Definições de Títulos e Subtítulos por seção do menu
 const CONFIG_SECOES = {
@@ -61,8 +61,8 @@ const CONFIG_SECOES = {
         titulo: "9. Remuxer Industrial",
         subtitulo: "Junção de vídeos originais e novas legendas traduzidas em novos MKVs"
     },
-    "limpa-nome": {
-        titulo: "10. Sanitizador de Nomes (Limpa Nome)",
+    "renomear-arquivos": {
+        titulo: "10. Renomear Arquivos de Vídeo",
         subtitulo: "Limpeza de nomes de arquivo usando regex e metadados S01E01"
     },
     mapa: {
@@ -193,7 +193,7 @@ async function inicializarModulos() {
     await initRevisaoLore();
     await initTrocaTipoLegenda();
     initRemuxer();
-    await initLimpaNome();
+    await initRenomearArquivos();
     initMapa();
     initTelemetria();
     initDocumentacao();
@@ -231,7 +231,7 @@ function conectarFluxoLugsSSE() {
         'correcao-legendas': 'console-cura',
         'cura': 'console-cura',
         'remuxer': 'console-remuxer',
-        'limpa-nome': 'console-limpa-nome'
+        'renomear-arquivos': 'console-renomear-arquivos'
     };
 
     for (const [canal, consoleId] of Object.entries(consoleMap)) {
@@ -618,7 +618,7 @@ function inicializarMetadadosDinamicos() {
         { inputId: 'cura-entrada-original', selectId: 'cura-contexto', bannerId: 'meta-banner-cura' },
         { inputId: 'revisao-lore-entrada-original', selectId: 'revisao-lore-contexto', bannerId: 'meta-banner-revisao-lore' },
         { inputId: 'troca-tipo-legenda-entrada', selectId: 'troca-tipo-legenda-contexto', bannerId: 'meta-banner-troca-tipo-legenda' },
-        { inputId: 'limpanome-entrada', selectId: 'limpanome-contexto', bannerId: 'meta-banner-limpanome' }
+        { inputId: 'limpanome-entrada', selectId: 'renomear-arquivos-contexto', bannerId: 'meta-banner-limpanome' }
     ];
 
     const atualizarItem = (item) => {
@@ -653,7 +653,7 @@ function inicializarMetadadosDinamicos() {
 
     // Popula automaticamente todos os selects de contexto dos módulos auxiliares.
     const popularContextos = () => {
-        carregarContextosAuxiliares(['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto', 'troca-tipo-legenda-contexto', 'limpanome-contexto'], () => {
+        carregarContextosAuxiliares(['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto', 'troca-tipo-legenda-contexto', 'renomear-arquivos-contexto'], () => {
             mapeamentoFormularios.forEach(atualizarItem);
         });
     };
@@ -661,7 +661,7 @@ function inicializarMetadadosDinamicos() {
     popularContextos();
     document.addEventListener('revisao-lore:painel-carregado', popularContextos);
     document.addEventListener('troca-tipo-legenda:painel-carregado', popularContextos);
-    document.addEventListener('limpa-nome:painel-carregado', popularContextos);
+    document.addEventListener('renomear-arquivos:painel-carregado', popularContextos);
 
     mapeamentoFormularios.forEach(item => {
         const input = document.getElementById(item.inputId);
@@ -696,8 +696,8 @@ function inicializarMetadadosDinamicos() {
 async function carregarContextosAuxiliares(idsSelects, onComplete) {
     try {
         const [response, responseRevisaoLore] = await Promise.all([
-            fetch('/api/contextos'),
-            fetch('/api/revisao-lore/contextos').catch(() => null)
+            fetch('/api/contextos', { cache: 'no-store' }),
+            fetch('/api/revisao-lore/contextos', { cache: 'no-store' }).catch(() => null)
         ]);
         if (!response.ok) return;
         const contextos = await response.json();
@@ -706,12 +706,12 @@ async function carregarContextosAuxiliares(idsSelects, onComplete) {
             ? await responseRevisaoLore.json()
             : contextos;
 
-        const todosSelects = ['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto', 'troca-tipo-legenda-contexto', 'limpanome-contexto'];
+        const todosSelects = ['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto', 'troca-tipo-legenda-contexto', 'renomear-arquivos-contexto'];
         todosSelects.forEach(id => {
             const select = document.getElementById(id);
             if (!select) return;
 
-            const ehAuxiliar = (id === 'analise-contexto' || id === 'correcao-contexto' || id === 'cura-contexto' || id === 'troca-tipo-legenda-contexto' || id === 'limpanome-contexto');
+            const ehAuxiliar = (id === 'analise-contexto' || id === 'correcao-contexto' || id === 'cura-contexto' || id === 'troca-tipo-legenda-contexto' || id === 'renomear-arquivos-contexto');
             const ehRevisaoLore = (id === 'revisao-lore-contexto');
             select.innerHTML = '';
             
@@ -762,7 +762,7 @@ async function carregarMetadataAnime(caminho, bannerId) {
     if (!banner) return;
 
     try {
-        const resp = await fetch(`/api/metadata?caminho=${encodeURIComponent(caminho)}`);
+        const resp = await fetch(`/api/metadata?caminho=${encodeURIComponent(caminho)}`, { cache: 'no-store' });
         if (!resp.ok) {
             banner.classList.add('hidden');
             return;

@@ -22,6 +22,9 @@ Memória viva e estado recente: veja **CEREBRO_IA.md** na raiz do repositório.
 ## 📁 Pasta: `logs/`
 *(Nenhum script Python ou Java nesta pasta)*
 
+## 📁 Pasta: `relatorios/`
+*(Nenhum script Python ou Java nesta pasta)*
+
 ## 📁 Pasta: `src/`
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/analisadorMidia/application/AnalisarMidiaUseCase.java`
 *(Sem docstring ou cabeçalho explicativo)*
@@ -353,6 +356,24 @@ Tag colorida em negrito (chama atenção), corpo da mensagem em peso normal
 (mais fácil de ler em blocos de texto maiores) — INFO/DEBUG ficam sem cor.
 Exemplo: [10:20:30] [INFO   ] Mensagem...
 ```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/renomearArquivos/application/RenomeadorUseCase.java`
+```text
+Regex para pegar o episódio de trackers.
+Ex: "[SubsPlease] Nome Anime - 01 (1080p).mkv" -> 01
+Ex: "[DB]86_-_01_(Dual Audio_10bit_BD1080p_x265)_PTBR.mkv" -> 01
+Ex: "Anime - 02.mkv" -> 02
+Ex: "Anime Ep 03.mkv" -> 03
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/renomearArquivos/domain/OperacaoRenomeacao.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/renomearArquivos/presentation/web/RenomearArquivosController.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/renomearArquivos/presentation/web/RenomearArquivosRequest.java`
+*(Sem docstring ou cabeçalho explicativo)*
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/application/DetectorTermosLoreService.java`
 ```text
@@ -1064,6 +1085,11 @@ falha real é reproduzível de forma determinística e portátil num teste.
 ```text
 Criar arquivos de vídeo MKV com padrão "EpsXX" (como nos arquivos de 86 do usuário)
 Criar arquivos de legenda ASS com padrão "_-_XX" e colchetes
+```
+
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/renomearArquivos/application/RenomeadorUseCaseTest.java`
+```text
+Ignora
 ```
 
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/revisaoLore/application/DetectorTermosLoreServiceTest.java`

@@ -1,4 +1,4 @@
-import { mostrarAlerta } from '../js/app.js';
+import { mostrarAlerta } from '../js/app.js?v=3.0';
 
 /**
  * Painel "Documentação": busca o markdown bruto de docs/*.md via

@@ -1,4 +1,4 @@
-# 🧹 Módulo: Limpa Nome (Sanitizador de Nomes)
+# 🧹 Módulo: Renomear Arquivos
 
 [← Troca Tipo Legenda](18-modulo-troca-tipo-legenda.md) | [Contextos & Lore →](09-contextos-lore.md)
 
@@ -6,7 +6,7 @@
 
 ## Para que serve
 
-Painel **"10. Limpa Nome"** da SPA (grupo **Finalização**). Renomeia em lote arquivos de vídeo/legenda com nomes confusos de release groups de tracker (ex.: `[SubsPlease] Nome Anime - 01 (1080p) [ABCD1234].mkv`) para um padrão limpo `Nome do Anime - S01E01.mkv`, extraindo o número do episódio por **regex** — com simulação prévia (dry-run) e **reversão completa (undo)**.
+Painel **"10. Renomear Arquivos"** da SPA (grupo **Finalização**). Renomeia em lote arquivos de vídeo com nomes confusos de release groups de tracker (ex.: `[DB]86_-_01_(Dual Audio_10bit_BD1080p_x265)_PTBR.mkv`) para um padrão limpo `Nome do Anime - S01E01.mkv`, extraindo o número do episódio por **regex** — com simulação prévia (dry-run) e **reversão completa (undo)**.
 
 ---
 
@@ -14,10 +14,10 @@ Painel **"10. Limpa Nome"** da SPA (grupo **Finalização**). Renomeia em lote a
 
 | Classe | Papel |
 |--------|-------|
-| `RenomeadorUseCase` (`application`) | Simula, aplica e reverte a renomeação; extrai o episódio por regex; salva o backup de reversão |
+| `RenomeadorUseCase` (`application`) | Simula, aplica e reverte a renomeação; extrai o episódio por regex; salva o manifesto de reversão dentro do projeto |
 | `OperacaoRenomeacao` (`domain`) | Record da operação (id, data, pasta, lista de `ItemRenomeado` original → novo) |
-| `LimpaNomesController` (`presentation/web`) | Endpoints REST (JAX-RS) — simular, aplicar e reverter em background |
-| `LimpaNomesRequest` (`presentation/web`) | Record do payload `{caminhoOrigem, nomePadrao}` |
+| `RenomearArquivosController` (`presentation/web`) | Endpoints REST (JAX-RS) — simular, aplicar e reverter em background |
+| `RenomearArquivosRequest` (`presentation/web`) | Record do payload `{caminhoOrigem, nomePadrao}` |
 
 ---
 
@@ -37,29 +37,29 @@ O nome final é `"<Nome Novo Padrão> - S01E<NN><extensão original>"`.
 ```mermaid
 sequenceDiagram
     actor Op as Operador
-    participant UI as Painel Limpa Nome
-    participant API as LimpaNomesController
+    participant UI as Painel Renomear Arquivos
+    participant API as RenomearArquivosController
     participant UC as RenomeadorUseCase
 
     Op->>UI: Pasta + nome padrão
-    UI->>API: POST /api/limpa-nomes/simular
+    UI->>API: POST /api/renomear-arquivos/simular
     API->>UC: simularRenomeacao (assíncrono)
-    UC-->>UI: [DRY-RUN] antes → depois via SSE (canal limpa-nome)
+    UC-->>UI: [DRY-RUN] antes → depois via SSE (canal renomear-arquivos)
 
     Op->>UI: Confere e clica "Aplicar Renomeação"
-    UI->>API: POST /api/limpa-nomes/aplicar
+    UI->>API: POST /api/renomear-arquivos/aplicar
     API->>UC: aplicarRenomeacao (assíncrono)
     UC->>UC: Files.move ATOMIC_MOVE por arquivo
-    UC->>UC: grava .kronos_undo_renomeacao.json na pasta
+    UC->>UC: grava manifesto em logs/renomear-arquivos/undo/
     UC-->>UI: [OK]/[ERRO] por arquivo via SSE
 
     Op->>UI: (se necessário) "Reverter (Undo)"
-    UI->>API: POST /api/limpa-nomes/reverter
+    UI->>API: POST /api/renomear-arquivos/reverter
     API->>UC: reverterRenomeacao — lê o .json e desfaz
 ```
 
 - **Dry-run primeiro, sempre**: a simulação lista cada `antes → depois` sem tocar em nada.
-- **Undo garantido**: ao aplicar, um manifesto `.kronos_undo_renomeacao.json` é salvo na própria pasta; "Reverter" o lê e desfaz os `move` (o manifesto só é apagado se a reversão terminar sem erros).
+- **Undo garantido sem sujar a mídia**: ao aplicar, um manifesto `kronos_undo_renomeacao_<hash>.json` é salvo em `logs/renomear-arquivos/undo/` dentro do projeto; "Reverter" o lê e desfaz os `move` (o manifesto só é apagado se a reversão terminar sem erros).
 - Conflitos (destino já existe) são **pulados com erro logado** — nunca sobrescreve.
 - Cada arquivo renomeado incrementa a métrica `arquivosSanitizados` na [Telemetria](10-modulo-telemetria.md).
 
@@ -69,9 +69,9 @@ sequenceDiagram
 
 | Endpoint | Payload | Canal SSE |
 |----------|---------|-----------|
-| `POST /api/limpa-nomes/simular` | `{caminhoOrigem, nomePadrao}` | `limpa-nome` |
-| `POST /api/limpa-nomes/aplicar` | `{caminhoOrigem, nomePadrao}` | `limpa-nome` |
-| `POST /api/limpa-nomes/reverter` | `{caminhoOrigem}` | `limpa-nome` |
+| `POST /api/renomear-arquivos/simular` | `{caminhoOrigem, nomePadrao}` | `renomear-arquivos` |
+| `POST /api/renomear-arquivos/aplicar` | `{caminhoOrigem, nomePadrao}` | `renomear-arquivos` |
+| `POST /api/renomear-arquivos/reverter` | `{caminhoOrigem}` | `renomear-arquivos` |
 
 ```json
 { "caminhoOrigem": "C:/animes/[SubsPlease] Nome Anime", "nomePadrao": "Nome Anime" }
@@ -84,8 +84,8 @@ sequenceDiagram
 ## Pontos de atenção
 
 - O padrão gerado assume **S01** fixo — para temporadas ≠ 1, inclua a temporada no nome padrão manualmente ou renomeie por temporada em pastas separadas.
-- Renomear vídeos **depois** de traduzir/remuxar quebra o pareamento vídeo ↔ legenda do [Remuxer](08-modulo-remuxer.md) — o lugar natural do Limpa Nome é **antes** da Análise de Mídia ou **após o remux final**, na coleção pronta.
-- O arquivo `.kronos_undo_renomeacao.json` fica na pasta alvo; não o apague antes de validar a renomeação.
+- Renomear vídeos **depois** de traduzir/remuxar quebra o pareamento vídeo ↔ legenda do [Remuxer](08-modulo-remuxer.md) — o lugar natural do Renomear Arquivos é **antes** da Análise de Mídia ou **após o remux final**, na coleção pronta.
+- A pasta alvo de mídia não recebe manifesto, backup ou arquivo operacional do KRONOS. O undo fica em `logs/renomear-arquivos/undo/` dentro do projeto.
 
 ---
 

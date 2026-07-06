@@ -185,7 +185,7 @@ public class ApiController {
     @GetMapping("/telemetria/exportar")
     public ResponseEntity<byte[]> exportarTelemetria() {
         try {
-            Path arquivoTelemetria = Path.of("logs", "telemetria_compartilhada.json");
+            Path arquivoTelemetria = TelemetriaService.resolverArquivoTelemetriaCanonico();
             if (!Files.exists(arquivoTelemetria)) {
                 return ResponseEntity.notFound().build();
             }

@@ -4104,8 +4104,13 @@ span.console-action-icon.material-symbols-outlined {
         /* Sem "hidden" no eixo X o navegador cria uma barra horizontal por causa
            dos tooltips (::after) posicionados fora da sidebar, mesmo invisíveis. */
         overflow-x: hidden;
-        scrollbar-width: thin;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .nav-menu::-webkit-scrollbar {
+        width: 0;
+        height: 0;
     }
 }
-
 

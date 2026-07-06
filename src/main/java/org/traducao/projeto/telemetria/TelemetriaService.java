@@ -188,6 +188,21 @@ public class TelemetriaService {
         return Path.of("relatorios", nomeDir).toAbsolutePath();
     }
 
+    public static Path resolverPastaTelemetriaProjeto() {
+        return PASTA_TELEMETRIA_PROJETO.toAbsolutePath();
+    }
+
+    public static Path resolverArquivoTelemetriaCanonico() {
+        return resolverPastaTelemetriaProjeto().resolve(NOME_ARQUIVO_TELEMETRIA);
+    }
+
+    public static Path resolverPastaArtefatosOperacionais(String modulo) {
+        String nomeModulo = modulo == null || modulo.isBlank()
+            ? "operacao"
+            : modulo.toLowerCase(java.util.Locale.ROOT).replaceAll("[^a-z0-9._-]", "-").replaceAll("-+", "-");
+        return resolverPastaTelemetriaProjeto().resolve(nomeModulo);
+    }
+
     public void salvarRelatorioOperacao(
         Path pastaRelatorios,
         String prefixo,
