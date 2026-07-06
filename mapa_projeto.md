@@ -1054,6 +1054,9 @@ Caso real (G-Reconguista): marcador do pipeline Python antigo na legenda final.
 Caso real (86): linha metade PT, metade EN.
 ```
 
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/traducao/infrastructure/legenda/EscritorLegendaAssTest.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/traducao/presentation/web/ConsoleRedirectorTest.java`
 ```text
 Teste de regressão para o bug pós-migração Spring Boot -> Quarkus: o

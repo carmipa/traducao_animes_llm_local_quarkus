@@ -20,13 +20,15 @@ import java.nio.file.StandardCopyOption;
 public class EscritorLegendaAss {
 
     private static final char BOM = '﻿';
+    private static final String FONTE_VNI_BOOK_ANTIQUA = ".VnBook-Antiqua";
+    private static final String FONTE_UNICODE_BOOK_ANTIQUA = "Book Antiqua";
 
     public void escrever(Path destino, DocumentoLegenda documento) {
         StringBuilder conteudo = new StringBuilder();
         if (documento.comBom()) {
             conteudo.append(BOM);
         }
-        conteudo.append(documento.cabecalho());
+        conteudo.append(normalizarFontesLegadasParaUnicode(documento.cabecalho()));
 
         for (EventoLegenda evento : documento.eventos()) {
             conteudo.append(evento.prefixo());
@@ -56,5 +58,12 @@ public class EscritorLegendaAss {
         } catch (IOException e) {
             throw new ArquivoLegendaException("Falha ao escrever arquivo de legenda: " + destino, e);
         }
+    }
+
+    private String normalizarFontesLegadasParaUnicode(String cabecalho) {
+        if (cabecalho == null || cabecalho.isBlank()) {
+            return cabecalho;
+        }
+        return cabecalho.replace(FONTE_VNI_BOOK_ANTIQUA, FONTE_UNICODE_BOOK_ANTIQUA);
     }
 }
