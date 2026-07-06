@@ -41,31 +41,31 @@ const CONFIG_SECOES = {
         subtitulo: "Limpeza de inconsistências e preenchimento via raspagem do Google Tradutor"
     },
     revisao: {
-        titulo: "6. Revisão de Legendas",
+        titulo: "5. Revisão de Legendas",
         subtitulo: "Concordância PT-BR via LLM local e correção de inglês residual via Google"
     },
     cura: {
-        titulo: "7. Correção de Legendas",
+        titulo: "6. Correção de Legendas",
         subtitulo: "Corrige a legenda PT-BR usando a original como referência imutável"
     },
     "revisao-lore": {
-        titulo: "8. Revisão de Lore",
+        titulo: "7. Revisão de Lore",
         subtitulo: "Padronização de nomes, locais e termos de mundo nas legendas via LLM e lore oficial"
     },
     "troca-tipo-legenda": {
-        titulo: "9. Troca Tipo legenda",
+        titulo: "8. Troca Tipo Legenda",
         subtitulo: "Auditoria e substituição em lote de fontes vietnamitas ou ANSI legadas por fontes Unicode seguras"
     },
     remuxer: {
-        titulo: "10. Remuxer Industrial",
+        titulo: "9. Remuxer Industrial",
         subtitulo: "Junção de vídeos originais e novas legendas traduzidas em novos MKVs"
     },
     mapa: {
-        titulo: "11. Mapeamento do Projeto",
+        titulo: "Mapeamento do Projeto",
         subtitulo: "Auditoria de taxonomia e visualização da árvore de estrutura do código"
     },
     telemetria: {
-        titulo: "12. Telemetria KRONOS",
+        titulo: "Telemetria KRONOS",
         subtitulo: "Observabilidade da traducao, cache local e historico operacional"
     },
     sobre: {
@@ -79,6 +79,7 @@ let logsReconnectTimer = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
     inicializarNavegacao();
+    inicializarGruposMenu();
     await inicializarModulos();
     atualizarStatusConexao();
     buscarContadoresGlobais();
@@ -129,6 +130,47 @@ function inicializarNavegacao() {
             if (target === 'telemetria') {
                 document.getElementById('btn-refresh-telemetria').click();
             }
+        });
+    });
+}
+
+/**
+ * Acordeão dos grupos do menu lateral: alterna abrir/fechar cada grupo e
+ * persiste a escolha no localStorage, restaurando na próxima visita.
+ */
+function inicializarGruposMenu() {
+    const CHAVE_ESTADO = 'kronos.menuGruposFechados';
+    let fechados;
+    try {
+        fechados = new Set(JSON.parse(localStorage.getItem(CHAVE_ESTADO) || '[]'));
+    } catch (e) {
+        fechados = new Set();
+    }
+
+    document.querySelectorAll('.nav-group').forEach(grupo => {
+        const id = grupo.getAttribute('data-grupo');
+        const header = grupo.querySelector('.nav-group-header');
+        if (!header) return;
+
+        const aplicar = () => {
+            const fechado = fechados.has(id);
+            grupo.classList.toggle('fechado', fechado);
+            header.setAttribute('aria-expanded', String(!fechado));
+        };
+        aplicar();
+
+        header.addEventListener('click', () => {
+            if (fechados.has(id)) {
+                fechados.delete(id);
+            } else {
+                fechados.add(id);
+            }
+            try {
+                localStorage.setItem(CHAVE_ESTADO, JSON.stringify([...fechados]));
+            } catch (e) {
+                // armazenamento indisponível: estado vive só nesta sessão
+            }
+            aplicar();
         });
     });
 }

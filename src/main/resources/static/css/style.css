@@ -4021,4 +4021,78 @@ span.console-action-icon.material-symbols-outlined {
     color: var(--text-muted);
 }
 
+/* ==========================================================================
+   MENU LATERAL AGRUPADO (ACORDEÃO)
+   ========================================================================== */
+
+.nav-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.nav-group-header {
+    background: transparent;
+    border: none;
+    outline: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 14px 4px;
+    margin-top: 6px;
+    border-radius: 6px;
+    color: var(--text-muted);
+    font-family: var(--font-main);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: left;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.nav-group-header:hover {
+    color: var(--text-primary);
+}
+
+.nav-group-header .nav-icon {
+    font-size: 16px !important;
+    width: 20px;
+    height: 16px;
+}
+
+.nav-group-titulo {
+    flex: 1;
+}
+
+.nav-group-seta {
+    font-size: 16px !important;
+    color: var(--text-muted);
+    transition: transform 0.18s ease;
+}
+
+.nav-group.fechado .nav-group-seta {
+    transform: rotate(-90deg);
+}
+
+.nav-group-itens {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.nav-group.fechado .nav-group-itens {
+    display: none;
+}
+
+/* Recuo dos itens dentro de um grupo, preservando a borda do item ativo */
+.nav-group-itens .nav-item {
+    padding-left: 26px;
+}
+
+.nav-group-itens .nav-item.active {
+    padding-left: 23px;
+}
+
 
