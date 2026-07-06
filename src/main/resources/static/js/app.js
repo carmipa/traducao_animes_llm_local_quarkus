@@ -11,7 +11,7 @@ import { initCorrecao } from '../correcao/correcao.js';
 import { initRevisao } from '../revisao/revisao.js';
 import { initCura } from '../cura/cura.js';
 import { initRevisaoLore } from '../revisaoLore/revisaoLore.js';
-import { initTrocaTipoLegenda } from '../trocaTipoLegenda/trocaTipoLegenda.js';
+import { initTrocaTipoLegenda } from '../trocaTipoLegenda/trocaTipoLegenda.js?v=2.9';
 import { initRemuxer } from '../remuxer/remuxer.js';
 import { initMapa } from '../mapa/mapa.js';
 import { initTelemetria } from '../telemetria/telemetria.js?v=2.4';

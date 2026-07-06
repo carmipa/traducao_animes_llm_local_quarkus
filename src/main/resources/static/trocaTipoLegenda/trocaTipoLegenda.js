@@ -1,6 +1,6 @@
 import { logNoConsole, mostrarAlerta } from '../js/app.js';
 
-const PAINEL_HTML = 'trocaTipoLegenda/trocaTipoLegenda.html';
+const PAINEL_HTML = 'trocaTipoLegenda/trocaTipoLegenda.html?v=2.9';
 
 function escapeHtml(texto) {
     return String(texto ?? '')
@@ -197,6 +197,7 @@ function vincularEventos() {
                 logNoConsole('console-troca-tipo-legenda', `Auditoria concluída: ${data.totalComProblemas} de ${data.totalArquivosAnalisados} arquivos possuem fontes vietnamitas legadas de alto risco. Área de substituição liberada!`, 'aviso');
                 mostrarAlerta('Auditoria concluída! Fontes legadas problemáticas foram detectadas.', 'aviso');
             } else {
+                cardCorrecao.classList.add('hidden');
                 logNoConsole('console-troca-tipo-legenda', `Auditoria concluída: Todos os ${data.totalArquivosAnalisados} arquivos estão com fontes Unicode seguras. Nenhuma ação necessária!`, 'sucesso');
                 mostrarAlerta('Parabéns! Todas as fontes analisadas são Unicode seguras.', 'sucesso');
             }
