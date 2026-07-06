@@ -4095,4 +4095,17 @@ span.console-action-icon.material-symbols-outlined {
     padding-left: 23px;
 }
 
+/* Em telas baixas o menu agrupado ultrapassa a altura da janela; a rolagem
+   garante alcance ao "Sair". Fora desse caso o overflow fica visível para os
+   tooltips laterais não serem cortados. */
+@media (max-height: 940px) {
+    .nav-menu {
+        overflow-y: auto;
+        /* Sem "hidden" no eixo X o navegador cria uma barra horizontal por causa
+           dos tooltips (::after) posicionados fora da sidebar, mesmo invisíveis. */
+        overflow-x: hidden;
+        scrollbar-width: thin;
+    }
+}
+
 

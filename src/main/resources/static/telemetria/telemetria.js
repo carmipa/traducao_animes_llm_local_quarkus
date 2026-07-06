@@ -203,8 +203,8 @@ function aplicarDadosTelemetria(data, latenciaMs) {
             chamadasLlmVal.textContent = formatarNumero(totalChamadasLlm);
         }
         if (auditLineVal) {
-            const hora = new Date().toLocaleTimeString('pt-BR');
-            auditLineVal.textContent = `[${hora}] ${formatarNumero(historico.length)} operacoes, ${formatarNumero(totalLinhas)} falas e ${cacheRate.toFixed(1)}% de cache registrados.`;
+            const hora = new Date().toLocaleTimeString('pt-BR', { timeZone: 'UTC' });
+            auditLineVal.textContent = `[${hora} UTC] ${formatarNumero(historico.length)} operacoes, ${formatarNumero(totalLinhas)} falas e ${cacheRate.toFixed(1)}% de cache registrados.`;
         }
 
         // Atualiza estatísticas detalhadas do hardware JVM
@@ -390,7 +390,7 @@ function renderizarTabelaHistorico() {
             const tdData = document.createElement('td');
             tdData.className = 'op-datetime';
             tdData.textContent = op.registradoEm
-                ? new Date(op.registradoEm).toLocaleString('pt-BR')
+                ? new Date(op.registradoEm).toLocaleString('pt-BR', { timeZone: 'UTC' }) + ' UTC'
                 : '-';
 
             const tdOperacao = document.createElement('td');
