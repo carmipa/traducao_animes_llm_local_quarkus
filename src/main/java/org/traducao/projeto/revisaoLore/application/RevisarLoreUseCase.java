@@ -43,6 +43,8 @@ public class RevisarLoreUseCase {
     private static final DateTimeFormatter UTC_FORMATTER = DateTimeFormatter.ISO_INSTANT;
     private static final int TAMANHO_TRECHO_LOG = 120;
     private static final Pattern PADRAO_DESENHO_VETORIAL = Pattern.compile("\\\\p[1-9]\\d*");
+    private static final Pattern PADRAO_TAG_ASS = Pattern.compile("\\{[^}]*}");
+    private static final Pattern PADRAO_INVISIVEIS = Pattern.compile("[\\u200B\\u200C\\u200D\\uFEFF]");
 
     private final LeitorLegendaAss leitor;
     private final EscritorLegendaAss escritor;
@@ -360,7 +362,7 @@ public class RevisarLoreUseCase {
                 String revisada;
                 try {
                     revisada = mascarador.desmascarar(revisadaOpt.get(), mascaraPt.tags());
-                    if (revisada.equals(textoPt)) {
+                    if (mesmaFalaVisivel(revisada, textoPt)) {
                         falasSemAlteracao[0]++;
                         sessao.out(AnsiCores.DIM + marcadorFala + " conforme apos revisao LLM" + AnsiCores.RESET);
                         registrarAuditoria(
@@ -614,6 +616,23 @@ public class RevisarLoreUseCase {
             return false;
         }
         return mascarador.contemTextoTraduzivel(textoOriginal);
+    }
+
+    private boolean mesmaFalaVisivel(String revisada, String atual) {
+        return normalizarFalaVisivel(revisada).equals(normalizarFalaVisivel(atual));
+    }
+
+    private String normalizarFalaVisivel(String texto) {
+        if (texto == null) {
+            return "";
+        }
+        return PADRAO_INVISIVEIS.matcher(PADRAO_TAG_ASS.matcher(texto).replaceAll(""))
+            .replaceAll("")
+            .replace("\\N", " ")
+            .replace("\\n", " ")
+            .replace("\\h", " ")
+            .replaceAll("\\s+", " ")
+            .strip();
     }
 
     private String formatarMotivos(List<String> motivos) {

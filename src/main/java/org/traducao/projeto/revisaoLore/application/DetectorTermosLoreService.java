@@ -136,7 +136,7 @@ public class DetectorTermosLoreService {
             String grupo = matcherEn.group();
             // Divide o grupo por quebras de frase reais (. ! ? seguido de espaço),
             // ignorando abreviações comuns (Dr., Lt., U.C., etc.)
-            String[] subNomes = grupo.split("(?<!\\bDr|\\bLt|\\bCol|\\bCapt|\\bGen|\\bMr|\\bMrs|\\bMs|\\bSt|\\bU\\.C)(?<=[.!?])\\s+");
+            String[] subNomes = grupo.split("(?<!\\b(?:Dr|Lt|Col|Capt|Gen|Mr|Mrs|Ms|St|U\\.C)\\.)(?<=[.!?])\\s+");
             for (String subNomeRaw : subNomes) {
                 String nome = limparCandidatoNomeProprio(subNomeRaw);
                 int indexNoOriginal = en.indexOf(subNomeRaw);

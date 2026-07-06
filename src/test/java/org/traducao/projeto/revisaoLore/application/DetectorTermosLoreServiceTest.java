@@ -139,4 +139,15 @@ class DetectorTermosLoreServiceTest {
         assertFalse(res3.suspeito());
         assertFalse(res4.suspeito());
     }
+
+    @Test
+    void naoTrataNomeAposAbreviacaoComoInicioDeFrase() {
+        ResultadoDeteccaoLore resultado = detector.auditar(
+            "We were at Dr. Flanagan's institute.",
+            "Estávamos no instituto do doutor."
+        );
+
+        assertTrue(resultado.suspeito());
+        assertTrue(resultado.motivos().stream().anyMatch(m -> m.contains("Flanagan")));
+    }
 }

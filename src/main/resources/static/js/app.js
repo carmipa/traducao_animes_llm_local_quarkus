@@ -69,6 +69,9 @@ const CONFIG_SECOES = {
     }
 };
 
+let logsEventSource = null;
+let logsReconnectTimer = null;
+
 document.addEventListener('DOMContentLoaded', async () => {
     inicializarNavegacao();
     await inicializarModulos();
@@ -147,8 +150,17 @@ async function inicializarModulos() {
  * Conecta ao Server-Sent Events (SSE) para receber os logs do terminal em tempo real
  */
 function conectarFluxoLugsSSE() {
+    if (logsEventSource && logsEventSource.readyState !== EventSource.CLOSED) {
+        return;
+    }
+    if (logsReconnectTimer) {
+        clearTimeout(logsReconnectTimer);
+        logsReconnectTimer = null;
+    }
+
     console.log('Iniciando escuta de Server-Sent Events (SSE) para logs...');
     const eventSource = new EventSource('/api/logs/stream');
+    logsEventSource = eventSource;
 
     // O backend publica cada operação em segundo plano sob um canal SSE com
     // o próprio nome (ver LogStreamService#definirCanalAtual no servidor),
@@ -202,7 +214,15 @@ function conectarFluxoLugsSSE() {
     eventSource.onerror = (err) => {
         console.warn('Erro na conexão de stream SSE, tentando reconectar em 5s...', err);
         eventSource.close();
-        setTimeout(conectarFluxoLugsSSE, 5000);
+        if (logsEventSource === eventSource) {
+            logsEventSource = null;
+        }
+        if (!logsReconnectTimer) {
+            logsReconnectTimer = setTimeout(() => {
+                logsReconnectTimer = null;
+                conectarFluxoLugsSSE();
+            }, 5000);
+        }
     };
 }
 
@@ -291,6 +311,8 @@ function ansiParaHtml(texto) {
     // Negritos e Resets
     html = html.replace(/\033\[1m/g, '<span style="font-weight: 700;">');
     html = html.replace(/\u001b\[1m/g, '<span style="font-weight: 700;">');
+    html = html.replace(/\033\[2m/g, '<span style="opacity: 0.72;">');
+    html = html.replace(/\u001b\[2m/g, '<span style="opacity: 0.72;">');
     html = html.replace(/\033\[0m/g, '</span>');
     html = html.replace(/\u001b\[0m/g, '</span>');
 
