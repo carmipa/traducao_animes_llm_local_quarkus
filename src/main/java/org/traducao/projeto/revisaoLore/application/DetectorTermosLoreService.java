@@ -44,7 +44,9 @@ public class DetectorTermosLoreService {
         "get", "got", "one", "two", "now", "yes", "hey", "sir", "miss", "lord", "lady", "man",
         "boy", "girl", "god", "damn", "hell", "okay", "ok", "well", "come", "here", "there",
         "even", "passing", "beginning", "fall", "leave", "these", "if", "let", "yeah",
-        "youre", "im", "dont", "cant", "wont", "ill", "ive", "thats", "whats", "base"
+        "youre", "im", "dont", "cant", "wont", "ill", "ive", "thats", "whats", "base",
+        "someone", "anyone", "something", "anything", "forever", "indeed", "maybe", "please",
+        "thanks", "thank", "hello", "goodbye", "always", "never", "every"
     );
 
     public ResultadoDeteccaoLore auditar(String originalIngles, String traducaoPt) {
@@ -131,18 +133,25 @@ public class DetectorTermosLoreService {
     private void detectarNomesPropriosDivergentes(String en, String pt, List<String> motivos) {
         Matcher matcherEn = NOME_PROPRIO.matcher(en);
         while (matcherEn.find()) {
-            String nome = limparCandidatoNomeProprio(matcherEn.group());
-            if (deveIgnorarNomeProprio(nome, inicioEfetivoDaFala(en, matcherEn.start()))
-                || traducaoAceitaParaTermo(nome, pt)) {
-                continue;
-            }
-            if (pt.contains(nome)) {
-                continue;
-            }
-            if (contemNomeCompostoParcial(pt, nome)) {
-                motivos.add("Nome proprio composto foi preservado apenas em parte; conferir se algum trecho foi traduzido: \"" + nome + "\"");
-            } else if (!contemVarianteAproximada(pt, nome)) {
-                motivos.add("Nome proprio do original pode estar inconsistente na traducao: \"" + nome + "\"");
+            String grupo = matcherEn.group();
+            // Divide o grupo por quebras de frase reais (. ! ? seguido de espaço),
+            // ignorando abreviações comuns (Dr., Lt., U.C., etc.)
+            String[] subNomes = grupo.split("(?<!\\bDr|\\bLt|\\bCol|\\bCapt|\\bGen|\\bMr|\\bMrs|\\bMs|\\bSt|\\bU\\.C)(?<=[.!?])\\s+");
+            for (String subNomeRaw : subNomes) {
+                String nome = limparCandidatoNomeProprio(subNomeRaw);
+                int indexNoOriginal = en.indexOf(subNomeRaw);
+                if (deveIgnorarNomeProprio(nome, inicioEfetivoDaFala(en, indexNoOriginal >= 0 ? indexNoOriginal : matcherEn.start()))
+                    || traducaoAceitaParaTermo(nome, pt)) {
+                    continue;
+                }
+                if (pt.contains(nome)) {
+                    continue;
+                }
+                if (contemNomeCompostoParcial(pt, nome)) {
+                    motivos.add("Nome proprio composto foi preservado apenas em parte; conferir se algum trecho foi traduzido: \"" + nome + "\"");
+                } else if (!contemVarianteAproximada(pt, nome)) {
+                    motivos.add("Nome proprio do original pode estar inconsistente na traducao: \"" + nome + "\"");
+                }
             }
         }
     }
@@ -219,10 +228,17 @@ public class DetectorTermosLoreService {
     }
 
     private boolean inicioEfetivoDaFala(String texto, int inicioCandidato) {
+        if (inicioCandidato <= 0) {
+            return true;
+        }
         String prefixo = texto.substring(0, Math.max(0, inicioCandidato))
             .replaceAll("(?i)\\[\\[TAG\\d+\\]\\]", "")
-            .replaceAll("[\\s\\p{Punct}]", "");
-        return prefixo.isEmpty();
+            .trim();
+        if (prefixo.isEmpty()) {
+            return true;
+        }
+        char ultimo = prefixo.charAt(prefixo.length() - 1);
+        return ultimo == '.' || ultimo == '!' || ultimo == '?' || ultimo == '"' || ultimo == '”' || ultimo == '\'' || ultimo == '’';
     }
 
     private boolean temIndicadorLoreSolteiro(String original, String normalizada) {

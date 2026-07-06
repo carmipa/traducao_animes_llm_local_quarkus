@@ -114,4 +114,29 @@ class DetectorTermosLoreServiceTest {
         assertTrue(zeonOmitido.suspeito());
         assertTrue(zeonOmitido.motivos().stream().anyMatch(m -> m.contains("inconsistente")));
     }
+
+    @Test
+    void naoSinalizaQuebraDeFrasesComPalavrasComunsCapitalizadas() {
+        ResultadoDeteccaoLore res1 = detector.auditar(
+            "Yes. Someone very important to us.",
+            "Sim. Alguém muito importante para nós."
+        );
+        ResultadoDeteccaoLore res2 = detector.auditar(
+            "She shall live on inside of us. Forever.",
+            "Ela continuará viva dentro de nós. Para sempre."
+        );
+        ResultadoDeteccaoLore res3 = detector.auditar(
+            "How can you all look so calm?!",
+            "Como todos vocês podem parecer tão calmos!"
+        );
+        ResultadoDeteccaoLore res4 = detector.auditar(
+            "We're sad, but...",
+            "Estamos tristes, mas..."
+        );
+
+        assertFalse(res1.suspeito());
+        assertFalse(res2.suspeito());
+        assertFalse(res3.suspeito());
+        assertFalse(res4.suspeito());
+    }
 }

@@ -37,12 +37,14 @@ public final class PromptRevisaoLore {
             - Mantenha termos tecnicos da obra em ingles quando a lore assim indicar (mobile suit, Newtype, Handler, etc.).
             - Corrija transliteracoes erradas, nomes anglicizados indevidos, traducao literal de nomes oficiais e localizacoes fora do padrao.
             - Se apenas uma parte do nome foi traduzida, restaure o nome oficial completo conforme a lore.
-            - NAO altere verbos, adjetivos, metaforas ou expressoes comuns de dialogo que ja estejam bem traduzidas para o portugues
-              (ex.: mantenha termos fluidos e naturais como "salvacao", nao mude para traducoes literais e engessadas como "linha de vida" baseando-se no ingles "life line").
-              O foco da revisao e estritamente a terminologia da lore.
+            - NAO altere verbos, adjetivos, metaforas ou expressoes comuns de dialogo que ja estejam bem traduzidas para o portugues.
+              NUNCA introduza termos em ingles de forma desnecessaria para palavras comuns (ex.: NUNCA mude "garotos" para "kids" ou "curar feridas" para "bandagem feridas").
+            - NUNCA adicione sobrenomes ou nomes completos se o original em ingles usa apenas o primeiro nome ou apelido
+              (ex.: se o original diz apenas "Shiro and Aina", mantenha "Shiro e Aina", NUNCA force "Shiro Amada e Aina Sahalin").
             - Nao use o original em ingles para retraduzir, melhorar estilo, trocar sinonimos ou ajustar fluidez geral.
-              Use o original apenas para identificar nomes/termos de lore que estejam errados na traducao atual.
-            - Se a traducao ja estiver correta segundo a lore, devolva-a sem alteracoes.
+              Use o original apenas para identificar nomes/termos de lore que estejam factualmente incorretos.
+            - NUNCA crie erros gramaticais ou de concordancia em portugues.
+            - Se a traducao ja estiver correta segundo a lore ou for um dialogo comum sem termos especificos de lore, devolva-a exatamente como foi fornecida.
             - Nao adicione explicacoes, aspas ou comentarios.
 
             Responda APENAS com uma unica linha: a fala revisada em portugues do Brasil.

@@ -33,6 +33,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 @Service
@@ -41,6 +42,7 @@ public class RevisarLoreUseCase {
     private static final Logger log = LoggerFactory.getLogger(RevisarLoreUseCase.class);
     private static final DateTimeFormatter UTC_FORMATTER = DateTimeFormatter.ISO_INSTANT;
     private static final int TAMANHO_TRECHO_LOG = 120;
+    private static final Pattern PADRAO_DESENHO_VETORIAL = Pattern.compile("\\\\p[1-9]\\d*");
 
     private final LeitorLegendaAss leitor;
     private final EscritorLegendaAss escritor;
@@ -307,20 +309,7 @@ public class RevisarLoreUseCase {
                     continue;
                 }
 
-                if (evtOriginal.estilo() != null
-                    && propriedades.estiloIgnorado(evtOriginal.estilo())
-                    && !detectorKaraoke.eKaraokeOuMusicaTraduzivel(evtOriginal.estilo(), evtOriginal.texto())) {
-                    novosEventos.add(evtTraduzido);
-                    continue;
-                }
-                if (detectorKaraoke.eEfeitoKaraoke(evtOriginal.texto())
-                    && !detectorKaraoke.eKaraokeOuMusicaTraduzivel(evtOriginal.estilo(), evtOriginal.texto())) {
-                    novosEventos.add(evtTraduzido);
-                    continue;
-                }
-
-                if (!evtOriginal.isDialogo() || !evtTraduzido.isDialogo()
-                    || !evtOriginal.temTexto() || !evtTraduzido.temTexto()) {
+                if (!ehEventoAuditavelLore(evtOriginal, evtTraduzido)) {
                     novosEventos.add(evtTraduzido);
                     continue;
                 }
@@ -405,6 +394,21 @@ public class RevisarLoreUseCase {
                         contextoId, nomePromptRevisao, revisarTodasFalas, arqTraduzido, i + 1,
                         dialogoAtual, totalDialogos, "DESCARTADA_VALIDACAO", deteccao.motivos(),
                         textoEn, textoPt, revisadaOpt.get(), revisada, e.getMessage()
+                    );
+                    novosEventos.add(evtTraduzido);
+                    continue;
+                }
+
+                if (deteccao.motivos().isEmpty()) {
+                    falasSemAlteracao[0]++;
+                    sessao.out(AnsiCores.YELLOW + marcadorFala
+                        + " revisao preventiva descartada: sem indicio de lore; mantendo traducao atual"
+                        + AnsiCores.RESET);
+                    registrarAuditoria(
+                        contextoId, nomePromptRevisao, revisarTodasFalas, arqTraduzido, i + 1,
+                        dialogoAtual, totalDialogos, "DESCARTADA_PREVENTIVA_SEM_LORE", deteccao.motivos(),
+                        textoEn, textoPt, revisadaOpt.get(), textoPt,
+                        "Alteracao proposta em fala sem motivo heuristico de lore"
                     );
                     novosEventos.add(evtTraduzido);
                     continue;
@@ -585,12 +589,31 @@ public class RevisarLoreUseCase {
         for (int i = 0; i < limite; i++) {
             EventoLegenda original = docOriginal.eventos().get(i);
             EventoLegenda traduzido = docTraduzido.eventos().get(i);
-            if (original.isDialogo() && traduzido.isDialogo()
-                && original.temTexto() && traduzido.temTexto()) {
+            if (ehEventoAuditavelLore(original, traduzido)) {
                 total++;
             }
         }
         return total;
+    }
+
+    private boolean ehEventoAuditavelLore(EventoLegenda original, EventoLegenda traduzido) {
+        if (!original.isDialogo() || !traduzido.isDialogo()
+            || !original.temTexto() || !traduzido.temTexto()) {
+            return false;
+        }
+
+        String textoOriginal = original.texto();
+        if (propriedades.estiloIgnorado(original.estilo())) {
+            return false;
+        }
+        if (PADRAO_DESENHO_VETORIAL.matcher(textoOriginal).find()) {
+            return false;
+        }
+        if (detectorKaraoke.eEfeitoKaraoke(textoOriginal)
+            && !detectorKaraoke.eKaraokeOuMusicaTraduzivel(original.estilo(), textoOriginal)) {
+            return false;
+        }
+        return mascarador.contemTextoTraduzivel(textoOriginal);
     }
 
     private String formatarMotivos(List<String> motivos) {
