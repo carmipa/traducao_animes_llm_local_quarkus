@@ -27,6 +27,8 @@ Diferente da tradução principal, aqui a **seleção de obra é obrigatória**:
 | `RevisaoLoreRelatorioJson`, `LogEventoRevisaoLore` (`domain`) | Estrutura do relatório JSON persistido em disco (métricas + log completo da sessão) |
 | `RevisaoLoreException` (`domain/exceptions`) | Erros de validação/execução específicos do módulo |
 | `RevisaoLoreLogPersistencia` (`infrastructure`) | Serializa `RevisaoLoreRelatorioJson` via Jackson e salva em `relatorios/revisao_lore_<timestamp>.json` |
+| `RevisaoLoreAuditoriaCache` (`infrastructure`) | Trilha de auditoria **append-only (JSONL)** com uma entrada por fala auditada: original EN, tradução antes, resposta do LLM, tradução depois e o resultado (`CONFORME`, `CORRIGIDA`, `DESCARTADA_*`, `SEM_RESPOSTA`) — permite reverter cirurgicamente qualquer regressão sem retraduzir |
+| `EntradaAuditoriaRevisaoLore` (`domain`) | Record de cada entrada da trilha de auditoria |
 | `RevisaoLoreController` (`presentation`) | Endpoints REST — lista de contextos e disparo da operação em background |
 
 > ⚠️ **Este módulo tem seu próprio sistema de contextos**, separado do [`ProvedorContexto`](09-contextos-lore.md) usado na tradução principal. São **9 implementações** de `ProvedorPromptRevisaoLore` em `revisaoLore/contexto/**` (DanMachi geral + S4 + S5, 86, e a linha Gundam: 0080, 0083, 08th MS Team, CCA, Narrative) — um subconjunto bem menor que os 56+ contextos de tradução, cobrindo só as obras onde a revisão de lore já foi calibrada manualmente.
@@ -69,6 +71,17 @@ sequenceDiagram
 4. **Sigla/termo em maiúsculas suspeito** — tokens todo-maiúsculos de 3+ letras na tradução que não sejam `ASS`/`SSA` (formato do arquivo).
 
 Isso mantém o custo de LLM baixo: por padrão (checkbox **"Revisar todas as falas"** desmarcado), só as falas realmente sinalizadas viram uma chamada ao modelo — o resto passa direto.
+
+A detecção de nomes próprios divide o candidato por **quebras reais de frase** (`. ! ?`), preservando abreviações e patentes (`Dr.`, `Lt.`, `Col.`...), e ignora palavras comuns capitalizadas em início de sentença (`Yes. Someone...`, `Forever.`, `Please...`) — casos que antes geravam falso positivo. Eventos de desenho vetorial (`\p1`) e estilos ignorados ficam **fora** da auditoria.
+
+### Blindagem contra retradução (decisão de 2026-07-05)
+
+O LLM local sofre de *overcorrection*: com o modo "revisar todas as falas" ativo, ele retraduzia diálogos comuns já corretos e introduzia regressões (estrangeirismos, nomes completos artificiais, erros de concordância). A blindagem tem duas camadas:
+
+1. **Prompt endurecido** — proibições explícitas de adicionar sobrenomes ausentes no original, introduzir termos em inglês em fala comum e criar erros gramaticais; fala sem termo de lore deve voltar **idêntica**.
+2. **Descarte estrutural** — se a fala foi ao LLM **sem nenhum motivo heurístico** (revisão preventiva) e o modelo propôs alteração, a proposta é **descartada antes de gravar** (`DESCARTADA_PREVENTIVA_SEM_LORE`); a proposta fica registrada apenas na trilha de auditoria. Melhorias de fluidez do PT-BR são responsabilidade do módulo de [Correção de Legendas](07-modulo-cura-tags.md), não da revisão de lore.
+
+A comparação "antes = depois" usa normalização de texto visível (tags ASS, `\N`, caracteres invisíveis) — diferenças que o espectador não vê não contam como correção.
 
 ---
 

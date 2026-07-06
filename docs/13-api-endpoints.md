@@ -125,6 +125,30 @@ Corrige nomes, locais e termos de lore em legendas `.ass` já traduzidas, compar
 
 ---
 
+### `POST /api/troca-legenda/escanear`
+Audita os `.ass`/`.ssa` de uma pasta em busca de fontes legadas (TCVN3/VNI etc.) nos estilos. **Síncrono** (roda dentro da fila do pipeline e devolve o relatório na resposta). Ver [Troca Tipo Legenda](18-modulo-troca-tipo-legenda.md).
+
+```json
+{ "diretorioLegendas": "C:/animes/Serie/traducao-ptbr" }
+```
+
+### `POST /api/troca-legenda/aplicar`
+Aplica em lote as substituições de fontes sugeridas, com backup automático. Assíncrono. **Canal SSE:** `troca-tipo-legenda`
+
+---
+
+### `POST /api/limpa-nomes/simular`
+### `POST /api/limpa-nomes/aplicar`
+### `POST /api/limpa-nomes/reverter`
+Renomeação em lote de arquivos para o padrão `Nome - S01E01` (dry-run, aplicação com manifesto de undo e reversão). Ver [Limpa Nome](19-modulo-limpa-nomes.md).
+
+```json
+{ "caminhoOrigem": "C:/animes/[SubsPlease] Nome Anime", "nomePadrao": "Nome Anime" }
+```
+**Canal SSE:** `limpa-nome` (`reverter` dispensa `nomePadrao`)
+
+---
+
 ### `POST /api/remuxar`
 Combina vídeo + legenda em MKV final. Ver [Remuxer](08-modulo-remuxer.md).
 
@@ -132,6 +156,20 @@ Combina vídeo + legenda em MKV final. Ver [Remuxer](08-modulo-remuxer.md).
 { "pathVideos": "C:/animes/Gundam-Narrative-NT", "pathLegendas": "C:/.../legendas-ptbr", "sincronismoMs": 0 }
 ```
 **Canal SSE:** `remuxer`
+
+---
+
+### `POST /api/pipeline/parar`
+Solicita a **parada cooperativa** do trabalho em execução na fila única do pipeline: o job encerra no próximo ponto seguro e o progresso já salvo (cache, arquivos concluídos) é preservado. Todos os painéis usam este mesmo endpoint (botão "Parar Execução"), porque só um job roda por vez.
+
+Sem payload. **Resposta:** `{"mensagem": "..."}`
+
+---
+
+### `POST /api/sistema/sair`
+Encerra a aplicação de forma graciosa (menu "Sair" da UI): o trabalho em execução para no próximo ponto seguro e o servidor é desligado.
+
+Sem payload. **Resposta:** `{"mensagem": "Encerrando a aplicação. ..."}`
 
 ---
 
@@ -196,6 +234,8 @@ Conexão `EventSource` única para **todos** os logs em tempo real. Cada operaç
 | `revisao` | `/api/revisar-legendas*` |
 | `cura` | `/api/cura-tags` |
 | `revisao-lore` | `/api/revisar-lore` |
+| `troca-tipo-legenda` | `/api/troca-legenda/aplicar` |
+| `limpa-nome` | `/api/limpa-nomes/*` |
 | `remuxer` | `/api/remuxar` |
 | `console` | Fallback genérico — roteado para a aba ativa no navegador |
 | `sistema` | Mensagens de conexão/sistema |
