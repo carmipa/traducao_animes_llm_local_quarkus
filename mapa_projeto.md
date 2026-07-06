@@ -22,9 +22,6 @@ Memória viva e estado recente: veja **CEREBRO_IA.md** na raiz do repositório.
 ## 📁 Pasta: `logs/`
 *(Nenhum script Python ou Java nesta pasta)*
 
-## 📁 Pasta: `relatorios/`
-*(Nenhum script Python ou Java nesta pasta)*
-
 ## 📁 Pasta: `src/`
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/analisadorMidia/application/AnalisarMidiaUseCase.java`
 *(Sem docstring ou cabeçalho explicativo)*
@@ -1003,6 +1000,41 @@ Endpoint Server-Sent Events (SSE) reativo para streaming da telemetria da KRONOS
 Rota mapeada especificamente para evitar colisões com o Controller Spring.
 ```
 
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/trocaTipoLegenda/application/AuditoriaFontesService.java`
+```text
+Mapeamento de fontes vietnamitas/ANSI problemáticas para Arial como padrão seguro.
+Se não houver a seção [V4+ Styles], não há estilos para analisar
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/trocaTipoLegenda/application/TrocaTipoLegendaUseCase.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/trocaTipoLegenda/domain/AuditoriaFonteInfo.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/trocaTipoLegenda/domain/AuditoriaLegendaResultado.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/trocaTipoLegenda/domain/EntradaAuditoriaTrocaFonte.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/trocaTipoLegenda/domain/exceptions/TrocaTipoLegendaException.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/trocaTipoLegenda/domain/ResultadoGeralAuditoria.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/trocaTipoLegenda/domain/ResultadoTrocaFonte.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/trocaTipoLegenda/infrastructure/TrocaTipoLegendaAuditoriaCache.java`
+```text
+Cache append-only para gravação de auditoria histórica e granular de cada alteração de fonte aplicada.
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/trocaTipoLegenda/presentation/TrocaTipoLegendaController.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/ApiControllerTest.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
@@ -1081,6 +1113,14 @@ linha em {@code logs/console-web.log} (espelho em disco usado por
 pipeline de publicação/persistência em arquivo funciona independente de
 haver navegador conectado via SSE.
 ```
+
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/trocaTipoLegenda/application/AuditoriaFontesServiceTest.java`
+```text
+Default: Arial (Unicode Seguro)
+```
+
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/trocaTipoLegenda/application/TrocaTipoLegendaUseCaseTest.java`
+*(Sem docstring ou cabeçalho explicativo)*
 
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/WebInterfaceTest.java`
 *(Sem docstring ou cabeçalho explicativo)*

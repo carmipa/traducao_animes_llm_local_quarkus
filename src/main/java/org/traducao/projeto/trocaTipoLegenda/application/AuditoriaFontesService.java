@@ -12,11 +12,11 @@ import java.util.Map;
 @Service
 public class AuditoriaFontesService {
 
-    // Mapeamento conservador de fontes vietnamitas/ANSI problemáticas para fontes Unicode seguras.
+    // Mapeamento de fontes vietnamitas/ANSI problemáticas para Arial como padrão seguro.
     private static final Map<String, String> FONTES_PROBLEMATICAS = Map.of(
-        ".VnBook-Antiqua", "Book Antiqua",
+        ".VnBook-Antiqua", "Arial",
         ".VnArial", "Arial",
-        ".VnTimes", "Times New Roman"
+        ".VnTimes", "Arial"
     );
 
     public List<AuditoriaFonteInfo> analisarCabecalho(String cabecalho) {

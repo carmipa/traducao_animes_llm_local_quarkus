@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.traducao.projeto.core.execucao.FilaExecucaoPipeline;
 import org.traducao.projeto.telemetria.OperacaoTelemetria;
 import org.traducao.projeto.telemetria.TelemetriaService;
 import org.traducao.projeto.traducao.domain.legenda.DocumentoLegenda;
@@ -14,9 +13,11 @@ import org.traducao.projeto.traducao.infrastructure.legenda.LeitorLegendaAss;
 import org.traducao.projeto.traducao.presentation.ui.AnsiCores;
 import org.traducao.projeto.trocaTipoLegenda.domain.AuditoriaFonteInfo;
 import org.traducao.projeto.trocaTipoLegenda.domain.AuditoriaLegendaResultado;
+import org.traducao.projeto.trocaTipoLegenda.domain.EntradaAuditoriaTrocaFonte;
 import org.traducao.projeto.trocaTipoLegenda.domain.ResultadoGeralAuditoria;
 import org.traducao.projeto.trocaTipoLegenda.domain.ResultadoTrocaFonte;
 import org.traducao.projeto.trocaTipoLegenda.domain.exceptions.TrocaTipoLegendaException;
+import org.traducao.projeto.trocaTipoLegenda.infrastructure.TrocaTipoLegendaAuditoriaCache;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -42,6 +43,7 @@ public class TrocaTipoLegendaUseCase {
     private final EscritorLegendaAss escritor;
     private final AuditoriaFontesService auditoriaService;
     private final TelemetriaService telemetriaService;
+    private final TrocaTipoLegendaAuditoriaCache auditoriaCache;
     private final ObjectMapper objectMapper;
 
     private static final class SessaoTroca {
@@ -71,12 +73,14 @@ public class TrocaTipoLegendaUseCase {
         LeitorLegendaAss leitor,
         EscritorLegendaAss escritor,
         AuditoriaFontesService auditoriaService,
-        TelemetriaService telemetriaService
+        TelemetriaService telemetriaService,
+        TrocaTipoLegendaAuditoriaCache auditoriaCache
     ) {
         this.leitor = leitor;
         this.escritor = escritor;
         this.auditoriaService = auditoriaService;
         this.telemetriaService = telemetriaService;
+        this.auditoriaCache = auditoriaCache;
         this.objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     }
 
@@ -104,7 +108,6 @@ public class TrocaTipoLegendaUseCase {
                 ));
             } catch (Exception e) {
                 log.warn("Erro ao auditar fontes do arquivo: " + arq.getFileName(), e);
-                // Adiciona o arquivo como falha de auditoria para visualização na UI
                 resultados.add(new AuditoriaLegendaResultado(
                     arq.getFileName().toString(),
                     List.of(new AuditoriaFonteInfo("ERRO_LEITURA", "N/A", "N/A", false)),
@@ -168,14 +171,30 @@ public class TrocaTipoLegendaUseCase {
                 String cabecalhoNovo = cabecalhoOriginal;
                 int substituicoesNoArquivo = 0;
 
-                for (Map.Entry<String, String> entry : mapaProblematicas.entrySet()) {
-                    String fonteLegada = entry.getKey();
-                    String fonteUnicode = entry.getValue();
+                // Registra o log granular para cada estilo de fonte problemática
+                for (AuditoriaFonteInfo fonteInfo : fontes) {
+                    if (fonteInfo.problematica()) {
+                        String fonteLegada = fonteInfo.fonteAtual();
+                        String fonteUnicode = fonteInfo.fonteSugerida();
 
-                    if (cabecalhoNovo.contains(fonteLegada)) {
-                        cabecalhoNovo = cabecalhoNovo.replace(fonteLegada, fonteUnicode);
-                        substituicoesNoArquivo++;
-                        sessao.out("  -> No arquivo: " + arq.getFileName() + " substituindo: " + fonteLegada + " -> " + fonteUnicode);
+                        if (cabecalhoNovo.contains(fonteLegada)) {
+                            cabecalhoNovo = cabecalhoNovo.replace(fonteLegada, fonteUnicode);
+                            substituicoesNoArquivo++;
+                            
+                            // Registrar no cache granular de auditoria (JSONL append-only)
+                            EntradaAuditoriaTrocaFonte entrada = new EntradaAuditoriaTrocaFonte(
+                                Instant.now().toString(),
+                                arq.getFileName().toString(),
+                                fonteInfo.estilo(),
+                                fonteLegada,
+                                fonteUnicode,
+                                pastaBackup.toString(),
+                                "SUBSTITUIDO"
+                            );
+                            auditoriaCache.registrar(entrada);
+
+                            sessao.out("  -> No arquivo: " + arq.getFileName() + " estilo [" + fonteInfo.estilo() + "] substituído: " + fonteLegada + " -> " + fonteUnicode);
+                        }
                     }
                 }
 
@@ -196,6 +215,18 @@ public class TrocaTipoLegendaUseCase {
             } catch (Exception e) {
                 sessao.out(AnsiCores.RED + "  [ERRO] Falha ao processar arquivo: " + arq.getFileName() + ". Erro: " + e.getMessage() + AnsiCores.RESET);
                 log.error("Erro no processamento do arquivo " + arq, e);
+                
+                // Registra falha na auditoria
+                EntradaAuditoriaTrocaFonte entradaErro = new EntradaAuditoriaTrocaFonte(
+                    Instant.now().toString(),
+                    arq.getFileName().toString(),
+                    "N/A",
+                    "N/A",
+                    "N/A",
+                    pastaBackup.toString(),
+                    "FALHA: " + e.getMessage()
+                );
+                auditoriaCache.registrar(entradaErro);
             }
         }
 
@@ -242,7 +273,7 @@ public class TrocaTipoLegendaUseCase {
             "Diretório: " + diretorio.getFileName(),
             System.currentTimeMillis() - sessao.inicioMs,
             arquivos.size(),
-            totalAlterados, // total com problemas ou total alterados
+            totalAlterados,
             totalSubstituicoes,
             Instant.now().toString()
         );

@@ -42,11 +42,11 @@ class AuditoriaFontesServiceTest {
         assertEquals("Arial", infoDefault.fonteSugerida());
         assertFalse(infoDefault.problematica());
 
-        // Dialogue: .VnBook-Antiqua (Problemática -> Book Antiqua)
+        // Dialogue: .VnBook-Antiqua (Problemática -> Arial como padrão seguro)
         AuditoriaFonteInfo infoDialogue = resultado.get(1);
         assertEquals("Dialogue", infoDialogue.estilo());
         assertEquals(".VnBook-Antiqua", infoDialogue.fonteAtual());
-        assertEquals("Book Antiqua", infoDialogue.fonteSugerida());
+        assertEquals("Arial", infoDialogue.fonteSugerida());
         assertTrue(infoDialogue.problematica());
 
         // Title: .VnArial (Problemática -> Arial)
