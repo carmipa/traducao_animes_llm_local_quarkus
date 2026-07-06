@@ -556,7 +556,7 @@ function inicializarMetadadosDinamicos() {
         { inputId: 'revisao-entrada', selectId: 'revisao-contexto', bannerId: 'meta-banner-revisao' },
         { inputId: 'cura-entrada-original', selectId: 'cura-contexto', bannerId: 'meta-banner-cura' },
         { inputId: 'revisao-lore-entrada-original', selectId: 'revisao-lore-contexto', bannerId: 'meta-banner-revisao-lore' },
-        { inputId: 'troca-tipo-legenda-entrada', selectId: null, bannerId: 'meta-banner-troca-tipo-legenda' }
+        { inputId: 'troca-tipo-legenda-entrada', selectId: 'troca-tipo-legenda-contexto', bannerId: 'meta-banner-troca-tipo-legenda' }
     ];
 
     const atualizarItem = (item) => {
@@ -590,13 +590,14 @@ function inicializarMetadadosDinamicos() {
 
     // Popula automaticamente todos os selects de contexto dos módulos auxiliares.
     const popularContextos = () => {
-        carregarContextosAuxiliares(['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto'], () => {
+        carregarContextosAuxiliares(['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto', 'troca-tipo-legenda-contexto'], () => {
             mapeamentoFormularios.forEach(atualizarItem);
         });
     };
 
     popularContextos();
     document.addEventListener('revisao-lore:painel-carregado', popularContextos);
+    document.addEventListener('troca-tipo-legenda:painel-carregado', popularContextos);
 
     mapeamentoFormularios.forEach(item => {
         const input = document.getElementById(item.inputId);
@@ -620,7 +621,7 @@ function inicializarMetadadosDinamicos() {
         setTimeout(() => atualizarItem(item), 500);
     });
 
-    // Atualiza metadados ao trocar de aba no menu lateral
+    // Emite carregado ao trocar de aba no menu lateral
     document.querySelectorAll('.sidebar-nav .nav-item').forEach(nav => {
         nav.addEventListener('click', () => {
             setTimeout(() => mapeamentoFormularios.forEach(atualizarItem), 150);
@@ -641,12 +642,12 @@ async function carregarContextosAuxiliares(idsSelects, onComplete) {
             ? await responseRevisaoLore.json()
             : contextos;
 
-        const todosSelects = ['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto'];
+        const todosSelects = ['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto', 'troca-tipo-legenda-contexto'];
         todosSelects.forEach(id => {
             const select = document.getElementById(id);
             if (!select) return;
 
-            const ehAuxiliar = (id === 'analise-contexto' || id === 'correcao-contexto' || id === 'cura-contexto');
+            const ehAuxiliar = (id === 'analise-contexto' || id === 'correcao-contexto' || id === 'cura-contexto' || id === 'troca-tipo-legenda-contexto');
             const ehRevisaoLore = (id === 'revisao-lore-contexto');
             select.innerHTML = '';
             

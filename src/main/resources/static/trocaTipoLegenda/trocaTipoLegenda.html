@@ -7,6 +7,12 @@
 
     <form id="form-troca-tipo-legenda" class="standard-form">
         <div class="form-group">
+            <label for="troca-tipo-legenda-contexto">Obra / Contexto (Opcional): <span class="help-icon" data-tooltip="Selecione a obra no menu para exibir os dados e a capa corretos do anime via API.">?</span></label>
+            <select id="troca-tipo-legenda-contexto">
+                <option value="" disabled selected>Carregando contextos...</option>
+            </select>
+        </div>
+        <div class="form-group">
             <label for="troca-tipo-legenda-entrada">Pasta com as legendas (.ass / .ssa): <span class="help-icon" data-tooltip="Caminho absoluto da pasta contendo as legendas ASS/SSA que serão auditadas.">?</span></label>
             <div class="input-with-button">
                 <input type="text" id="troca-tipo-legenda-entrada" autocomplete="off" spellcheck="false" placeholder="Ex: E:\animes\Gundam\0083\legendas_ptbr" required>
