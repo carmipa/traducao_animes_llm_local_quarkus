@@ -173,6 +173,7 @@ function aplicarDadosTelemetria(data, latenciaMs) {
     const auditLineVal = document.getElementById('t-audit-line');
     const errosVal = document.getElementById('t-erros');
     const chamadasLlmVal = document.getElementById('t-chamadas-llm');
+    const arquivosSanitizadosVal = document.getElementById('t-arquivos-sanitizados');
 
     const totalLinhas = Number(data.totalLinhas ?? 0);
         const cacheHits = Number(data.totalCacheHits ?? 0);
@@ -196,6 +197,7 @@ function aplicarDadosTelemetria(data, latenciaMs) {
         if (cacheSavedVal) cacheSavedVal.textContent = `${formatarNumero(cacheHits)} chamadas`;
         if (operacoesVal) operacoesVal.textContent = formatarNumero(historico.length);
         if (errosVal) errosVal.textContent = formatarNumero(data.totalErros ?? 0);
+        if (arquivosSanitizadosVal) arquivosSanitizadosVal.textContent = formatarNumero(data.arquivosSanitizados ?? 0);
         if (chamadasLlmVal) {
             const totalChamadasLlm = historico.filter(op => op.origem === 'LLM').length;
             chamadasLlmVal.textContent = formatarNumero(totalChamadasLlm);
