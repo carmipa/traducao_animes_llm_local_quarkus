@@ -17,6 +17,7 @@ import { initMapa } from '../mapa/mapa.js';
 import { initTelemetria } from '../telemetria/telemetria.js?v=2.4';
 import { initDocumentacao } from '../documentacao/documentacao.js';
 import { initSobre } from '../sobre/sobre.js';
+import { initLimpaNome } from '../limpaNomes/limpaNomes.js';
 
 // Definições de Títulos e Subtítulos por seção do menu
 const CONFIG_SECOES = {
@@ -59,6 +60,10 @@ const CONFIG_SECOES = {
     remuxer: {
         titulo: "9. Remuxer Industrial",
         subtitulo: "Junção de vídeos originais e novas legendas traduzidas em novos MKVs"
+    },
+    "limpa-nome": {
+        titulo: "10. Sanitizador de Nomes (Limpa Nome)",
+        subtitulo: "Limpeza de nomes de arquivo usando regex e metadados S01E01"
     },
     mapa: {
         titulo: "Mapeamento do Projeto",
@@ -188,6 +193,7 @@ async function inicializarModulos() {
     await initRevisaoLore();
     await initTrocaTipoLegenda();
     initRemuxer();
+    await initLimpaNome();
     initMapa();
     initTelemetria();
     initDocumentacao();
@@ -224,7 +230,8 @@ function conectarFluxoLugsSSE() {
         'troca-tipo-legenda': 'console-troca-tipo-legenda',
         'correcao-legendas': 'console-cura',
         'cura': 'console-cura',
-        'remuxer': 'console-remuxer'
+        'remuxer': 'console-remuxer',
+        'limpa-nome': 'console-limpa-nome'
     };
 
     for (const [canal, consoleId] of Object.entries(consoleMap)) {
@@ -610,7 +617,8 @@ function inicializarMetadadosDinamicos() {
         { inputId: 'revisao-entrada', selectId: 'revisao-contexto', bannerId: 'meta-banner-revisao' },
         { inputId: 'cura-entrada-original', selectId: 'cura-contexto', bannerId: 'meta-banner-cura' },
         { inputId: 'revisao-lore-entrada-original', selectId: 'revisao-lore-contexto', bannerId: 'meta-banner-revisao-lore' },
-        { inputId: 'troca-tipo-legenda-entrada', selectId: 'troca-tipo-legenda-contexto', bannerId: 'meta-banner-troca-tipo-legenda' }
+        { inputId: 'troca-tipo-legenda-entrada', selectId: 'troca-tipo-legenda-contexto', bannerId: 'meta-banner-troca-tipo-legenda' },
+        { inputId: 'limpanome-entrada', selectId: 'limpanome-contexto', bannerId: 'meta-banner-limpanome' }
     ];
 
     const atualizarItem = (item) => {
@@ -645,7 +653,7 @@ function inicializarMetadadosDinamicos() {
 
     // Popula automaticamente todos os selects de contexto dos módulos auxiliares.
     const popularContextos = () => {
-        carregarContextosAuxiliares(['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto', 'troca-tipo-legenda-contexto'], () => {
+        carregarContextosAuxiliares(['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto', 'troca-tipo-legenda-contexto', 'limpanome-contexto'], () => {
             mapeamentoFormularios.forEach(atualizarItem);
         });
     };
@@ -653,6 +661,7 @@ function inicializarMetadadosDinamicos() {
     popularContextos();
     document.addEventListener('revisao-lore:painel-carregado', popularContextos);
     document.addEventListener('troca-tipo-legenda:painel-carregado', popularContextos);
+    document.addEventListener('limpa-nome:painel-carregado', popularContextos);
 
     mapeamentoFormularios.forEach(item => {
         const input = document.getElementById(item.inputId);
@@ -697,12 +706,12 @@ async function carregarContextosAuxiliares(idsSelects, onComplete) {
             ? await responseRevisaoLore.json()
             : contextos;
 
-        const todosSelects = ['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto', 'troca-tipo-legenda-contexto'];
+        const todosSelects = ['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto', 'troca-tipo-legenda-contexto', 'limpanome-contexto'];
         todosSelects.forEach(id => {
             const select = document.getElementById(id);
             if (!select) return;
 
-            const ehAuxiliar = (id === 'analise-contexto' || id === 'correcao-contexto' || id === 'cura-contexto' || id === 'troca-tipo-legenda-contexto');
+            const ehAuxiliar = (id === 'analise-contexto' || id === 'correcao-contexto' || id === 'cura-contexto' || id === 'troca-tipo-legenda-contexto' || id === 'limpanome-contexto');
             const ehRevisaoLore = (id === 'revisao-lore-contexto');
             select.innerHTML = '';
             

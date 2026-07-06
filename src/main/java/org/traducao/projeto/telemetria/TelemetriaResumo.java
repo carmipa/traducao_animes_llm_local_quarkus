@@ -21,5 +21,6 @@ public record TelemetriaResumo(
     double jvmCpuUso,
     int jvmThreadsAtivas,
     long jvmHeapUsadoBytes,
-    long jvmHeapMaxBytes
+    long jvmHeapMaxBytes,
+    int arquivosSanitizados
 ) {}

@@ -40,7 +40,7 @@ public class ConsoleUILogger {
             pb = new ProgressBarBuilder()
                     .setTaskName("Traduzindo " + nomeEpisodio)
                     .setInitialMax(totalLotes)
-                    .setStyle(ProgressBarStyle.COLORFUL_UNICODE_BLOCK) // Upgrade visual aqui!
+                    .setStyle(ProgressBarStyle.ASCII) // Fallback seguro para Windows Terminal e CMD
                     .setUpdateIntervalMillis(100)
                     .build();
         } catch (RuntimeException e) {

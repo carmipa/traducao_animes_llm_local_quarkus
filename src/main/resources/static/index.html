@@ -105,6 +105,10 @@
                             <span class="material-symbols-outlined nav-icon">layers</span>
                             <span>9. Remuxer</span>
                         </button>
+                        <button class="nav-item" data-target="limpa-nome" id="btn-menu-limpa-nome" data-tooltip="Limpe e renomeie arquivos de vídeo e legendas usando um padrão S01E01 com base nos metadados.">
+                            <span class="material-symbols-outlined nav-icon">cleaning_services</span>
+                            <span>10. Limpa Nome</span>
+                        </button>
                     </div>
                 </div>
 
@@ -337,6 +341,18 @@
                                  </div>
                                  <h4>Remuxer</h4>
                                  <p>Mescle os vídeos originais e as legendas traduzidas em novos MKVs.</p>
+                                 <span class="card-action-link">Acessar Painel →</span>
+                             </div>
+
+                             <!-- Card 10.5 -->
+                             <div class="pipeline-card card-limpa-nome" onclick="document.getElementById('btn-menu-limpa-nome').click()" data-tooltip="Clique para renomear e sanitizar arquivos de vídeos">
+                                 <div class="card-glow-bg"></div>
+                                 <div class="card-step-num">10.5</div>
+                                 <div class="card-icon-container">
+                                     <span class="material-symbols-outlined">cleaning_services</span>
+                                 </div>
+                                 <h4>Limpa Nome</h4>
+                                 <p>Sanitize e padronize nomes de arquivos usando regex e metadados oficiais.</p>
                                  <span class="card-action-link">Acessar Painel →</span>
                              </div>
 
@@ -771,11 +787,6 @@
                             </div>
                             <div class="correcao-actions">
                                 <button type="submit" class="btn btn-primary btn-cyan" data-tooltip="Mescla os arquivos de vídeo e legendas traduzidas em novos arquivos usando mkvmerge">
-                                    <span>Iniciar Remuxing</span>
-                                    <span class="material-symbols-outlined btn-icon">play_arrow</span>
-                                </button>
-                                <button type="button" class="btn btn-secondary btn-clear-form" data-form="form-remuxer" data-tooltip="Limpa todos os campos do remuxer">
-                                    <span class="material-symbols-outlined btn-icon">delete_sweep</span>
                                     <span>Limpar Campos</span>
                                 </button>
                             </div>
@@ -784,7 +795,7 @@
                     
                     <div class="glass-card console-card">
                         <div class="console-header">
-                            <h3>Logs de Remux</h3>
+                            <h3>Logs do Remuxer</h3>
                             <div class="console-actions">
                                 <button class="btn-toggle-console" data-target="console-remuxer" data-tooltip="Alternar altura expandida do console"><span class="material-symbols-outlined console-action-icon">unfold_more</span>Expandir</button>
                                 <button class="btn-copy-console" data-target="console-remuxer" data-tooltip="Copiar conteúdo do console"><span class="material-symbols-outlined console-action-icon">content_copy</span>Copiar</button>
@@ -795,6 +806,10 @@
                             <div class="system-message">Aguardando execução...</div>
                         </div>
                     </div>
+                </div>
+
+                <!-- 10. PAINEL DE LIMPA NOME (SANITIZADOR) -->
+                <div class="panel" id="panel-limpa-nome">
                 </div>
 
                 <!-- 8. PAINEL DE MAPA DO PROJETO -->

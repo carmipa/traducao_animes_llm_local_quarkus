@@ -161,7 +161,7 @@ public class MistralClientAdapter implements MistralPort {
 
                 List<String> linhasTraduzidas = extrairLinhasTraduzidas(traduzidoText);
                 linhasTraduzidas = removerNumeracaoAlucinada(linhasTraduzidas, lote.linhasOriginais());
-                log.info("Lote {} traduzido em {} ms ({} -> {} linha(s))",
+                log.debug("Lote {} traduzido em {} ms ({} -> {} linha(s))",
                     lote.idLote(), duracaoMs, lote.linhasOriginais().size(), linhasTraduzidas.size());
 
                 return new TraducaoLote(lote.idLote(), linhasTraduzidas, true, null);

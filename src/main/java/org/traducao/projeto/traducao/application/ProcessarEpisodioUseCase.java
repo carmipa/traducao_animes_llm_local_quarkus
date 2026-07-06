@@ -91,13 +91,13 @@ public class ProcessarEpisodioUseCase {
             List<String> traduzidas = traduzirComDivisao(lote);
 
             log.debug("Lote {} validado com sucesso", lote.idLote());
-            uiLogger.log("✅ Lote " + lote.idLote() + " traduzido com sucesso.");
+            uiLogger.log("[ OK ] Lote " + lote.idLote() + " traduzido com sucesso.");
             uiLogger.passoConcluido(1);
 
             return new TraducaoLote(lote.idLote(), traduzidas, true, null);
         } catch (TradutorException e) {
             log.error("Falha crítica no lote {}: {}", lote.idLote(), e.getMessage());
-            uiLogger.log("❌ ERRO CRÍTICO no Lote " + lote.idLote() + ": " + e.getMessage());
+            uiLogger.log("[ FAIL ] ERRO CRÍTICO no Lote " + lote.idLote() + ": " + e.getMessage());
             throw e;
         } finally {
             MDC.remove(MDC_LOTE_ID);

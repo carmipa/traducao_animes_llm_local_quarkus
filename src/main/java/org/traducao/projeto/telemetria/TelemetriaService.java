@@ -66,6 +66,7 @@ public class TelemetriaService {
     private final Map<String, LlmTelemetria> bancoLlm = new LinkedHashMap<>();
     private final List<OperacaoTelemetria> bancoOperacoes = new ArrayList<>();
     private final AtomicInteger alucinacoesPrevenidas = new AtomicInteger(0);
+    private final AtomicInteger arquivosSanitizados = new AtomicInteger(0);
 
     // Estruturas para Server-Sent Events (SSE)
     private final List<SseEventSink> sinks = new CopyOnWriteArrayList<>();
@@ -83,6 +84,13 @@ public class TelemetriaService {
     public void registrarAlucinacaoPrevenida() {
         alucinacoesPrevenidas.incrementAndGet();
         log.info("Alucinação de tradução interceptada e corrigida. Total acumulado: {}", alucinacoesPrevenidas.get());
+        persistirCanonico();
+        broadcast();
+    }
+    
+    public void registrarArquivoSanitizado() {
+        arquivosSanitizados.incrementAndGet();
+        log.info("Arquivo renomeado com sucesso (Limpa Nome). Total acumulado: {}", arquivosSanitizados.get());
         persistirCanonico();
         broadcast();
     }
@@ -248,6 +256,7 @@ public class TelemetriaService {
             rootNode.set("traducoesLlm", objectMapper.valueToTree(new ArrayList<>(this.bancoLlm.values())));
             rootNode.set("operacoes", objectMapper.valueToTree(this.bancoOperacoes));
             rootNode.put("alucinacoesPrevenidas", this.alucinacoesPrevenidas.get());
+            rootNode.put("arquivosSanitizados", this.arquivosSanitizados.get());
 
             // Grava em arquivo temporário e move atomicamente para evitar que uma
             // interrupção no meio da escrita (o arquivo é regravado a cada registro)
@@ -331,7 +340,8 @@ public class TelemetriaService {
             jvmCpu,
             jvmThreads,
             heapUsed,
-            heapMax
+            heapMax,
+            arquivosSanitizados.get()
         );
     }
 
@@ -540,6 +550,11 @@ public class TelemetriaService {
             JsonNode alucinacoesNode = root.get("alucinacoesPrevenidas");
             if (alucinacoesNode != null && alucinacoesNode.isInt()) {
                 alucinacoesPrevenidas.set(alucinacoesNode.asInt());
+            }
+
+            JsonNode sanitizadosNode = root.get("arquivosSanitizados");
+            if (sanitizadosNode != null && sanitizadosNode.isInt()) {
+                arquivosSanitizados.set(sanitizadosNode.asInt());
             }
 
             log.info("Carregadas entradas anteriores: {} mídias, {} traduções, {} operações do arquivo {}.",
