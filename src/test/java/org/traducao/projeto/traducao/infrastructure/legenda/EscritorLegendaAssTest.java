@@ -10,7 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class EscritorLegendaAssTest {
@@ -21,7 +20,7 @@ class EscritorLegendaAssTest {
     private final EscritorLegendaAss escritor = new EscritorLegendaAss();
 
     @Test
-    void normalizaFonteVniLegadaParaFonteUnicode() throws Exception {
+    void preservaCabecalhoSemNormalizarFonteImplicitamente() throws Exception {
         String cabecalho = """
             [Script Info]
             ScriptType: v4.00+
@@ -46,8 +45,7 @@ class EscritorLegendaAssTest {
         escritor.escrever(saida, documento);
 
         String conteudo = Files.readString(saida, StandardCharsets.UTF_8);
-        assertTrue(conteudo.contains("Style: Dialogue,Arial,75"));
+        assertTrue(conteudo.contains("Style: Dialogue,.VnBook-Antiqua,75"));
         assertTrue(conteudo.contains("Não é mais um sonho."));
-        assertFalse(conteudo.contains(".VnBook-Antiqua"));
     }
 }

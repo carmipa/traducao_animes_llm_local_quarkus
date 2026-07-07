@@ -14,6 +14,7 @@ import org.traducao.projeto.revisaoLore.infrastructure.RevisaoLoreLogPersistenci
 import org.traducao.projeto.telemetria.OperacaoTelemetria;
 import org.traducao.projeto.telemetria.TelemetriaService;
 import org.traducao.projeto.traducao.application.DetectorEfeitoKaraokeService;
+import org.traducao.projeto.traducao.application.ProtecaoLegendaAssService;
 import org.traducao.projeto.traducao.application.ValidadorTraducaoService;
 import org.traducao.projeto.traducao.domain.StatusLlm;
 import org.traducao.projeto.traducao.domain.legenda.DocumentoLegenda;
@@ -58,6 +59,7 @@ public class RevisarLoreUseCase {
     private final RevisaoLoreAuditoriaCache auditoriaCache;
     private final TradutorProperties propriedades;
     private final DetectorEfeitoKaraokeService detectorKaraoke;
+    private final ProtecaoLegendaAssService protecaoAss;
 
     /**
      * Estado de UMA execução de revisão (log de eventos + relógio da sessão).
@@ -103,7 +105,8 @@ public class RevisarLoreUseCase {
         RevisaoLoreLogPersistencia logPersistencia,
         RevisaoLoreAuditoriaCache auditoriaCache,
         TradutorProperties propriedades,
-        DetectorEfeitoKaraokeService detectorKaraoke
+        DetectorEfeitoKaraokeService detectorKaraoke,
+        ProtecaoLegendaAssService protecaoAss
     ) {
         this.leitor = leitor;
         this.escritor = escritor;
@@ -117,6 +120,7 @@ public class RevisarLoreUseCase {
         this.auditoriaCache = auditoriaCache;
         this.propriedades = propriedades;
         this.detectorKaraoke = detectorKaraoke;
+        this.protecaoAss = protecaoAss;
     }
 
     public ResultadoRevisaoLore executar(
@@ -362,6 +366,19 @@ public class RevisarLoreUseCase {
                 String revisada;
                 try {
                     revisada = mascarador.desmascarar(revisadaOpt.get(), mascaraPt.tags());
+                    if (protecaoAss.respostaSuspeita(textoEn, revisada)) {
+                        sessao.out(AnsiCores.YELLOW + marcadorFala
+                            + " revisão descartada por resposta suspeita em linha ASS pesada"
+                            + AnsiCores.RESET);
+                        registrarAuditoria(
+                            contextoId, nomePromptRevisao, revisarTodasFalas, arqTraduzido, i + 1,
+                            dialogoAtual, totalDialogos, "DESCARTADA_ASS_PESADO", deteccao.motivos(),
+                            textoEn, textoPt, revisadaOpt.get(), textoPt,
+                            "Resposta suspeita para linha ASS pesada"
+                        );
+                        novosEventos.add(evtTraduzido);
+                        continue;
+                    }
                     if (mesmaFalaVisivel(revisada, textoPt)) {
                         falasSemAlteracao[0]++;
                         sessao.out(AnsiCores.DIM + marcadorFala + " conforme apos revisao LLM" + AnsiCores.RESET);
@@ -609,6 +626,9 @@ public class RevisarLoreUseCase {
             return false;
         }
         if (PADRAO_DESENHO_VETORIAL.matcher(textoOriginal).find()) {
+            return false;
+        }
+        if (protecaoAss.deveIgnorarIntervencaoIa(original.estilo(), textoOriginal)) {
             return false;
         }
         if (detectorKaraoke.eEfeitoKaraoke(textoOriginal)

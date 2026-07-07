@@ -17,6 +17,10 @@ class ValidadorTraducaoServiceTest {
             validador.validarFala("Tradução: {\\r\\pos(488,23)}ep"));
         assertThrows(AlucinacaoDetectadaException.class, () ->
             validador.validarFala("Traducao : Ele nunca vai desistir."));
+        assertThrows(AlucinacaoDetectadaException.class, () ->
+            validador.validarFala("Saída: {=68}{\\pos(1192,40)}"));
+        assertThrows(AlucinacaoDetectadaException.class, () ->
+            validador.validarFala("Resposta: ele nunca vai desistir."));
     }
 
     @Test

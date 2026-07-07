@@ -142,5 +142,23 @@ class WebInterfaceTest {
             html.contains("data-modulo=\"auditorConteudoLegendas\""),
             "Shell do modulo auditoria de conteudo ausente no index"
         );
+
+        int grupoPreparacao = html.indexOf("data-grupo=\"preparacao\"");
+        int grupoTraducao = html.indexOf("data-grupo=\"traducao\"");
+        int grupoQualidade = html.indexOf("data-grupo=\"qualidade\"");
+        int grupoFinalizacao = html.indexOf("data-grupo=\"finalizacao\"");
+        int itemAuditor = html.indexOf("data-target=\"auditor-conteudo\"");
+        org.junit.jupiter.api.Assertions.assertTrue(
+            itemAuditor > grupoQualidade && itemAuditor < grupoFinalizacao,
+            "Análise de Conteúdo deve ficar no grupo Qualidade"
+        );
+        org.junit.jupiter.api.Assertions.assertTrue(
+            grupoPreparacao < grupoTraducao && grupoTraducao < grupoQualidade,
+            "Ordem dos grupos principais do pipeline ficou inconsistente"
+        );
+        org.junit.jupiter.api.Assertions.assertTrue(
+            html.contains("<span>5. Análise de Conteúdo</span>"),
+            "Numeração da Análise de Conteúdo deve refletir etapa de Qualidade"
+        );
     }
 }

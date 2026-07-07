@@ -7,6 +7,7 @@ import org.traducao.projeto.correcaoLegendas.infrastructure.CorrecaoLegendasLogP
 import org.traducao.projeto.telemetria.OperacaoTelemetria;
 import org.traducao.projeto.telemetria.TelemetriaService;
 import org.traducao.projeto.traducao.application.DetectorEfeitoKaraokeService;
+import org.traducao.projeto.traducao.application.ProtecaoLegendaAssService;
 import org.traducao.projeto.traducao.application.ValidadorTraducaoService;
 import org.traducao.projeto.traducao.domain.ports.ProvedorContexto;
 import org.traducao.projeto.traducao.infrastructure.config.TradutorProperties;
@@ -53,7 +54,8 @@ class CorrigirLegendasUseCaseTest {
             new LogPersistenciaFake(),
             new DetectorEfeitoKaraokeService(),
             new TradutorProperties(),
-            new MascaradorTags()
+            new MascaradorTags(),
+            new ProtecaoLegendaAssService()
         );
 
         useCase.corrigirPasta(tempDir, tempDir, "teste");
@@ -80,7 +82,7 @@ class CorrigirLegendasUseCaseTest {
         int chamadas;
 
         CorretorFake() {
-            super(null, null, null);
+            super(null, null, null, null);
         }
 
         @Override

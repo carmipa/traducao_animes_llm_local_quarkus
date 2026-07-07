@@ -46,11 +46,6 @@ public class ProcessarArquivoUseCase {
 
     private static final Logger log = LoggerFactory.getLogger(ProcessarArquivoUseCase.class);
 
-    // Modo de desenho vetorial do Aegisub (\p1, \p2, ... \pN): o texto que segue
-    // não é fala, são comandos de path vetorial. Sempre lixo, sem exceção.
-    private static final Pattern PADRAO_DESENHO_VETORIAL = Pattern.compile("\\\\p[1-9]\\d*");
-    // Remove blocos de override ASS ({\tag...}) para isolar o texto visível.
-    private static final Pattern PADRAO_REMOVE_TAGS_ASS = Pattern.compile("\\{[^}]+}");
     // Um letreiro/título animado quadro a quadro reaparece muitas vezes com o
     // mesmo texto visível (só a tag de efeito muda a cada quadro). Abaixo
     // disso é mais provável ser só uma fala com efeito visual pontual (ex.:
@@ -70,6 +65,7 @@ public class ProcessarArquivoUseCase {
     private final PastasExecucao pastasExecucao;
     private final TelemetriaService telemetriaService;
     private final DetectorEfeitoKaraokeService detectorKaraoke;
+    private final ProtecaoLegendaAssService protecaoAss;
 
     public ProcessarArquivoUseCase(
         LeitorLegendaAss leitor,
@@ -84,7 +80,8 @@ public class ProcessarArquivoUseCase {
         ConsoleUILogger uiLogger,
         PastasExecucao pastasExecucao,
         TelemetriaService telemetriaService,
-        DetectorEfeitoKaraokeService detectorKaraoke
+        DetectorEfeitoKaraokeService detectorKaraoke,
+        ProtecaoLegendaAssService protecaoAss
     ) {
         this.leitor = leitor;
         this.escritor = escritor;
@@ -99,6 +96,7 @@ public class ProcessarArquivoUseCase {
         this.pastasExecucao = pastasExecucao;
         this.telemetriaService = telemetriaService;
         this.detectorKaraoke = detectorKaraoke;
+        this.protecaoAss = protecaoAss;
     }
 
     public Path processar(Path arquivoEntrada) throws InterruptedException, ExecutionException {
@@ -108,6 +106,18 @@ public class ProcessarArquivoUseCase {
 
         Path arquivoCache = resolverArquivoCache(arquivoEntrada);
         Map<String, String> cacheExistente = cacheService.carregar(arquivoCache);
+
+        // Avisos de falas que ficaram sem tradução confiável (tags corrompidas,
+        // resíduo detectado na revalidação final). Alimenta o campo
+        // errosOcorridos da telemetria para o painel refletir o que exige
+        // revisão manual.
+        List<String> avisos = new ArrayList<>();
+        if (protecaoAss.caminhoPareceTraduzido(arquivoEntrada)) {
+            String aviso = "A entrada parece ser uma pasta/legenda ja traduzida: " + arquivoEntrada;
+            log.warn(aviso);
+            uiLogger.log("[ WARN ] " + aviso);
+            avisos.add(aviso);
+        }
 
         Map<String, Long> frequenciaTextoLimpo = calcularFrequenciaTextoLimpo(documento);
         List<EventoLegenda> eventosTraduziveis = documento.eventos().stream()
@@ -135,12 +145,6 @@ public class ProcessarArquivoUseCase {
         log.info("{} fala(s) distinta(s) reaproveitada(s) do cache, {} suspeita(s), {} pendente(s) de tradução",
             cacheReaproveitavel.size(), cacheSuspeito, textosPendentes.size());
         uiLogger.registrarFalasCache(cacheReaproveitavel.size());
-
-        // Avisos de falas que ficaram sem tradução confiável (tags corrompidas,
-        // resíduo detectado na revalidação final). Alimenta o campo
-        // errosOcorridos da telemetria para o painel refletir o que exige
-        // revisão manual — antes era sempre uma lista vazia.
-        List<String> avisos = new ArrayList<>();
 
         Map<String, String> traducoesNovas;
         try {
@@ -303,7 +307,16 @@ public class ProcessarArquivoUseCase {
      */
     private String desmascararComFallback(String original, String traduzidoMascarado, List<String> tags, List<String> avisos) {
         try {
-            return mascarador.desmascarar(traduzidoMascarado, tags);
+            String traduzido = mascarador.desmascarar(traduzidoMascarado, tags);
+            if (protecaoAss.respostaSuspeita(original, traduzido)) {
+                telemetriaService.registrarAlucinacaoPrevenida();
+                log.warn("LLM contaminou linha ASS pesada — mantendo original. Original: \"{}\" Traduzido: \"{}\"",
+                    original, traduzido);
+                uiLogger.log("[ WARN ] Linha ASS pesada contaminada pelo LLM — mantida sem tradução (revise manualmente): " + original);
+                avisos.add("Linha ASS pesada mantida sem tradução por resposta suspeita do LLM: " + original);
+                return original;
+            }
+            return traduzido;
         } catch (AlucinacaoDetectadaException e) {
             telemetriaService.registrarAlucinacaoPrevenida();
             log.warn("Tags corrompidas pelo LLM nesta fala — mantendo o texto original sem tradução. Motivo: {}. Original: \"{}\"",
@@ -312,6 +325,22 @@ public class ProcessarArquivoUseCase {
             avisos.add("Fala mantida sem tradução (tags corrompidas pelo LLM): " + original);
             return original;
         }
+    }
+
+    static boolean respostaAssPesadaSuspeita(String original, String traduzido) {
+        return ProtecaoLegendaAssService.respostaAssPesadaSuspeita(original, traduzido);
+    }
+
+    private static String extrairTextoVisivelAss(String texto) {
+        return ProtecaoLegendaAssService.extrairTextoVisivelAss(texto);
+    }
+
+    static boolean deveBloquearAntesDoLlm(String estilo, String texto, long repeticoesTextoVisivel) {
+        return ProtecaoLegendaAssService.deveBloquearAntesDoLlm(estilo, texto, repeticoesTextoVisivel);
+    }
+
+    static boolean caminhoPareceLegendaTraduzida(Path arquivoEntrada) {
+        return ProtecaoLegendaAssService.caminhoPareceLegendaTraduzida(arquivoEntrada);
     }
 
     /**
@@ -328,7 +357,7 @@ public class ProcessarArquivoUseCase {
             if (!evento.isDialogo() || !evento.temTexto()) {
                 continue;
             }
-            String textoLimpo = PADRAO_REMOVE_TAGS_ASS.matcher(evento.texto()).replaceAll("").strip();
+            String textoLimpo = extrairTextoVisivelAss(evento.texto());
             if (!textoLimpo.isEmpty()) {
                 frequencia.merge(textoLimpo, 1L, Long::sum);
             }
@@ -356,12 +385,18 @@ public class ProcessarArquivoUseCase {
         }
 
         // 1. Blindagem Contra Lixo Vetorial Absoluto (modo de desenho \p1, \p2, ... do Aegisub)
-        if (PADRAO_DESENHO_VETORIAL.matcher(texto).find()) {
+        if (protecaoAss.temDesenhoVetorial(texto)) {
             return false;
         }
 
-        String textoLimpo = PADRAO_REMOVE_TAGS_ASS.matcher(texto).replaceAll("").strip();
+        String textoLimpo = extrairTextoVisivelAss(texto);
         if (textoLimpo.isEmpty()) {
+            return false;
+        }
+        long repeticoes = frequenciaTextoLimpo.getOrDefault(textoLimpo, 1L);
+        if (protecaoAss.deveBloquearLinhaAntesDoLlm(evento.estilo(), texto, repeticoes)) {
+            log.debug("Bloqueando evento de typesetting de alto risco antes do LLM. Repetido {}x. Estilo: {} Texto: {}",
+                repeticoes, evento.estilo(), textoLimpo);
             return false;
         }
 
@@ -372,7 +407,6 @@ public class ProcessarArquivoUseCase {
         boolean temTagDeAnimacao = texto.contains("\\clip") || texto.contains("\\move")
             || texto.contains("\\pos") || texto.contains("\\fad") || texto.contains("\\t(");
         if (temTagDeAnimacao && texto.length() > 40 && textoLimpo.length() * 3 < texto.length()) {
-            long repeticoes = frequenciaTextoLimpo.getOrDefault(textoLimpo, 1L);
             if (repeticoes >= LIMIAR_REPETICAO_LETREIRO) {
                 log.debug("Bloqueando evento suspeito de letreiro animado (repetido {}x). Estilo: {} Texto: {}",
                     repeticoes, evento.estilo(), textoLimpo);

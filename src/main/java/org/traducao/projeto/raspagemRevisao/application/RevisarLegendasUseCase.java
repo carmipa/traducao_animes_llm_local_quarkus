@@ -10,6 +10,7 @@ import org.traducao.projeto.raspagemRevisao.domain.exceptions.RaspagemRevisaoExc
 import org.traducao.projeto.telemetria.OperacaoTelemetria;
 import org.traducao.projeto.telemetria.TelemetriaService;
 import org.traducao.projeto.traducao.application.DetectorEfeitoKaraokeService;
+import org.traducao.projeto.traducao.application.ProtecaoLegendaAssService;
 import org.traducao.projeto.traducao.application.ValidadorTraducaoService;
 import org.traducao.projeto.traducao.domain.exceptions.AlucinacaoDetectadaException;
 import org.traducao.projeto.traducao.domain.legenda.DocumentoLegenda;
@@ -64,6 +65,7 @@ public class RevisarLegendasUseCase {
     private final SanitizadorTagsService sanitizadorTags;
     private final TradutorProperties propriedades;
     private final DetectorEfeitoKaraokeService detectorKaraoke;
+    private final ProtecaoLegendaAssService protecaoAss;
 
     public RevisarLegendasUseCase(
         LeitorLegendaAss leitor,
@@ -78,7 +80,8 @@ public class RevisarLegendasUseCase {
         TelemetriaService telemetriaService,
         SanitizadorTagsService sanitizadorTags,
         TradutorProperties propriedades,
-        DetectorEfeitoKaraokeService detectorKaraoke
+        DetectorEfeitoKaraokeService detectorKaraoke,
+        ProtecaoLegendaAssService protecaoAss
     ) {
         this.leitor = leitor;
         this.escritor = escritor;
@@ -93,6 +96,7 @@ public class RevisarLegendasUseCase {
         this.sanitizadorTags = sanitizadorTags;
         this.propriedades = propriedades;
         this.detectorKaraoke = detectorKaraoke;
+        this.protecaoAss = protecaoAss;
     }
 
     /**
@@ -572,6 +576,9 @@ public class RevisarLegendasUseCase {
             && !detectorKaraoke.eKaraokeOuMusicaTraduzivel(evento.estilo(), texto)) {
             return true;
         }
+        if (protecaoAss.deveIgnorarIntervencaoIa(evento.estilo(), texto)) {
+            return true;
+        }
         String estilo = evento.estilo() != null ? evento.estilo().toLowerCase() : "";
         if (estilo.contains("sign")) {
             return true;
@@ -799,6 +806,9 @@ public class RevisarLegendasUseCase {
         try {
             String desmascarado = mascaradorTags.desmascarar(resposta.get(), mascTraduzido.tags());
             validador.validarFala(desmascarado);
+            if (protecaoAss.respostaSuspeita(original, desmascarado)) {
+                return Optional.empty();
+            }
             return Optional.of(desmascarado);
         } catch (AlucinacaoDetectadaException e) {
             return Optional.empty();

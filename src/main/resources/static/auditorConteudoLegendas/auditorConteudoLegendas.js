@@ -1,10 +1,18 @@
 import { logNoConsole, mostrarAlerta } from '../js/app.js?v=3.4';
 
-const PAINEL_HTML = 'auditorConteudoLegendas/auditorConteudoLegendas.html?v=3.4';
+const PAINEL_HTML = 'auditorConteudoLegendas/auditorConteudoLegendas.html?v=3.5';
 
 const ORDEM_SEVERIDADE = { CRITICAL: 0, ERROR: 1, WARNING: 2 };
 
+// Configuração visual única por severidade (ícone, rótulo e sufixo de classe CSS)
+const CONFIG_SEVERIDADE = {
+    CRITICAL: { icone: 'gpp_bad', rotulo: 'Crítico', classe: 'critical' },
+    ERROR: { icone: 'error', rotulo: 'Erro', classe: 'error' },
+    WARNING: { icone: 'warning', rotulo: 'Aviso', classe: 'warning' }
+};
+
 let ultimoRelatorio = null;
+let filtroAtual = 'TODOS';
 
 async function carregarPainelHtml() {
     const painel = document.getElementById('panel-auditor-conteudo');
@@ -37,7 +45,7 @@ export async function initAuditorConteudo() {
 
 function vincularEventos() {
     const formAuditor = document.getElementById('form-auditor-conteudo');
-    const tableBody = document.querySelector('#table-auditor-conteudo tbody');
+    const lista = document.getElementById('auditor-anomalias-lista');
     const statusBadge = document.getElementById('auditor-status-badge');
     const btnExportarMd = document.getElementById('btn-exportar-auditor-md');
     const btnExportarJson = document.getElementById('btn-exportar-auditor-json');
@@ -52,11 +60,11 @@ function vincularEventos() {
     }
     if (btnLimpar) {
         btnLimpar.addEventListener('click', () => {
-            setTimeout(() => resetarRelatorioVisual(tableBody, statusBadge), 0);
+            setTimeout(() => resetarRelatorioVisual(lista, statusBadge), 0);
         });
     }
 
-    if (!formAuditor || !tableBody || !statusBadge) return;
+    if (!formAuditor || !lista || !statusBadge) return;
 
     formAuditor.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -70,10 +78,11 @@ function vincularEventos() {
         }
 
         ultimoRelatorio = null;
-        ocultarResumoELimpo();
+        filtroAtual = 'TODOS';
+        ocultarResumoFiltrosELimpo();
         statusBadge.textContent = 'Auditando...';
         statusBadge.className = 'status-badge pulse-purple';
-        tableBody.innerHTML = '<tr><td colspan="6" class="auditor-empty-row">Analisando arquivos...</td></tr>';
+        lista.innerHTML = '<div class="auditor-lista-vazia">Analisando arquivos...</div>';
         logNoConsole(CONSOLE_ID, 'Iniciando auditoria de conteúdo...', 'info');
 
         try {
@@ -93,7 +102,7 @@ function vincularEventos() {
 
             const relatorio = await response.json();
             ultimoRelatorio = relatorio;
-            renderizarRelatorio(relatorio, tableBody, statusBadge);
+            renderizarRelatorio(relatorio, lista, statusBadge);
 
             if (relatorio.limpo) {
                 logNoConsole(CONSOLE_ID, 'Auditoria concluída — nenhuma anomalia detectada.', 'sucesso');
@@ -105,34 +114,40 @@ function vincularEventos() {
             }
         } catch (err) {
             ultimoRelatorio = null;
-            ocultarResumoELimpo();
+            ocultarResumoFiltrosELimpo();
             statusBadge.textContent = 'Erro';
             statusBadge.className = 'status-badge pulse-red';
-            tableBody.innerHTML = `<tr><td colspan="6" class="auditor-empty-row auditor-row-erro">Erro: ${escapeHtml(err.message)}</td></tr>`;
+            lista.innerHTML = `<div class="auditor-lista-vazia auditor-lista-erro">Erro: ${escapeHtml(err.message)}</div>`;
             logNoConsole(CONSOLE_ID, `Erro na auditoria: ${err.message}`, 'erro');
             console.error(err);
         }
     });
 }
 
-function resetarRelatorioVisual(tableBody, statusBadge) {
+function resetarRelatorioVisual(lista, statusBadge) {
     ultimoRelatorio = null;
-    ocultarResumoELimpo();
+    filtroAtual = 'TODOS';
+    ocultarResumoFiltrosELimpo();
     if (statusBadge) {
         statusBadge.textContent = 'Aguardando...';
         statusBadge.className = 'status-badge';
     }
-    if (tableBody) {
-        tableBody.innerHTML = '<tr class="auditor-row-empty"><td colspan="6" class="auditor-empty-row">Nenhuma auditoria realizada ainda. Execute a auditoria para ver o relatório aqui.</td></tr>';
+    if (lista) {
+        lista.innerHTML = '<div class="auditor-lista-vazia">Nenhuma auditoria realizada ainda. Execute a auditoria para ver o relatório aqui.</div>';
     }
 }
 
-function ocultarResumoELimpo() {
+function ocultarResumoFiltrosELimpo() {
     const resumo = document.getElementById('auditor-resumo');
+    const filtros = document.getElementById('auditor-filtros');
     const limpo = document.getElementById('auditor-alerta-limpo');
     if (resumo) {
         resumo.innerHTML = '';
         resumo.classList.add('hidden');
+    }
+    if (filtros) {
+        filtros.innerHTML = '';
+        filtros.classList.add('hidden');
     }
     if (limpo) limpo.classList.add('hidden');
 }
@@ -140,18 +155,6 @@ function ocultarResumoELimpo() {
 function renderizarResumo(relatorio) {
     const resumo = document.getElementById('auditor-resumo');
     if (!resumo) return;
-
-    const contagem = contarPorSeveridade(relatorio.anomalias || []);
-    const chips = [];
-    if (contagem.CRITICAL > 0) {
-        chips.push(`<span class="auditor-chip auditor-chip-critical"><span class="material-symbols-outlined">dangerous</span>${contagem.CRITICAL} crítica(s)</span>`);
-    }
-    if (contagem.ERROR > 0) {
-        chips.push(`<span class="auditor-chip auditor-chip-error"><span class="material-symbols-outlined">error</span>${contagem.ERROR} erro(s)</span>`);
-    }
-    if (contagem.WARNING > 0) {
-        chips.push(`<span class="auditor-chip auditor-chip-warning"><span class="material-symbols-outlined">warning</span>${contagem.WARNING} aviso(s)</span>`);
-    }
 
     resumo.innerHTML = `
         <div class="auditor-resumo-grid">
@@ -172,106 +175,153 @@ function renderizarResumo(relatorio) {
                 <strong class="auditor-resumo-valor">${relatorio.duracaoMs ?? 0} ms</strong>
             </div>
         </div>
-        ${chips.length ? `<div class="auditor-resumo-chips">${chips.join('')}</div>` : ''}
     `;
     resumo.classList.remove('hidden');
 }
 
-function renderizarRelatorio(relatorio, tableBody, statusBadge) {
+// Chips de filtro por severidade com contagem (Crítico · Erro · Aviso · Todos)
+function renderizarFiltros(relatorio, lista) {
+    const filtros = document.getElementById('auditor-filtros');
+    if (!filtros) return;
+
+    const contagem = contarPorSeveridade(relatorio.anomalias || []);
+    const total = (relatorio.anomalias || []).length;
+    filtros.innerHTML = '';
+
+    const definicoes = [
+        { chave: 'CRITICAL', icone: CONFIG_SEVERIDADE.CRITICAL.icone, rotulo: 'Crítico', quantidade: contagem.CRITICAL, classe: 'critical' },
+        { chave: 'ERROR', icone: CONFIG_SEVERIDADE.ERROR.icone, rotulo: 'Erro', quantidade: contagem.ERROR, classe: 'error' },
+        { chave: 'WARNING', icone: CONFIG_SEVERIDADE.WARNING.icone, rotulo: 'Aviso', quantidade: contagem.WARNING, classe: 'warning' },
+        { chave: 'TODOS', icone: 'filter_list', rotulo: 'Todos', quantidade: total, classe: 'todos' }
+    ];
+
+    definicoes.forEach(def => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = `auditor-filtro-chip auditor-filtro-${def.classe}`;
+        chip.dataset.severidade = def.chave;
+        chip.setAttribute('aria-pressed', String(filtroAtual === def.chave));
+        if (filtroAtual === def.chave) chip.classList.add('ativo');
+        chip.innerHTML = `<span class="material-symbols-outlined">${def.icone}</span>${def.rotulo}<span class="auditor-filtro-contagem">${def.quantidade}</span>`;
+
+        chip.addEventListener('click', () => {
+            filtroAtual = def.chave;
+            filtros.querySelectorAll('.auditor-filtro-chip').forEach(c => {
+                const ativo = c.dataset.severidade === filtroAtual;
+                c.classList.toggle('ativo', ativo);
+                c.setAttribute('aria-pressed', String(ativo));
+            });
+            renderizarLista(relatorio, lista);
+        });
+
+        filtros.appendChild(chip);
+    });
+
+    filtros.classList.remove('hidden');
+}
+
+function renderizarRelatorio(relatorio, lista, statusBadge) {
     renderizarResumo(relatorio);
-    tableBody.innerHTML = '';
 
     const alertaLimpo = document.getElementById('auditor-alerta-limpo');
+
+    // Estado "limpo" só quando realmente não há nenhuma anomalia
     if (relatorio.limpo) {
         statusBadge.textContent = 'Limpo';
         statusBadge.className = 'status-badge pulse-green';
         if (alertaLimpo) alertaLimpo.classList.remove('hidden');
-        tableBody.innerHTML = '<tr class="auditor-row-empty"><td colspan="6" class="auditor-empty-row">Tabela vazia — nenhuma anomalia para listar.</td></tr>';
+        lista.innerHTML = '<div class="auditor-lista-vazia">Nenhuma anomalia para listar.</div>';
         return;
     }
 
     if (alertaLimpo) alertaLimpo.classList.add('hidden');
-    statusBadge.textContent = `${relatorio.anomalias.length} anomalia(s)`;
+    const total = relatorio.anomalias.length;
+    statusBadge.textContent = total === 1 ? '1 ANOMALIA' : `${total} ANOMALIAS`;
     statusBadge.className = 'status-badge pulse-red';
 
+    renderizarFiltros(relatorio, lista);
+    renderizarLista(relatorio, lista);
+}
+
+function renderizarLista(relatorio, lista) {
     const ordenadas = [...relatorio.anomalias].sort((a, b) => {
         const pa = ORDEM_SEVERIDADE[a.severidade] ?? 99;
         const pb = ORDEM_SEVERIDADE[b.severidade] ?? 99;
         return pa - pb;
     });
 
-    ordenadas.forEach((anom, idx) => {
-        const tr = document.createElement('tr');
-        tr.className = `auditor-linha auditor-linha-${(anom.severidade || 'warning').toLowerCase()}`;
+    const visiveis = filtroAtual === 'TODOS'
+        ? ordenadas
+        : ordenadas.filter(anom => anom.severidade === filtroAtual);
 
-        const tdNum = document.createElement('td');
-        tdNum.className = 'col-num';
-        tdNum.textContent = String(idx + 1);
+    lista.innerHTML = '';
 
-        const tdSev = document.createElement('td');
-        tdSev.className = 'col-sev';
-        tdSev.appendChild(criarBadgeSeveridade(anom.severidade));
-
-        const tdLinha = document.createElement('td');
-        tdLinha.className = 'col-linha';
-        const numLinha = anom.eventoTraduzido?.indice ?? anom.eventoOriginal?.indice;
-        if (numLinha != null) {
-            tdLinha.innerHTML = `<span class="auditor-linha-badge pulse-cyan"><span class="material-symbols-outlined status-badge-icon">tag</span>#${numLinha}</span>`;
-        } else {
-            tdLinha.textContent = '—';
-        }
-
-        const tdRegra = document.createElement('td');
-        tdRegra.className = 'col-regra';
-        tdRegra.innerHTML = `<span class="auditor-regra-chip"><span class="material-symbols-outlined">rule</span>${escapeHtml(anom.regra || '—')}</span>`;
-
-        const tdDesc = document.createElement('td');
-        tdDesc.className = 'col-desc';
-        tdDesc.appendChild(criarBlocoDescricao(anom));
-
-        const tdRec = document.createElement('td');
-        tdRec.className = 'col-rec';
-        if (anom.sugestaoCorrecao) {
-            tdRec.innerHTML = `<span class="auditor-rec-texto"><span class="material-symbols-outlined">lightbulb</span>${escapeHtml(anom.sugestaoCorrecao)}</span>`;
-        } else {
-            tdRec.textContent = '—';
-        }
-
-        tr.append(tdNum, tdSev, tdLinha, tdRegra, tdDesc, tdRec);
-        tableBody.appendChild(tr);
-    });
-}
-
-function criarBadgeSeveridade(sev) {
-    const cfg = {
-        CRITICAL: { pulse: 'pulse-red', icon: 'dangerous', label: 'Crítico' },
-        ERROR: { pulse: 'pulse-magenta', icon: 'error', label: 'Erro' },
-        WARNING: { pulse: 'pulse-yellow', icon: 'warning', label: 'Aviso' }
-    }[sev] || { pulse: 'pulse-yellow', icon: 'info', label: rotuloSeveridade(sev) };
-
-    const span = document.createElement('span');
-    span.className = `status-badge ${cfg.pulse} auditor-sev-badge`;
-    span.innerHTML = `<span class="material-symbols-outlined status-badge-icon">${cfg.icon}</span>${cfg.label}`;
-    return span;
-}
-
-function criarBlocoDescricao(anom) {
-    const wrap = document.createElement('div');
-    wrap.className = 'auditor-desc-block';
-
-    const p = document.createElement('p');
-    p.className = 'auditor-desc-texto';
-    p.textContent = anom.descricao || '';
-    wrap.appendChild(p);
-
-    if (anom.eventoOriginal?.texto) {
-        wrap.appendChild(criarTrechoEvento('Original', anom.eventoOriginal, 'auditor-evento-orig'));
-    }
-    if (anom.eventoTraduzido?.texto) {
-        wrap.appendChild(criarTrechoEvento('Traduzido', anom.eventoTraduzido, 'auditor-evento-trad'));
+    if (!visiveis.length) {
+        lista.innerHTML = '<div class="auditor-lista-vazia">Nenhuma anomalia nesta severidade.</div>';
+        return;
     }
 
-    return wrap;
+    visiveis.forEach(anom => lista.appendChild(criarCardAnomalia(anom)));
+}
+
+// Card fechado de anomalia: faixa de severidade, cabeçalho, mensagem, diff empilhado e dica
+function criarCardAnomalia(anom) {
+    const cfg = CONFIG_SEVERIDADE[anom.severidade] || CONFIG_SEVERIDADE.WARNING;
+
+    const card = document.createElement('article');
+    card.className = `auditor-anomalia-card auditor-anomalia-${cfg.classe}`;
+
+    const head = document.createElement('header');
+    head.className = 'auditor-anomalia-head';
+
+    const pill = document.createElement('span');
+    pill.className = `auditor-sev-pill auditor-sev-${cfg.classe}`;
+    pill.innerHTML = `<span class="material-symbols-outlined">${cfg.icone}</span>${cfg.rotulo}`;
+
+    const regra = document.createElement('span');
+    regra.className = 'auditor-anomalia-regra';
+    regra.innerHTML = `<span class="material-symbols-outlined">bug_report</span>${escapeHtml(anom.regra || '—')}`;
+
+    head.append(pill, regra);
+
+    const numLinha = anom.eventoTraduzido?.indice ?? anom.eventoOriginal?.indice;
+    if (numLinha != null) {
+        const badgeLinha = document.createElement('span');
+        badgeLinha.className = 'auditor-anomalia-linha';
+        badgeLinha.textContent = `LINHA #${numLinha}`;
+        head.appendChild(badgeLinha);
+    }
+
+    card.appendChild(head);
+
+    if (anom.descricao) {
+        const msg = document.createElement('p');
+        msg.className = 'auditor-anomalia-msg';
+        msg.textContent = anom.descricao;
+        card.appendChild(msg);
+    }
+
+    // Diff empilhado: bloco ORIGINAL (azul) sobre bloco TRADUZIDO (vermelho)
+    if (anom.eventoOriginal?.texto || anom.eventoTraduzido?.texto) {
+        const diff = document.createElement('div');
+        diff.className = 'auditor-anomalia-diff';
+        if (anom.eventoOriginal?.texto) {
+            diff.appendChild(criarTrechoEvento('Original', anom.eventoOriginal, 'auditor-evento-orig'));
+        }
+        if (anom.eventoTraduzido?.texto) {
+            diff.appendChild(criarTrechoEvento('Traduzido', anom.eventoTraduzido, 'auditor-evento-trad'));
+        }
+        card.appendChild(diff);
+    }
+
+    if (anom.sugestaoCorrecao) {
+        const dica = document.createElement('footer');
+        dica.className = 'auditor-anomalia-dica';
+        dica.innerHTML = `<span class="material-symbols-outlined">lightbulb</span><span>${escapeHtml(anom.sugestaoCorrecao)}</span>`;
+        card.appendChild(dica);
+    }
+
+    return card;
 }
 
 function criarTrechoEvento(rotulo, evento, classeExtra) {

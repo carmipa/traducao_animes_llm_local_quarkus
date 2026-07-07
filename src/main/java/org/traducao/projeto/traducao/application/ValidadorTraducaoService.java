@@ -54,10 +54,12 @@ public class ValidadorTraducaoService {
     );
 
     // Evita os falsos positivos de "Abaixo a tirania" bloqueando apenas preâmbulos óbvios.
-    // "tradução:" no início cobre o LLM rotulando a resposta (caso real: linha de
-    // karaokê do Gundam Narrative entregue como "Tradução: {\r\pos(488,23)...}ep").
+    // "tradução:"/"saída:" no início cobre o LLM rotulando a resposta (casos reais:
+    // linha de karaokê do Gundam Narrative entregue como "Tradução: {\r\pos(488,23)...}ep"
+    // e efeito visual devolvido como "Saída: {=68}{\pos(...)}").
     private static final Pattern PADRAO_PREAMBULO = Pattern.compile(
-        "^(esta [ée] a tradu|abaixo seguem|aqui está a|tradução solicitada|a tradução seria|tradu[çc][ãa]o\\s*:)",
+        "^(esta [ée] a tradu|abaixo seguem|aqui está a|tradução solicitada|a tradução seria|"
+            + "tradu[çc][ãa]o\\s*:|sa[ií]da\\s*:|resposta\\s*:)",
         Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS
     );
 

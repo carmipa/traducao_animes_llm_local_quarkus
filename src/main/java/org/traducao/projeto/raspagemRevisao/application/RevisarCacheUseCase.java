@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.traducao.projeto.raspagemRevisao.domain.ResultadoDeteccaoConcordancia;
 import org.traducao.projeto.raspagemRevisao.domain.exceptions.RaspagemRevisaoException;
 import org.traducao.projeto.traducao.application.DetectorEfeitoKaraokeService;
+import org.traducao.projeto.traducao.application.ProtecaoLegendaAssService;
 import org.traducao.projeto.traducao.application.ValidadorTraducaoService;
 import org.traducao.projeto.traducao.domain.exceptions.AlucinacaoDetectadaException;
 import org.traducao.projeto.traducao.domain.ports.MistralPort;
@@ -41,6 +42,7 @@ public class RevisarCacheUseCase {
     private final TelemetriaService telemetriaService;
     private final TradutorProperties propriedades;
     private final DetectorEfeitoKaraokeService detectorKaraoke;
+    private final ProtecaoLegendaAssService protecaoAss;
 
     public RevisarCacheUseCase(
         ObjectMapper mapper,
@@ -51,7 +53,8 @@ public class RevisarCacheUseCase {
         GerenciadorContexto gerenciadorContexto,
         TelemetriaService telemetriaService,
         TradutorProperties propriedades,
-        DetectorEfeitoKaraokeService detectorKaraoke
+        DetectorEfeitoKaraokeService detectorKaraoke,
+        ProtecaoLegendaAssService protecaoAss
     ) {
         this.mapper = mapper.copy().enable(SerializationFeature.INDENT_OUTPUT);
         this.detector = detector;
@@ -62,6 +65,7 @@ public class RevisarCacheUseCase {
         this.telemetriaService = telemetriaService;
         this.propriedades = propriedades;
         this.detectorKaraoke = detectorKaraoke;
+        this.protecaoAss = protecaoAss;
     }
 
     public int executar(Path diretorioCache) {
@@ -185,6 +189,9 @@ public class RevisarCacheUseCase {
                     && !detectorKaraoke.eKaraokeOuMusicaTraduzivel(estilo, original)) {
                     continue;
                 }
+                if (protecaoAss.deveIgnorarIntervencaoIa(estilo, original)) {
+                    continue;
+                }
 
                 if (original == null || original.isBlank()
                     || traduzido == null || traduzido.isBlank()
@@ -275,6 +282,11 @@ public class RevisarCacheUseCase {
         try {
             String desmascarado = mascaradorTags.desmascarar(resposta.get(), mascTraduzido.tags());
             validador.validarFala(desmascarado);
+            if (protecaoAss.respostaSuspeita(original, desmascarado)) {
+                log.warn("Revisão de cache descartada por resposta suspeita em linha ASS pesada. Original: {} Resposta: {}",
+                    original, desmascarado);
+                return Optional.empty();
+            }
             return Optional.of(desmascarado);
         } catch (AlucinacaoDetectadaException e) {
             log.warn("Revisão descartada por validação: {}", e.getMessage());

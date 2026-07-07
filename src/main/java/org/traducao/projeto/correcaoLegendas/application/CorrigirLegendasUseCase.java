@@ -17,6 +17,7 @@ import org.traducao.projeto.traducao.infrastructure.legenda.EscritorLegendaAss;
 import org.traducao.projeto.traducao.infrastructure.legenda.LeitorLegendaAss;
 import org.traducao.projeto.traducao.presentation.ui.AnsiCores;
 import org.traducao.projeto.traducao.application.DetectorEfeitoKaraokeService;
+import org.traducao.projeto.traducao.application.ProtecaoLegendaAssService;
 import org.traducao.projeto.traducao.infrastructure.config.TradutorProperties;
 import org.traducao.projeto.traducao.infrastructure.legenda.MascaradorTags;
 
@@ -50,6 +51,7 @@ public class CorrigirLegendasUseCase {
     private final DetectorEfeitoKaraokeService detectorKaraoke;
     private final TradutorProperties propriedades;
     private final MascaradorTags mascarador;
+    private final ProtecaoLegendaAssService protecaoAss;
 
     public CorrigirLegendasUseCase(
         LeitorLegendaAss leitor,
@@ -61,7 +63,8 @@ public class CorrigirLegendasUseCase {
         CorrecaoLegendasLogPersistencia logPersistencia,
         DetectorEfeitoKaraokeService detectorKaraoke,
         TradutorProperties propriedades,
-        MascaradorTags mascarador
+        MascaradorTags mascarador,
+        ProtecaoLegendaAssService protecaoAss
     ) {
         this.leitor = leitor;
         this.escritor = escritor;
@@ -73,6 +76,7 @@ public class CorrigirLegendasUseCase {
         this.detectorKaraoke = detectorKaraoke;
         this.propriedades = propriedades;
         this.mascarador = mascarador;
+        this.protecaoAss = protecaoAss;
     }
 
     public ResultadoCorrecaoLegendas corrigirPasta(Path pastaBase, String contextoId) {
@@ -373,6 +377,9 @@ public class CorrigirLegendasUseCase {
         }
         if (detectorKaraoke.eEfeitoKaraoke(texto)
             && !detectorKaraoke.eKaraokeOuMusicaTraduzivel(evento.estilo(), texto)) {
+            return true;
+        }
+        if (protecaoAss.deveIgnorarIntervencaoIa(evento.estilo(), texto)) {
             return true;
         }
         String estilo = evento.estilo() != null ? evento.estilo().toLowerCase() : "";

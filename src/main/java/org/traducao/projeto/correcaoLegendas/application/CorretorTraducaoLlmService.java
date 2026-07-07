@@ -1,6 +1,7 @@
 package org.traducao.projeto.correcaoLegendas.application;
 
 import org.springframework.stereotype.Service;
+import org.traducao.projeto.traducao.application.ProtecaoLegendaAssService;
 import org.traducao.projeto.traducao.application.ValidadorTraducaoService;
 import org.traducao.projeto.traducao.domain.exceptions.AlucinacaoDetectadaException;
 import org.traducao.projeto.traducao.domain.ports.MistralPort;
@@ -14,11 +15,18 @@ public class CorretorTraducaoLlmService {
     private final MistralPort mistralPort;
     private final MascaradorTags mascaradorTags;
     private final ValidadorTraducaoService validador;
+    private final ProtecaoLegendaAssService protecaoAss;
 
-    public CorretorTraducaoLlmService(MistralPort mistralPort, MascaradorTags mascaradorTags, ValidadorTraducaoService validador) {
+    public CorretorTraducaoLlmService(
+        MistralPort mistralPort,
+        MascaradorTags mascaradorTags,
+        ValidadorTraducaoService validador,
+        ProtecaoLegendaAssService protecaoAss
+    ) {
         this.mistralPort = mistralPort;
         this.mascaradorTags = mascaradorTags;
         this.validador = validador;
+        this.protecaoAss = protecaoAss;
     }
 
     /**
@@ -50,6 +58,9 @@ public class CorretorTraducaoLlmService {
         try {
             String desmascarado = mascaradorTags.desmascarar(resposta.get(), mascTraduzido.tags());
             validador.validarFala(desmascarado);
+            if (protecaoAss.respostaSuspeita(originalEn, desmascarado)) {
+                return Optional.empty();
+            }
             return Optional.of(desmascarado);
         } catch (AlucinacaoDetectadaException e) {
             return Optional.empty();

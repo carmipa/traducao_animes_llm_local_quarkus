@@ -205,8 +205,8 @@ A barra lateral organiza os painéis em **5 grupos acordeão** (recolhíveis, co
 |-------|---------|
 | 🎬 **Preparação** | `1. Análise de Mídia` · `2. Extração` |
 | 🌐 **Tradução** | `3. Tradução Local` · `4. Correção Cache` |
-| ✅ **Qualidade** | `5. Revisão de Legendas` · `6. Correção de Karaoke` · `7. Revisão de Lore` · `8. Troca Tipo Legenda` |
-| 📦 **Finalização** | `9. Remuxer` · `10. Renomear Arquivos` |
+| ✅ **Qualidade** | `5. Análise de Conteúdo` · `6. Revisão de Legendas` · `7. Correção de Karaoke` · `8. Revisão de Lore` · `9. Troca Tipo Legenda` |
+| 📦 **Finalização** | `10. Remuxer` · `11. Renomear Arquivos` |
 | ⚙️ **Sistema** | `Telemetria` · `Mapa do Projeto` · **`Documentação`** · `Sobre` |
 
 O menu **Documentação** renderiza esta mesma pasta `docs/` dentro da própria aplicação (incluindo os diagramas Mermaid), sem precisar sair do app ou abrir o GitHub.

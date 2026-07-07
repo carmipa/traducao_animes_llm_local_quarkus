@@ -8,7 +8,7 @@
 
 O **KRONOS CORE** é uma plataforma monolítica modular construída sobre o **Quarkus** (usando as extensões de compatibilidade Spring — `quarkus-spring-di`, `quarkus-spring-web`, `quarkus-spring-boot-properties`), organizada em **17 pacotes verticais** sob `org.traducao.projeto.*`, cada um resolvendo uma etapa específica do pipeline de tradução de legendas de anime.
 
-Na SPA, o menu lateral agrupa os painéis em **5 grupos acordeão** que espelham o fluxo de trabalho: **Preparação** (1. Análise de Mídia, 2. Extração), **Tradução** (3. Tradução Local, 4. Correção Cache), **Qualidade** (5. Revisão de Legendas, 6. Correção de Karaoke, 7. Revisão de Lore, 8. Troca Tipo Legenda), **Finalização** (9. Remuxer, 10. Renomear Arquivos) e **Sistema** (Telemetria, Mapa do Projeto, Documentação, Sobre). Os grupos são recolhíveis e o estado é lembrado por navegador (`localStorage`).
+Na SPA, o menu lateral agrupa os painéis em **5 grupos acordeão** que espelham o fluxo de trabalho: **Preparação** (1. Análise de Mídia, 2. Extração), **Tradução** (3. Tradução Local, 4. Correção Cache), **Qualidade** (5. Análise de Conteúdo, 6. Revisão de Legendas, 7. Correção de Karaoke, 8. Revisão de Lore, 9. Troca Tipo Legenda), **Finalização** (10. Remuxer, 11. Renomear Arquivos) e **Sistema** (Telemetria, Mapa do Projeto, Documentação, Sobre). Os grupos são recolhíveis e o estado é lembrado por navegador (`localStorage`).
 
 O desenho segue **Arquitetura Hexagonal (Ports & Adapters)** por módulo: cada pacote tem, tipicamente, `domain/` (modelos e portas), `application/` (casos de uso, orquestração), `infrastructure/` (adapters concretos — ffmpeg, mkvmerge, HTTP client do LM Studio, scraping do Google Translate) e `presentation/` (controllers REST e/ou CLI).
 
@@ -120,14 +120,15 @@ graph LR
     C --> D["🌐 3. Tradução Local<br/>LLM via LM Studio + cache"]
     D --> E{"Resíduo em<br/>inglês?"}
     E -->|Sim| F["🩹 4. Correção<br/>(cache LLM / Google scraping)"]
-    E -->|Não| G["📝 5. Revisão<br/>concordância PT-BR"]
+    E -->|Não| QA["🔎 5. Análise de Conteúdo<br/>anomalias de LLM e efeitos"]
+    QA --> G["📝 6. Revisão<br/>concordância PT-BR"]
     F --> G
-    G --> H["🧵 6. Correção de Legendas<br/>original como referência imutável"]
-    H --> H2["📖 7. Revisão de Lore<br/>nomes, locais e termos de mundo"]
-    H2 --> H3["🔤 8. Troca Tipo Legenda<br/>fontes legadas → Unicode"]
-    H3 --> I["📦 9. Remuxer<br/>mkvmerge: vídeo + legenda PT-BR"]
+    G --> H["🧵 7. Correção de Legendas<br/>original como referência imutável"]
+    H --> H2["📖 8. Revisão de Lore<br/>nomes, locais e termos de mundo"]
+    H2 --> H3["🔤 9. Troca Tipo Legenda<br/>fontes legadas → Unicode"]
+    H3 --> I["📦 10. Remuxer<br/>mkvmerge: vídeo + legenda PT-BR"]
     I --> J["🎬 MKV Final<br/>pronto para distribuição"]
-    J -.-> K["🧹 10. Renomear Arquivos<br/>padroniza nomes de arquivo (S01E01)"]
+    J -.-> K["🧹 11. Renomear Arquivos<br/>padroniza nomes de arquivo (S01E01)"]
 
     style A fill:#1e293b,stroke:#3B82F6
     style J fill:#1e293b,stroke:#10B981

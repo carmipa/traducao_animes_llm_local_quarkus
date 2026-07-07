@@ -35,7 +35,7 @@ const CONFIG_SECOES = {
         subtitulo: "Extração industrial de faixas de legendas embutidas in vídeos (MKV, MP4 e outros)"
     },
     "auditor-conteudo": {
-        titulo: "3. Análise de Conteúdo",
+        titulo: "5. Análise de Conteúdo",
         subtitulo: "Auditoria de legendas .ass traduzidas: vazamento de efeitos, alucinações de IA e metadados"
     },
     traducao: {
@@ -47,27 +47,27 @@ const CONFIG_SECOES = {
         subtitulo: "Limpeza de inconsistências e preenchimento via raspagem do Google Tradutor"
     },
     revisao: {
-        titulo: "5. Revisão de Legendas",
+        titulo: "6. Revisão de Legendas",
         subtitulo: "Concordância PT-BR via LLM local e correção de inglês residual via Google"
     },
     cura: {
-        titulo: "6. Correção de Legendas",
+        titulo: "7. Correção de Legendas",
         subtitulo: "Corrige a legenda PT-BR usando a original como referência imutável"
     },
     "revisao-lore": {
-        titulo: "7. Revisão de Lore",
+        titulo: "8. Revisão de Lore",
         subtitulo: "Padronização de nomes, locais e termos de mundo nas legendas via LLM e lore oficial"
     },
     "troca-tipo-legenda": {
-        titulo: "8. Troca Tipo Legenda",
+        titulo: "9. Troca Tipo Legenda",
         subtitulo: "Auditoria e substituição em lote de fontes vietnamitas ou ANSI legadas por fontes Unicode seguras"
     },
     remuxer: {
-        titulo: "9. Remuxer Industrial",
+        titulo: "10. Remuxer Industrial",
         subtitulo: "Junção de vídeos originais e novas legendas traduzidas em novos MKVs"
     },
     "renomear-arquivos": {
-        titulo: "10. Renomear Arquivos de Vídeo",
+        titulo: "11. Renomear Arquivos de Vídeo",
         subtitulo: "Limpeza de nomes de arquivo usando regex e metadados S01E01"
     },
     mapa: {
