@@ -1,4 +1,4 @@
-import { logNoConsole } from '../js/app.js?v=3.0';
+import { logNoConsole } from '../js/app.js';
 
 const STORAGE_PASTA_PT = 'revisao.ultimaPastaPt';
 

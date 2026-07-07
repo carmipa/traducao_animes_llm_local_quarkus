@@ -1,4 +1,4 @@
-import { logNoConsole, mostrarAlerta } from '../js/app.js?v=3.4';
+import { logNoConsole, mostrarAlerta } from '../js/app.js';
 
 const PAINEL_HTML = 'auditorConteudoLegendas/auditorConteudoLegendas.html?v=3.5';
 

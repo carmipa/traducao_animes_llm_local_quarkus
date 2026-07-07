@@ -21,10 +21,11 @@ class WebInterfaceTest {
     @Test
     void cssDisponivel() {
         given()
-            .when().get("/css/style.css")
+            .when().get("/css/base.css")
             .then()
             .statusCode(200)
-            .contentType(containsString("text/css"));
+            .contentType(containsString("text/css"))
+            .body(containsString("--bg-primary"));
     }
 
     @Test

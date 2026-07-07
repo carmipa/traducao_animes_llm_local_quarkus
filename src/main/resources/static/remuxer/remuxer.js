@@ -1,4 +1,4 @@
-import { logNoConsole } from '../js/app.js?v=3.0';
+import { logNoConsole } from '../js/app.js';
 
 export function initRemuxer() {
     const form = document.getElementById('form-remuxer');

@@ -1,4 +1,4 @@
-import { logNoConsole, mostrarAlerta } from '../js/app.js?v=3.0';
+import { logNoConsole, mostrarAlerta } from '../js/app.js';
 
 let contextosCarregados = false;
 

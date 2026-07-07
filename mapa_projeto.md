@@ -622,6 +622,13 @@ mesma alucinacao; subir a temperatura muda a amostragem e da chance real
 de recuperacao antes de desistir da fala.
 ```
 
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducao/application/ProtecaoLegendaAssService.java`
+```text
+Blindagens compartilhadas para linhas ASS/SSA antes e depois de chamadas a
+IA/serviços externos. Centraliza os casos perigosos encontrados em fansubs:
+clips vetoriais longos, letras soltas pós-template e preâmbulos alucinados.
+```
+
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducao/application/ValidadorTraducaoService.java`
 ```text
 Regras robustas importadas do pipeline Python, ampliadas após observar em
@@ -1171,11 +1178,13 @@ Linha real que escapou da revisão: letra "I" afogada em transformações.
 Linha com \pos e fscx/fscy onde o texto visível é curto em relação às tags.
 ```
 
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/traducao/application/ProcessarArquivoUseCaseGuardTest.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/traducao/application/ValidadorTraducaoServiceTest.java`
 ```text
 Caso real (Gundam Narrative): LLM rotulou a resposta em vez de só traduzir.
 Caso real (G-Reconguista): marcador do pipeline Python antigo na legenda final.
-Caso real (86): linha metade PT, metade EN.
 ```
 
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/traducao/infrastructure/legenda/EscritorLegendaAssTest.java`

@@ -13,7 +13,23 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
-    <link rel="stylesheet" href="css/style.css?v=3.4">
+    <link rel="stylesheet" href="css/base.css?v=4.0">
+    <link rel="stylesheet" href="inicio/inicio.css?v=4.0">
+    <link rel="stylesheet" href="analise/analise.css?v=4.0">
+    <link rel="stylesheet" href="extracao/extracao.css?v=4.0">
+    <link rel="stylesheet" href="traducao/traducao.css?v=4.0">
+    <link rel="stylesheet" href="correcao/correcao.css?v=4.0">
+    <link rel="stylesheet" href="auditorConteudoLegendas/auditorConteudoLegendas.css?v=4.0">
+    <link rel="stylesheet" href="revisao/revisao.css?v=4.0">
+    <link rel="stylesheet" href="cura/cura.css?v=4.0">
+    <link rel="stylesheet" href="revisaoLore/revisaoLore.css?v=4.0">
+    <link rel="stylesheet" href="trocaTipoLegenda/trocaTipoLegenda.css?v=4.0">
+    <link rel="stylesheet" href="remuxer/remuxer.css?v=4.0">
+    <link rel="stylesheet" href="renomearArquivos/renomearArquivos.css?v=4.0">
+    <link rel="stylesheet" href="telemetria/telemetria.css?v=4.0">
+    <link rel="stylesheet" href="mapa/mapa.css?v=4.0">
+    <link rel="stylesheet" href="documentacao/documentacao.css?v=4.0">
+    <link rel="stylesheet" href="sobre/sobre.css?v=4.0">
 </head>
 <body>
     <div class="app-container">
@@ -35,19 +51,20 @@
                     <span>Painel Inicial</span>
                 </button>
 
-                <div class="nav-group" data-grupo="preparacao">
-                    <button type="button" class="nav-group-header" aria-expanded="true">
-                        <span class="material-symbols-outlined nav-icon">movie</span>
+                <!-- Cabeçalhos de grupo: só rótulo uppercase + chevron (sem ícone, sem fundo).
+                     "Preparação" inicia colapsada (classe .fechado; padrão também semeado no app.js). -->
+                <div class="nav-group fechado" data-grupo="preparacao">
+                    <button type="button" class="nav-group-header" aria-expanded="false">
                         <span class="nav-group-titulo">Preparação</span>
                         <span class="material-symbols-outlined nav-group-seta">expand_more</span>
                     </button>
                     <div class="nav-group-itens">
                         <button class="nav-item" data-target="analise" id="btn-menu-analise" data-tooltip="Audite faixas, codecs e bitrate dos arquivos de vídeo.">
-                            <span class="material-symbols-outlined nav-icon">analytics</span>
+                            <span class="material-symbols-outlined nav-icon">radar</span>
                             <span>1. Análise de Mídia</span>
                         </button>
                         <button class="nav-item" data-target="extracao" id="btn-menu-extracao" data-tooltip="Extraia faixas de legendas (ASS/SRT/PGS) em lote de vídeos (MKV/WebM/MP4/MOV/AVI...).">
-                            <span class="material-symbols-outlined nav-icon">download_for_offline</span>
+                            <span class="material-symbols-outlined nav-icon">download</span>
                             <span>2. Extração</span>
                         </button>
                     </div>
@@ -55,7 +72,6 @@
 
                 <div class="nav-group" data-grupo="traducao">
                     <button type="button" class="nav-group-header" aria-expanded="true">
-                        <span class="material-symbols-outlined nav-icon">language</span>
                         <span class="nav-group-titulo">Tradução</span>
                         <span class="material-symbols-outlined nav-group-seta">expand_more</span>
                     </button>
@@ -65,7 +81,7 @@
                             <span>3. Tradução Local</span>
                         </button>
                         <button class="nav-item" data-target="correcao" id="btn-menu-correcao" data-tooltip="Corrija falhas de cache ou traduções ausentes.">
-                            <span class="material-symbols-outlined nav-icon">find_replace</span>
+                            <span class="material-symbols-outlined nav-icon">sync</span>
                             <span>4. Correção Cache</span>
                         </button>
                     </div>
@@ -73,7 +89,6 @@
 
                 <div class="nav-group" data-grupo="qualidade">
                     <button type="button" class="nav-group-header" aria-expanded="true">
-                        <span class="material-symbols-outlined nav-icon">fact_check</span>
                         <span class="nav-group-titulo">Qualidade</span>
                         <span class="material-symbols-outlined nav-group-seta">expand_more</span>
                     </button>
@@ -103,7 +118,6 @@
 
                 <div class="nav-group" data-grupo="finalizacao">
                     <button type="button" class="nav-group-header" aria-expanded="true">
-                        <span class="material-symbols-outlined nav-icon">inventory_2</span>
                         <span class="nav-group-titulo">Finalização</span>
                         <span class="material-symbols-outlined nav-group-seta">expand_more</span>
                     </button>
@@ -113,7 +127,7 @@
                             <span>10. Remuxer</span>
                         </button>
                         <button class="nav-item" data-target="renomear-arquivos" id="btn-menu-renomear-arquivos" data-tooltip="Limpe e renomeie arquivos de vídeo e legendas usando um padrão S01E01 com base nos metadados.">
-                            <span class="material-symbols-outlined nav-icon">cleaning_services</span>
+                            <span class="material-symbols-outlined nav-icon">drive_file_rename_outline</span>
                             <span>11. Renomear Arquivos</span>
                         </button>
                     </div>
@@ -121,7 +135,6 @@
 
                 <div class="nav-group" data-grupo="sistema">
                     <button type="button" class="nav-group-header" aria-expanded="true">
-                        <span class="material-symbols-outlined nav-icon">settings</span>
                         <span class="nav-group-titulo">Sistema</span>
                         <span class="material-symbols-outlined nav-group-seta">expand_more</span>
                     </button>
@@ -248,7 +261,7 @@
                                 <div class="card-glow-bg"></div>
                                 <div class="card-step-num">01</div>
                                 <div class="card-icon-container">
-                                    <span class="material-symbols-outlined">analytics</span>
+                                    <span class="material-symbols-outlined">radar</span>
                                 </div>
                                 <h4>Análise de Mídia</h4>
                                 <p>Audite faixas, codecs e bitrate dos arquivos de vídeo originais.</p>
@@ -260,7 +273,7 @@
                                 <div class="card-glow-bg"></div>
                                 <div class="card-step-num">02</div>
                                 <div class="card-icon-container">
-                                    <span class="material-symbols-outlined">download_for_offline</span>
+                                    <span class="material-symbols-outlined">download</span>
                                 </div>
                                 <h4>Extração</h4>
                                 <p>Extraia faixas de legendas (ASS/PGS/SRT) em lote de arquivos MKV.</p>
@@ -284,7 +297,7 @@
                                 <div class="card-glow-bg"></div>
                                 <div class="card-step-num">04</div>
                                 <div class="card-icon-container">
-                                    <span class="material-symbols-outlined">find_replace</span>
+                                    <span class="material-symbols-outlined">sync</span>
                                 </div>
                                 <h4>Correção Cache</h4>
                                 <p>Varra e corrija falas vazias ou não traduzidas do banco de cache.</p>
@@ -304,7 +317,7 @@
                             </div>
 
                             <!-- Card 6 — Revisão de Legendas -->
-                            <div class="pipeline-card card-traducao" onclick="document.getElementById('btn-menu-revisao').click()" data-tooltip="Clique para revisar legendas .ass já traduzidas">
+                            <div class="pipeline-card card-revisao" onclick="document.getElementById('btn-menu-revisao').click()" data-tooltip="Clique para revisar legendas .ass já traduzidas">
                                 <div class="card-glow-bg"></div>
                                 <div class="card-step-num">06</div>
                                 <div class="card-icon-container">
@@ -368,17 +381,17 @@
                                  <div class="card-glow-bg"></div>
                                  <div class="card-step-num">11</div>
                                  <div class="card-icon-container">
-                                     <span class="material-symbols-outlined">cleaning_services</span>
+                                     <span class="material-symbols-outlined">drive_file_rename_outline</span>
                                  </div>
                                  <h4>Renomear Arquivos</h4>
                                  <p>Sanitize e padronize nomes de arquivos usando regex e metadados oficiais.</p>
                                  <span class="card-action-link">Acessar Painel →</span>
                              </div>
 
-                             <!-- Card 11 -->
+                             <!-- Card 12 -->
                              <div class="pipeline-card card-mapa" onclick="document.getElementById('btn-menu-mapa').click()" data-tooltip="Clique para analisar o código Java">
                                  <div class="card-glow-bg"></div>
-                                 <div class="card-step-num">11</div>
+                                 <div class="card-step-num">12</div>
                                  <div class="card-icon-container">
                                      <span class="material-symbols-outlined">account_tree</span>
                                  </div>
@@ -387,10 +400,10 @@
                                  <span class="card-action-link">Acessar Painel →</span>
                              </div>
 
-                             <!-- Card 12 -->
+                             <!-- Card 13 -->
                              <div class="pipeline-card card-telemetria" onclick="document.getElementById('btn-menu-telemetria').click()" data-tooltip="Clique para acessar a telemetria">
                                  <div class="card-glow-bg"></div>
-                                 <div class="card-step-num">12</div>
+                                 <div class="card-step-num">13</div>
                                  <div class="card-icon-container">
                                      <span class="material-symbols-outlined">monitoring</span>
                                  </div>
@@ -1250,8 +1263,9 @@
     <script src="js/chart.umd.min.js?v=3.0"></script>
     <script src="js/marked.min.js?v=3.0"></script>
     <script src="js/mermaid.min.js?v=3.0"></script>
-    <!-- Mantenha esta versão igual aos imports '../js/app.js?v=...' dos módulos
-         filhos para evitar duas instâncias do orquestrador global. -->
-    <script type="module" src="js/app.js?v=3.4"></script>
+    <!-- NUNCA adicione ?v= ao app.js (nem aqui, nem nos imports dos módulos):
+         URLs divergentes criam duas instâncias do orquestrador global
+         (listeners duplicados: diálogos abrem 2x, consoles logam 2x). -->
+    <script type="module" src="js/app.js"></script>
 </body>
 </html>

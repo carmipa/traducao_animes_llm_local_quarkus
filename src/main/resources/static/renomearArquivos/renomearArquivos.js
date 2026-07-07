@@ -1,4 +1,4 @@
-import { mostrarAlerta, logNoConsole } from '../js/app.js?v=3.0';
+import { mostrarAlerta, logNoConsole } from '../js/app.js';
 
 const PAINEL_HTML = 'renomearArquivos/renomearArquivos.html?v=3.0';
 

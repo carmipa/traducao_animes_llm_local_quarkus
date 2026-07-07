@@ -1,4 +1,4 @@
-import { logNoConsole, mostrarAlerta } from '../js/app.js?v=3.0';
+import { logNoConsole, mostrarAlerta } from '../js/app.js';
 
 const PAINEL_HTML = 'trocaTipoLegenda/trocaTipoLegenda.html?v=3.0';
 

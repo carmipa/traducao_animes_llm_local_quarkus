@@ -154,11 +154,12 @@ function inicializarNavegacao() {
  */
 function inicializarGruposMenu() {
     const CHAVE_ESTADO = 'kronos.menuGruposFechados';
+    // Sem estado salvo, "Preparação" inicia colapsada; depois vale a escolha do usuário.
     let fechados;
     try {
-        fechados = new Set(JSON.parse(localStorage.getItem(CHAVE_ESTADO) || '[]'));
+        fechados = new Set(JSON.parse(localStorage.getItem(CHAVE_ESTADO) || '["preparacao"]'));
     } catch (e) {
-        fechados = new Set();
+        fechados = new Set(['preparacao']);
     }
 
     document.querySelectorAll('.nav-group').forEach(grupo => {
@@ -872,6 +873,9 @@ function inicializarBotoesProcurarCaminho() {
     document.body.addEventListener('click', async (e) => {
         const btn = e.target.closest('.btn-procurar');
         if (!btn) return;
+        // Guarda contra listeners duplicados (ex.: duas instâncias do app.js):
+        // se o botão já está desabilitado, um diálogo já foi aberto por este clique.
+        if (btn.disabled) return;
 
         const targetId = btn.getAttribute('data-target');
         const tipo = btn.getAttribute('data-type') || 'pasta';
