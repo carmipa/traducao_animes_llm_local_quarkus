@@ -96,6 +96,20 @@ Executa ffprobe no vídeo e obtém o JSON com as informações gerais e faixas.
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/auditorConteudoLegendas/application/regras/RegraAlucinacaoQuebraLinha.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/auditorConteudoLegendas/application/regras/RegraDanoKaraoke.java`
+```text
+Detecta dano de tradução em karaokê/música comparando cada evento traduzido
+com o original. Usa o {@link DetectorEfeitoKaraokeService} como fonte única
+de verdade — a mesma régua da tradução e da Correção de Karaokê, para a
+auditoria acusar exatamente o que aquelas etapas deveriam ter protegido:
+<ul>
+<li>CRITICAL: karaokê japonês/romaji alterado (caso real do 86 T1, onde
+romaji com tags leves virava alucinação do LLM);</li>
+<li>WARNING: música traduzível com expansão anormal de texto;</li>
+<li>WARNING: tags de timing de karaokê ({@code \k}) perdidas.</li>
+</ul>
+```
+
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/auditorConteudoLegendas/application/regras/RegraEfeitoVazado.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
@@ -1118,6 +1132,13 @@ Cache append-only para gravação de auditoria histórica e granular de cada alt
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/auditorConteudoLegendas/application/regras/RegraAlucinacaoQuebraLinhaTest.java`
 ```text
 Simulando o erro do anime 86 Ep 2
+```
+
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/auditorConteudoLegendas/application/regras/RegraDanoKaraokeTest.java`
+```text
+Caso real do 86 T1: romaji em estilo "Opening" com tags leves virou
+alucinação em PT — expansão de só 1.7x, que a checagem de tamanho
+não pegaria; a régua tem de ser a proteção de romaji do detector.
 ```
 
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/auditorConteudoLegendas/application/regras/RegraEfeitoVazadoTest.java`

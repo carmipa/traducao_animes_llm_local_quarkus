@@ -263,6 +263,17 @@ public class CorrigirLegendasUseCase {
                     String textoCurado = sanitizador.curarTags(textoOriginal, textoPtBrAntigo);
                     boolean corrigidoPorLlm = false;
 
+                    // Karaokê protegido (japonês/romaji): a referência original é
+                    // imutável. Se a tradução alterou a linha (ex.: 86 T1, romaji
+                    // com tags leves "traduzido" pelo LLM), restaura a original.
+                    if (!textoOriginal.equals(textoPtBrAntigo)
+                        && detectorKaraoke.devePreservarKaraokeOriginal(evtOriginal.estilo(), textoOriginal)) {
+                        textoCurado = textoOriginal;
+                        out(eventos, "INFO", arqTraduzido.getFileName().toString(),
+                            "Fala " + (i + 1) + ": karaokê japonês/romaji restaurado da legenda original.",
+                            AnsiCores.CYAN);
+                    }
+
                     // A cura estrutural só restaura o prefixo; timing de karaokê
                     // (\k por sílaba) perdido no meio da linha não tem restauração
                     // automática — sinaliza para revisão manual no Aegisub.
@@ -370,6 +381,9 @@ public class CorrigirLegendasUseCase {
     }
 
     private boolean deveIgnorarCuraLlm(EventoLegenda evento, String texto) {
+        if (detectorKaraoke.devePreservarKaraokeOriginal(evento.estilo(), texto)) {
+            return true;
+        }
         if (evento.estilo() != null
             && propriedades.estiloIgnorado(evento.estilo())
             && !detectorKaraoke.eKaraokeOuMusicaTraduzivel(evento.estilo(), texto)) {

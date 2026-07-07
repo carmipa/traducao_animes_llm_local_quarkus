@@ -34,7 +34,7 @@ class AuditorConteudoUseCaseTest {
         RelatorioAuditoriaConteudo relatorio = useCase.auditar(original, traduzido);
 
         assertTrue(relatorio.isLimpo());
-        assertEquals(4, relatorio.getRegrasExecutadas());
+        assertEquals(5, relatorio.getRegrasExecutadas());
         assertTrue(relatorio.getDuracaoMs() >= 0);
         assertNotNull(relatorio.getCaminhoRelatorioJson());
         assertTrue(Files.exists(Path.of(relatorio.getCaminhoRelatorioJson())));

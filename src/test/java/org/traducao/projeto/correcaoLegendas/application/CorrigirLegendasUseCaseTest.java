@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CorrigirLegendasUseCaseTest {
@@ -66,16 +67,60 @@ class CorrigirLegendasUseCaseTest {
         assertEquals(1, corretor.chamadas);
     }
 
+    @Test
+    void restauraKaraokeRomajiDanificadoPelaTraducao() throws IOException {
+        Path original = tempDir.resolve("episodio.ass");
+        Path traduzido = tempDir.resolve("episodio_PT-BR.ass");
+        // Caso real do 86 T1: romaji em estilo "Opening" com tags leves foi
+        // "traduzido" (alucinação); o corretor deve restaurar a linha original
+        // e continuar corrigindo o diálogo normalmente.
+        Files.writeString(original, assComEstiloPrimeiraFala("Opening",
+            "{\\pos(1143,40)\\bord0\\blur0.5\\clip(0,70,1920,86.5)}fuminijirareru dake no hana",
+            "{\\pos(10,10)}HELLO"
+        ));
+        Files.writeString(traduzido, assComEstiloPrimeiraFala("Opening",
+            "{\\pos(1143,40)\\bord0\\blur0.5\\clip(0,70,1920,86.5)}O único florescimento para mim.",
+            "{\\pos(10,10)}Ola"
+        ));
+
+        CorretorFake corretor = new CorretorFake();
+        CorrigirLegendasUseCase useCase = new CorrigirLegendasUseCase(
+            new LeitorLegendaAss(),
+            new EscritorLegendaAss(),
+            new SanitizadorTagsService(),
+            corretor,
+            new GerenciadorContexto(List.of(new ContextoFake())),
+            new TelemetriaFake(),
+            new LogPersistenciaFake(),
+            new DetectorEfeitoKaraokeService(),
+            new TradutorProperties(),
+            new MascaradorTags(),
+            new ProtecaoLegendaAssService()
+        );
+
+        useCase.corrigirPasta(tempDir, tempDir, "teste");
+
+        String conteudoFinal = Files.readString(traduzido);
+        assertTrue(conteudoFinal.contains("fuminijirareru dake no hana"));
+        assertFalse(conteudoFinal.contains("O único florescimento"));
+        assertTrue(conteudoFinal.contains("{\\pos(10,10)}Ola"));
+        assertEquals(1, corretor.chamadas, "Karaokê protegido não deve passar pelo LLM de cura");
+    }
+
     private String ass(String primeiraFala, String segundaFala) {
+        return assComEstiloPrimeiraFala("Default", primeiraFala, segundaFala);
+    }
+
+    private String assComEstiloPrimeiraFala(String estiloPrimeira, String primeiraFala, String segundaFala) {
         return """
             [Script Info]
             Title: Teste
 
             [Events]
             Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-            Dialogue: 0,0:00:01.00,0:00:02.00,Default,,0,0,0,,%s
+            Dialogue: 0,0:00:01.00,0:00:02.00,%s,,0,0,0,,%s
             Dialogue: 0,0:00:03.00,0:00:04.00,Default,,0,0,0,,%s
-            """.formatted(primeiraFala, segundaFala);
+            """.formatted(estiloPrimeira, primeiraFala, segundaFala);
     }
 
     private static class CorretorFake extends CorretorTraducaoLlmService {
