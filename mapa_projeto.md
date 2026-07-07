@@ -90,6 +90,47 @@ Executa ffprobe no vídeo e obtém o JSON com as informações gerais e faixas.
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/apiDadosAnime/presentation/web/AnimeMetadataController.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/auditorConteudoLegendas/application/AuditorConteudoUseCase.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/auditorConteudoLegendas/application/regras/RegraAlucinacaoQuebraLinha.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/auditorConteudoLegendas/application/regras/RegraEfeitoVazado.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/auditorConteudoLegendas/application/regras/RegraMetadadosAss.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/auditorConteudoLegendas/application/regras/RegraSincroniaEstilos.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/auditorConteudoLegendas/application/TelemetriaAuditoriaService.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/auditorConteudoLegendas/domain/AnomaliaConteudo.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/auditorConteudoLegendas/domain/AuditoriaConteudoRelatorioJson.java`
+```text
+Relatório persistido em JSON da auditoria de conteúdo de legendas.
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/auditorConteudoLegendas/domain/AuditoriaException.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/auditorConteudoLegendas/domain/RegraAuditoriaConteudo.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/auditorConteudoLegendas/domain/RelatorioAuditoriaConteudo.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/auditorConteudoLegendas/infrastructure/AuditoriaConteudoPersistencia.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/auditorConteudoLegendas/presentation/AuditorConteudoController.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/config/AppConfig.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
@@ -1062,6 +1103,29 @@ Cache append-only para gravação de auditoria histórica e granular de cada alt
 *(Sem docstring ou cabeçalho explicativo)*
 
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/ApiEndpointsTest.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/auditorConteudoLegendas/application/AuditorConteudoUseCaseTest.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/auditorConteudoLegendas/application/regras/RegraAlucinacaoQuebraLinhaTest.java`
+```text
+Simulando o erro do anime 86 Ep 2
+```
+
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/auditorConteudoLegendas/application/regras/RegraEfeitoVazadoTest.java`
+```text
+Simulando o problema de 86 Ep 2, onde um typesetting (como "{\\pos(100,100)}na")
+acaba sendo traduzido de forma louca pela IA.
+```
+
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/auditorConteudoLegendas/application/regras/RegraMetadadosAssTest.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/auditorConteudoLegendas/application/regras/RegraSincroniaEstilosTest.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/auditorConteudoLegendas/support/AssAuditoriaFixtures.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/core/exception/BasePipelineExceptionTest.java`

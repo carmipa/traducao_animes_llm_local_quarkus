@@ -2,7 +2,9 @@ package org.traducao.projeto;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
+import org.traducao.projeto.auditorConteudoLegendas.support.AssAuditoriaFixtures;
 
+import java.nio.file.Path;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -242,6 +244,49 @@ class ApiEndpointsTest {
             .then()
             .statusCode(200)
             .body("mensagem", containsString("Revisao de lore iniciada"));
+    }
+
+    @Test
+    void auditoriaConteudoSemCaminhosRetornaBadRequest() {
+        given()
+            .contentType("application/json")
+            .body("{\"caminhoOriginal\":\"\",\"caminhoTraduzido\":\"\"}")
+            .when().post("/api/auditoria-conteudo")
+            .then()
+            .statusCode(400);
+    }
+
+    @Test
+    void auditoriaConteudoAuditaArquivosAss(@org.junit.jupiter.api.io.TempDir Path tempDir) throws Exception {
+        Path original = tempDir.resolve("ep_eng.ass");
+        Path traduzido = tempDir.resolve("ep_pt.ass");
+        AssAuditoriaFixtures.escreverParLimpo(original, traduzido);
+
+        given()
+            .contentType("application/json")
+            .body("{\"caminhoOriginal\":\"" + original.toString().replace("\\", "\\\\")
+                + "\",\"caminhoTraduzido\":\"" + traduzido.toString().replace("\\", "\\\\") + "\"}")
+            .when().post("/api/auditoria-conteudo")
+            .then()
+            .statusCode(200)
+            .body("limpo", is(true))
+            .body("regrasExecutadas", greaterThanOrEqualTo(4))
+            .body("caminhoRelatorioJson", notNullValue());
+    }
+
+    @Test
+    void auditoriaConteudoArquivoInexistenteRetornaBadRequest(@org.junit.jupiter.api.io.TempDir Path tempDir) throws Exception {
+        Path traduzido = tempDir.resolve("ep_pt.ass");
+        AssAuditoriaFixtures.escreverParLimpo(tempDir.resolve("ref.ass"), traduzido);
+
+        given()
+            .contentType("application/json")
+            .body("{\"caminhoOriginal\":\"" + tempDir.resolve("nao_existe.ass").toString().replace("\\", "\\\\")
+                + "\",\"caminhoTraduzido\":\"" + traduzido.toString().replace("\\", "\\\\") + "\"}")
+            .when().post("/api/auditoria-conteudo")
+            .then()
+            .statusCode(400)
+            .body(containsString("nao encontrado"));
     }
 
     @Test
