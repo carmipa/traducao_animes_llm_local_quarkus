@@ -147,19 +147,25 @@ class WebInterfaceTest {
         int grupoPreparacao = html.indexOf("data-grupo=\"preparacao\"");
         int grupoTraducao = html.indexOf("data-grupo=\"traducao\"");
         int grupoQualidade = html.indexOf("data-grupo=\"qualidade\"");
-        int grupoFinalizacao = html.indexOf("data-grupo=\"finalizacao\"");
         int itemAuditor = html.indexOf("data-target=\"auditor-conteudo\"");
+        // Decisão oficial 2026-07-07: Análise de Conteúdo é o item 3 do grupo
+        // Preparação (após 1. Análise de Mídia e 2. Extração).
         org.junit.jupiter.api.Assertions.assertTrue(
-            itemAuditor > grupoQualidade && itemAuditor < grupoFinalizacao,
-            "Análise de Conteúdo deve ficar no grupo Qualidade"
+            itemAuditor > grupoPreparacao && itemAuditor < grupoTraducao,
+            "Análise de Conteúdo deve ficar no grupo Preparação"
         );
         org.junit.jupiter.api.Assertions.assertTrue(
             grupoPreparacao < grupoTraducao && grupoTraducao < grupoQualidade,
             "Ordem dos grupos principais do pipeline ficou inconsistente"
         );
         org.junit.jupiter.api.Assertions.assertTrue(
-            html.contains("<span>5. Análise de Conteúdo</span>"),
-            "Numeração da Análise de Conteúdo deve refletir etapa de Qualidade"
+            html.contains("<span>3. Análise de Conteúdo</span>"),
+            "Numeração da Análise de Conteúdo deve refletir o item 3 da Preparação"
+        );
+        org.junit.jupiter.api.Assertions.assertTrue(
+            html.contains("<span>4. Tradução Local</span>")
+                && html.contains("<span>5. Correção Cache</span>"),
+            "Renumeração do grupo Tradução (4 e 5) ausente"
         );
     }
 }

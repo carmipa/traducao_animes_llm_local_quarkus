@@ -34,7 +34,14 @@ public class DetectorEfeitoKaraokeService {
     private static final Pattern ESTILO_MUSICA_PATTERN = Pattern.compile(
         "(?i)\\b(song|music|karaoke|opening|ending|theme|insert|op|ed|sing|lyrics?)\\b");
     private static final Pattern ESTILO_JAPONES_ROMAJI_PATTERN = Pattern.compile(
-        "(?i)\\b(romaji|jp|jpn|japanese|japones|japon[eê]s|kana|kanji|opening|ending|theme|insert|op|ed|sing|song|lyrics?)\\b");
+        "(?i)\\b(romaji|jp|jpn|japanese|japones|japon[eê]s|kana|kanji)\\b");
+    // Palavra inteiramente decomponível em sílabas japonesas romanizadas
+    // (Hepburn): "n" solto ou consoante opcional (com geminada kk/ss/tt/pp ou
+    // dígrafo sh/ch/ts/ky/...) seguida de vogal. "fuminijirareru" casa;
+    // "flor", "fly", "the" não casam (encontro consonantal/consoante final).
+    private static final Pattern PALAVRA_ROMAJI_PATTERN = Pattern.compile(
+        "^(?:n|(?:([kgsztdnhbpmyrwfjv])\\1?|sh|ch|ts|ky|gy|ny|hy|my|ry|by|py)?[aeiou])+$");
+    private static final Pattern NAO_ASCII_PATTERN = Pattern.compile("[^\\x00-\\x7F]");
     private static final int MIN_CHARS_TAGS_POSICIONAMENTO_COMPLEXO = 45;
 
     /**
@@ -73,7 +80,41 @@ public class DetectorEfeitoKaraokeService {
         if (estilo != null && ESTILO_JAPONES_ROMAJI_PATTERN.matcher(estilo).find()) {
             return true;
         }
-        return ESCRITA_JAPONESA_PATTERN.matcher(extrairTextoVisivel(texto)).find();
+        String visivel = extrairTextoVisivel(texto);
+        return ESCRITA_JAPONESA_PATTERN.matcher(visivel).find() || pareceLetraRomaji(visivel);
+    }
+
+    /**
+     * Heurística determinística de romaji: todas as palavras (mínimo 2, com ao
+     * menos 6 letras somadas) precisam se decompor em sílabas japonesas.
+     * Fecha o buraco real do 86 T1: a linha de ED "fuminijirareru dake no
+     * hana" (estilo "Opening", tags leves) passava pelos filtros de densidade
+     * e chegava ao LLM, que a "traduzia" com alucinações diferentes a cada
+     * frame. Letra ocidental escapa da heurística por encontros consonantais,
+     * consoante final ou acentuação — em caso de dúvida o viés é preservar:
+     * deixar uma linha de música sem traduzir custa menos que destruir romaji.
+     */
+    private boolean pareceLetraRomaji(String visivel) {
+        String normalizado = visivel.toLowerCase()
+            .replace('ā', 'a').replace('ī', 'i').replace('ū', 'u')
+            .replace('ē', 'e').replace('ō', 'o')
+            .replace("'", "");
+        if (NAO_ASCII_PATTERN.matcher(normalizado).find()) {
+            return false;
+        }
+        int palavras = 0;
+        int letras = 0;
+        for (String palavra : normalizado.split("[^a-z]+")) {
+            if (palavra.isEmpty()) {
+                continue;
+            }
+            if (!PALAVRA_ROMAJI_PATTERN.matcher(palavra).matches()) {
+                return false;
+            }
+            palavras++;
+            letras += palavra.length();
+        }
+        return palavras >= 2 && letras >= 6;
     }
 
     /**

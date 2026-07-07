@@ -78,4 +78,26 @@ class DetectorEfeitoKaraokeServiceTest {
         assertTrue(detector.eKaraokeOuMusicaTraduzivel("Song EN", "{\\k30}Fly {\\k20}me to the moon"));
         assertTrue(detector.eKaraokeOuMusicaTraduzivel("Karaoke", "{\\k30}Bonjour {\\k20}mon amour"));
     }
+
+    @Test
+    void preservaRomajiSemMarcadorDeEstiloOuKanji() {
+        // Caso real do 86 T1 (ED, estilo "Opening"): romaji com tags leves
+        // passava pela densidade e o LLM alucinava uma "tradução" por frame.
+        String linhaRomaji = "{\\pos(1143,40)\\bord0\\blur0.5\\clip(0,70,1920,86.5)}fuminijirareru dake no hana";
+        assertTrue(detector.devePreservarKaraokeOriginal("Opening", linhaRomaji));
+        assertFalse(detector.eKaraokeOuMusicaTraduzivel("Opening", linhaRomaji));
+        assertTrue(detector.devePreservarKaraokeOriginal("OP", "{\\k30}kimi {\\k20}no na wa"));
+    }
+
+    @Test
+    void naoPreservaLetraOcidentalEmEstiloMusical() {
+        // Letra já em PT (dano da era Gemma no 86) e letra em inglês continuam
+        // elegíveis para tradução/revisão mesmo em estilo musical.
+        assertFalse(detector.devePreservarKaraokeOriginal("Opening",
+            "{\\pos(970,40)\\bord0\\blur0.5\\clip(0,37,1920,53.5)}Uma flor floresce apenas para ser esmagada"));
+        assertFalse(detector.devePreservarKaraokeOriginal("Ending",
+            "{\\pos(100,40)}Levado e disperso pelo vento"));
+        assertFalse(detector.devePreservarKaraokeOriginal("Opening",
+            "{\\pos(500,40)}You are my reason to fight"));
+    }
 }

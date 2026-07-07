@@ -112,11 +112,6 @@ public class ProtecaoLegendaAssService {
             return false;
         }
 
-        boolean estiloTecnico = estilo != null && PADRAO_ESTILO_TECNICO.matcher(estilo).find();
-        if (estiloTecnico) {
-            return true;
-        }
-
         boolean altaDensidadeTags = texto.length() > 40
             && Math.max(1, visivel.length()) * 3 < texto.length();
         if (!altaDensidadeTags) {

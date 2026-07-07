@@ -1,2 +1,20 @@
-'gradlew.bat' nÆo ‚ reconhecido como um comando interno
-ou externo, um programa oper vel ou um arquivo em lotes.
+> Task :processResources UP-TO-DATE
+> Task :quarkusGenerateAppModel UP-TO-DATE
+> Task :quarkusGenerateCode UP-TO-DATE
+> Task :quarkusGenerateDevAppModel UP-TO-DATE
+> Task :quarkusGenerateCodeDev UP-TO-DATE
+> Task :compileJava UP-TO-DATE
+> Task :classes UP-TO-DATE
+> Task :processTestResources NO-SOURCE
+> Task :compileQuarkusTestGeneratedSourcesJava NO-SOURCE
+> Task :quarkusGenerateTestAppModel UP-TO-DATE
+> Task :quarkusGenerateCodeTests UP-TO-DATE
+> Task :compileTestJava
+> Task :testClasses
+
+> Task :quarkusDev
+Listening for transport dt_socket at address: 5005
+Press [[94me[39m] to edit command line args (currently '[32m[39m'), [[94mh[39m] for more options>
+[94mTests paused[39m
+Press [[94me[39m] to edit command line args (currently '[32m[39m'), [[94mr[39m] to resume testing, [[94mh[39m] for more options>
+Press [[94me[39m] to edit command line args (currently '[32m[39m'), [[94mr[39m] to resume testing, [[94mo[39m] Toggle test output, [[94mh[39m] for more options>
