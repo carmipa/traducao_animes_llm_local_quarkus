@@ -67,6 +67,10 @@
                             <span class="material-symbols-outlined nav-icon">download</span>
                             <span>2. Extração</span>
                         </button>
+                        <button class="nav-item" data-target="auditor-conteudo" id="btn-menu-auditor-conteudo" data-tooltip="Audite conteúdo das legendas traduzidas (vazamento de efeitos, alucinações de IA).">
+                            <span class="material-symbols-outlined nav-icon">content_paste_search</span>
+                            <span>3. Análise de Conteúdo</span>
+                        </button>
                     </div>
                 </div>
 
@@ -78,11 +82,11 @@
                     <div class="nav-group-itens">
                         <button class="nav-item" data-target="traducao" id="btn-menu-traducao" data-tooltip="Traduza legendas usando IA local com proteção de tags.">
                             <span class="material-symbols-outlined nav-icon">translate</span>
-                            <span>3. Tradução Local</span>
+                            <span>4. Tradução Local</span>
                         </button>
                         <button class="nav-item" data-target="correcao" id="btn-menu-correcao" data-tooltip="Corrija falhas de cache ou traduções ausentes.">
                             <span class="material-symbols-outlined nav-icon">sync</span>
-                            <span>4. Correção Cache</span>
+                            <span>5. Correção Cache</span>
                         </button>
                     </div>
                 </div>
@@ -93,10 +97,6 @@
                         <span class="material-symbols-outlined nav-group-seta">expand_more</span>
                     </button>
                     <div class="nav-group-itens">
-                        <button class="nav-item" data-target="auditor-conteudo" id="btn-menu-auditor-conteudo" data-tooltip="Audite conteúdo das legendas traduzidas (vazamento de efeitos, alucinações de IA).">
-                            <span class="material-symbols-outlined nav-icon">content_paste_search</span>
-                            <span>5. Análise de Conteúdo</span>
-                        </button>
                         <button class="nav-item" data-target="revisao" id="btn-menu-revisao" data-tooltip="Revise legendas .ass já traduzidas: inglês residual, concordância PT-BR e correção via Google.">
                             <span class="material-symbols-outlined nav-icon">spellcheck</span>
                             <span>6. Revisão de Legendas</span>
@@ -280,10 +280,22 @@
                                 <span class="card-action-link">Acessar Painel →</span>
                             </div>
 
-                            <!-- Card 3 -->
-                            <div class="pipeline-card card-traducao" onclick="document.getElementById('btn-menu-traducao').click()" data-tooltip="Clique para traduzir com LLM local">
+                            <!-- Card 3 — Análise de Conteúdo -->
+                            <div class="pipeline-card card-auditor-conteudo" onclick="document.getElementById('btn-menu-auditor-conteudo').click()" data-tooltip="Clique para auditar conteúdo">
                                 <div class="card-glow-bg"></div>
                                 <div class="card-step-num">03</div>
+                                <div class="card-icon-container">
+                                    <span class="material-symbols-outlined">content_paste_search</span>
+                                </div>
+                                <h4>Análise de Conteúdo</h4>
+                                <p>Verifique anomalias de LLM, formatação e metadados nas legendas traduzidas.</p>
+                                <span class="card-action-link">Acessar Painel →</span>
+                            </div>
+
+                            <!-- Card 4 — Tradução Local -->
+                            <div class="pipeline-card card-traducao" onclick="document.getElementById('btn-menu-traducao').click()" data-tooltip="Clique para traduzir com LLM local">
+                                <div class="card-glow-bg"></div>
+                                <div class="card-step-num">04</div>
                                 <div class="card-icon-container">
                                     <span class="material-symbols-outlined">translate</span>
                                 </div>
@@ -292,27 +304,15 @@
                                 <span class="card-action-link">Acessar Painel →</span>
                             </div>
 
-                            <!-- Card 4 -->
+                            <!-- Card 5 — Correção Cache -->
                             <div class="pipeline-card card-correcao" onclick="document.getElementById('btn-menu-correcao').click()" data-tooltip="Clique para preencher linhas falhas do cache">
                                 <div class="card-glow-bg"></div>
-                                <div class="card-step-num">04</div>
+                                <div class="card-step-num">05</div>
                                 <div class="card-icon-container">
                                     <span class="material-symbols-outlined">sync</span>
                                 </div>
                                 <h4>Correção Cache</h4>
                                 <p>Varra e corrija falas vazias ou não traduzidas do banco de cache.</p>
-                                <span class="card-action-link">Acessar Painel →</span>
-                            </div>
-
-                            <!-- Card 5 — Análise de Conteúdo -->
-                            <div class="pipeline-card card-auditor-conteudo" onclick="document.getElementById('btn-menu-auditor-conteudo').click()" data-tooltip="Clique para auditar conteúdo">
-                                <div class="card-glow-bg"></div>
-                                <div class="card-step-num">05</div>
-                                <div class="card-icon-container">
-                                    <span class="material-symbols-outlined">content_paste_search</span>
-                                </div>
-                                <h4>Análise de Conteúdo</h4>
-                                <p>Verifique anomalias de LLM, formatação e metadados nas legendas traduzidas.</p>
                                 <span class="card-action-link">Acessar Painel →</span>
                             </div>
 

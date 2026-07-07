@@ -35,15 +35,15 @@ const CONFIG_SECOES = {
         subtitulo: "Extração industrial de faixas de legendas embutidas in vídeos (MKV, MP4 e outros)"
     },
     "auditor-conteudo": {
-        titulo: "5. Análise de Conteúdo",
+        titulo: "3. Análise de Conteúdo",
         subtitulo: "Auditoria de legendas .ass traduzidas: vazamento de efeitos, alucinações de IA e metadados"
     },
     traducao: {
-        titulo: "3. Tradução Local via LLM",
+        titulo: "4. Tradução Local via LLM",
         subtitulo: "Traduzir legendas originais em inglês usando inteligência artificial local"
     },
     correcao: {
-        titulo: "4. Correção do Cache de Tradução",
+        titulo: "5. Correção do Cache de Tradução",
         subtitulo: "Limpeza de inconsistências e preenchimento via raspagem do Google Tradutor"
     },
     revisao: {

@@ -34,7 +34,7 @@ public class DetectorEfeitoKaraokeService {
     private static final Pattern ESTILO_MUSICA_PATTERN = Pattern.compile(
         "(?i)\\b(song|music|karaoke|opening|ending|theme|insert|op|ed|sing|lyrics?)\\b");
     private static final Pattern ESTILO_JAPONES_ROMAJI_PATTERN = Pattern.compile(
-        "(?i)\\b(romaji|jp|jpn|japanese|japones|japon[eê]s|kana|kanji)\\b");
+        "(?i)\\b(romaji|jp|jpn|japanese|japones|japon[eê]s|kana|kanji|opening|ending|theme|insert|op|ed|sing|song|lyrics?)\\b");
     private static final int MIN_CHARS_TAGS_POSICIONAMENTO_COMPLEXO = 45;
 
     /**
