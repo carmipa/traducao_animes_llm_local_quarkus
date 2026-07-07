@@ -6,7 +6,7 @@
 
 import { initAnalise } from '../analise/analise.js?v=3.0';
 import { initExtracao } from '../extracao/extracao.js?v=3.0';
-import { initAuditorConteudo } from '../auditorConteudoLegendas/auditorConteudoLegendas.js?v=3.0';
+import { initAuditorConteudo } from '../auditorConteudoLegendas/auditorConteudoLegendas.js?v=3.4';
 import { initTraducao } from '../traducao/traducao.js?v=3.0';
 import { initCorrecao } from '../correcao/correcao.js?v=3.0';
 import { initRevisao } from '../revisao/revisao.js?v=3.0';
@@ -33,6 +33,10 @@ const CONFIG_SECOES = {
     extracao: {
         titulo: "2. Extração de Legendas",
         subtitulo: "Extração industrial de faixas de legendas embutidas in vídeos (MKV, MP4 e outros)"
+    },
+    "auditor-conteudo": {
+        titulo: "3. Análise de Conteúdo",
+        subtitulo: "Auditoria de legendas .ass traduzidas: vazamento de efeitos, alucinações de IA e metadados"
     },
     traducao: {
         titulo: "3. Tradução Local via LLM",
@@ -73,6 +77,10 @@ const CONFIG_SECOES = {
     telemetria: {
         titulo: "Telemetria KRONOS",
         subtitulo: "Observabilidade da traducao, cache local e historico operacional"
+    },
+    documentacao: {
+        titulo: "Documentação",
+        subtitulo: "Arquitetura, módulos, API REST e diagramas do KRONOS CORE"
     },
     sobre: {
         titulo: "Sobre o Autor",
@@ -187,7 +195,7 @@ function inicializarGruposMenu() {
 async function inicializarModulos() {
     initAnalise();
     initExtracao();
-    initAuditorConteudo();
+    await initAuditorConteudo();
     initTraducao();
     initCorrecao();
     initRevisao();
@@ -225,6 +233,7 @@ function conectarFluxoLugsSSE() {
     const consoleMap = {
         'analise': 'console-analise',
         'extracao': 'console-extracao',
+        'auditor-conteudo': 'console-auditor-conteudo',
         'traducao': 'console-traducao',
         'correcao': 'console-correcao',
         'revisao': 'console-revisao',
@@ -785,7 +794,7 @@ function renderizarBannerMetadata(banner, meta) {
     }
 
     const posterHtml = meta.posterUrl 
-        ? `<div class="meta-poster-container"><img src="${escapeHtml(meta.posterUrl)}" alt="${escapeHtml(meta.titulo)}" class="meta-poster-img" onerror="this.src='img/kronos_logo.png'"></div>`
+        ? `<div class="meta-poster-container"><img src="${escapeHtml(meta.posterUrl)}" alt="${escapeHtml(meta.titulo)}" class="meta-poster-img" onerror="this.src='img/kronos_logo.svg'"></div>`
         : '';
 
     const scoreHtml = meta.score ? `<span class="meta-badge score"><span class="material-symbols-outlined">star</span> ${meta.score}</span>` : '';
@@ -842,20 +851,20 @@ function inicializarBotoesLimpezaFormularios() {
 }
 
 function inicializarControlesConsole() {
-    document.querySelectorAll('.btn-toggle-console').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const targetId = btn.getAttribute('data-target');
-            const consoleBody = targetId ? document.getElementById(targetId) : null;
-            if (!consoleBody) return;
+    document.addEventListener('click', (e) => {
+        const btn = e.target.closest('.btn-toggle-console');
+        if (!btn) return;
 
-            consoleBody.classList.toggle('expanded');
-            // innerHTML (não textContent) para preservar o ícone Material Symbols do botão
-            if (consoleBody.classList.contains('expanded')) {
-                btn.innerHTML = '<span class="material-symbols-outlined console-action-icon">unfold_less</span>Encolher';
-            } else {
-                btn.innerHTML = '<span class="material-symbols-outlined console-action-icon">unfold_more</span>Expandir';
-            }
-        });
+        const targetId = btn.getAttribute('data-target');
+        const consoleBody = targetId ? document.getElementById(targetId) : null;
+        if (!consoleBody) return;
+
+        consoleBody.classList.toggle('expanded');
+        if (consoleBody.classList.contains('expanded')) {
+            btn.innerHTML = '<span class="material-symbols-outlined console-action-icon">unfold_less</span>Encolher';
+        } else {
+            btn.innerHTML = '<span class="material-symbols-outlined console-action-icon">unfold_more</span>Expandir';
+        }
     });
 }
 

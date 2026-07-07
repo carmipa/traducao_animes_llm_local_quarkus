@@ -10,6 +10,7 @@ import jakarta.ws.rs.core.Response;
 import org.traducao.projeto.auditorConteudoLegendas.application.AuditorConteudoUseCase;
 import org.traducao.projeto.auditorConteudoLegendas.domain.AuditoriaException;
 import org.traducao.projeto.auditorConteudoLegendas.domain.RelatorioAuditoriaConteudo;
+import org.traducao.projeto.traducao.presentation.web.LogStreamService;
 
 @Path("/api/auditoria-conteudo")
 @Produces(MediaType.APPLICATION_JSON)
@@ -18,6 +19,9 @@ public class AuditorConteudoController {
 
     @Inject
     AuditorConteudoUseCase auditorConteudoUseCase;
+
+    @Inject
+    LogStreamService logStreamService;
 
     public record AuditoriaRequest(String caminhoOriginal, String caminhoTraduzido) {}
 
@@ -34,6 +38,7 @@ public class AuditorConteudoController {
         try {
             java.nio.file.Path original = java.nio.file.Path.of(request.caminhoOriginal().trim());
             java.nio.file.Path traduzido = java.nio.file.Path.of(request.caminhoTraduzido().trim());
+            logStreamService.definirCanalAtual("auditor-conteudo");
             RelatorioAuditoriaConteudo relatorio = auditorConteudoUseCase.auditar(original, traduzido);
             return Response.ok(relatorio).build();
         } catch (AuditoriaException e) {

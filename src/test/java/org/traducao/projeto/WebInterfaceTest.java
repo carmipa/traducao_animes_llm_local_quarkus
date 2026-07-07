@@ -55,6 +55,7 @@ class WebInterfaceTest {
             "/revisao/revisao.js",
             "/cura/cura.js",
             "/revisaoLore/revisaoLore.js",
+            "/auditorConteudoLegendas/auditorConteudoLegendas.js",
             "/remuxer/remuxer.js",
             "/mapa/mapa.js",
             "/telemetria/telemetria.js"
@@ -85,5 +86,61 @@ class WebInterfaceTest {
             .then()
             .statusCode(200)
             .body(containsString("data-modulo=\"revisaoLore\""));
+    }
+
+    @Test
+    void indexContemAuditorConteudoModulo() {
+        given()
+            .when().get("/")
+            .then()
+            .statusCode(200)
+            .body(containsString("data-modulo=\"auditorConteudoLegendas\""));
+    }
+
+    @Test
+    void auditorConteudoHtmlDisponivel() {
+        given()
+            .when().get("/auditorConteudoLegendas/auditorConteudoLegendas.html")
+            .then()
+            .statusCode(200)
+            .contentType(containsString("html"))
+            .body(containsString("Análise de Conteúdo de Legendas"))
+            .body(containsString("id=\"btn-exportar-auditor-md\""))
+            .body(containsString("Relatório de Anomalias"));
+    }
+
+    @Test
+    void indexSidebarComEstruturaNavMenuValida() {
+        String html = given()
+            .when().get("/")
+            .then()
+            .statusCode(200)
+            .extract().asString();
+
+        int abreNavMenu = html.split("<nav class=\"nav-menu\">", -1).length - 1;
+        int fechaNav = html.split("</nav>", -1).length - 1;
+        org.junit.jupiter.api.Assertions.assertEquals(1, abreNavMenu, "Deve haver exatamente um nav-menu");
+        org.junit.jupiter.api.Assertions.assertTrue(fechaNav >= 1, "nav-menu deve fechar corretamente");
+
+        String[] grupos = {"preparacao", "traducao", "qualidade", "finalizacao", "sistema"};
+        for (String grupo : grupos) {
+            org.junit.jupiter.api.Assertions.assertTrue(
+                html.contains("data-grupo=\"" + grupo + "\""),
+                "Grupo do menu ausente: " + grupo
+            );
+            org.junit.jupiter.api.Assertions.assertTrue(
+                html.contains("data-grupo=\"" + grupo + "\"") && html.contains("nav-group-itens"),
+                "Menu deve usar nav-group-itens nos grupos"
+            );
+        }
+
+        org.junit.jupiter.api.Assertions.assertTrue(
+            html.contains("data-target=\"auditor-conteudo\""),
+            "Item de menu da auditoria de conteudo ausente"
+        );
+        org.junit.jupiter.api.Assertions.assertTrue(
+            html.contains("data-modulo=\"auditorConteudoLegendas\""),
+            "Shell do modulo auditoria de conteudo ausente no index"
+        );
     }
 }

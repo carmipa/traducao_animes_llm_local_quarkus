@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
-    <link rel="stylesheet" href="css/style.css?v=3.1">
+    <link rel="stylesheet" href="css/style.css?v=3.4">
 </head>
 <body>
     <div class="app-container">
@@ -21,7 +21,7 @@
         <aside class="sidebar">
             <div class="brand">
                 <div class="brand-logo">
-                    <img src="img/kronos_logo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%;">
+                    <img src="img/kronos_logo.svg" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%;">
                 </div>
                 <div class="brand-info">
                     <h2>KRONOS CORE</h2>
@@ -41,6 +41,7 @@
                         <span class="nav-group-titulo">Preparação</span>
                         <span class="material-symbols-outlined nav-group-seta">expand_more</span>
                     </button>
+                    <div class="nav-group-itens">
                         <button class="nav-item" data-target="analise" id="btn-menu-analise" data-tooltip="Audite faixas, codecs e bitrate dos arquivos de vídeo.">
                             <span class="material-symbols-outlined nav-icon">analytics</span>
                             <span>1. Análise de Mídia</span>
@@ -516,67 +517,8 @@
                     </div>
                 </div>
 
-                <!-- 2.5. PAINEL DE AUDITORIA DE CONTEÚDO -->
-                <div class="panel" id="panel-auditor-conteudo">
-                    <div class="glass-card">
-                        <h2>Análise de Conteúdo de Legendas</h2>
-                        <p class="card-desc">Auditoria profunda de arquivos de legenda para encontrar alucinações de IA, efeitos visuais vazados e formatação quebrada.</p>
-                        
-                        <form id="form-auditor-conteudo" class="standard-form">
-                            <div class="form-group">
-                                <label for="auditor-original">Arquivo Original (.ass): <span class="help-icon" data-tooltip="O arquivo de legenda original (pré-tradução) usado como referência de sincronia, estilos e quebras de linha corretas.">?</span></label>
-                                <div class="input-with-button">
-                                    <input type="text" id="auditor-original" placeholder="Caminho do arquivo original" required>
-                                    <button type="button" class="btn-procurar" data-target="auditor-original" data-type="arquivo"><span class="material-symbols-outlined btn-inline-icon">description</span>Procurar...</button>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="auditor-traduzido">Arquivo Traduzido (.ass): <span class="help-icon" data-tooltip="O arquivo gerado pelo LLM para analisar se houve destruição de tags ou vazamento.">?</span></label>
-                                <div class="input-with-button">
-                                    <input type="text" id="auditor-traduzido" placeholder="Caminho do arquivo traduzido" required>
-                                    <button type="button" class="btn-procurar" data-target="auditor-traduzido" data-type="arquivo"><span class="material-symbols-outlined btn-inline-icon">description</span>Procurar...</button>
-                                </div>
-                            </div>
-                            <div class="correcao-actions">
-                                <button type="submit" class="btn btn-primary btn-purple" data-tooltip="Executa o motor de regras de auditoria de conteúdo">
-                                    <span>Executar Auditoria</span>
-                                    <span class="material-symbols-outlined btn-icon">policy</span>
-                                </button>
-                                <button type="button" class="btn btn-secondary btn-clear-form" data-form="form-auditor-conteudo" data-tooltip="Limpa os campos do formulário">
-                                    <span class="material-symbols-outlined btn-icon">delete_sweep</span>
-                                    <span>Limpar</span>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <!-- Card da Tabela de Relatório -->
-                    <div class="glass-card">
-                        <div class="console-header">
-                            <h3>Relatório de Anomalias</h3>
-                            <div class="console-actions">
-                                <span class="status-badge" id="auditor-status-badge">Aguardando...</span>
-                            </div>
-                        </div>
-                        <div class="table-responsive" style="max-height: 400px; overflow-y: auto; margin-top: 15px;">
-                            <table class="styled-table" id="table-auditor-conteudo">
-                                <thead>
-                                    <tr>
-                                        <th>Severidade</th>
-                                        <th>Regra</th>
-                                        <th>Descrição</th>
-                                        <th>Recomendação</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td colspan="4" style="text-align: center; color: var(--text-muted);">Nenhuma auditoria realizada ainda.</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                <!-- 2.5. PAINEL DE AUDITORIA DE CONTEÚDO (conteúdo em auditorConteudoLegendas/auditorConteudoLegendas.html) -->
+                <div class="panel" id="panel-auditor-conteudo" data-modulo="auditorConteudoLegendas"></div>
 
                 <!-- 3. PAINEL DE TRADUÇÃO LOCAL -->
                 <div class="panel" id="panel-traducao">
@@ -911,12 +853,16 @@
                         </div>
                     </div>
                     
-                    <div class="glass-card viewer-card">
-                        <div class="viewer-header">
+                    <div class="glass-card console-card viewer-card">
+                        <div class="console-header">
                             <h3>Estrutura do Projeto</h3>
-                            <button class="btn-copy-viewer" id="btn-copiar-mapa">Copiar Mapa</button>
+                            <div class="console-actions">
+                                <button class="btn-toggle-console" data-target="viewer-mapa" data-tooltip="Alternar altura expandida do console"><span class="material-symbols-outlined console-action-icon">unfold_more</span>Expandir</button>
+                                <button class="btn-copy-console" data-target="viewer-mapa" data-tooltip="Copiar conteúdo do mapa"><span class="material-symbols-outlined console-action-icon">content_copy</span>Copiar</button>
+                                <button class="btn-clear-console" data-target="viewer-mapa"><span class="material-symbols-outlined console-action-icon">mop</span>Limpar</button>
+                            </div>
                         </div>
-                        <pre class="viewer-body" id="viewer-mapa">Estrutura não gerada. Clique em "Gerar Mapa do Projeto" para analisar...</pre>
+                        <div class="console-body viewer-body" id="viewer-mapa">Estrutura não gerada. Clique em "Gerar Mapa do Projeto" para analisar...</div>
                     </div>
                 </div>
 
@@ -1306,6 +1252,6 @@
     <script src="js/mermaid.min.js?v=3.0"></script>
     <!-- Mantenha esta versão igual aos imports '../js/app.js?v=...' dos módulos
          filhos para evitar duas instâncias do orquestrador global. -->
-    <script type="module" src="js/app.js?v=3.0"></script>
+    <script type="module" src="js/app.js?v=3.4"></script>
 </body>
 </html>
