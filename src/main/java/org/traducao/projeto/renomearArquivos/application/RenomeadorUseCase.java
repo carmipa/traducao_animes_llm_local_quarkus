@@ -68,23 +68,27 @@ public class RenomeadorUseCase {
         }
 
         try (Stream<Path> stream = Files.list(pasta)) {
-            stream.filter(Files::isRegularFile)
-                  .filter(this::isVideoFile)
-                  .sorted()
-                  .forEach(arquivo -> {
-                      String nomeOriginal = arquivo.getFileName().toString();
-                      String extensao = obterExtensao(nomeOriginal);
-                      String nomeNovo = gerarNomeNovo(nomeOriginal, nomePadrao, extensao);
-                      
-                      if (!nomeOriginal.equals(nomeNovo)) {
-                          itens.add(new OperacaoRenomeacao.ItemRenomeado(nomeOriginal, nomeNovo));
-                          logStream.publicarLog("renomear-arquivos", "[DRY-RUN] " + nomeOriginal + " \u001b[33m->\u001b[0m " + nomeNovo);
-                      } else if (extrairEpisodio(nomeOriginal) == null) {
-                          logStream.publicarLog("renomear-arquivos", "[IGNORADO] " + nomeOriginal + " sem episódio detectável no nome.");
-                      } else {
-                          logStream.publicarLog("renomear-arquivos", "[IGNORADO] " + nomeOriginal + " já está no padrão.");
-                      }
-                  });
+            List<Path> videos = stream.filter(Files::isRegularFile)
+                .filter(this::isVideoFile)
+                .sorted()
+                .toList();
+            boolean renomearComoFilme = videos.size() == 1;
+
+            videos.forEach(arquivo -> {
+                String nomeOriginal = arquivo.getFileName().toString();
+                String extensao = obterExtensao(nomeOriginal);
+                String episodio = extrairEpisodio(nomeOriginal);
+                String nomeNovo = gerarNomeNovo(nomeOriginal, nomePadrao, extensao, episodio, renomearComoFilme);
+
+                if (!nomeOriginal.equals(nomeNovo)) {
+                    itens.add(new OperacaoRenomeacao.ItemRenomeado(nomeOriginal, nomeNovo));
+                    logStream.publicarLog("renomear-arquivos", "[DRY-RUN] " + nomeOriginal + " \u001b[33m->\u001b[0m " + nomeNovo);
+                } else if (episodio == null) {
+                    logStream.publicarLog("renomear-arquivos", "[IGNORADO] " + nomeOriginal + " sem episódio detectável no nome. Para filmes, deixe apenas um vídeo na pasta.");
+                } else {
+                    logStream.publicarLog("renomear-arquivos", "[IGNORADO] " + nomeOriginal + " já está no padrão.");
+                }
+            });
             logStream.publicarLog("renomear-arquivos", "Simulação concluída. " + itens.size() + " arquivos seriam renomeados.");
         } catch (IOException e) {
             logStream.publicarLog("renomear-arquivos", "Erro ao acessar a pasta: " + e.getMessage());
@@ -217,10 +221,9 @@ public class RenomeadorUseCase {
         }
     }
 
-    private String gerarNomeNovo(String nomeOriginal, String padrao, String extensao) {
-        String episodio = extrairEpisodio(nomeOriginal);
+    private String gerarNomeNovo(String nomeOriginal, String padrao, String extensao, String episodio, boolean renomearComoFilme) {
         if (episodio == null) {
-            return nomeOriginal; // Não encontrou episódio, mantém o nome original
+            return renomearComoFilme ? padrao + extensao : nomeOriginal;
         }
         return padrao + " - S01E" + episodio + extensao;
     }

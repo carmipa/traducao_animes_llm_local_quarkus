@@ -1,6 +1,6 @@
 # 🔤 Módulo: Troca Tipo Legenda (Fontes Legadas)
 
-[← Revisão de Lore](16-modulo-revisao-lore.md) | [Limpa Nome →](19-modulo-limpa-nomes.md)
+[← Revisão de Lore](16-modulo-revisao-lore.md) | [Remuxer →](08-modulo-remuxer.md)
 
 ---
 
@@ -89,4 +89,4 @@ sequenceDiagram
 
 | Anterior | Próximo |
 |----------|---------|
-| [← Revisão de Lore](16-modulo-revisao-lore.md) | [Limpa Nome →](19-modulo-limpa-nomes.md) |
+| [← Revisão de Lore](16-modulo-revisao-lore.md) | [Remuxer →](08-modulo-remuxer.md) |

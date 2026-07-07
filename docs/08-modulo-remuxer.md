@@ -1,6 +1,6 @@
 # 📦 Módulo: Remuxer
 
-[← Revisão de Lore](16-modulo-revisao-lore.md) | [Contextos & Lore →](09-contextos-lore.md)
+[← Troca Tipo Legenda](18-modulo-troca-tipo-legenda.md) | [Renomear Arquivos →](19-modulo-renomear-arquivos.md)
 
 ---
 
@@ -104,4 +104,4 @@ sequenceDiagram
 
 | Anterior | Próximo |
 |----------|---------|
-| [← Revisão de Lore](16-modulo-revisao-lore.md) | [Contextos & Lore →](09-contextos-lore.md) |
+| [← Troca Tipo Legenda](18-modulo-troca-tipo-legenda.md) | [Renomear Arquivos →](19-modulo-renomear-arquivos.md) |

@@ -1,6 +1,6 @@
 # 📖 Módulo: Revisão de Lore
 
-[← Correção de Legendas](07-modulo-cura-tags.md) | [Remuxer →](08-modulo-remuxer.md)
+[← Correção de Legendas](07-modulo-cura-tags.md) | [Troca Tipo Legenda →](18-modulo-troca-tipo-legenda.md)
 
 ---
 
@@ -115,4 +115,4 @@ Os dois campos de pasta (original em inglês / traduzida em PT-BR) mais o seleto
 
 | Anterior | Próximo |
 |----------|---------|
-| [← Correção de Legendas](07-modulo-cura-tags.md) | [Remuxer →](08-modulo-remuxer.md) |
+| [← Correção de Legendas](07-modulo-cura-tags.md) | [Troca Tipo Legenda →](18-modulo-troca-tipo-legenda.md) |

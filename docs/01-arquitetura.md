@@ -8,7 +8,7 @@
 
 O **KRONOS CORE** é uma plataforma monolítica modular construída sobre o **Quarkus** (usando as extensões de compatibilidade Spring — `quarkus-spring-di`, `quarkus-spring-web`, `quarkus-spring-boot-properties`), organizada em **17 pacotes verticais** sob `org.traducao.projeto.*`, cada um resolvendo uma etapa específica do pipeline de tradução de legendas de anime.
 
-Na SPA, o menu lateral agrupa os painéis em **5 grupos acordeão** que espelham o fluxo de trabalho: **Preparação** (1. Análise de Mídia, 2. Extração), **Tradução** (3. Tradução Local, 4. Correção Cache), **Qualidade** (5. Revisão de Legendas, 6. Correção de Karaoke, 7. Revisão de Lore, 8. Troca Tipo Legenda), **Finalização** (9. Remuxer, 10. Limpa Nome) e **Sistema** (Telemetria, Mapa do Projeto, Documentação, Sobre). Os grupos são recolhíveis e o estado é lembrado por navegador (`localStorage`).
+Na SPA, o menu lateral agrupa os painéis em **5 grupos acordeão** que espelham o fluxo de trabalho: **Preparação** (1. Análise de Mídia, 2. Extração), **Tradução** (3. Tradução Local, 4. Correção Cache), **Qualidade** (5. Revisão de Legendas, 6. Correção de Karaoke, 7. Revisão de Lore, 8. Troca Tipo Legenda), **Finalização** (9. Remuxer, 10. Renomear Arquivos) e **Sistema** (Telemetria, Mapa do Projeto, Documentação, Sobre). Os grupos são recolhíveis e o estado é lembrado por navegador (`localStorage`).
 
 O desenho segue **Arquitetura Hexagonal (Ports & Adapters)** por módulo: cada pacote tem, tipicamente, `domain/` (modelos e portas), `application/` (casos de uso, orquestração), `infrastructure/` (adapters concretos — ffmpeg, mkvmerge, HTTP client do LM Studio, scraping do Google Translate) e `presentation/` (controllers REST e/ou CLI).
 
@@ -40,7 +40,7 @@ graph TB
         P_RL["📖 Revisão de Lore"]
         P_TF["🔤 Troca Tipo Legenda"]
         P_RX["📦 Remuxer"]
-        P_LN["🧹 Limpa Nome"]
+        P_LN["🧹 Renomear Arquivos"]
         P_MA["🗺️ Mapa do Projeto"]
         P_TE["📊 Telemetria"]
         P_DOC["📖 Documentação"]
@@ -127,7 +127,7 @@ graph LR
     H2 --> H3["🔤 8. Troca Tipo Legenda<br/>fontes legadas → Unicode"]
     H3 --> I["📦 9. Remuxer<br/>mkvmerge: vídeo + legenda PT-BR"]
     I --> J["🎬 MKV Final<br/>pronto para distribuição"]
-    J -.-> K["🧹 10. Limpa Nome<br/>padroniza nomes de arquivo (S01E01)"]
+    J -.-> K["🧹 10. Renomear Arquivos<br/>padroniza nomes de arquivo (S01E01)"]
 
     style A fill:#1e293b,stroke:#3B82F6
     style J fill:#1e293b,stroke:#10B981
@@ -191,7 +191,7 @@ org.traducao.projeto/
 ├── correcaoLegendas/        ← Correção estrutural da legenda PT-BR usando a original como referência imutável
 ├── trocaTipoLegenda/        ← Auditoria e troca em lote de fontes legadas (TCVN3/VNI) por fontes Unicode
 ├── remuxer/                 ← Combina vídeo original + legenda traduzida em MKV final (mkvmerge)
-├── limpaNomes/              ← Renomeação em lote para o padrão "Nome - S01E01" com dry-run e undo
+├── renomearArquivos/        ← Renomeação em lote para o padrão "Nome - S01E01" com dry-run e undo
 ├── sistema/                 ← Ciclo de vida do processo (menu "Sair" — encerramento gracioso)
 ├── telemetria/               ← Rastreamento de operações, métricas JVM, SSE de telemetria
 ├── mapaProjeto/               ← Gera o mapa_projeto.md (varredura estática de docstrings)

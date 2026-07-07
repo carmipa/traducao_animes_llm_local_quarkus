@@ -111,6 +111,30 @@ class RenomeadorUseCaseTest {
     }
 
     @Test
+    void renomeiaFilmeUnicoSemEpisodioParaNomePadrao() throws IOException {
+        Path filme = tempDir.resolve("[2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1].mkv");
+        Files.createFile(filme);
+
+        List<OperacaoRenomeacao.ItemRenomeado> simulados =
+            renomeadorUseCase.simularRenomeacao(tempDir, "Mobile Suit Gundam Narrative");
+
+        assertEquals(1, simulados.size());
+        assertEquals("[2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1].mkv", simulados.get(0).nomeOriginal());
+        assertEquals("Mobile Suit Gundam Narrative.mkv", simulados.get(0).nomeNovo());
+    }
+
+    @Test
+    void ignoraMultiplosVideosSemEpisodioParaEvitarColisaoDeFilmes() throws IOException {
+        Files.createFile(tempDir.resolve("[Grupo] Filme Um [BD 1080p].mkv"));
+        Files.createFile(tempDir.resolve("[Grupo] Filme Dois [BD 1080p].mkv"));
+
+        List<OperacaoRenomeacao.ItemRenomeado> simulados =
+            renomeadorUseCase.simularRenomeacao(tempDir, "Nome Padrao");
+
+        assertTrue(simulados.isEmpty());
+    }
+
+    @Test
     void testAplicarRenomeacaoEBackup() throws IOException {
         Path arquivo1 = tempDir.resolve("[SubsPlease] Anime Teste - 02 (1080p).mkv");
         Files.createFile(arquivo1);

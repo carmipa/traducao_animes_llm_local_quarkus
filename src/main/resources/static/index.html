@@ -41,7 +41,6 @@
                         <span class="nav-group-titulo">Preparação</span>
                         <span class="material-symbols-outlined nav-group-seta">expand_more</span>
                     </button>
-                    <div class="nav-group-itens">
                         <button class="nav-item" data-target="analise" id="btn-menu-analise" data-tooltip="Audite faixas, codecs e bitrate dos arquivos de vídeo.">
                             <span class="material-symbols-outlined nav-icon">analytics</span>
                             <span>1. Análise de Mídia</span>
@@ -49,6 +48,10 @@
                         <button class="nav-item" data-target="extracao" id="btn-menu-extracao" data-tooltip="Extraia faixas de legendas (ASS/SRT/PGS) em lote de vídeos (MKV/WebM/MP4/MOV/AVI...).">
                             <span class="material-symbols-outlined nav-icon">download_for_offline</span>
                             <span>2. Extração</span>
+                        </button>
+                        <button class="nav-item" data-target="auditor-conteudo" id="btn-menu-auditor-conteudo" data-tooltip="Audite conteúdo das legendas traduzidas (vazamento de efeitos, alucinações de IA).">
+                            <span class="material-symbols-outlined nav-icon">content_paste_search</span>
+                            <span>3. Análise de Conteúdo</span>
                         </button>
                     </div>
                 </div>
@@ -260,6 +263,18 @@
                                 </div>
                                 <h4>Extração</h4>
                                 <p>Extraia faixas de legendas (ASS/PGS/SRT) em lote de arquivos MKV.</p>
+                                <span class="card-action-link">Acessar Painel →</span>
+                            </div>
+
+                            <!-- Card 2.5 -->
+                            <div class="pipeline-card card-auditor-conteudo" onclick="document.getElementById('btn-menu-auditor-conteudo').click()" data-tooltip="Clique para auditar conteúdo">
+                                <div class="card-glow-bg"></div>
+                                <div class="card-step-num">2.5</div>
+                                <div class="card-icon-container">
+                                    <span class="material-symbols-outlined">content_paste_search</span>
+                                </div>
+                                <h4>Análise de Conteúdo</h4>
+                                <p>Verifique anomalias de LLM, formatação e metadados nas legendas traduzidas.</p>
                                 <span class="card-action-link">Acessar Painel →</span>
                             </div>
 
@@ -497,6 +512,68 @@
                         </div>
                         <div class="console-body" id="console-extracao">
                             <div class="system-message">Aguardando execução...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2.5. PAINEL DE AUDITORIA DE CONTEÚDO -->
+                <div class="panel" id="panel-auditor-conteudo">
+                    <div class="glass-card">
+                        <h2>Análise de Conteúdo de Legendas</h2>
+                        <p class="card-desc">Auditoria profunda de arquivos de legenda para encontrar alucinações de IA, efeitos visuais vazados e formatação quebrada.</p>
+                        
+                        <form id="form-auditor-conteudo" class="standard-form">
+                            <div class="form-group">
+                                <label for="auditor-original">Arquivo Original (.ass): <span class="help-icon" data-tooltip="O arquivo de legenda original (pré-tradução) usado como referência de sincronia, estilos e quebras de linha corretas.">?</span></label>
+                                <div class="input-with-button">
+                                    <input type="text" id="auditor-original" placeholder="Caminho do arquivo original" required>
+                                    <button type="button" class="btn-procurar" data-target="auditor-original" data-type="arquivo"><span class="material-symbols-outlined btn-inline-icon">description</span>Procurar...</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="auditor-traduzido">Arquivo Traduzido (.ass): <span class="help-icon" data-tooltip="O arquivo gerado pelo LLM para analisar se houve destruição de tags ou vazamento.">?</span></label>
+                                <div class="input-with-button">
+                                    <input type="text" id="auditor-traduzido" placeholder="Caminho do arquivo traduzido" required>
+                                    <button type="button" class="btn-procurar" data-target="auditor-traduzido" data-type="arquivo"><span class="material-symbols-outlined btn-inline-icon">description</span>Procurar...</button>
+                                </div>
+                            </div>
+                            <div class="correcao-actions">
+                                <button type="submit" class="btn btn-primary btn-purple" data-tooltip="Executa o motor de regras de auditoria de conteúdo">
+                                    <span>Executar Auditoria</span>
+                                    <span class="material-symbols-outlined btn-icon">policy</span>
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-clear-form" data-form="form-auditor-conteudo" data-tooltip="Limpa os campos do formulário">
+                                    <span class="material-symbols-outlined btn-icon">delete_sweep</span>
+                                    <span>Limpar</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Card da Tabela de Relatório -->
+                    <div class="glass-card">
+                        <div class="console-header">
+                            <h3>Relatório de Anomalias</h3>
+                            <div class="console-actions">
+                                <span class="status-badge" id="auditor-status-badge">Aguardando...</span>
+                            </div>
+                        </div>
+                        <div class="table-responsive" style="max-height: 400px; overflow-y: auto; margin-top: 15px;">
+                            <table class="styled-table" id="table-auditor-conteudo">
+                                <thead>
+                                    <tr>
+                                        <th>Severidade</th>
+                                        <th>Regra</th>
+                                        <th>Descrição</th>
+                                        <th>Recomendação</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="4" style="text-align: center; color: var(--text-muted);">Nenhuma auditoria realizada ainda.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -1095,7 +1172,9 @@
                                     <button class="doc-nav-item" data-pagina="06-modulo-correcao-revisao" data-titulo="Correção & Revisão"><span class="material-symbols-outlined doc-item-icon">find_replace</span>Correção & Revisão</button>
                                     <button class="doc-nav-item" data-pagina="07-modulo-cura-tags" data-titulo="Correção de Legendas"><span class="material-symbols-outlined doc-item-icon">music_note</span>Correção de Legendas</button>
                                     <button class="doc-nav-item" data-pagina="16-modulo-revisao-lore" data-titulo="Revisão de Lore"><span class="material-symbols-outlined doc-item-icon">menu_book</span>Revisão de Lore</button>
+                                    <button class="doc-nav-item" data-pagina="18-modulo-troca-tipo-legenda" data-titulo="Troca Tipo Legenda"><span class="material-symbols-outlined doc-item-icon">font_download</span>Troca Tipo Legenda</button>
                                     <button class="doc-nav-item" data-pagina="08-modulo-remuxer" data-titulo="Remuxer"><span class="material-symbols-outlined doc-item-icon">layers</span>Remuxer</button>
+                                    <button class="doc-nav-item" data-pagina="19-modulo-renomear-arquivos" data-titulo="Renomear Arquivos"><span class="material-symbols-outlined doc-item-icon">cleaning_services</span>Renomear Arquivos</button>
                                 </div>
                                 <div class="doc-nav-group">
                                     <span class="doc-nav-group-label">Módulos de Apoio</span>

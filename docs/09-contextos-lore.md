@@ -1,6 +1,6 @@
 # 🎭 Contextos & Lore
 
-[← Remuxer](08-modulo-remuxer.md) | [Módulo Telemetria →](10-modulo-telemetria.md)
+[← Renomear Arquivos](19-modulo-renomear-arquivos.md) | [Módulo Telemetria →](10-modulo-telemetria.md)
 
 ---
 
@@ -65,4 +65,4 @@ O painel **"8. Revisão de Lore"** da SPA revisa nomes próprios, locais e termo
 
 | Anterior | Próximo |
 |----------|---------|
-| [← Remuxer](08-modulo-remuxer.md) | [Módulo Telemetria →](10-modulo-telemetria.md) |
+| [← Renomear Arquivos](19-modulo-renomear-arquivos.md) | [Módulo Telemetria →](10-modulo-telemetria.md) |

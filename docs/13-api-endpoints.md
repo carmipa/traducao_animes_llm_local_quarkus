@@ -137,15 +137,15 @@ Aplica em lote as substituições de fontes sugeridas, com backup automático. A
 
 ---
 
-### `POST /api/limpa-nomes/simular`
-### `POST /api/limpa-nomes/aplicar`
-### `POST /api/limpa-nomes/reverter`
-Renomeação em lote de arquivos para o padrão `Nome - S01E01` (dry-run, aplicação com manifesto de undo e reversão). Ver [Limpa Nome](19-modulo-limpa-nomes.md).
+### `POST /api/renomear-arquivos/simular`
+### `POST /api/renomear-arquivos/aplicar`
+### `POST /api/renomear-arquivos/reverter`
+Renomeação em lote de arquivos para o padrão `Nome - S01E01` (dry-run, aplicação com manifesto de undo e reversão). Ver [Renomear Arquivos](19-modulo-renomear-arquivos.md).
 
 ```json
 { "caminhoOrigem": "C:/animes/[SubsPlease] Nome Anime", "nomePadrao": "Nome Anime" }
 ```
-**Canal SSE:** `limpa-nome` (`reverter` dispensa `nomePadrao`)
+**Canal SSE:** `renomear-arquivos` (`reverter` dispensa `nomePadrao`)
 
 ---
 
@@ -235,7 +235,7 @@ Conexão `EventSource` única para **todos** os logs em tempo real. Cada operaç
 | `cura` | `/api/cura-tags` |
 | `revisao-lore` | `/api/revisar-lore` |
 | `troca-tipo-legenda` | `/api/troca-legenda/aplicar` |
-| `limpa-nome` | `/api/limpa-nomes/*` |
+| `renomear-arquivos` | `/api/renomear-arquivos/*` |
 | `remuxer` | `/api/remuxar` |
 | `console` | Fallback genérico — roteado para a aba ativa no navegador |
 | `sistema` | Mensagens de conexão/sistema |

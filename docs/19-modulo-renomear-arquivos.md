@@ -1,6 +1,6 @@
 # 🧹 Módulo: Renomear Arquivos
 
-[← Troca Tipo Legenda](18-modulo-troca-tipo-legenda.md) | [Contextos & Lore →](09-contextos-lore.md)
+[← Remuxer](08-modulo-remuxer.md) | [Contextos & Lore →](09-contextos-lore.md)
 
 ---
 
@@ -93,4 +93,4 @@ sequenceDiagram
 
 | Anterior | Próximo |
 |----------|---------|
-| [← Troca Tipo Legenda](18-modulo-troca-tipo-legenda.md) | [Contextos & Lore →](09-contextos-lore.md) |
+| [← Remuxer](08-modulo-remuxer.md) | [Contextos & Lore →](09-contextos-lore.md) |

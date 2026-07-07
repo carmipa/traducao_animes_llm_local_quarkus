@@ -36,7 +36,7 @@ O **KRONOS CORE** é uma plataforma de automação para **tradução industrial 
 - 📖 **Revisão de Lore** pós-tradução — nomes, locais e termos de mundo validados contra a lore oficial da obra, com trilha de auditoria por fala
 - 🔤 **Troca de fontes legadas** — detecta e substitui fontes TCVN3/VNI de fansubs (que corrompem a acentuação PT-BR na renderização) por fontes Unicode
 - 📦 **Remuxagem automatizada** com preservação total de qualidade original
-- 🧹 **Sanitizador de nomes de arquivo** — renomeação em lote para o padrão `S01E01` com dry-run e undo
+- 🧹 **Renomeação em lote de arquivos** — nomes de tracker viram o padrão `Nome - S01E01`, com dry-run e undo
 - 📊 **Telemetria em tempo real** (SSE) de todas as etapas do pipeline
 
 Tudo rodando sobre **Java 25 + Quarkus** com uma SPA própria (HTML/CSS/JS puro, sem framework de frontend), pensado para operação **desktop-first e 100% offline** — a única dependência de rede é opcional (metadados de anime via Jikan/TMDB).
@@ -67,7 +67,7 @@ Tudo rodando sobre **Java 25 + Quarkus** com uma SPA própria (HTML/CSS/JS puro,
 | 📖 | [**Revisão de Lore**](docs/16-modulo-revisao-lore.md) | Corrige nomes, locais e termos de lore comparando com o original em inglês |
 | 🔤 | [**Troca Tipo Legenda**](docs/18-modulo-troca-tipo-legenda.md) | Auditoria e troca em lote de fontes legadas (TCVN3/VNI) por fontes Unicode |
 | 📦 | [**Remuxer**](docs/08-modulo-remuxer.md) | Combina vídeo + legenda em MKV final |
-| 🧹 | [**Limpa Nome**](docs/19-modulo-limpa-nomes.md) | Renomeação em lote para o padrão `Nome - S01E01`, com dry-run e undo |
+| 🧹 | [**Renomear Arquivos**](docs/19-modulo-renomear-arquivos.md) | Renomeação em lote para o padrão `Nome - S01E01`, com dry-run e undo |
 | 🎭 | [**Contextos & Lore**](docs/09-contextos-lore.md) | Sistema de lore por anime — 56+ contextos cadastrados |
 | 📊 | [**Telemetria**](docs/10-modulo-telemetria.md) | Rastreamento de operações e métricas de JVM em tempo real |
 | 🎬 | [**Metadados de Anime**](docs/11-modulo-metadados-anime.md) | Integração Jikan/MAL e TMDB para pôster/sinopse na UI |
@@ -179,7 +179,7 @@ traducao_animes_llm_local_quarkus/
 │   │   │   ├── revisaoLore/           ← Revisão de nomes/termos vs. lore oficial
 │   │   │   ├── trocaTipoLegenda/      ← Troca de fontes legadas por Unicode
 │   │   │   ├── remuxer/               ← Combina vídeo + legenda
-│   │   │   ├── limpaNomes/            ← Renomeação em lote (S01E01) com undo
+│   │   │   ├── renomearArquivos/      ← Renomeação em lote (S01E01) com undo
 │   │   │   ├── sistema/               ← Encerramento gracioso (menu "Sair")
 │   │   │   ├── telemetria/            ← Rastreamento de operações
 │   │   │   ├── mapaProjeto/           ← Gerador de mapa_projeto.md
@@ -206,7 +206,7 @@ A barra lateral organiza os painéis em **5 grupos acordeão** (recolhíveis, co
 | 🎬 **Preparação** | `1. Análise de Mídia` · `2. Extração` |
 | 🌐 **Tradução** | `3. Tradução Local` · `4. Correção Cache` |
 | ✅ **Qualidade** | `5. Revisão de Legendas` · `6. Correção de Karaoke` · `7. Revisão de Lore` · `8. Troca Tipo Legenda` |
-| 📦 **Finalização** | `9. Remuxer` · `10. Limpa Nome` |
+| 📦 **Finalização** | `9. Remuxer` · `10. Renomear Arquivos` |
 | ⚙️ **Sistema** | `Telemetria` · `Mapa do Projeto` · **`Documentação`** · `Sobre` |
 
 O menu **Documentação** renderiza esta mesma pasta `docs/` dentro da própria aplicação (incluindo os diagramas Mermaid), sem precisar sair do app ou abrir o GitHub.
