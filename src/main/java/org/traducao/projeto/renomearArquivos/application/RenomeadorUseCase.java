@@ -18,9 +18,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.HexFormat;
 import java.util.Locale;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,8 +47,18 @@ public class RenomeadorUseCase {
     // Regex fallback: depois de remover metadados técnicos, pega o último número
     // restante. Isso evita usar o "86" do título como episódio quando há "86 01".
     private static final Pattern EPISODE_FALLBACK = Pattern.compile("(?<!\\d)(\\d{1,4})(?!\\d)");
+
+    // Conteúdo especial/creditless (NCOP, NCED, SP, OVA, PV...): não segue a numeração
+    // dos episódios e o fallback numérico geraria nomes errados (ex.: NCED01 viraria
+    // S01E02 por causa do "Track2" no nome). Esses arquivos são pulados.
+    private static final Pattern CONTEUDO_ESPECIAL_PATTERN = Pattern.compile(
+        "(?i)(?:^|[\\s._\\-\\[(])(?:NC(?:OP|ED)\\d*|OVA|OAD|SP\\d*|PV\\d*|Menu|Preview|Special)(?=$|[\\s._\\-\\])(])");
+
     private static final List<String> EXTENSOES_VIDEO = List.of(
         ".mkv", ".mp4", ".avi", ".webm", ".mov", ".m4v", ".wmv", ".flv", ".ts"
+    );
+    private static final List<String> EXTENSOES_LEGENDA = List.of(
+        ".ass", ".ssa", ".srt", ".vtt", ".sub"
     );
 
     @Inject
@@ -68,27 +80,56 @@ public class RenomeadorUseCase {
         }
 
         try (Stream<Path> stream = Files.list(pasta)) {
-            List<Path> videos = stream.filter(Files::isRegularFile)
-                .filter(this::isVideoFile)
+            List<Path> arquivos = stream.filter(Files::isRegularFile)
+                .filter(a -> isVideoFile(a) || isLegendaFile(a))
                 .sorted()
                 .toList();
-            boolean renomearComoFilme = videos.size() == 1;
 
-            videos.forEach(arquivo -> {
+            if (arquivos.isEmpty()) {
+                logStream.publicarLog("renomear-arquivos", "Nenhum vídeo ou legenda encontrado na pasta. Extensões aceitas: "
+                    + String.join(", ", EXTENSOES_VIDEO) + ", " + String.join(", ", EXTENSOES_LEGENDA) + ".");
+            }
+
+            long videosRenomeaveis = arquivos.stream()
+                .filter(this::isVideoFile)
+                .filter(a -> !ehConteudoEspecial(a.getFileName().toString()))
+                .count();
+            long legendasRenomeaveis = arquivos.stream()
+                .filter(this::isLegendaFile)
+                .filter(a -> !ehConteudoEspecial(a.getFileName().toString()))
+                .count();
+
+            Set<String> nomesGerados = new HashSet<>();
+            for (Path arquivo : arquivos) {
                 String nomeOriginal = arquivo.getFileName().toString();
+
+                if (ehConteudoEspecial(nomeOriginal)) {
+                    logStream.publicarLog("renomear-arquivos", "[IGNORADO] " + nomeOriginal + " é conteúdo especial (SP/NCOP/NCED/OVA/PV) sem numeração de episódio; renomeie manualmente se necessário.");
+                    continue;
+                }
+
                 String extensao = obterExtensao(nomeOriginal);
                 String episodio = extrairEpisodio(nomeOriginal);
+                boolean renomearComoFilme = isVideoFile(arquivo) ? videosRenomeaveis == 1 : legendasRenomeaveis == 1;
                 String nomeNovo = gerarNomeNovo(nomeOriginal, nomePadrao, extensao, episodio, renomearComoFilme);
 
                 if (!nomeOriginal.equals(nomeNovo)) {
+                    if (!nomesGerados.add(nomeNovo.toLowerCase(Locale.ROOT))) {
+                        logStream.publicarLog("renomear-arquivos", "[CONFLITO] " + nomeOriginal + " geraria o mesmo nome de outro arquivo da pasta (" + nomeNovo + "); ignorado para evitar sobrescrita.");
+                        continue;
+                    }
+                    if (Files.exists(pasta.resolve(nomeNovo))) {
+                        logStream.publicarLog("renomear-arquivos", "[CONFLITO] " + nomeOriginal + " não será renomeado: já existe um arquivo chamado " + nomeNovo + " na pasta.");
+                        continue;
+                    }
                     itens.add(new OperacaoRenomeacao.ItemRenomeado(nomeOriginal, nomeNovo));
                     logStream.publicarLog("renomear-arquivos", "[DRY-RUN] " + nomeOriginal + " \u001b[33m->\u001b[0m " + nomeNovo);
                 } else if (episodio == null) {
-                    logStream.publicarLog("renomear-arquivos", "[IGNORADO] " + nomeOriginal + " sem episódio detectável no nome. Para filmes, deixe apenas um vídeo na pasta.");
+                    logStream.publicarLog("renomear-arquivos", "[IGNORADO] " + nomeOriginal + " sem episódio detectável no nome. Para filmes, deixe apenas um vídeo (e uma legenda) na pasta.");
                 } else {
                     logStream.publicarLog("renomear-arquivos", "[IGNORADO] " + nomeOriginal + " já está no padrão.");
                 }
-            });
+            }
             logStream.publicarLog("renomear-arquivos", "Simulação concluída. " + itens.size() + " arquivos seriam renomeados.");
         } catch (IOException e) {
             logStream.publicarLog("renomear-arquivos", "Erro ao acessar a pasta: " + e.getMessage());
@@ -244,10 +285,12 @@ public class RenomeadorUseCase {
             return String.format("%02d", Integer.parseInt(m2.group(1)));
         }
         
+        // Normaliza separadores antes de remover palavras técnicas: com "_" colado
+        // nas palavras, os \b do regex não casam (ex.: "_Track6_" nunca era removido).
         String semRuidoTecnico = semBrackets
             .replaceAll("\\([^\\)]*\\)", " ")
-            .replaceAll("(?i)\\b(1080p|720p|2160p|4k|BD|BDRip|WEBRip|WEB-DL|Dual\\s*Audio|Multi\\s*Audio|10bit|8bit|HEVC|AV1|x264|x265|PTBR|PT\\s*BR)\\b", " ")
             .replaceAll("[_.-]+", " ")
+            .replaceAll("(?i)\\b(1080p|720p|2160p|4k|BD|BDRip|WEBRip|WEB\\s*DL|Dual\\s*Audio|Multi\\s*Audio|10bit|8bit|HEVC|AV1|x264|x265|Track\\s*\\d+|PTBR|PT\\s*BR)\\b", " ")
             .replaceAll("\\s+", " ")
             .trim();
 
@@ -275,5 +318,14 @@ public class RenomeadorUseCase {
     private boolean isVideoFile(Path arquivo) {
         String nome = arquivo.getFileName().toString().toLowerCase(Locale.ROOT);
         return EXTENSOES_VIDEO.stream().anyMatch(nome::endsWith);
+    }
+
+    private boolean isLegendaFile(Path arquivo) {
+        String nome = arquivo.getFileName().toString().toLowerCase(Locale.ROOT);
+        return EXTENSOES_LEGENDA.stream().anyMatch(nome::endsWith);
+    }
+
+    private boolean ehConteudoEspecial(String nome) {
+        return CONTEUDO_ESPECIAL_PATTERN.matcher(nome).find();
     }
 }

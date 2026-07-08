@@ -77,7 +77,7 @@ class RenomeadorUseCaseTest {
     }
 
     @Test
-    void ignoraArquivosQueNaoSaoVideo() throws IOException {
+    void renomeiaVideosELegendasIgnorandoOutrosArquivos() throws IOException {
         Path video = tempDir.resolve("[SubsPlease] Anime Teste - 03 (1080p).mp4");
         Path legenda = tempDir.resolve("[SubsPlease] Anime Teste - 03 (1080p).ass");
         Path texto = tempDir.resolve("Anime Teste - 03.txt");
@@ -87,9 +87,62 @@ class RenomeadorUseCaseTest {
 
         List<OperacaoRenomeacao.ItemRenomeado> simulados = renomeadorUseCase.simularRenomeacao(tempDir, "Anime Top");
 
+        assertEquals(2, simulados.size());
+        assertEquals("[SubsPlease] Anime Teste - 03 (1080p).ass", simulados.get(0).nomeOriginal());
+        assertEquals("Anime Top - S01E03.ass", simulados.get(0).nomeNovo());
+        assertEquals("[SubsPlease] Anime Teste - 03 (1080p).mp4", simulados.get(1).nomeOriginal());
+        assertEquals("Anime Top - S01E03.mp4", simulados.get(1).nomeNovo());
+    }
+
+    @Test
+    void renomeiaLegendasExtraidasComSufixoDeTrackEIdioma() throws IOException {
+        for (int episodio = 1; episodio <= 3; episodio++) {
+            Files.createFile(tempDir.resolve(
+                String.format("[DB]86_-_%02d_(Dual Audio_10bit_BD1080p_x265)_Track6_PT-BR.ass", episodio)
+            ));
+        }
+
+        List<OperacaoRenomeacao.ItemRenomeado> simulados = renomeadorUseCase.simularRenomeacao(tempDir, "86");
+
+        assertEquals(3, simulados.size());
+        assertEquals("86 - S01E01.ass", simulados.get(0).nomeNovo());
+        assertEquals("86 - S01E03.ass", simulados.get(2).nomeNovo());
+    }
+
+    @Test
+    void ignoraEspeciaisCreditlessSemNumeracaoDeEpisodio() throws IOException {
+        Files.createFile(tempDir.resolve("[DB]86_-_NCED01_(10bit_BD1080p_x265)_Track2_PT-BR.ass"));
+        Files.createFile(tempDir.resolve("[DB]86_-_NCOP01_(10bit_BD1080p_x265)_Track2_PT-BR.ass"));
+        Files.createFile(tempDir.resolve("[DB]86 Special Edition Senya ni Akaku Hinageshi no Saku_-_SP_(10bit_BD1080p_x265)_Track2_PT-BR.ass"));
+        Files.createFile(tempDir.resolve("[DB]86_-_NCED01_(10bit_BD1080p_x265).mkv"));
+
+        List<OperacaoRenomeacao.ItemRenomeado> simulados = renomeadorUseCase.simularRenomeacao(tempDir, "86");
+
+        assertTrue(simulados.isEmpty());
+    }
+
+    @Test
+    void naoRenomeiaDuasLegendasQueGerariamOMesmoNome() throws IOException {
+        Files.createFile(tempDir.resolve("[DB]86_-_01_(BD1080p)_Track5_PT-BR.ass"));
+        Files.createFile(tempDir.resolve("[DB]86_-_01_(BD1080p)_Track6_PT-BR.ass"));
+
+        List<OperacaoRenomeacao.ItemRenomeado> simulados = renomeadorUseCase.simularRenomeacao(tempDir, "86");
+
         assertEquals(1, simulados.size());
-        assertEquals("[SubsPlease] Anime Teste - 03 (1080p).mp4", simulados.get(0).nomeOriginal());
-        assertEquals("Anime Top - S01E03.mp4", simulados.get(0).nomeNovo());
+        assertEquals("86 - S01E01.ass", simulados.get(0).nomeNovo());
+    }
+
+    @Test
+    void renomeiaFilmeUnicoComLegendaUnicaParaNomePadrao() throws IOException {
+        Files.createFile(tempDir.resolve("[2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit].mkv"));
+        Files.createFile(tempDir.resolve("[2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit]_Track3.ass"));
+
+        List<OperacaoRenomeacao.ItemRenomeado> simulados =
+            renomeadorUseCase.simularRenomeacao(tempDir, "Mobile Suit Gundam Narrative");
+
+        assertEquals(2, simulados.size());
+        assertEquals("Mobile Suit Gundam Narrative.mkv", simulados.get(0).nomeNovo());
+        assertEquals("Mobile Suit Gundam Narrative.ass", simulados.get(1).nomeNovo());
     }
 
     @Test

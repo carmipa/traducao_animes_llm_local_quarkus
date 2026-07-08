@@ -1,6 +1,6 @@
 import { mostrarAlerta, logNoConsole } from '../js/app.js';
 
-const PAINEL_HTML = 'renomearArquivos/renomearArquivos.html?v=3.0';
+const PAINEL_HTML = 'renomearArquivos/renomearArquivos.html?v=3.1';
 
 async function carregarPainelHtml() {
     const painel = document.getElementById('panel-renomear-arquivos');
