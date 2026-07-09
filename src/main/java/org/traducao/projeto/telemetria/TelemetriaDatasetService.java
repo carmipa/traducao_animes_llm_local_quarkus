@@ -347,6 +347,8 @@ public class TelemetriaDatasetService {
 
         Operational telemetry dataset from [KRONOS CORE](https://github.com/carmipa/traducao_animes_llm_local_quarkus), an anime subtitle translation pipeline that runs local LLM inference through LM Studio.
 
+        Source translator project: [carmipa/traducao_animes_llm_local_quarkus](https://github.com/carmipa/traducao_animes_llm_local_quarkus)
+
         This repository is meant to expose reproducible performance and pipeline metrics, not subtitle content. Each commit is a dataset snapshot; the Git history is the public timeline.
 
         ### Repository Layout
@@ -430,6 +432,8 @@ public class TelemetriaDatasetService {
         ## Português
 
         Dataset de telemetria operacional do [KRONOS CORE](https://github.com/carmipa/traducao_animes_llm_local_quarkus), uma esteira de tradução de legendas de anime que executa inferência LLM local via LM Studio.
+
+        Projeto do tradutor: [carmipa/traducao_animes_llm_local_quarkus](https://github.com/carmipa/traducao_animes_llm_local_quarkus)
 
         Este repositório existe para expor métricas reprodutíveis de performance e pipeline, não conteúdo de legendas. Cada commit é um snapshot do dataset; o histórico Git é a linha do tempo pública.
 
