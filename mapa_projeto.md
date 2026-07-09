@@ -182,6 +182,18 @@ podiam rodar em paralelo e um trocava a lore/modelo no meio do outro — além
 de disputarem a GPU do LM Studio, que atende uma inferência por vez.
 ```
 
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/core/util/ArquivoAtomicoUtil.java`
+```text
+Substituição atômica de arquivo (temporário -&gt; destino) tolerante ao Windows.
+
+<p>No Windows, o move atômico ({@code MoveFileEx}) falha com
+{@link AccessDeniedException} quando o arquivo de destino está momentaneamente
+aberto por outro processo sem compartilhamento de exclusão — tipicamente
+antivírus ou indexador varrendo o arquivo recém-gravado. O travamento dura
+milissegundos, então algumas tentativas com espera crescente resolvem sem
+perder a garantia de "nunca deixa o destino truncado".</p>
+```
+
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/core/util/ProcessoExternoUtil.java`
 ```text
 Executa processos externos (ffmpeg, ffprobe, mkvmerge, mkvextract) de forma segura:
@@ -1246,6 +1258,9 @@ não tem nenhuma checagem prévia que intercepte esse caso. Isso o torna o
 falha real é reproduzível de forma determinística e portátil num teste.
 ```
 
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/novoKaraoke/application/ConversorKaraokeUseCaseTest.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/remuxer/application/MapeadorMidiaServiceTest.java`
 ```text
 Criar arquivos de vídeo MKV com padrão "EpsXX" (como nos arquivos de 86 do usuário)
@@ -1258,6 +1273,9 @@ Ignora
 ```
 
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/revisaoLore/application/DetectorTermosLoreServiceTest.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/revisaoLore/application/RevisarLoreUseCaseTest.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/revisaoLore/infrastructure/RevisaoLoreAuditoriaCacheTest.java`

@@ -23,8 +23,10 @@ class RenomeadorUseCaseTest {
 
     class MockTelemetriaService extends TelemetriaService {
         @Override
-        public void registrarArquivoSanitizado() {
-            telemetriaChamada = true;
+        public void registrarArquivosSanitizados(int quantidade) {
+            if (quantidade > 0) {
+                telemetriaChamada = true;
+            }
         }
     }
 

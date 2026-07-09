@@ -166,9 +166,6 @@ public class RenomeadorUseCase {
                 aplicados.add(item);
                 sucesso++;
                 logStream.publicarLog("renomear-arquivos", "[OK] " + item.nomeOriginal() + " renomeado para " + item.nomeNovo());
-                
-                // Incrementa a telemetria nova
-                telemetriaService.registrarArquivoSanitizado();
             } catch (Exception e) {
                 logStream.publicarLog("renomear-arquivos", "[ERRO] Falha ao renomear " + item.nomeOriginal() + ": " + e.getMessage());
                 erros++;
@@ -181,7 +178,11 @@ public class RenomeadorUseCase {
                 logStream.publicarLog("renomear-arquivos", "Manifesto de reversão salvo no projeto em: " + arquivoUndo);
             }
         }
-        
+
+        // Um único registro para o lote inteiro: registrar por arquivo reescrevia
+        // o JSON canônico + broadcast SSE a cada rename (dezenas por segundo).
+        telemetriaService.registrarArquivosSanitizados(sucesso);
+
         logStream.publicarLog("renomear-arquivos", "PROCESSO CONCLUÍDO! Renomeados: " + sucesso + " | Erros: " + erros);
     }
 

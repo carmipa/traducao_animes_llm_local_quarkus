@@ -127,6 +127,80 @@ class ConversorKaraokeUseCaseTest {
     }
 
     @Test
+    void kfxLetraPorLetraContinuoEhCortadoPorFraseComEspacos() throws Exception {
+        // KFX real (86): cada letra é um evento, a frase inteira fica na tela ao
+        // mesmo tempo e a frase seguinte começa EXATAMENTE quando a anterior
+        // termina — o gap nunca separa; o corte tem que vir do vale de concorrência.
+        Path origem = tempDir.resolve("kfx-letra-a-letra.ass");
+        Path destino = Files.createDirectory(tempDir.resolve("saida"));
+        StringBuilder corpo = new StringBuilder(cabecalho());
+        corpo.append(eventosPorLetra("0:00:01.00", "0:00:05.00", "Voce pode"));
+        corpo.append(eventosPorLetra("0:00:05.00", "0:00:09.00", "Nada muda"));
+        Files.writeString(origem, corpo.toString(), StandardCharsets.UTF_8);
+
+        novoConversor().converterArquivo(origem, destino, true);
+
+        String saida = Files.readString(destino.resolve(origem.getFileName()), StandardCharsets.UTF_8);
+        assertTrue(saida.contains("Dialogue: 0,0:00:01.00,0:00:05.00,Karaoke Simples,,0,0,0,,Voce pode"), saida);
+        assertTrue(saida.contains("Dialogue: 0,0:00:05.00,0:00:09.00,Karaoke Simples,,0,0,0,,Nada muda"), saida);
+        assertFalse(saida.contains("VocepodeNadamuda"), saida);
+    }
+
+    @Test
+    void deduplicaCamadasComJanelasQuaseIdenticasENaoSoIguais() throws Exception {
+        // romaji e tradução simultâneos raramente terminam no MESMO centésimo;
+        // a deduplicação precisa agrupar por sobreposição, não por janela exata
+        Path origem = tempDir.resolve("janelas-quase-iguais.ass");
+        Path destino = Files.createDirectory(tempDir.resolve("saida"));
+        Files.writeString(origem, cabecalho()
+            + "Dialogue: 0,0:00:01.00,0:00:04.96,Opening,,0,0,0,,{\\pos(100,40)}aigan shitemo kongan shitemo kawaranai ya, mou\n"
+            + "Dialogue: 0,0:00:01.00,0:00:05.00,Opening,,0,0,0,,{\\pos(100,80)}Não importa o quanto eu deseje, nada muda\n",
+            StandardCharsets.UTF_8);
+
+        novoConversor().converterArquivo(origem, destino, true);
+
+        String saida = Files.readString(destino.resolve(origem.getFileName()), StandardCharsets.UTF_8);
+        assertTrue(saida.contains("Dialogue: 0,0:00:01.00,0:00:05.00,Karaoke Simples,,0,0,0,,Não importa o quanto eu deseje, nada muda"), saida);
+        assertFalse(saida.contains("aigan shitemo"), saida);
+    }
+
+    @Test
+    void blocoKfxQueViraLinhaImplausivelEhPreservadoIntacto() throws Exception {
+        // sem vale de concorrência não há como separar as frases: melhor manter o
+        // efeito original do que emitir uma parede de texto de 29 segundos
+        Path origem = tempDir.resolve("kfx-irreconstruivel.ass");
+        Path destino = Files.createDirectory(tempDir.resolve("saida"));
+        Files.writeString(origem, cabecalho()
+            + eventosPorLetra("0:00:01.00", "0:00:30.00", "Frase longa demais"),
+            StandardCharsets.UTF_8);
+
+        var resultado = novoConversor().converterArquivo(origem, destino, true);
+
+        String saida = Files.readString(destino.resolve(origem.getFileName()), StandardCharsets.UTF_8);
+        assertFalse(saida.contains("Karaoke Simples"), saida);
+        assertTrue(saida.contains("{\\pos(100.0,40)\\t(0,100,\\blur4\\fscx120)}F"), saida);
+        assertEquals(0, resultado.getEventosKaraokeRemovidos());
+        assertTrue(resultado.getEventosPreservadosPorSeguranca() > 0);
+    }
+
+    /** Um evento Dialogue por letra visível, todos na janela inteira da frase (KFX letra-por-letra). */
+    private static String eventosPorLetra(String inicio, String fim, String frase) {
+        StringBuilder eventos = new StringBuilder();
+        double x = 100;
+        for (char letra : frase.toCharArray()) {
+            if (letra == ' ') {
+                x += 40; // espaço não vira evento: só o salto em X marca a palavra
+                continue;
+            }
+            eventos.append("Dialogue: 1,").append(inicio).append(',').append(fim)
+                .append(",Opening,,0,0,0,,{\\pos(").append(x).append(",40)\\t(0,100,\\blur4\\fscx120)}")
+                .append(letra).append('\n');
+            x += 20;
+        }
+        return eventos.toString();
+    }
+
+    @Test
     void ignoraArquivosAuxiliaresQuandoHaEpisodiosPrincipais() throws Exception {
         Path origem = Files.createDirectory(tempDir.resolve("origem"));
         Path destino = tempDir.resolve("saida");

@@ -39,6 +39,19 @@ compileJava {
     options.compilerArgs << '-parameters'
 }
 
+test {
+    // O worker de teste do Gradle nasce com 512m; a suíte completa (com os
+    // @QuarkusTest subindo a aplicação) estoura o heap nesse padrão.
+    maxHeapSize = '1g'
+}
+
+quarkusDev {
+    // Alinha o charset do logger do Quarkus (JBoss LogManager) com o System.out
+    // UTF-8 do Application.java; sem isso o terminal/console-web.log mistura o
+    // codepage do console Windows com UTF-8 e os acentos viram mojibake.
+    jvmArgs = ['-Dfile.encoding=UTF-8', '-Dstdout.encoding=UTF-8', '-Dstderr.encoding=UTF-8']
+}
+
 compileTestJava {
     options.encoding = 'UTF-8'
 }

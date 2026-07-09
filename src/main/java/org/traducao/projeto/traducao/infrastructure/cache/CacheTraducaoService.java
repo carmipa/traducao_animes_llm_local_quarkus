@@ -4,12 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.traducao.projeto.core.util.ArquivoAtomicoUtil;
 import org.traducao.projeto.traducao.domain.exceptions.ArquivoLegendaException;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +68,7 @@ public class CacheTraducaoService {
             Path temp = Files.createTempFile(pasta, arquivoCache.getFileName().toString(), ".tmp");
             try {
                 objectMapper.writerWithDefaultPrettyPrinter().writeValue(temp.toFile(), entradas);
-                Files.move(temp, arquivoCache, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+                ArquivoAtomicoUtil.substituirAtomico(temp, arquivoCache);
             } finally {
                 Files.deleteIfExists(temp);
             }

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.traducao.projeto.core.util.ArquivoAtomicoUtil;
 
 import jakarta.ws.rs.sse.OutboundSseEvent;
 import jakarta.ws.rs.sse.Sse;
@@ -89,8 +90,21 @@ public class TelemetriaService {
     }
     
     public void registrarArquivoSanitizado() {
-        arquivosSanitizados.incrementAndGet();
-        log.info("Arquivo renomeado com sucesso (Limpa Nome). Total acumulado: {}", arquivosSanitizados.get());
+        registrarArquivosSanitizados(1);
+    }
+
+    /**
+     * Versão em lote de {@link #registrarArquivoSanitizado()}: cada registro
+     * reescreve o JSON canônico inteiro e emite broadcast SSE, então quem
+     * renomeia dezenas de arquivos de uma vez deve registrar o total uma única
+     * vez em vez de disparar uma rajada de escritas em disco.
+     */
+    public void registrarArquivosSanitizados(int quantidade) {
+        if (quantidade <= 0) {
+            return;
+        }
+        int total = arquivosSanitizados.addAndGet(quantidade);
+        log.info("Arquivos renomeados com sucesso (Limpa Nome): +{}. Total acumulado: {}", quantidade, total);
         persistirCanonico();
         broadcast();
     }
@@ -276,10 +290,11 @@ public class TelemetriaService {
             // Grava em arquivo temporário e move atomicamente para evitar que uma
             // interrupção no meio da escrita (o arquivo é regravado a cada registro)
             // deixe o JSON truncado e derrube o histórico inteiro no próximo boot.
+            // O move usa retry: antivírus/indexador do Windows trava o destino por
+            // milissegundos e causava AccessDeniedException sob registros em rajada.
             Path arquivoTemp = PASTA_TELEMETRIA_PROJETO.resolve(NOME_ARQUIVO_TELEMETRIA + ".tmp");
             objectMapper.writeValue(arquivoTemp.toFile(), rootNode);
-            Files.move(arquivoTemp, caminhoTelemetria,
-                StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+            ArquivoAtomicoUtil.substituirAtomico(arquivoTemp, caminhoTelemetria);
 
             log.debug("Telemetria unificada salva com sucesso: {} mídias, {} traduções, {} operações em: {}",
                 this.bancoMidia.size(), this.bancoLlm.size(), this.bancoOperacoes.size(), caminhoTelemetria);

@@ -55,6 +55,16 @@ public class ConversorKaraokeUseCase {
     /** Gap usado quando só há fragmentos silábicos/frame-a-frame, sem linha inteira. */
     private static final long GAP_FRAGMENTOS_KFX_CS = 200; // 2s
     private static final long GAP_REPETICAO_FRAGMENTO_CS = 50;
+    /** Concorrência a partir da qual o KFX é letra-por-letra (frase inteira na tela ao mesmo tempo). */
+    private static final int PICO_SIMULTANEO_MINIMO = 8;
+    /** Vale de concorrência (fração do pico) que marca a troca de frase num KFX letra-por-letra. */
+    private static final double FRACAO_VALE_CONCORRENCIA = 0.15;
+    private static final int VALE_CONCORRENCIA_MINIMO = 2;
+    /** Segmento de frase mais curto que isto indica que o corte por vale não se aplica. */
+    private static final long DURACAO_MINIMA_SEGMENTO_CS = 300; // 3s
+    /** Linha reconstruída acima destes limites é implausível — preserva o KFX original. */
+    private static final long DURACAO_MAXIMA_LINHA_FRAGMENTO_CS = 2000; // 20s
+    private static final int TEXTO_MAXIMO_LINHA_FRAGMENTO = 140;
     /** Margem pequena só para cobrir arredondamento/frame na remoção dos eventos KFX. */
     private static final long MARGEM_COBERTURA_CS = 25;
     /** Janelas com sobreposição >= 60% e texto parecido são variantes divergentes da mesma frase. */
@@ -418,23 +428,48 @@ public class ConversorKaraokeUseCase {
             return List.of();
         }
 
-        List<GrupoFragmentos> grupos = new ArrayList<>();
+        List<GrupoFragmentos> brutos = new ArrayList<>();
         GrupoFragmentos atual = null;
         for (FragmentoKfx fragmento : fragmentos) {
             EventoAss evento = fragmento.evento();
             if (atual == null
                     || atual.faixaVertical != fragmento.faixaVertical()
                     || evento.inicioCs() - atual.fimCs > GAP_FRAGMENTOS_KFX_CS) {
-                if (atual != null && atual.eLinhaUtil()) {
-                    grupos.add(atual);
+                if (atual != null) {
+                    brutos.add(atual);
                 }
                 atual = new GrupoFragmentos(fragmento);
             } else {
                 atual.absorver(fragmento);
             }
         }
-        if (atual != null && atual.eLinhaUtil()) {
-            grupos.add(atual);
+        if (atual != null) {
+            brutos.add(atual);
+        }
+
+        List<GrupoFragmentos> grupos = new ArrayList<>();
+        for (GrupoFragmentos bruto : brutos) {
+            List<GrupoFragmentos> frases = bruto.subdividirPorFrase();
+            if (frases.size() > 1) {
+                logStream.publicarLog(CANAL_LOG, String.format(Locale.ROOT,
+                    "   [FRASES] %s %s–%s: KFX letra-por-letra contínuo dividido em %d frases pelos vales de concorrência.",
+                    estilo, EventoAss.csParaTempo(bruto.inicioCs), EventoAss.csParaTempo(bruto.fimCs), frases.size()));
+            }
+            for (GrupoFragmentos frase : frases) {
+                if (!frase.eLinhaUtil()) {
+                    continue;
+                }
+                LinhaSimplesKaraoke linha = frase.paraLinha();
+                if (linha.fimCs() - linha.inicioCs() > DURACAO_MAXIMA_LINHA_FRAGMENTO_CS
+                        || linha.texto().length() > TEXTO_MAXIMO_LINHA_FRAGMENTO) {
+                    logStream.publicarLog(CANAL_LOG, String.format(Locale.ROOT,
+                        "   [AVISO] %s %s–%s: linha reconstruída implausível (%ds, %d caracteres) — bloco KFX preservado intacto.",
+                        estilo, linha.inicioAss(), linha.fimAss(),
+                        (linha.fimCs() - linha.inicioCs()) / 100, linha.texto().length()));
+                    continue;
+                }
+                grupos.add(frase);
+            }
         }
 
         if (!grupos.isEmpty()) {
@@ -520,15 +555,34 @@ public class ConversorKaraokeUseCase {
         List<LinhaSimplesKaraoke> linhas,
         ResultadoConversaoKaraoke resultado
     ) {
-        Map<String, List<LinhaSimplesKaraoke>> porJanela = new LinkedHashMap<>();
-        for (LinhaSimplesKaraoke linha : linhas) {
-            String chave = linha.inicioCs() + "|" + linha.fimCs();
-            porJanela.computeIfAbsent(chave, k -> new ArrayList<>()).add(linha);
+        // camadas simultâneas (romaji em cima, tradução embaixo) raramente têm
+        // janelas byte-idênticas — o agrupamento é por sobreposição de janela.
+        // A janela de referência é a da primeira linha do grupo (sem expandir),
+        // para uma linha longa ruim não encadear frases consecutivas.
+        List<LinhaSimplesKaraoke> ordenadas = new ArrayList<>(linhas);
+        ordenadas.sort(Comparator.comparingLong(LinhaSimplesKaraoke::inicioCs)
+            .thenComparingLong(LinhaSimplesKaraoke::fimCs));
+        List<List<LinhaSimplesKaraoke>> porJanela = new ArrayList<>();
+        for (LinhaSimplesKaraoke linha : ordenadas) {
+            List<LinhaSimplesKaraoke> alvo = null;
+            for (List<LinhaSimplesKaraoke> grupo : porJanela) {
+                LinhaSimplesKaraoke referencia = grupo.getFirst();
+                if (sobreposicaoJanelas(referencia.inicioCs(), referencia.fimCs(),
+                        linha.inicioCs(), linha.fimCs()) >= SOBREPOSICAO_MINIMA_VARIANTE) {
+                    alvo = grupo;
+                    break;
+                }
+            }
+            if (alvo == null) {
+                alvo = new ArrayList<>();
+                porJanela.add(alvo);
+            }
+            alvo.add(linha);
         }
 
         List<LinhaSimplesKaraoke> deduplicadas = new ArrayList<>();
         int removidas = 0;
-        for (List<LinhaSimplesKaraoke> grupo : porJanela.values()) {
+        for (List<LinhaSimplesKaraoke> grupo : porJanela) {
             if (grupo.size() == 1) {
                 deduplicadas.add(grupo.getFirst());
                 continue;
@@ -561,8 +615,11 @@ public class ConversorKaraokeUseCase {
         if (pareceOriginalJaponesOuRomaji(texto)) {
             pontuacao += 100;
         }
+        if (pareceTextoPulverizado(texto)) {
+            pontuacao += 60;
+        }
         pontuacao -= Math.min(8, contarPalavras(texto));
-        pontuacao -= pontuacaoPortugues(texto) * 4;
+        pontuacao -= Math.min(20, pontuacaoPortugues(texto) * 4);
         if (NAO_ASCII_PATTERN.matcher(texto).find() && !PADRAO_JAPONES.matcher(texto).find()) {
             pontuacao -= 8;
         }
@@ -586,6 +643,22 @@ public class ConversorKaraokeUseCase {
             .replaceAll("\\s+([,.!?;:])", "$1")
             .replaceAll("\\s{2,}", " ")
             .strip();
+    }
+
+    /**
+     * KFX letra-por-letra com camadas caractere+sílaba sobrepostas produz texto
+     * "pulverizado" ("t e i k a n" / "d da a r re e"): maioria das palavras com
+     * uma letra só. Esse lado perde a deduplicação para a camada de tradução.
+     */
+    private static boolean pareceTextoPulverizado(String texto) {
+        String[] palavras = texto.strip().split("\\s+");
+        if (palavras.length < 5) {
+            return false;
+        }
+        long soltas = Stream.of(palavras)
+            .filter(p -> p.replaceAll("[^\\p{L}]", "").length() == 1)
+            .count();
+        return (double) soltas / palavras.length >= 0.4;
     }
 
     private static boolean temArtefatoColchetes(String texto) {
@@ -632,6 +705,10 @@ public class ConversorKaraokeUseCase {
             .replace('ç', 'c');
         int pontos = 0;
         for (String palavra : normalizado.split("[^a-z0-9]+")) {
+            if (palavra.length() < 2) {
+                // "a"/"e"/"o" soltos aparecem aos montes em KFX pulverizado — não são evidência de PT-BR
+                continue;
+            }
             pontos += switch (palavra) {
                 case "nao", "voce", "voces", "eu", "meu", "minha", "mundo", "verdadeiro",
                     "ceu", "fugaz", "adeus", "crepusculo", "eterno", "ignorancia",
@@ -700,10 +777,15 @@ public class ConversorKaraokeUseCase {
     }
 
     private static double sobreposicao(Grupo a, Grupo b) {
-        long inicio = Math.max(a.inicioCs, b.inicioCs);
-        long fim = Math.min(a.fimCs, b.fimCs);
+        return sobreposicaoJanelas(a.inicioCs, a.fimCs, b.inicioCs, b.fimCs);
+    }
+
+    /** Fração da janela MENOR coberta pela interseção das duas janelas. */
+    private static double sobreposicaoJanelas(long inicioA, long fimA, long inicioB, long fimB) {
+        long inicio = Math.max(inicioA, inicioB);
+        long fim = Math.min(fimA, fimB);
         long intersecao = Math.max(0, fim - inicio);
-        long menor = Math.min(Math.max(1, a.fimCs - a.inicioCs), Math.max(1, b.fimCs - b.inicioCs));
+        long menor = Math.min(Math.max(1, fimA - inicioA), Math.max(1, fimB - inicioB));
         return (double) intersecao / menor;
     }
 
@@ -813,7 +895,10 @@ public class ConversorKaraokeUseCase {
             fragmentos.add(fragmento);
 
             String normalizado = fragmento.texto() == null ? "" : fragmento.texto().strip();
+            // frame seguinte da mesma animação começa DEPOIS do anterior; início
+            // idêntico é letra repetida da mesma frase ("ll", "ee") e deve ficar
             boolean repeticaoDoMesmoFrame = normalizado.equalsIgnoreCase(ultimoFragmento)
+                && evento.inicioCs() > ultimoInicioCs
                 && evento.inicioCs() - ultimoInicioCs <= GAP_REPETICAO_FRAGMENTO_CS;
             String chavePosicional = chavePosicional(fragmento, normalizado);
             if (!repeticaoDoMesmoFrame && !chavesVistas.contains(chavePosicional)) {
@@ -829,6 +914,87 @@ public class ConversorKaraokeUseCase {
                 && evento.fimCs() > inicioCs - MARGEM_COBERTURA_CS;
         }
 
+        /**
+         * KFX letra-por-letra mantém a frase inteira na tela (dezenas de eventos
+         * simultâneos) e a frase seguinte começa exatamente quando a anterior
+         * termina — o gap nunca separa as frases. Nesses grupos a troca de frase
+         * aparece como um "vale" na concorrência (quase nada ativo), e o grupo é
+         * cortado no meio de cada vale. KFX silábico/sequencial (concorrência
+         * baixa) passa intacto, preservando o comportamento anterior.
+         */
+        private List<GrupoFragmentos> subdividirPorFrase() {
+            if (fragmentos.size() < PICO_SIMULTANEO_MINIMO) {
+                return List.of(this);
+            }
+            // varredura: (tempo, delta) com fim antes de início no empate (intervalo semiaberto)
+            List<long[]> pontos = new ArrayList<>(fragmentos.size() * 2);
+            for (FragmentoKfx fragmento : fragmentos) {
+                pontos.add(new long[] {fragmento.evento().inicioCs(), 1});
+                pontos.add(new long[] {fragmento.evento().fimCs(), -1});
+            }
+            pontos.sort(Comparator.<long[]>comparingLong(p -> p[0]).thenComparingLong(p -> p[1]));
+            int pico = 0;
+            int concorrencia = 0;
+            for (long[] ponto : pontos) {
+                concorrencia += (int) ponto[1];
+                pico = Math.max(pico, concorrencia);
+            }
+            if (pico < PICO_SIMULTANEO_MINIMO) {
+                return List.of(this);
+            }
+
+            int limiteVale = Math.max(VALE_CONCORRENCIA_MINIMO, (int) Math.round(pico * FRACAO_VALE_CONCORRENCIA));
+            List<Long> cortes = new ArrayList<>();
+            concorrencia = 0;
+            long inicioVale = -1;
+            for (long[] ponto : pontos) {
+                concorrencia += (int) ponto[1];
+                if (concorrencia <= limiteVale && inicioVale < 0) {
+                    inicioVale = ponto[0];
+                } else if (concorrencia > limiteVale && inicioVale >= 0) {
+                    long corte = (inicioVale + ponto[0]) / 2;
+                    if (corte > inicioCs + DURACAO_MINIMA_SEGMENTO_CS && corte < fimCs - DURACAO_MINIMA_SEGMENTO_CS) {
+                        cortes.add(corte);
+                    }
+                    inicioVale = -1;
+                }
+            }
+            if (cortes.isEmpty()) {
+                return List.of(this);
+            }
+
+            // distribui cada fragmento pelo centro da sua janela (tolerante a crossfade)
+            List<List<FragmentoKfx>> segmentos = new ArrayList<>();
+            for (int i = 0; i <= cortes.size(); i++) {
+                segmentos.add(new ArrayList<>());
+            }
+            for (FragmentoKfx fragmento : fragmentos) {
+                long centro = (fragmento.evento().inicioCs() + fragmento.evento().fimCs()) / 2;
+                int indice = 0;
+                while (indice < cortes.size() && centro >= cortes.get(indice)) {
+                    indice++;
+                }
+                segmentos.get(indice).add(fragmento);
+            }
+
+            List<GrupoFragmentos> frases = new ArrayList<>();
+            for (List<FragmentoKfx> segmento : segmentos) {
+                if (segmento.isEmpty()) {
+                    continue;
+                }
+                GrupoFragmentos frase = new GrupoFragmentos(segmento.getFirst());
+                for (int i = 1; i < segmento.size(); i++) {
+                    frase.absorver(segmento.get(i));
+                }
+                frases.add(frase);
+            }
+            // segmento mais curto que uma frase de música indica KFX silábico em
+            // camadas, não letra-por-letra — nesse caso o corte não se aplica
+            boolean segmentoImplausivel = frases.stream()
+                .anyMatch(f -> f.fimCs - f.inicioCs < DURACAO_MINIMA_SEGMENTO_CS);
+            return segmentoImplausivel ? List.of(this) : frases;
+        }
+
         private boolean eLinhaUtil() {
             return eventos >= 2 && fragmentosUnicos.stream()
                 .map(FragmentoKfx::texto)
@@ -842,8 +1008,11 @@ public class ConversorKaraokeUseCase {
 
         private String montarTexto() {
             List<FragmentoKfx> ordenados = new ArrayList<>(fragmentosUnicos);
-            if (ordenados.stream().filter(f -> !Double.isNaN(f.x())).count() >= Math.max(2, ordenados.size() / 2)) {
+            boolean porPosicao = ordenados.stream().filter(f -> !Double.isNaN(f.x())).count() >= Math.max(2, ordenados.size() / 2);
+            double saltoDePalavra = Double.NaN;
+            if (porPosicao) {
                 ordenados.sort(Comparator.comparingDouble(FragmentoKfx::xOrdenacao).thenComparingInt(FragmentoKfx::ordem));
+                saltoDePalavra = limiarSaltoDePalavra(ordenados);
             } else {
                 ordenados.sort(Comparator.comparingLong((FragmentoKfx f) -> f.evento().inicioCs()).thenComparingInt(FragmentoKfx::ordem));
             }
@@ -854,6 +1023,7 @@ public class ConversorKaraokeUseCase {
                 .allMatch(t -> t.strip().length() <= 1);
 
             StringBuilder texto = new StringBuilder();
+            double xAnterior = Double.NaN;
             for (FragmentoKfx fragmento : ordenados) {
                 String parte = fragmento.texto() == null ? "" : fragmento.texto().strip();
                 if (parte.isBlank()) {
@@ -862,15 +1032,60 @@ public class ConversorKaraokeUseCase {
                     }
                     continue;
                 }
-                if (!modoCaracter && !texto.isEmpty() && texto.charAt(texto.length() - 1) != ' ') {
+                boolean separa;
+                if (modoCaracter) {
+                    // KFX letra-por-letra não tem eventos de espaço: a palavra
+                    // termina onde o avanço em X salta além do passo de um caractere
+                    separa = !Double.isNaN(saltoDePalavra) && !Double.isNaN(xAnterior)
+                        && !Double.isNaN(fragmento.x()) && fragmento.x() - xAnterior > saltoDePalavra;
+                } else {
+                    separa = true;
+                }
+                if (separa && !texto.isEmpty() && texto.charAt(texto.length() - 1) != ' ') {
                     texto.append(' ');
                 }
                 texto.append(parte);
+                if (!Double.isNaN(fragmento.x())) {
+                    xAnterior = fragmento.x();
+                }
             }
             return texto.toString()
                 .replaceAll("\\s+([,.!?;:])", "$1")
                 .replaceAll("\\s{2,}", " ")
                 .strip();
+        }
+
+        private static double limiarSaltoDePalavra(List<FragmentoKfx> ordenados) {
+            List<Double> avancos = avancosX(ordenados);
+            if (avancos.size() < 3) {
+                return Double.NaN;
+            }
+            return mediana(avancos) * 1.6;
+        }
+
+        /** Avanços positivos em X entre fragmentos visíveis consecutivos (já ordenados por X). */
+        private static List<Double> avancosX(List<FragmentoKfx> ordenados) {
+            List<Double> avancos = new ArrayList<>();
+            double xAnterior = Double.NaN;
+            for (FragmentoKfx fragmento : ordenados) {
+                if (Double.isNaN(fragmento.x()) || fragmento.texto() == null || fragmento.texto().isBlank()) {
+                    continue;
+                }
+                if (!Double.isNaN(xAnterior) && fragmento.x() > xAnterior) {
+                    avancos.add(fragmento.x() - xAnterior);
+                }
+                xAnterior = fragmento.x();
+            }
+            return avancos;
+        }
+
+        private static double mediana(List<Double> valores) {
+            List<Double> ordenados = new ArrayList<>(valores);
+            ordenados.sort(Double::compareTo);
+            int meio = ordenados.size() / 2;
+            return ordenados.size() % 2 == 1
+                ? ordenados.get(meio)
+                : (ordenados.get(meio - 1) + ordenados.get(meio)) / 2.0;
         }
 
         private static String chavePosicional(FragmentoKfx fragmento, String texto) {

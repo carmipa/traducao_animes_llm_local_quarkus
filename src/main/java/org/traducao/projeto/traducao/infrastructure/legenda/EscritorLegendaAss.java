@@ -1,6 +1,7 @@
 package org.traducao.projeto.traducao.infrastructure.legenda;
 
 import org.springframework.stereotype.Component;
+import org.traducao.projeto.core.util.ArquivoAtomicoUtil;
 import org.traducao.projeto.traducao.domain.exceptions.ArquivoLegendaException;
 import org.traducao.projeto.traducao.domain.legenda.DocumentoLegenda;
 import org.traducao.projeto.traducao.domain.legenda.EventoLegenda;
@@ -9,7 +10,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 
 /**
  * Reconstroi o arquivo .ass a partir do {@link DocumentoLegenda}, repetindo o
@@ -49,7 +49,7 @@ public class EscritorLegendaAss {
             Path temp = Files.createTempFile(pasta, destino.getFileName().toString(), ".tmp");
             try {
                 Files.writeString(temp, conteudo.toString(), StandardCharsets.UTF_8);
-                Files.move(temp, destino, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+                ArquivoAtomicoUtil.substituirAtomico(temp, destino);
             } finally {
                 Files.deleteIfExists(temp);
             }
