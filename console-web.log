@@ -1335,4 +1335,21 @@ __  ____  __  _____   ___  __ ____  ______
 [39m[38;5;251m2026-07-09 11:03:13,286[39m[38;5;251m [39m[38;5;192mINFO [39m[38;5;251m [[39m[38;5;153morg.traducao.projeto.remuxer.infrastructure.adapters.MkvmergeAdapter[39m[38;5;251m] ([39m[38;5;250mexecutor-thread-1[39m[38;5;251m) [39m[38;5;251mmkvmerge detectado no caminho padrão do Windows: C:\Program Files\MKVToolNix\mkvmerge.exe[39m[38;5;203m[39m[38;5;229m
 [39m[38;5;251m2026-07-09 11:03:13,332[39m[38;5;251m [39m[38;5;222mWARN [39m[38;5;251m [[39m[38;5;153mio.quarkus.vertx.http.runtime.QuarkusErrorHandler[39m[38;5;251m] ([39m[38;5;250mvert.x-eventloop-thread-0[39m[38;5;251m) [39m[38;5;251mWorker thread pool exhaustion, no more worker threads available - returning a `503 - SERVICE UNAVAILABLE` response.[39m[38;5;203m[39m[38;5;229m
 [39m[38;5;251m2026-07-09 11:03:14,075[39m[38;5;251m [39m[38;5;192mINFO [39m[38;5;251m [[39m[38;5;153morg.traducao.projeto.telemetria.TelemetriaService[39m[38;5;251m] ([39m[38;5;250mexecutor-thread-2[39m[38;5;251m) [39m[38;5;251mCarregadas entradas anteriores: 1 mídias, 120 traduções, 455 operações do arquivo logs\telemetria_compartilhada.json.[39m[38;5;203m[39m[38;5;229m
-[39m
+[39mDebugger failed to attach: handshake failed - connection prematurally closed
+[38;5;251m2026-07-09 11:05:42,551[39m[38;5;251m [39m[38;5;192mINFO [39m[38;5;251m [[39m[38;5;153morg.traducao.projeto.sistema.application.EncerrarAplicacaoUseCase[39m[38;5;251m] ([39m[38;5;250mexecutor-thread-8[39m[38;5;251m) [39m[38;5;251mEncerramento solicitado pelo usuário (0 tarefa(s) cancelada(s) na fila).[39m[38;5;203m[39m[38;5;229m
+[39m[33m[EXIT] Encerramento solicitado pelo usuário — a aplicação será desligada.[0m
+[38;5;251m2026-07-09 11:05:43,345[39m[38;5;251m [39m[38;5;192mINFO [39m[38;5;251m [[39m[38;5;153mio.quarkus[39m[38;5;251m] ([39m[38;5;250mQuarkus Main Thread[39m[38;5;251m) [39m[38;5;251m[38;5;231m[38;5;253mcode-with-quarkus[38;5;231m[38;5;253m[38;5;231m stopped in [38;5;253m0.071[38;5;231ms[39m[39m[38;5;203m[39m[38;5;229m
+[39mPress [[94mspace[39m] to restart, [[94me[39m] to edit command line args (currently '[32m[39m'), [[94mr[39m] to resume testing, [[94mo[39m] Toggle test output, [[94mh[39m] for more options>
+[38;5;251m2026-07-09 11:05:48,274[39m[38;5;251m [39m[38;5;222mWARN [39m[38;5;251m [[39m[38;5;153morg.traducao.projeto.sistema.application.EncerrarAplicacaoUseCase[39m[38;5;251m] ([39m[38;5;250mencerramento-aplicacao[39m[38;5;251m) [39m[38;5;251mShutdown ordenado não terminou o processo; forçando a saída da JVM.[39m[38;5;203m[39m[38;5;229m
+[39mPress [[94mspace[39m] to restart, [[94me[39m] to edit command line args (currently '[32m[39m'), [[94mh[39m] for more options>
+
+[Incubating] Problems report is available at: file:///D:/PROJETOS-OPEN/traducao_animes_llm_local_quarkus/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.5.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 49m 13s
+10 actionable tasks: 2 executed, 8 up-to-date
