@@ -62,6 +62,35 @@ class TelemetriaDatasetServiceTest {
     }
 
     @Test
+    void datasetIncluiAmbienteExecucaoSanitizadoQuandoDisponivel() {
+        AmbienteExecucaoDataset ambiente = new AmbienteExecucaoDataset(
+            "Avell",
+            "560",
+            "Intel Core i9-14900HX",
+            "NVIDIA RTX 5600",
+            "NVIDIA GeForce RTX 5060 Laptop GPU",
+            40,
+            "Windows 11",
+            "amd64",
+            true,
+            true
+        );
+
+        ObjectNode dataset = TelemetriaDatasetService.montarDatasetSanitizado(resumoDeTeste(), mapper, ambiente);
+        var ambienteJson = dataset.get("ambienteExecucao");
+        String json = ambienteJson.toString();
+
+        assertEquals("Avell", ambienteJson.get("fabricante").asText());
+        assertEquals("NVIDIA RTX 5600", ambienteJson.get("gpuPrincipal").asText());
+        assertEquals("NVIDIA GeForce RTX 5060 Laptop GPU", ambienteJson.get("gpuDetectadaSistema").asText());
+        assertEquals(40, ambienteJson.get("ramTotalGb").asInt());
+        assertTrue(ambienteJson.get("hardwareColetadoAutomaticamente").asBoolean());
+        assertTrue(ambienteJson.get("gpuPublicaConfigurada").asBoolean());
+        assertFalse(json.contains("PNP") || json.contains("PCI\\") || json.contains("SERIAL"));
+        assertFalse(json.contains("C:\\") || json.contains("Users"));
+    }
+
+    @Test
     void contagemDeAvisosReconstituiTotalRealAPartirDoMarcadorDeOmissao() {
         // Telemetria compactada: 30 avisos + linha-resumo → total real = 30 + 625.
         var avisos = new java.util.ArrayList<String>();

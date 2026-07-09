@@ -627,6 +627,17 @@ Operações de trabalho do pipeline ficam nos controllers de cada módulo;
 aqui entra apenas o ciclo de vida do servidor em si.
 ```
 
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/telemetria/AmbienteExecucaoDataset.java`
+```text
+Fotografia sanitizada do ambiente que gerou o snapshot público.
+Nao inclui usuario, hostname, IP, serial, MAC, caminhos ou IDs de hardware.
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/telemetria/AmbienteExecucaoDatasetService.java`
+```text
+Detecta apenas metadados publicáveis do ambiente de execução.
+```
+
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/telemetria/LlmTelemetria.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
@@ -1379,6 +1390,9 @@ Ignora
 *(Sem docstring ou cabeçalho explicativo)*
 
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/revisaoLore/infrastructure/RevisaoLoreAuditoriaCacheTest.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/telemetria/TelemetriaDatasetPropertiesTest.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/telemetria/TelemetriaDatasetServiceTest.java`

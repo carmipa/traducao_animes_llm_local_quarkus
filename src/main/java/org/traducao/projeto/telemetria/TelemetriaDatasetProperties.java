@@ -17,6 +17,9 @@ public class TelemetriaDatasetProperties {
     /** Remoto Git para onde o dataset é publicado. */
     private String repositorioRemoto = "https://github.com/carmipa/kronos-anime-translation-telemetry-dataset.git";
 
+    /** Metadados públicos e sanitizados do ambiente de execução. */
+    private Hardware hardware = new Hardware();
+
     public TelemetriaDatasetProperties() {
     }
 
@@ -27,4 +30,35 @@ public class TelemetriaDatasetProperties {
     public String repositorioRemoto() { return repositorioRemoto; }
     public String getRepositorioRemoto() { return repositorioRemoto; }
     public void setRepositorioRemoto(String repositorioRemoto) { this.repositorioRemoto = repositorioRemoto; }
+
+    public Hardware hardware() { return hardware; }
+    public Hardware getHardware() { return hardware; }
+    public void setHardware(Hardware hardware) { this.hardware = hardware != null ? hardware : new Hardware(); }
+
+    public static class Hardware {
+        /** Inclui o bloco ambienteExecucao no JSON público do dataset. */
+        private boolean publicarAmbienteExecucao = true;
+
+        /** Usa detecção local por SO quando disponível. */
+        private boolean permitirDeteccaoAutomatica = true;
+
+        /** Nome público da GPU quando o driver reporta outro identificador. */
+        private String gpuPublica = "";
+
+        public boolean publicarAmbienteExecucao() { return publicarAmbienteExecucao; }
+        public boolean isPublicarAmbienteExecucao() { return publicarAmbienteExecucao; }
+        public void setPublicarAmbienteExecucao(boolean publicarAmbienteExecucao) {
+            this.publicarAmbienteExecucao = publicarAmbienteExecucao;
+        }
+
+        public boolean permitirDeteccaoAutomatica() { return permitirDeteccaoAutomatica; }
+        public boolean isPermitirDeteccaoAutomatica() { return permitirDeteccaoAutomatica; }
+        public void setPermitirDeteccaoAutomatica(boolean permitirDeteccaoAutomatica) {
+            this.permitirDeteccaoAutomatica = permitirDeteccaoAutomatica;
+        }
+
+        public String gpuPublica() { return gpuPublica; }
+        public String getGpuPublica() { return gpuPublica; }
+        public void setGpuPublica(String gpuPublica) { this.gpuPublica = gpuPublica; }
+    }
 }

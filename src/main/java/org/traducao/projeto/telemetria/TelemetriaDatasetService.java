@@ -46,11 +46,16 @@ public class TelemetriaDatasetService {
 
     private final TelemetriaService telemetria;
     private final TelemetriaDatasetProperties propriedades;
+    private final AmbienteExecucaoDatasetService ambienteExecucao;
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public TelemetriaDatasetService(TelemetriaService telemetria, TelemetriaDatasetProperties propriedades) {
+    public TelemetriaDatasetService(
+            TelemetriaService telemetria,
+            TelemetriaDatasetProperties propriedades,
+            AmbienteExecucaoDatasetService ambienteExecucao) {
         this.telemetria = telemetria;
         this.propriedades = propriedades;
+        this.ambienteExecucao = ambienteExecucao;
     }
 
     /** Resultado da publicação, devolvido ao painel de Telemetria. */
@@ -66,7 +71,8 @@ public class TelemetriaDatasetService {
         Files.createDirectories(pastaMetrics);
         Path arquivo = pastaMetrics.resolve(NOME_ARQUIVO_DATASET);
         // Pretty-print proposital: o arquivo é lido por humanos no GitHub.
-        mapper.writerWithDefaultPrettyPrinter().writeValue(arquivo.toFile(), montarDatasetSanitizado(resumo, mapper));
+        mapper.writerWithDefaultPrettyPrinter().writeValue(arquivo.toFile(),
+            montarDatasetSanitizado(resumo, mapper, ambienteExecucao.detectar(propriedades.hardware())));
         log.info("Dataset de telemetria gerado em {}", arquivo);
 
         git(repo, TIMEOUT_GIT, "add", "README.md", "LICENSE", "metrics/" + NOME_ARQUIVO_DATASET);
@@ -173,12 +179,21 @@ public class TelemetriaDatasetService {
      * máquina ({@code detalhe} descartado; episódio reduzido ao nome do arquivo).
      */
     static ObjectNode montarDatasetSanitizado(TelemetriaResumo resumo, ObjectMapper mapper) {
+        return montarDatasetSanitizado(resumo, mapper, null);
+    }
+
+    static ObjectNode montarDatasetSanitizado(
+            TelemetriaResumo resumo,
+            ObjectMapper mapper,
+            AmbienteExecucaoDataset ambienteExecucao) {
         ObjectNode root = mapper.createObjectNode();
         root.put("dataset", "kronos-anime-translation-telemetry-dataset");
         root.put("versaoFormato", 1);
         root.put("geradoEm", Instant.now().toString());
         root.put("descricao", "Métricas operacionais de tradução de legendas de anime com LLM 100% local "
             + "(LM Studio). Sem textos de legenda e sem caminhos de máquina — apenas métricas.");
+
+        adicionarAmbienteExecucao(root, ambienteExecucao);
 
         ObjectNode agregado = root.putObject("resumo");
         agregado.put("totalEpisodiosTraduzidos", resumo.totalEpisodios());
@@ -219,6 +234,31 @@ public class TelemetriaDatasetService {
             }
         }
         return root;
+    }
+
+    private static void adicionarAmbienteExecucao(ObjectNode root, AmbienteExecucaoDataset ambiente) {
+        if (ambiente == null) {
+            return;
+        }
+        ObjectNode node = root.putObject("ambienteExecucao");
+        putIfPresent(node, "fabricante", ambiente.fabricante());
+        putIfPresent(node, "modeloMaquina", ambiente.modeloMaquina());
+        putIfPresent(node, "cpu", ambiente.cpu());
+        putIfPresent(node, "gpuPrincipal", ambiente.gpuPrincipal());
+        putIfPresent(node, "gpuDetectadaSistema", ambiente.gpuDetectadaSistema());
+        if (ambiente.ramTotalGb() != null) {
+            node.put("ramTotalGb", ambiente.ramTotalGb());
+        }
+        putIfPresent(node, "sistemaOperacional", ambiente.sistemaOperacional());
+        putIfPresent(node, "arquitetura", ambiente.arquitetura());
+        node.put("hardwareColetadoAutomaticamente", ambiente.hardwareColetadoAutomaticamente());
+        node.put("gpuPublicaConfigurada", ambiente.gpuPublicaConfigurada());
+    }
+
+    private static void putIfPresent(ObjectNode node, String campo, String valor) {
+        if (valor != null && !valor.isBlank()) {
+            node.put(campo, valor);
+        }
     }
 
     private static final java.util.regex.Pattern MARCADOR_AVISOS_OMITIDOS =
@@ -333,6 +373,19 @@ public class TelemetriaDatasetService {
         | `arquivosRenomeados` | Arquivos padronizados pelo módulo de renomeação |
         | `totalOperacoesRegistradas` | Operações de pipeline registradas (todos os módulos) |
 
+        ### `ambienteExecucao` (snapshot de hardware seguro)
+
+        | Campo | Significado |
+        |-------|-------------|
+        | `fabricante` / `modeloMaquina` | Fabricante e modelo genérico reportados pelo sistema |
+        | `cpu` | Nome público do processador |
+        | `gpuPrincipal` | GPU publicada para comparação de benchmark |
+        | `gpuDetectadaSistema` | Nome detectado pelo driver/SO quando diferente do nome público configurado |
+        | `ramTotalGb` | RAM física total arredondada em GB |
+        | `sistemaOperacional` / `arquitetura` | Plataforma de execução sem usuário, hostname ou caminhos |
+        | `hardwareColetadoAutomaticamente` | Indica se a coleta veio do sistema local |
+        | `gpuPublicaConfigurada` | Indica se houve override público da GPU (ex: nome comercial conhecido) |
+
         ### `traducoesLlm[]` (por episódio)
 
         | Campo | Significado |
@@ -353,8 +406,9 @@ public class TelemetriaDatasetService {
         ## Anonimização (LGPD/GDPR)
 
         Este dataset **não contém PII**: sem textos de legenda (conteúdo protegido vira apenas contagem
-        de avisos), sem caminhos de disco/usuário, sem IPs, tokens ou credenciais. Os únicos
-        identificadores são nomes públicos de obras/arquivos de release e ids de modelos LLM.
+        de avisos), sem caminhos de disco/usuário, sem IPs, tokens, credenciais, hostname, MAC,
+        número de série ou identificadores de dispositivo. Os únicos identificadores são nomes
+        públicos de obras/arquivos de release, ids de modelos LLM e metadados genéricos de hardware.
 
         ## Licença
 

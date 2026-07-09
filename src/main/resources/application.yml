@@ -55,3 +55,7 @@ tmdb:
 telemetria-dataset:
   repositorio-local: ../kronos-anime-translation-telemetry-dataset
   repositorio-remoto: https://github.com/carmipa/kronos-anime-translation-telemetry-dataset.git
+  hardware:
+    publicar-ambiente-execucao: true
+    permitir-deteccao-automatica: true
+    gpu-publica: NVIDIA RTX 5600
