@@ -52,6 +52,9 @@ public class ConversorKaraokeUseCase {
 
     /** Gap acima deste valor separa duas ocorrências da mesma frase (refrão repetido). */
     private static final long GAP_MESMA_FRASE_CS = 1000; // 10s
+    /** Gap usado quando só há fragmentos silábicos/frame-a-frame, sem linha inteira. */
+    private static final long GAP_FRAGMENTOS_KFX_CS = 200; // 2s
+    private static final long GAP_REPETICAO_FRAGMENTO_CS = 50;
     /** Margem pequena só para cobrir arredondamento/frame na remoção dos eventos KFX. */
     private static final long MARGEM_COBERTURA_CS = 25;
     /** Janelas com sobreposição >= 60% e texto parecido são variantes divergentes da mesma frase. */
@@ -65,6 +68,8 @@ public class ConversorKaraokeUseCase {
         "(?i).*(?:NCOP\\d*|NCED\\d*|Special Edition|[_\\s-]SP[_\\s-]).*");
     private static final Pattern PADRAO_ARTEFATO_TAG_VISIVEL = Pattern.compile("(?i)!?\\[?TAG\\d+\\]?");
     private static final Pattern PADRAO_JAPONES = Pattern.compile("[\\p{IsHiragana}\\p{IsKatakana}\\p{IsHan}]");
+    private static final Pattern PADRAO_COORDENADA_PRINCIPAL = Pattern.compile(
+        "\\\\(?:pos|move)\\((-?\\d+(?:\\.\\d+)?),(-?\\d+(?:\\.\\d+)?)");
     private static final Pattern PALAVRA_ROMAJI_PATTERN = Pattern.compile(
         "^(?:n|(?:([kgsztdnhbpmyrwfjv])\\1?|sh|ch|ts|ky|gy|ny|hy|my|ry|by|py)?[aeiou])+$");
     private static final Pattern NAO_ASCII_PATTERN = Pattern.compile("[^\\x00-\\x7F]");
@@ -355,13 +360,25 @@ public class ConversorKaraokeUseCase {
                 estilo, linha.inicioAss(), linha.fimAss(), grupo.totalEventosJanela(eventosEstilo), resumir(linha.texto())));
         }
 
-        // eventos musicais fora de qualquer linha reconstruída → preservados
+        List<EventoAss> semCoberturaInicial = eventosEstilo.stream()
+            .filter(evento -> finais.stream().noneMatch(g -> cobre(g, evento)))
+            .toList();
+        List<GrupoFragmentos> gruposFragmentos = reconstruirFragmentosKfx(estilo, semCoberturaInicial);
+        for (GrupoFragmentos grupo : gruposFragmentos) {
+            LinhaSimplesKaraoke linha = grupo.paraLinha();
+            linhasSimples.add(linha);
+            logStream.publicarLog(CANAL_LOG, String.format(Locale.ROOT,
+                "   [KFX LIMPO] %s %s–%s | %d fragmentos animados → 1 linha simples: \"%s\"",
+                estilo, linha.inicioAss(), linha.fimAss(), linha.eventosOrigem(), resumir(linha.texto())));
+        }
+
         int removidos = 0;
         List<EventoAss> semCobertura = new ArrayList<>();
         for (EventoAss evento : eventosEstilo) {
-            boolean coberto = finais.stream().anyMatch(g ->
-                evento.inicioCs() < g.fimCs + MARGEM_COBERTURA_CS && evento.fimCs() > g.inicioCs - MARGEM_COBERTURA_CS);
-            if (coberto) {
+            boolean coberto = finais.stream().anyMatch(g -> cobre(g, evento))
+                || gruposFragmentos.stream().anyMatch(g -> g.cobre(evento));
+            boolean efeitoVazio = eEventoKfxSimplificavel(evento) && limparArtefatosVisiveis(evento.textoVisivel()).isBlank();
+            if (coberto || efeitoVazio) {
                 removidos++;
             } else {
                 semCobertura.add(evento);
@@ -379,6 +396,74 @@ public class ConversorKaraokeUseCase {
             resultado.adicionarAviso(aviso);
             logStream.publicarLog(CANAL_LOG, "   [AVISO] " + aviso);
         }
+    }
+
+    private List<GrupoFragmentos> reconstruirFragmentosKfx(String estilo, List<EventoAss> eventos) {
+        List<FragmentoKfx> fragmentos = new ArrayList<>();
+        int ordem = 0;
+        for (EventoAss evento : eventos) {
+            if (!eEventoKfxSimplificavel(evento)) {
+                continue;
+            }
+            double[] coordenada = coordenadaPrincipal(evento.texto());
+            String texto = limparArtefatosVisiveis(evento.textoVisivel());
+            fragmentos.add(new FragmentoKfx(evento, texto, coordenada[0], coordenada[1], ordem++));
+        }
+        fragmentos.sort(Comparator
+            .comparingInt(FragmentoKfx::faixaVertical)
+            .thenComparingLong(f -> f.evento().inicioCs())
+            .thenComparingDouble(FragmentoKfx::xOrdenacao)
+            .thenComparingInt(FragmentoKfx::ordem));
+        if (fragmentos.isEmpty()) {
+            return List.of();
+        }
+
+        List<GrupoFragmentos> grupos = new ArrayList<>();
+        GrupoFragmentos atual = null;
+        for (FragmentoKfx fragmento : fragmentos) {
+            EventoAss evento = fragmento.evento();
+            if (atual == null
+                    || atual.faixaVertical != fragmento.faixaVertical()
+                    || evento.inicioCs() - atual.fimCs > GAP_FRAGMENTOS_KFX_CS) {
+                if (atual != null && atual.eLinhaUtil()) {
+                    grupos.add(atual);
+                }
+                atual = new GrupoFragmentos(fragmento);
+            } else {
+                atual.absorver(fragmento);
+            }
+        }
+        if (atual != null && atual.eLinhaUtil()) {
+            grupos.add(atual);
+        }
+
+        if (!grupos.isEmpty()) {
+            String aviso = String.format(Locale.ROOT,
+                "Estilo \"%s\": linha inteira não encontrada em parte do KFX; reconstrução por fragmentos ativada para remover animações pesadas.",
+                estilo);
+            logStream.publicarLog(CANAL_LOG, "   [INFO] " + aviso);
+        }
+        return grupos;
+    }
+
+    private boolean eEventoKfxSimplificavel(EventoAss evento) {
+        return detectorKaraoke.temTagKaraoke(evento.texto()) || detectorKaraoke.eEfeitoKaraoke(evento.texto());
+    }
+
+    private static double[] coordenadaPrincipal(String texto) {
+        if (texto == null) {
+            return new double[] {Double.NaN, Double.NaN};
+        }
+        Matcher matcher = PADRAO_COORDENADA_PRINCIPAL.matcher(texto);
+        if (!matcher.find()) {
+            return new double[] {Double.NaN, Double.NaN};
+        }
+        return new double[] {Double.parseDouble(matcher.group(1)), Double.parseDouble(matcher.group(2))};
+    }
+
+    private static boolean cobre(Grupo grupo, EventoAss evento) {
+        return evento.inicioCs() < grupo.fimCs + MARGEM_COBERTURA_CS
+            && evento.fimCs() > grupo.inicioCs - MARGEM_COBERTURA_CS;
     }
 
     private List<String> montarSaida(
@@ -552,7 +637,7 @@ public class ConversorKaraokeUseCase {
                     "ceu", "fugaz", "adeus", "crepusculo", "eterno", "ignorancia",
                     "deliberada", "voluntaria", "revoltante", "repugnante", "espectador",
                     "esperando", "flor", "vento", "culpados", "todos", "final", "apenas",
-                    "quanto", "deseje", "nada", "muda", "sorrir", "depois", "ver" -> 2;
+                    "quanto", "deseje", "nada", "muda", "sorrir", "depois", "ver", "oi" -> 2;
                 case "de", "do", "da", "dos", "das", "para", "por", "com", "em", "no",
                     "na", "nos", "nas", "que", "uma", "um", "ao", "aos", "e", "o", "a",
                     "os", "as", "se" -> 1;
@@ -687,6 +772,111 @@ public class ConversorKaraokeUseCase {
 
         private LinhaSimplesKaraoke paraLinha() {
             return new LinhaSimplesKaraoke(texto, inicioCs, fimCs, eventos, variantes);
+        }
+    }
+
+    private record FragmentoKfx(EventoAss evento, String texto, double x, double y, int ordem) {
+        private int faixaVertical() {
+            return Double.isNaN(y) ? Integer.MAX_VALUE : (int) Math.round(y / 120.0);
+        }
+
+        private double xOrdenacao() {
+            return Double.isNaN(x) ? Double.MAX_VALUE : x;
+        }
+    }
+
+    /** Fallback para KFX que só tem sílabas/letras/frames, sem uma linha inteira pronta. */
+    private static final class GrupoFragmentos {
+        private final List<FragmentoKfx> fragmentos = new ArrayList<>();
+        private final List<FragmentoKfx> fragmentosUnicos = new ArrayList<>();
+        private final List<String> chavesVistas = new ArrayList<>();
+        private final int faixaVertical;
+        private long inicioCs;
+        private long fimCs;
+        private int eventos;
+        private String ultimoFragmento;
+        private long ultimoInicioCs;
+
+        private GrupoFragmentos(FragmentoKfx primeiro) {
+            this.faixaVertical = primeiro.faixaVertical();
+            this.inicioCs = primeiro.evento().inicioCs();
+            this.fimCs = primeiro.evento().fimCs();
+            this.eventos = 0;
+            absorver(primeiro);
+        }
+
+        private void absorver(FragmentoKfx fragmento) {
+            EventoAss evento = fragmento.evento();
+            inicioCs = Math.min(inicioCs, evento.inicioCs());
+            fimCs = Math.max(fimCs, evento.fimCs());
+            eventos++;
+            fragmentos.add(fragmento);
+
+            String normalizado = fragmento.texto() == null ? "" : fragmento.texto().strip();
+            boolean repeticaoDoMesmoFrame = normalizado.equalsIgnoreCase(ultimoFragmento)
+                && evento.inicioCs() - ultimoInicioCs <= GAP_REPETICAO_FRAGMENTO_CS;
+            String chavePosicional = chavePosicional(fragmento, normalizado);
+            if (!repeticaoDoMesmoFrame && !chavesVistas.contains(chavePosicional)) {
+                fragmentosUnicos.add(fragmento);
+                chavesVistas.add(chavePosicional);
+                ultimoFragmento = normalizado;
+                ultimoInicioCs = evento.inicioCs();
+            }
+        }
+
+        private boolean cobre(EventoAss evento) {
+            return evento.inicioCs() < fimCs + MARGEM_COBERTURA_CS
+                && evento.fimCs() > inicioCs - MARGEM_COBERTURA_CS;
+        }
+
+        private boolean eLinhaUtil() {
+            return eventos >= 2 && fragmentosUnicos.stream()
+                .map(FragmentoKfx::texto)
+                .mapToInt(t -> t == null ? 0 : t.strip().length())
+                .sum() >= 2;
+        }
+
+        private LinhaSimplesKaraoke paraLinha() {
+            return new LinhaSimplesKaraoke(montarTexto(), inicioCs, fimCs, eventos, 1);
+        }
+
+        private String montarTexto() {
+            List<FragmentoKfx> ordenados = new ArrayList<>(fragmentosUnicos);
+            if (ordenados.stream().filter(f -> !Double.isNaN(f.x())).count() >= Math.max(2, ordenados.size() / 2)) {
+                ordenados.sort(Comparator.comparingDouble(FragmentoKfx::xOrdenacao).thenComparingInt(FragmentoKfx::ordem));
+            } else {
+                ordenados.sort(Comparator.comparingLong((FragmentoKfx f) -> f.evento().inicioCs()).thenComparingInt(FragmentoKfx::ordem));
+            }
+
+            boolean modoCaracter = ordenados.stream()
+                .map(FragmentoKfx::texto)
+                .filter(t -> t != null && !t.isBlank())
+                .allMatch(t -> t.strip().length() <= 1);
+
+            StringBuilder texto = new StringBuilder();
+            for (FragmentoKfx fragmento : ordenados) {
+                String parte = fragmento.texto() == null ? "" : fragmento.texto().strip();
+                if (parte.isBlank()) {
+                    if (!texto.isEmpty() && texto.charAt(texto.length() - 1) != ' ') {
+                        texto.append(' ');
+                    }
+                    continue;
+                }
+                if (!modoCaracter && !texto.isEmpty() && texto.charAt(texto.length() - 1) != ' ') {
+                    texto.append(' ');
+                }
+                texto.append(parte);
+            }
+            return texto.toString()
+                .replaceAll("\\s+([,.!?;:])", "$1")
+                .replaceAll("\\s{2,}", " ")
+                .strip();
+        }
+
+        private static String chavePosicional(FragmentoKfx fragmento, String texto) {
+            long x = Double.isNaN(fragmento.x()) ? Long.MIN_VALUE : Math.round(fragmento.x() / 3.0);
+            long y = Double.isNaN(fragmento.y()) ? Long.MIN_VALUE : Math.round(fragmento.y() / 3.0);
+            return texto.toLowerCase(Locale.ROOT) + "|" + x + "|" + y;
         }
     }
 }

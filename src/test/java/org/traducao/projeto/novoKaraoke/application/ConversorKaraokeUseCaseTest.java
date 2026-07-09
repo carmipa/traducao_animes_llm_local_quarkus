@@ -79,6 +79,54 @@ class ConversorKaraokeUseCaseTest {
     }
 
     @Test
+    void kfxApenasSilabicoViraLinhaSimplesENaoArquivoGrande() throws Exception {
+        Path origem = tempDir.resolve("kfx-silabico.ass");
+        Path destino = Files.createDirectory(tempDir.resolve("saida"));
+        Files.writeString(origem, cabecalho()
+            + "Dialogue: 1,0:00:01.00,0:00:01.30,Opening,,0,0,0,,{\\pos(100,40)\\clip(0,0,200,60)\\t(0,100,\\blur4\\fscx120)}fu\n"
+            + "Dialogue: 1,0:00:01.02,0:00:01.28,Opening,,0,0,0,,{\\pos(101,40)\\clip(0,0,200,60)\\t(0,100,\\blur4\\fscx120)}fu\n"
+            + "Dialogue: 1,0:00:01.30,0:00:01.60,Opening,,0,0,0,,{\\pos(130,40)\\clip(0,0,200,60)\\t(0,100,\\blur4\\fscx120)}mi\n"
+            + "Dialogue: 1,0:00:01.60,0:00:01.90,Opening,,0,0,0,,{\\pos(160,40)\\clip(0,0,200,60)\\t(0,100,\\blur4\\fscx120)}ni\n"
+            + "Dialogue: 1,0:00:01.90,0:00:02.30,Opening,,0,0,0,,{\\pos(190,40)\\clip(0,0,200,60)\\t(0,100,\\blur4\\fscx120)}hana\n",
+            StandardCharsets.UTF_8);
+
+        var resultado = novoConversor().converterArquivo(origem, destino, true);
+
+        String saida = Files.readString(destino.resolve(origem.getFileName()), StandardCharsets.UTF_8);
+        assertTrue(saida.contains("Dialogue: 0,0:00:01.00,0:00:02.30,Karaoke Simples,,0,0,0,,fu mi ni hana"));
+        assertFalse(saida.contains("\\t("));
+        assertFalse(saida.contains("\\clip("));
+        assertFalse(saida.contains("Style: Opening"));
+        assertEquals(5, resultado.getEventosKaraokeRemovidos());
+        assertEquals(0, resultado.getEventosPreservadosPorSeguranca());
+        assertTrue(resultado.getTamanhoNovoBytes() < resultado.getTamanhoOriginalBytes());
+    }
+
+    @Test
+    void kfxComLayersDuplicadosPrefereLegendaOcidentalSimples() throws Exception {
+        Path origem = tempDir.resolve("kfx-duas-faixas.ass");
+        Path destino = Files.createDirectory(tempDir.resolve("saida"));
+        Files.writeString(origem, cabecalho()
+            + "Dialogue: 1,0:00:01.00,0:00:04.00,Opening,,0,0,0,,{\\move(100,30,100,30,0,3000)\\t(0,3000,\\frz1)}ki\n"
+            + "Dialogue: 1,0:00:01.00,0:00:04.00,Opening,,0,0,0,,{\\move(130,30,130,30,0,3000)\\t(0,3000,\\frz1)}mi\n"
+            + "Dialogue: 1,0:00:01.00,0:00:04.00,Opening,,0,0,0,,{\\move(160,30,160,30,0,3000)\\t(0,3000,\\frz1)}no\n"
+            + "Dialogue: 2,0:00:01.00,0:00:04.00,Opening,,0,0,0,,{\\move(100,30,100,30,0,3000)\\t(0,3000,\\frz1)}ki\n"
+            + "Dialogue: 2,0:00:01.00,0:00:04.00,Opening,,0,0,0,,{\\move(130,30,130,30,0,3000)\\t(0,3000,\\frz1)}mi\n"
+            + "Dialogue: 2,0:00:01.00,0:00:04.00,Opening,,0,0,0,,{\\move(160,30,160,30,0,3000)\\t(0,3000,\\frz1)}no\n"
+            + "Dialogue: 1,0:00:01.00,0:00:04.00,Opening,,0,0,0,,{\\move(100,1050,100,1050,0,3000)\\t(0,3000,\\frz1)}O\n"
+            + "Dialogue: 1,0:00:01.00,0:00:04.00,Opening,,0,0,0,,{\\move(130,1050,130,1050,0,3000)\\t(0,3000,\\frz1)}i\n",
+            StandardCharsets.UTF_8);
+
+        novoConversor().converterArquivo(origem, destino, true);
+
+        String saida = Files.readString(destino.resolve(origem.getFileName()), StandardCharsets.UTF_8);
+        assertTrue(saida.contains("Dialogue: 0,0:00:01.00,0:00:04.00,Karaoke Simples,,0,0,0,,Oi"), saida);
+        assertFalse(saida.contains("ki mi no"));
+        assertFalse(saida.contains("\\move("));
+        assertFalse(saida.contains("\\t("));
+    }
+
+    @Test
     void ignoraArquivosAuxiliaresQuandoHaEpisodiosPrincipais() throws Exception {
         Path origem = Files.createDirectory(tempDir.resolve("origem"));
         Path destino = tempDir.resolve("saida");
