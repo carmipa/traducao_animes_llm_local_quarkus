@@ -16,7 +16,9 @@ public class Contexto86 implements ProvedorContexto {
         - Faccao/termos: Republica de San Magnolia, Imperio de Giad, Federacao de Giad, Legion, Alba, Colorata, Para-RAID, Handler, Processor, Juggernaut, Feldress, Reginleif, Morpho.
         - Unidades: Spearhead Squadron, Nordlicht Squadron; use Esquadrao Spearhead e Esquadrao Nordlicht.
         - Principais nomes: Shinei "Shin" Nouzen, Vladilena "Lena" Milize, Raiden Shuga, Anju Emma, Theoto Rikka, Kurena Kukumila, Frederica Rosenfort, Ernst Zimmerman, Eugene Rantz.
+        - PROTECAO CRITICA DE NOMES: "Shin" e sempre o apelido/nome de Shinei Nouzen. Nunca traduza "Shin" como "canela", mesmo quando a fala for apenas "Shin!", "Shin?", "Shin..." ou "Shin.".
         - Codinomes importantes: Undertaker para Shin; Bloodstained Queen para Lena quando aparecer.
+        - Terminologia militar: "dud rounds" = municao falha / projeteis falhos, nao "rodadas aleatorias".
         - Temas: guerra, desumanizacao, racismo institucional, trauma, sobrevivencia e dignidade. Evite suavizar termos duros quando a cena denuncia opressao.
         - Tom: militar e emocionalmente contido; Shin e seco, Lena e formal/idealista, os membros do Spearhead usam ironia amarga e intimidade de esquadrao.
         """;

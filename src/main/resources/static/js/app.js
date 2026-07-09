@@ -19,6 +19,7 @@ import { initTelemetria } from '../telemetria/telemetria.js?v=3.0';
 import { initDocumentacao } from '../documentacao/documentacao.js?v=3.0';
 import { initSobre } from '../sobre/sobre.js?v=3.0';
 import { initRenomearArquivos } from '../renomearArquivos/renomearArquivos.js?v=3.0';
+import { initNovoKaraoke } from '../novoKaraoke/novoKaraoke.js?v=1.0';
 
 // Definições de Títulos e Subtítulos por seção do menu
 const CONFIG_SECOES = {
@@ -50,24 +51,28 @@ const CONFIG_SECOES = {
         titulo: "6. Revisão de Legendas",
         subtitulo: "Concordância PT-BR via LLM local e correção de inglês residual via Google"
     },
-    cura: {
-        titulo: "7. Correção de Legendas",
-        subtitulo: "Corrige a legenda PT-BR usando a original como referência imutável"
-    },
     "revisao-lore": {
-        titulo: "8. Revisão de Lore",
+        titulo: "7. Revisão de Lore",
         subtitulo: "Padronização de nomes, locais e termos de mundo nas legendas via LLM e lore oficial"
     },
     "troca-tipo-legenda": {
-        titulo: "9. Troca Tipo Legenda",
+        titulo: "8. Troca Tipo Legenda",
         subtitulo: "Auditoria e substituição em lote de fontes vietnamitas ou ANSI legadas por fontes Unicode seguras"
     },
+    "novo-karaoke": {
+        titulo: "9. Karaokê Simples",
+        subtitulo: "Conversão de karaokê KFX em legendas simples e limpas, preservando o tempo original"
+    },
+    cura: {
+        titulo: "10. Correção de Legendas",
+        subtitulo: "Corrige a legenda PT-BR usando a original como referência imutável"
+    },
     remuxer: {
-        titulo: "10. Remuxer Industrial",
+        titulo: "11. Remuxer Industrial",
         subtitulo: "Junção de vídeos originais e novas legendas traduzidas em novos MKVs"
     },
     "renomear-arquivos": {
-        titulo: "11. Renomear Arquivos de Vídeo",
+        titulo: "12. Renomear Arquivos de Vídeo",
         subtitulo: "Limpeza de nomes de arquivo usando regex e metadados S01E01"
     },
     mapa: {
@@ -197,6 +202,7 @@ async function inicializarModulos() {
     initAnalise();
     initExtracao();
     await initAuditorConteudo();
+    await initNovoKaraoke();
     initTraducao();
     initCorrecao();
     initRevisao();
@@ -243,7 +249,8 @@ function conectarFluxoLugsSSE() {
         'correcao-legendas': 'console-cura',
         'cura': 'console-cura',
         'remuxer': 'console-remuxer',
-        'renomear-arquivos': 'console-renomear-arquivos'
+        'renomear-arquivos': 'console-renomear-arquivos',
+        'novo-karaoke': 'console-novo-karaoke'
     };
 
     for (const [canal, consoleId] of Object.entries(consoleMap)) {
@@ -630,7 +637,8 @@ function inicializarMetadadosDinamicos() {
         { inputId: 'cura-entrada-original', selectId: 'cura-contexto', bannerId: 'meta-banner-cura' },
         { inputId: 'revisao-lore-entrada-original', selectId: 'revisao-lore-contexto', bannerId: 'meta-banner-revisao-lore' },
         { inputId: 'troca-tipo-legenda-entrada', selectId: 'troca-tipo-legenda-contexto', bannerId: 'meta-banner-troca-tipo-legenda' },
-        { inputId: 'limpanome-entrada', selectId: 'renomear-arquivos-contexto', bannerId: 'meta-banner-limpanome' }
+        { inputId: 'limpanome-entrada', selectId: 'renomear-arquivos-contexto', bannerId: 'meta-banner-limpanome' },
+        { inputId: 'novo-karaoke-entrada', selectId: 'novo-karaoke-contexto', bannerId: 'meta-banner-novo-karaoke' }
     ];
 
     const atualizarItem = (item) => {
@@ -665,7 +673,7 @@ function inicializarMetadadosDinamicos() {
 
     // Popula automaticamente todos os selects de contexto dos módulos auxiliares.
     const popularContextos = () => {
-        carregarContextosAuxiliares(['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto', 'troca-tipo-legenda-contexto', 'renomear-arquivos-contexto'], () => {
+        carregarContextosAuxiliares(['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto', 'troca-tipo-legenda-contexto', 'renomear-arquivos-contexto', 'novo-karaoke-contexto'], () => {
             mapeamentoFormularios.forEach(atualizarItem);
         });
     };
@@ -674,6 +682,7 @@ function inicializarMetadadosDinamicos() {
     document.addEventListener('revisao-lore:painel-carregado', popularContextos);
     document.addEventListener('troca-tipo-legenda:painel-carregado', popularContextos);
     document.addEventListener('renomear-arquivos:painel-carregado', popularContextos);
+    document.addEventListener('novo-karaoke:painel-carregado', popularContextos);
 
     mapeamentoFormularios.forEach(item => {
         const input = document.getElementById(item.inputId);
@@ -718,12 +727,12 @@ async function carregarContextosAuxiliares(idsSelects, onComplete) {
             ? await responseRevisaoLore.json()
             : contextos;
 
-        const todosSelects = ['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto', 'troca-tipo-legenda-contexto', 'renomear-arquivos-contexto'];
+        const todosSelects = ['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto', 'troca-tipo-legenda-contexto', 'renomear-arquivos-contexto', 'novo-karaoke-contexto'];
         todosSelects.forEach(id => {
             const select = document.getElementById(id);
             if (!select) return;
 
-            const ehAuxiliar = (id === 'analise-contexto' || id === 'correcao-contexto' || id === 'cura-contexto' || id === 'troca-tipo-legenda-contexto' || id === 'renomear-arquivos-contexto');
+            const ehAuxiliar = (id === 'analise-contexto' || id === 'correcao-contexto' || id === 'cura-contexto' || id === 'troca-tipo-legenda-contexto' || id === 'renomear-arquivos-contexto' || id === 'novo-karaoke-contexto');
             const ehRevisaoLore = (id === 'revisao-lore-contexto');
             select.innerHTML = '';
             

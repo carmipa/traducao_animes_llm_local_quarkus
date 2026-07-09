@@ -12,9 +12,11 @@ public class ContextoRevisaoLore86 implements ProvedorPromptRevisaoLore {
         - Regra central: manter nomes proprios, codinomes, unidades militares, faccoes, tecnologias e termos oficiais no idioma original quando forem lore.
         - Nunca traduzir Eighty-Six como "oitenta e seis" quando for designacao social/militar.
         - Personagens: Shinei "Shin" Nouzen, Vladilena "Lena" Milize, Raiden Shuga, Anju Emma, Theoto Rikka, Kurena Kukumila, Frederica Rosenfort, Ernst Zimmerman, Eugene Rantz.
+        - PROTECAO CRITICA: "Shin" e sempre o apelido/nome de Shinei Nouzen. Se a traducao atual tiver "Canela", "canela" ou variantes no lugar de Shin, corrija para "Shin" mantendo a pontuacao original.
         - Codinomes: Undertaker, Handler One, Bloodstained Queen. Manter exatamente quando aparecerem como codinome/titulo.
         - Faccao/termos: Republica de San Magnolia, Imperio de Giad, Federacao de Giad, Legion, Alba, Colorata, Para-RAID, Handler, Processor, Juggernaut, Feldress, Reginleif, Morpho.
         - Unidades: Spearhead Squadron, Nordlicht Squadron; aceitar Esquadrao Spearhead e Esquadrao Nordlicht como forma PT-BR consistente.
+        - Terminologia militar: "dud rounds" = municao falha / projeteis falhos, nunca "rodadas aleatorias".
         - Nao corrigir estilo da fala; corrigir somente nome, local, organizacao, unidade, objeto, tecnologia ou termo de lore traduzido errado.
         """;
 

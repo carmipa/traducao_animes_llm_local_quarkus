@@ -150,4 +150,38 @@ class DetectorTermosLoreServiceTest {
         assertTrue(resultado.suspeito());
         assertTrue(resultado.motivos().stream().anyMatch(m -> m.contains("Flanagan")));
     }
+
+    @Test
+    void sinalizaShinTraduzidoComoCanelaMesmoNoInicioDaFala() {
+        ResultadoDeteccaoLore vocativo = detector.auditar(
+            "Shin!",
+            "Canela!"
+        );
+        ResultadoDeteccaoLore nomeCompleto = detector.auditar(
+            "Shin! Shinei Nouzen!",
+            "Canela! Shinei Nouzen!"
+        );
+
+        assertTrue(vocativo.suspeito());
+        assertTrue(vocativo.motivos().stream().anyMatch(m -> m.contains("canela") || m.contains("Shin")));
+        assertTrue(nomeCompleto.suspeito());
+        assertTrue(nomeCompleto.motivos().stream().anyMatch(m -> m.contains("canela") || m.contains("Shin")));
+    }
+
+    @Test
+    void sinalizaDudRoundsTraduzidoComoRodadasAleatorias() {
+        ResultadoDeteccaoLore resultado = detector.auditar(
+            "Those are dud rounds.",
+            "Essas são rodadas aleatórias."
+        );
+        ResultadoDeteccaoLore cache = detector.auditar(
+            "Those dud rounds landed around there.",
+            "Aquelas rodadas fracassadas caíram ali perto."
+        );
+
+        assertTrue(resultado.suspeito());
+        assertTrue(resultado.motivos().stream().anyMatch(m -> m.contains("rodadas aleat")));
+        assertTrue(cache.suspeito());
+        assertTrue(cache.motivos().stream().anyMatch(m -> m.contains("rodadas fracassadas")));
+    }
 }

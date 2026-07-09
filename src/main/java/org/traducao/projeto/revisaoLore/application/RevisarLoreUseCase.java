@@ -46,6 +46,11 @@ public class RevisarLoreUseCase {
     private static final Pattern PADRAO_DESENHO_VETORIAL = Pattern.compile("\\\\p[1-9]\\d*");
     private static final Pattern PADRAO_TAG_ASS = Pattern.compile("\\{[^}]*}");
     private static final Pattern PADRAO_INVISIVEIS = Pattern.compile("[\\u200B\\u200C\\u200D\\uFEFF]");
+    private static final Pattern PADRAO_SHIN = Pattern.compile("(?<![\\p{L}\\p{N}])Shin(?![\\p{L}\\p{N}])");
+    private static final Pattern PADRAO_CANELA = Pattern.compile("(?<![\\p{L}\\p{N}])[Cc]anela(?![\\p{L}\\p{N}])");
+    private static final Pattern PADRAO_DUD_ROUNDS = Pattern.compile("(?i)(?<![\\p{L}\\p{N}])dud\\s+rounds?(?![\\p{L}\\p{N}])");
+    private static final Pattern PADRAO_RODADAS_ALEATORIAS = Pattern.compile(
+        "(?i)(?<![\\p{L}\\p{N}])rodadas\\s+(?:aleat[oó]rias|fracassadas|falsas|dud)(?![\\p{L}\\p{N}])");
 
     private final LeitorLegendaAss leitor;
     private final EscritorLegendaAss escritor;
@@ -342,6 +347,33 @@ public class RevisarLoreUseCase {
                 }
 
                 falasSinalizadas[0]++;
+                Optional<String> correcaoDeterministica = corrigirLoreDeterministica(mascaraEn.texto(), mascaraPt.texto());
+                if (correcaoDeterministica.isPresent()) {
+                    String revisada = mascarador.desmascarar(correcaoDeterministica.get(), mascaraPt.tags());
+                    try {
+                        validador.validarFala(revisada);
+                    } catch (Exception e) {
+                        log.warn("Correcao deterministica de lore descartada (validacao): {}", e.getMessage());
+                        sessao.out(AnsiCores.YELLOW + marcadorFala + " correcao deterministica descartada pela validacao: "
+                            + e.getMessage() + AnsiCores.RESET);
+                        novosEventos.add(evtTraduzido);
+                        continue;
+                    }
+
+                    novosEventos.add(evtTraduzido.comTexto(revisada));
+                    houveModificacao = true;
+                    corrigidasNoArquivo++;
+                    falasCorrigidas[0]++;
+                    sessao.out(AnsiCores.GREEN + marcadorFala + " corrigida por regra de lore | Antes: "
+                        + trecho(textoPt) + " | Depois: " + trecho(revisada) + AnsiCores.RESET);
+                    registrarAuditoria(
+                        contextoId, nomePromptRevisao, revisarTodasFalas, arqTraduzido, i + 1,
+                        dialogoAtual, totalDialogos, "CORRIGIDA_REGRA_LORE", deteccao.motivos(),
+                        textoEn, textoPt, correcaoDeterministica.get(), revisada, null
+                    );
+                    continue;
+                }
+
                 sessao.out(AnsiCores.YELLOW + marcadorFala + " enviada ao LLM | motivos: "
                     + formatarMotivos(deteccao.motivos()) + AnsiCores.RESET);
 
@@ -653,6 +685,28 @@ public class RevisarLoreUseCase {
             .replace("\\h", " ")
             .replaceAll("\\s+", " ")
             .strip();
+    }
+
+    static Optional<String> corrigirLoreDeterministica(String originalMascarado, String traducaoMascarada) {
+        if (originalMascarado == null || traducaoMascarada == null || traducaoMascarada.isBlank()) {
+            return Optional.empty();
+        }
+
+        String corrigida = traducaoMascarada;
+        if (PADRAO_SHIN.matcher(originalMascarado).find()
+            && PADRAO_CANELA.matcher(corrigida).find()) {
+            corrigida = PADRAO_CANELA.matcher(corrigida).replaceAll("Shin");
+        }
+
+        if (PADRAO_DUD_ROUNDS.matcher(originalMascarado).find()
+            && PADRAO_RODADAS_ALEATORIAS.matcher(corrigida).find()) {
+            corrigida = PADRAO_RODADAS_ALEATORIAS.matcher(corrigida).replaceAll("munições falhas");
+        }
+
+        if (corrigida.equals(traducaoMascarada)) {
+            return Optional.empty();
+        }
+        return Optional.of(corrigida);
     }
 
     private String formatarMotivos(List<String> motivos) {

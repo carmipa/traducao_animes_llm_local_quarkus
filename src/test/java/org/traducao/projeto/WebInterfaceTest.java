@@ -123,7 +123,7 @@ class WebInterfaceTest {
         org.junit.jupiter.api.Assertions.assertEquals(1, abreNavMenu, "Deve haver exatamente um nav-menu");
         org.junit.jupiter.api.Assertions.assertTrue(fechaNav >= 1, "nav-menu deve fechar corretamente");
 
-        String[] grupos = {"preparacao", "traducao", "qualidade", "finalizacao", "sistema"};
+        String[] grupos = {"preparacao", "karaoke", "traducao", "qualidade", "finalizacao", "sistema"};
         for (String grupo : grupos) {
             org.junit.jupiter.api.Assertions.assertTrue(
                 html.contains("data-grupo=\"" + grupo + "\""),
@@ -147,6 +147,8 @@ class WebInterfaceTest {
         int grupoPreparacao = html.indexOf("data-grupo=\"preparacao\"");
         int grupoTraducao = html.indexOf("data-grupo=\"traducao\"");
         int grupoQualidade = html.indexOf("data-grupo=\"qualidade\"");
+        int grupoKaraoke = html.indexOf("data-grupo=\"karaoke\"");
+        int grupoFinalizacao = html.indexOf("data-grupo=\"finalizacao\"");
         int itemAuditor = html.indexOf("data-target=\"auditor-conteudo\"");
         // Decisão oficial 2026-07-07: Análise de Conteúdo é o item 3 do grupo
         // Preparação (após 1. Análise de Mídia e 2. Extração).
@@ -154,8 +156,11 @@ class WebInterfaceTest {
             itemAuditor > grupoPreparacao && itemAuditor < grupoTraducao,
             "Análise de Conteúdo deve ficar no grupo Preparação"
         );
+        // Decisão 2026-07-08: grupo Karaokê entre Qualidade e Finalização, com
+        // o Karaokê Simples (9) e a Correção de Karaoke (10, ex-item 7 da Qualidade).
         org.junit.jupiter.api.Assertions.assertTrue(
-            grupoPreparacao < grupoTraducao && grupoTraducao < grupoQualidade,
+            grupoPreparacao < grupoTraducao && grupoTraducao < grupoQualidade
+                && grupoQualidade < grupoKaraoke && grupoKaraoke < grupoFinalizacao,
             "Ordem dos grupos principais do pipeline ficou inconsistente"
         );
         org.junit.jupiter.api.Assertions.assertTrue(
@@ -165,7 +170,24 @@ class WebInterfaceTest {
         org.junit.jupiter.api.Assertions.assertTrue(
             html.contains("<span>4. Tradução Local</span>")
                 && html.contains("<span>5. Correção Cache</span>"),
-            "Renumeração do grupo Tradução (4 e 5) ausente"
+            "Numeração do grupo Tradução (4 e 5) ausente"
+        );
+        int itemNovoKaraoke = html.indexOf("data-target=\"novo-karaoke\"");
+        int itemCura = html.indexOf("data-target=\"cura\"");
+        org.junit.jupiter.api.Assertions.assertTrue(
+            itemNovoKaraoke > grupoKaraoke && itemNovoKaraoke < grupoFinalizacao
+                && itemCura > grupoKaraoke && itemCura < grupoFinalizacao,
+            "Karaokê Simples e Correção de Karaoke devem ficar no grupo Karaokê"
+        );
+        org.junit.jupiter.api.Assertions.assertTrue(
+            html.contains("<span>9. Karaokê Simples</span>")
+                && html.contains("<span>10. Correção de Karaoke</span>"),
+            "Numeração do grupo Karaokê (9 e 10) ausente"
+        );
+        org.junit.jupiter.api.Assertions.assertTrue(
+            html.contains("<span>11. Remuxer</span>")
+                && html.contains("<span>12. Renomear Arquivos</span>"),
+            "Numeração da Finalização (11 e 12) ausente"
         );
     }
 }

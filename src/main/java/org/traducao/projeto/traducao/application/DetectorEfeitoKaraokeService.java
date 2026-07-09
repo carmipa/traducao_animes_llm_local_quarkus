@@ -54,6 +54,16 @@ public class DetectorEfeitoKaraokeService {
     }
 
     /**
+     * Estilo cujo NOME indica música (Opening, Ending, Song, Karaoke...).
+     * Usado pelo módulo novoKaraoke para delimitar o que é bloco musical
+     * mesmo quando o evento individual tem poucas tags (ex.: linha inteira
+     * de tradução da letra com apenas {@code \pos}).
+     */
+    public boolean eEstiloDeMusica(String estilo) {
+        return estilo != null && ESTILO_MUSICA_PATTERN.matcher(estilo).find();
+    }
+
+    /**
      * Karaokê em qualquer forma (cru ou pós-template). Usado nos fluxos de
      * revisão/correção, onde ignorar um letreiro já traduzido é inofensivo e o
      * risco real é mexer em música.

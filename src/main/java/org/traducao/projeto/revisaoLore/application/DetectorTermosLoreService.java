@@ -35,7 +35,12 @@ public class DetectorTermosLoreService {
         "aina", "karen", "eledore", "michel", "kiki", "ginias", "norris", "packard",
         "kojima", "kou", "gato", "nina", "cima", "bernie", "christina", "chris",
         "bright", "sayla", "lalah", "hathaway", "quess", "gyunei", "nanai", "jona",
-        "michelle", "rita", "zoltan"
+        "michelle", "rita", "zoltan",
+        "shin", "shinei", "nouzen", "lena", "vladilena", "milize", "raiden", "shuga",
+        "anju", "theoto", "theo", "rikka", "kurena", "kukumila", "frederica",
+        "rosenfort", "ernst", "zimmerman", "eugene", "rantz", "spearhead",
+        "nordlicht", "morpho", "feldress", "para-raid", "san", "magnolia", "giad",
+        "alba", "colorata", "undertaker"
     );
     private static final Set<String> PALAVRAS_IGNORADAS = Set.of(
         "the", "and", "you", "your", "that", "this", "with", "from", "what", "when", "where",
@@ -312,6 +317,14 @@ public class DetectorTermosLoreService {
         termos.put("handler", List.of("manipulador", "manipuladora"));
         termos.put("processor", List.of("processador", "processadora"));
         termos.put("juggernaut", List.of("rolo compressor"));
+        termos.put("shin", List.of("canela"));
+        termos.put("dud rounds", List.of(
+            "rodadas aleatorias",
+            "rodadas aleatórias",
+            "rodadas fracassadas",
+            "rodadas dud",
+            "rodadas falsas"
+        ));
         return Map.copyOf(termos);
     }
 

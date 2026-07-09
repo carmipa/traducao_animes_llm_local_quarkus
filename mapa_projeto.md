@@ -4,6 +4,12 @@ Este documento serve como mapa de contexto para LLMs atualizarem a documentaçã
 Memória viva e estado recente: veja **CEREBRO_IA.md** na raiz do repositório.
 ---
 
+## 📁 Pasta: `.agents/`
+*(Nenhum script Python ou Java nesta pasta)*
+
+## 📁 Pasta: `.codex/`
+*(Nenhum script Python ou Java nesta pasta)*
+
 ## 📁 Pasta: `.codex-run/`
 *(Nenhum script Python ou Java nesta pasta)*
 
@@ -100,14 +106,7 @@ Executa ffprobe no vídeo e obtém o JSON com as informações gerais e faixas.
 ```text
 Detecta dano de tradução em karaokê/música comparando cada evento traduzido
 com o original. Usa o {@link DetectorEfeitoKaraokeService} como fonte única
-de verdade — a mesma régua da tradução e da Correção de Karaokê, para a
-auditoria acusar exatamente o que aquelas etapas deveriam ter protegido:
-<ul>
-<li>CRITICAL: karaokê japonês/romaji alterado (caso real do 86 T1, onde
-romaji com tags leves virava alucinação do LLM);</li>
-<li>WARNING: música traduzível com expansão anormal de texto;</li>
-<li>WARNING: tags de timing de karaokê ({@code \k}) perdidas.</li>
-</ul>
+de verdade, a mesma régua da tradução, correção e revisão.
 ```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/auditorConteudoLegendas/application/regras/RegraEfeitoVazado.java`
@@ -317,6 +316,82 @@ PARTE 1: CAMINHO ABSOLUTO COMPLETO NO SISTEMA LOCAL
 Determina a raiz a ser mapeada
 ```
 
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/novoKaraoke/application/ConversorKaraokeUseCase.java`
+```text
+Converte legendas .ass com karaokê KFX (milhares de eventos por sílaba/frame)
+em legendas simples: uma linha limpa por frase da música, no MESMO tempo do
+efeito original (início = menor início do bloco, fim = maior fim).
+<p>
+Garantias de segurança:
+<ul>
+<li>O arquivo original NUNCA é alterado — a saída vai para a pasta que o
+usuário escolher.</li>
+<li>Diálogo, placas e Comment são reemitidos byte a byte (linha crua).</li>
+<li>Bloco musical que não puder ser reconstruído com confiança é mantido
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/novoKaraoke/domain/EventoAss.java`
+```text
+Um evento {@code Dialogue:} de um arquivo .ass, com a linha crua preservada
+byte a byte. A conversão de karaokê NUNCA reescreve eventos que decide
+manter — ela reemite {@link #linhaCrua()} — para garantir que diálogo,
+placas e blocos preservados saiam idênticos ao arquivo de origem.
+
+@param linhaCrua  linha original completa, exatamente como lida do arquivo
+@param camada     campo Layer
+@param inicio     campo Start (mantido como texto para não perder precisão)
+@param fim        campo End
+@param estilo     campo Style
+@param texto      campo Text (último campo, pode conter vírgulas)
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/novoKaraoke/domain/LinhaSimplesKaraoke.java`
+```text
+Uma linha de letra de música reconstruída a partir do bloco de eventos KFX.
+O tempo é herdado literalmente dos eventos de origem: {@code inicioCs} é o
+menor início e {@code fimCs} o maior fim do grupo — nenhum deslocamento é
+introduzido, a legenda simples ocupa exatamente a janela do efeito original.
+
+@param texto            texto visível da linha (sem tags)
+@param inicioCs         menor início do grupo, em centésimos
+@param fimCs            maior fim do grupo, em centésimos
+@param eventosOrigem    quantos eventos KFX foram colapsados nesta linha
+@param variantesTexto   variantes divergentes encontradas na mesma janela (>1 indica voto majoritário)
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/novoKaraoke/domain/NovoKaraokeException.java`
+```text
+Falha de negócio na conversão de karaokê para legenda simples. /
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/novoKaraoke/domain/ResultadoConversaoKaraoke.java`
+```text
+Resultado da conversão de um arquivo .ass: contadores para o resumo do
+console/telemetria e o material do manifesto de auditoria.
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/novoKaraoke/infrastructure/NovoKaraokePersistencia.java`
+```text
+Manifesto de auditoria da conversão de karaokê: registra, por execução, o
+que foi removido/criado em cada arquivo. Fica em
+{@code logs/novo-karaoke/} dentro do projeto — junto com os originais
+intocados na pasta de origem, é a trilha completa para auditar (ou refazer)
+qualquer conversão.
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/novoKaraoke/presentation/NovoKaraokeController.java`
+```text
+Endpoints do módulo Karaokê Simples. Operação puramente local (sem LLM,
+sem estado global do pipeline), por isso roda async fora da fila — mesmo
+padrão do módulo de Renomear Arquivos.
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/novoKaraoke/presentation/NovoKaraokeRequest.java`
+```text
+Requisição da conversão de karaokê: pasta das legendas .ass de origem e a
+pasta de destino (obrigatoriamente diferente — o original é preservado).
+```
+
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/raspagemCorrecao/application/CorrigirComGoogleUseCase.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
@@ -417,8 +492,6 @@ Exemplo: [10:20:30] [INFO   ] Mensagem...
 Regex para pegar o episódio de trackers.
 Ex: "[SubsPlease] Nome Anime - 01 (1080p).mkv" -> 01
 Ex: "[DB]86_-_01_(Dual Audio_10bit_BD1080p_x265)_PTBR.mkv" -> 01
-Ex: "Anime - 02.mkv" -> 02
-Ex: "Anime Ep 03.mkv" -> 03
 ```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/renomearArquivos/domain/OperacaoRenomeacao.java`
