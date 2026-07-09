@@ -339,84 +339,174 @@ public class TelemetriaDatasetService {
     private static final String README_DATASET = """
         # KRONOS CORE — Telemetry Dataset
 
-        > **English summary:** operational metrics dataset from [KRONOS CORE](https://github.com/carmipa/traducao_animes_llm_local_quarkus),
-        > an industrial anime-subtitle translation pipeline running a 100% local LLM (LM Studio).
-        > Metrics only — no subtitle texts, no personal data, no machine paths. Updated via one-click
-        > publish from the running system; the Git history is the snapshot timeline.
+        [English](#english) | [Português](#portugues)
 
-        Dataset de **métricas operacionais** do [KRONOS CORE](https://github.com/carmipa/traducao_animes_llm_local_quarkus) —
-        pipeline industrial de tradução de legendas de anime com **LLM 100% local** (LM Studio, sem nuvem).
-        Cada commit é um snapshot; o histórico Git é a linha do tempo do dataset.
+        <a id="english"></a>
 
-        ## Estrutura
+        ## English
 
-        ```
+        Operational telemetry dataset from [KRONOS CORE](https://github.com/carmipa/traducao_animes_llm_local_quarkus), an anime subtitle translation pipeline that runs local LLM inference through LM Studio.
+
+        This repository is meant to expose reproducible performance and pipeline metrics, not subtitle content. Each commit is a dataset snapshot; the Git history is the public timeline.
+
+        ### Repository Layout
+
+        ```text
         ├── README.md
         ├── LICENSE
         └── metrics/
             └── kronos-telemetria-dataset.json
         ```
 
-        ## Formato dos dados
+        ### Data Format
 
-        JSON próprio (documentado abaixo), UTF-8, com `versaoFormato` para evolução do schema.
+        The dataset uses a custom UTF-8 JSON format with `versaoFormato` for schema evolution.
 
-        ### `resumo` (agregado)
+        #### `ambienteExecucao`
+
+        Safe execution-environment metadata for benchmark context.
+
+        | Field | Meaning |
+        |-------|---------|
+        | `fabricante` / `modeloMaquina` | Generic manufacturer and machine model reported by the OS |
+        | `cpu` | Public CPU name |
+        | `gpuPrincipal` | GPU name published for benchmark comparison |
+        | `gpuDetectadaSistema` | GPU name reported by the OS/driver when it differs from the configured public name |
+        | `ramTotalGb` | Rounded total physical RAM in GB |
+        | `sistemaOperacional` / `arquitetura` | Runtime platform, without username, hostname, paths, IPs or device IDs |
+        | `hardwareColetadoAutomaticamente` | Whether the values were collected automatically from the local system |
+        | `gpuPublicaConfigurada` | Whether a public GPU override was configured |
+
+        #### `resumo`
+
+        Aggregate metrics.
+
+        | Field | Meaning |
+        |-------|---------|
+        | `totalEpisodiosTraduzidos` | Episodes processed by the LLM translation pipeline |
+        | `totalLinhasTraduzidas` | Subtitle dialogue lines translated |
+        | `tempoMedioPorLinhaMs` | Average translation latency per dialogue line |
+        | `totalFalasReaproveitadasDoCache` | Dialogue lines resolved from persistent cache without another LLM call |
+        | `alucinacoesLlmPrevenidas` | LLM responses rejected by anti-hallucination guards |
+        | `arquivosRenomeados` | Files normalized by the rename module |
+        | `totalOperacoesRegistradas` | Recorded pipeline operations across modules |
+
+        #### `traducoesLlm[]`
+
+        Per-episode LLM translation metrics.
+
+        | Field | Meaning |
+        |-------|---------|
+        | `episodio` | Subtitle filename only, without directories |
+        | `anime` / `temporada` | Work and season |
+        | `modeloLlm` | Local model id reported by LM Studio |
+        | `totalLinhas` / `falasTraduzidas` / `falasDoCache` | Workload and translation source |
+        | `tempoTotalMs` | Total episode translation duration |
+        | `quantidadeAvisos` | Count of quality warnings, without warning text |
+        | `registradoEm` | UTC ISO-8601 timestamp |
+
+        #### `operacoes[]`
+
+        Generic pipeline-operation metrics: `tipo`, `tempoTotalMs`, `arquivosProcessados`, `itensDetectados`, `itensCorrigidos`, `registradoEm`.
+
+        This covers remuxing, subtitle extraction, lore/review steps, karaoke processing, file renaming and audits.
+
+        ### Privacy And Anonymization
+
+        This dataset does not publish subtitle text, local machine paths, usernames, hostnames, IP addresses, MAC addresses, serial numbers, device identifiers, credentials, tokens or API keys.
+
+        The only public identifiers are release/work names, local LLM model ids and generic hardware metadata useful for benchmark interpretation.
+
+        ### Generation
+
+        The dataset is generated from the KRONOS CORE Telemetry panel through the **Publicar Dataset** button. KRONOS sanitizes the accumulated telemetry, writes `metrics/kronos-telemetria-dataset.json`, commits the snapshot and pushes it to this repository.
+
+        ### License
+
+        [MIT](LICENSE) — free use with attribution.
+
+        <a id="portugues"></a>
+
+        ## Português
+
+        Dataset de telemetria operacional do [KRONOS CORE](https://github.com/carmipa/traducao_animes_llm_local_quarkus), uma esteira de tradução de legendas de anime que executa inferência LLM local via LM Studio.
+
+        Este repositório existe para expor métricas reprodutíveis de performance e pipeline, não conteúdo de legendas. Cada commit é um snapshot do dataset; o histórico Git é a linha do tempo pública.
+
+        ### Estrutura Do Repositório
+
+        ```text
+        ├── README.md
+        ├── LICENSE
+        └── metrics/
+            └── kronos-telemetria-dataset.json
+        ```
+
+        ### Formato Dos Dados
+
+        O dataset usa JSON próprio em UTF-8, com `versaoFormato` para evolução do schema.
+
+        #### `ambienteExecucao`
+
+        Metadados seguros do ambiente de execução para contextualizar benchmarks.
+
+        | Campo | Significado |
+        |-------|-------------|
+        | `fabricante` / `modeloMaquina` | Fabricante e modelo genérico reportados pelo sistema operacional |
+        | `cpu` | Nome público do processador |
+        | `gpuPrincipal` | GPU publicada para comparação de benchmark |
+        | `gpuDetectadaSistema` | GPU detectada pelo sistema/driver quando difere do nome público configurado |
+        | `ramTotalGb` | RAM física total arredondada em GB |
+        | `sistemaOperacional` / `arquitetura` | Plataforma de execução, sem usuário, hostname, caminhos, IPs ou IDs de dispositivo |
+        | `hardwareColetadoAutomaticamente` | Indica se os valores foram coletados automaticamente do sistema local |
+        | `gpuPublicaConfigurada` | Indica se houve override público da GPU |
+
+        #### `resumo`
+
+        Métricas agregadas.
 
         | Campo | Significado |
         |-------|-------------|
         | `totalEpisodiosTraduzidos` | Episódios processados pelo pipeline de tradução LLM |
         | `totalLinhasTraduzidas` | Falas de legenda traduzidas |
-        | `tempoMedioPorLinhaMs` | Latência média de tradução por fala (LLM local) |
-        | `totalFalasReaproveitadasDoCache` | Falas resolvidas pelo cache persistente (sem chamada de LLM) |
+        | `tempoMedioPorLinhaMs` | Latência média de tradução por fala |
+        | `totalFalasReaproveitadasDoCache` | Falas resolvidas pelo cache persistente sem nova chamada ao LLM |
         | `alucinacoesLlmPrevenidas` | Respostas de LLM rejeitadas pelas guardas anti-alucinação |
         | `arquivosRenomeados` | Arquivos padronizados pelo módulo de renomeação |
-        | `totalOperacoesRegistradas` | Operações de pipeline registradas (todos os módulos) |
+        | `totalOperacoesRegistradas` | Operações de pipeline registradas entre os módulos |
 
-        ### `ambienteExecucao` (snapshot de hardware seguro)
+        #### `traducoesLlm[]`
 
-        | Campo | Significado |
-        |-------|-------------|
-        | `fabricante` / `modeloMaquina` | Fabricante e modelo genérico reportados pelo sistema |
-        | `cpu` | Nome público do processador |
-        | `gpuPrincipal` | GPU publicada para comparação de benchmark |
-        | `gpuDetectadaSistema` | Nome detectado pelo driver/SO quando diferente do nome público configurado |
-        | `ramTotalGb` | RAM física total arredondada em GB |
-        | `sistemaOperacional` / `arquitetura` | Plataforma de execução sem usuário, hostname ou caminhos |
-        | `hardwareColetadoAutomaticamente` | Indica se a coleta veio do sistema local |
-        | `gpuPublicaConfigurada` | Indica se houve override público da GPU (ex: nome comercial conhecido) |
-
-        ### `traducoesLlm[]` (por episódio)
+        Métricas de tradução LLM por episódio.
 
         | Campo | Significado |
         |-------|-------------|
-        | `episodio` | Nome do arquivo de legenda (sem diretórios) |
+        | `episodio` | Nome do arquivo de legenda, sem diretórios |
         | `anime` / `temporada` | Obra e temporada |
-        | `modeloLlm` | Modelo local usado (id reportado pelo LM Studio) |
+        | `modeloLlm` | Modelo local usado, conforme id reportado pelo LM Studio |
         | `totalLinhas` / `falasTraduzidas` / `falasDoCache` | Volume e origem das traduções |
         | `tempoTotalMs` | Duração total da tradução do episódio |
-        | `quantidadeAvisos` | Quantidade de avisos de qualidade (falas mantidas sem tradução, suspeitas etc.) |
-        | `registradoEm` | Timestamp UTC (ISO-8601) |
+        | `quantidadeAvisos` | Contagem de avisos de qualidade, sem texto dos avisos |
+        | `registradoEm` | Timestamp UTC em ISO-8601 |
 
-        ### `operacoes[]` (por operação de pipeline)
+        #### `operacoes[]`
 
-        `tipo`, `tempoTotalMs`, `arquivosProcessados`, `itensDetectados`, `itensCorrigidos`, `registradoEm` —
-        cobre remux, extração, revisões (lore/concordância), karaokê, renomeação e auditorias.
+        Métricas genéricas por operação de pipeline: `tipo`, `tempoTotalMs`, `arquivosProcessados`, `itensDetectados`, `itensCorrigidos`, `registradoEm`.
 
-        ## Anonimização (LGPD/GDPR)
+        Cobre remux, extração de legendas, revisões de lore/concordância, karaokê, renomeação de arquivos e auditorias.
 
-        Este dataset **não contém PII**: sem textos de legenda (conteúdo protegido vira apenas contagem
-        de avisos), sem caminhos de disco/usuário, sem IPs, tokens, credenciais, hostname, MAC,
-        número de série ou identificadores de dispositivo. Os únicos identificadores são nomes
-        públicos de obras/arquivos de release, ids de modelos LLM e metadados genéricos de hardware.
+        ### Privacidade E Anonimização
 
-        ## Licença
+        Este dataset não publica texto de legenda, caminhos locais da máquina, nomes de usuário, hostnames, endereços IP, endereços MAC, números de série, identificadores de dispositivo, credenciais, tokens ou chaves de API.
+
+        Os únicos identificadores públicos são nomes de obras/releases, ids de modelos LLM locais e metadados genéricos de hardware úteis para interpretar benchmarks.
+
+        ### Geração
+
+        O dataset é gerado pelo painel de Telemetria do KRONOS CORE através do botão **Publicar Dataset**. O KRONOS sanitiza a telemetria acumulada, escreve `metrics/kronos-telemetria-dataset.json`, commita o snapshot e faz push para este repositório.
+
+        ### Licença
 
         [MIT](LICENSE) — uso livre com atribuição.
-
-        ## Como é gerado
-
-        Botão **"Publicar Dataset"** no painel de Telemetria do KRONOS CORE: o sistema sanitiza a
-        telemetria acumulada, escreve `metrics/kronos-telemetria-dataset.json`, commita e faz push.
         """;
 }
