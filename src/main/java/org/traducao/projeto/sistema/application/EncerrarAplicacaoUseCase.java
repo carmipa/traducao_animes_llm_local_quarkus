@@ -23,7 +23,10 @@ public class EncerrarAplicacaoUseCase {
     private static final long GRACE_RESPOSTA_MS = 700;
 
     /** Tempo máximo aguardando o shutdown ordenado antes de forçar a saída da JVM. */
-    private static final long FALLBACK_SAIDA_MS = 10_000;
+    private static final long FALLBACK_SAIDA_MS = 5_000;
+
+    /** Tempo máximo para o System.exit concluir antes do halt incondicional. */
+    private static final long WATCHDOG_HALT_MS = 3_000;
 
     private final FilaExecucaoPipeline filaExecucao;
 
@@ -55,9 +58,20 @@ public class EncerrarAplicacaoUseCase {
     private void desligarComFallback() {
         dormir(GRACE_RESPOSTA_MS);
         Quarkus.asyncExit(0);
-        // No modo dev o Quarkus pode parar só a aplicação e manter a JVM do
-        // dev-mode viva; aqui garantimos que "Sair" fecha o processo de fato.
+        // No modo dev o Quarkus para só a aplicação e mantém a JVM do
+        // dev-mode viva (o terminal fica "rodando" esperando restart) — era
+        // exatamente o sintoma reportado: navegador com overlay de encerrado
+        // e o java vivo no terminal. Daqui para baixo é garantia de morte.
         dormir(FALLBACK_SAIDA_MS);
+        log.warn("Shutdown ordenado não terminou o processo; forçando a saída da JVM.");
+        // System.exit pode ficar preso em shutdown hooks do harness do dev
+        // mode; o watchdog dá o tiro de misericórdia com halt (sem hooks).
+        Thread watchdog = new Thread(() -> {
+            dormir(WATCHDOG_HALT_MS);
+            Runtime.getRuntime().halt(0);
+        }, "encerramento-halt");
+        watchdog.setDaemon(true);
+        watchdog.start();
         System.exit(0);
     }
 

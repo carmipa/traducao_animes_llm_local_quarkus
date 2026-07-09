@@ -49,9 +49,9 @@ sequenceDiagram
     Op->>API: POST /api/traduzir {entrada, contextoId}
     API->>UC: processar(arquivo.ass)
     UC->>Leitor: ler(arquivo.ass)
-    Leitor-->>UC: List&lt;EventoLegenda&gt; (prefixo + texto, timestamps intactos)
+    Leitor-->>UC: lista de EventoLegenda (prefixo + texto, timestamps intactos)
     UC->>Cache: carregar(arquivo.cache.json)
-    Cache-->>UC: Map&lt;original, traduzido&gt; já processados
+    Cache-->>UC: mapa original → traduzido já processados
 
     loop Para cada fala sem tradução em cache
         UC->>Mask: mascarar(texto) — {\pos(...)} → [[TAG0]]

@@ -55,6 +55,20 @@ public class DetectorTermosLoreService {
     );
 
     public ResultadoDeteccaoLore auditar(String originalIngles, String traducaoPt) {
+        return auditar(originalIngles, traducaoPt, null);
+    }
+
+    /**
+     * Variante contextualizada pela obra: as regras específicas de franquia
+     * (termos soltos como "zeon"/"shin" e traduções literais como
+     * "freedom"→"liberdade") só disparam se o termo canônico aparecer no texto
+     * de lore da obra ativa. Sem isso, "We fight for freedom" do 86 era
+     * sinalizado pela regra do Gundam SEED, mesmo "liberdade" sendo a tradução
+     * correta ali. Como o texto de lore é o MESMO que instrui o LLM, adicionar
+     * um termo ao contexto arma a heurística e o prompt de uma vez só.
+     * {@code loreObraAtiva} nulo/vazio mantém o comportamento global.
+     */
+    public ResultadoDeteccaoLore auditar(String originalIngles, String traducaoPt, String loreObraAtiva) {
         if (originalIngles == null || originalIngles.isBlank()
             || traducaoPt == null || traducaoPt.isBlank()) {
             return ResultadoDeteccaoLore.limpo();
@@ -63,17 +77,25 @@ public class DetectorTermosLoreService {
         List<String> motivos = new ArrayList<>();
         String en = originalIngles.trim();
         String pt = traducaoPt.trim();
+        String loreLower = loreObraAtiva == null || loreObraAtiva.isBlank()
+            ? null
+            : loreObraAtiva.toLowerCase(Locale.ROOT);
 
-        detectarTraducoesLiteraisSuspeitas(en, pt, motivos);
+        detectarTraducoesLiteraisSuspeitas(en, pt, motivos, loreLower);
         detectarTermosTraduziveisEmIngles(en, pt, motivos);
         detectarNomesInglesRemanescentes(en, pt, motivos);
-        detectarNomesPropriosDivergentes(en, pt, motivos);
+        detectarNomesPropriosDivergentes(en, pt, motivos, loreLower);
         detectarTermosMaiusculosSuspeitos(pt, motivos);
 
         if (motivos.isEmpty()) {
             return ResultadoDeteccaoLore.limpo();
         }
         return new ResultadoDeteccaoLore(true, List.copyOf(motivos));
+    }
+
+    /** Termo canônico vale para a obra ativa? Sem lore informado, vale globalmente. */
+    private boolean loreMenciona(String loreLower, String termo) {
+        return loreLower == null || contemExpressaoInteira(loreLower, termo);
     }
 
     private void detectarNomesInglesRemanescentes(String en, String pt, List<String> motivos) {
@@ -116,13 +138,13 @@ public class DetectorTermosLoreService {
         }
     }
 
-    private void detectarTraducoesLiteraisSuspeitas(String en, String pt, List<String> motivos) {
+    private void detectarTraducoesLiteraisSuspeitas(String en, String pt, List<String> motivos, String loreLower) {
         String enLower = en.toLowerCase(Locale.ROOT);
         String ptLower = pt.toLowerCase(Locale.ROOT);
 
         for (Map.Entry<String, List<String>> entrada : TRADUCOES_LITERAIS_SUSPEITAS.entrySet()) {
             String termoCanonico = entrada.getKey();
-            if (!enLower.contains(termoCanonico)) {
+            if (!enLower.contains(termoCanonico) || !loreMenciona(loreLower, termoCanonico)) {
                 continue;
             }
             for (String traducaoSuspeita : entrada.getValue()) {
@@ -135,7 +157,7 @@ public class DetectorTermosLoreService {
         }
     }
 
-    private void detectarNomesPropriosDivergentes(String en, String pt, List<String> motivos) {
+    private void detectarNomesPropriosDivergentes(String en, String pt, List<String> motivos, String loreLower) {
         Matcher matcherEn = NOME_PROPRIO.matcher(en);
         while (matcherEn.find()) {
             String grupo = matcherEn.group();
@@ -145,7 +167,7 @@ public class DetectorTermosLoreService {
             for (String subNomeRaw : subNomes) {
                 String nome = limparCandidatoNomeProprio(subNomeRaw);
                 int indexNoOriginal = en.indexOf(subNomeRaw);
-                if (deveIgnorarNomeProprio(nome, inicioEfetivoDaFala(en, indexNoOriginal >= 0 ? indexNoOriginal : matcherEn.start()))
+                if (deveIgnorarNomeProprio(nome, inicioEfetivoDaFala(en, indexNoOriginal >= 0 ? indexNoOriginal : matcherEn.start()), loreLower)
                     || traducaoAceitaParaTermo(nome, pt)) {
                     continue;
                 }
@@ -216,7 +238,7 @@ public class DetectorTermosLoreService {
         return nome.replaceFirst("(?i)^(one|two|three|four|five|six|seven|eight|nine|ten|all|these|those|this|that|some|any)\\s+", "");
     }
 
-    private boolean deveIgnorarNomeProprio(String nome, boolean inicioEfetivoDaFala) {
+    private boolean deveIgnorarNomeProprio(String nome, boolean inicioEfetivoDaFala, String loreLower) {
         if (nome.length() < 4 || nome.matches("(?i)TAG\\d+")) {
             return true;
         }
@@ -227,7 +249,7 @@ public class DetectorTermosLoreService {
             if (PALAVRAS_IGNORADAS.contains(normalizada)) {
                 return true;
             }
-            return inicioEfetivoDaFala && !temIndicadorLoreSolteiro(partes[0], normalizada);
+            return inicioEfetivoDaFala && !temIndicadorLoreSolteiro(partes[0], normalizada, loreLower);
         }
         return false;
     }
@@ -246,8 +268,10 @@ public class DetectorTermosLoreService {
         return ultimo == '.' || ultimo == '!' || ultimo == '?' || ultimo == '"' || ultimo == '”' || ultimo == '\'' || ultimo == '’';
     }
 
-    private boolean temIndicadorLoreSolteiro(String original, String normalizada) {
-        return TERMOS_LORE_SOLTEIROS_RELEVANTES.contains(normalizada)
+    private boolean temIndicadorLoreSolteiro(String original, String normalizada, String loreLower) {
+        // O termo global só conta se pertencer à obra ativa: "Dom" no início de
+        // uma fala do 86 não é o mobile suit do Gundam.
+        return (TERMOS_LORE_SOLTEIROS_RELEVANTES.contains(normalizada) && loreMenciona(loreLower, normalizada))
             || original.matches(".*\\d.*")
             || original.matches("[A-Z0-9.-]{2,}");
     }

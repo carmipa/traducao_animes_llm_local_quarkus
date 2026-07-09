@@ -173,21 +173,53 @@ class WebInterfaceTest {
             "Numeração do grupo Tradução (4 e 5) ausente"
         );
         int itemNovoKaraoke = html.indexOf("data-target=\"novo-karaoke\"");
+        int itemTraducaoKaraoke = html.indexOf("data-target=\"traducao-karaoke\"");
         int itemCura = html.indexOf("data-target=\"cura\"");
         org.junit.jupiter.api.Assertions.assertTrue(
             itemNovoKaraoke > grupoKaraoke && itemNovoKaraoke < grupoFinalizacao
+                && itemTraducaoKaraoke > grupoKaraoke && itemTraducaoKaraoke < grupoFinalizacao
                 && itemCura > grupoKaraoke && itemCura < grupoFinalizacao,
-            "Karaokê Simples e Correção de Karaoke devem ficar no grupo Karaokê"
+            "Karaokê Simples, Tradução de Karaokê e Correção de Karaoke devem ficar no grupo Karaokê"
+        );
+        // Decisão 2026-07-09: Tradução de Karaokê é o item 10, logo após o
+        // Karaokê Simples (converte KFX → depois traduz a letra), empurrando
+        // Correção de Karaoke para 11 e a Finalização para 12/13.
+        org.junit.jupiter.api.Assertions.assertTrue(
+            itemNovoKaraoke < itemTraducaoKaraoke && itemTraducaoKaraoke < itemCura,
+            "Tradução de Karaokê deve ficar entre Karaokê Simples e Correção de Karaoke"
         );
         org.junit.jupiter.api.Assertions.assertTrue(
             html.contains("<span>9. Karaokê Simples</span>")
-                && html.contains("<span>10. Correção de Karaoke</span>"),
-            "Numeração do grupo Karaokê (9 e 10) ausente"
+                && html.contains("<span>10. Tradução de Karaokê</span>")
+                && html.contains("<span>11. Correção de Karaoke</span>"),
+            "Numeração do grupo Karaokê (9, 10 e 11) ausente"
         );
         org.junit.jupiter.api.Assertions.assertTrue(
-            html.contains("<span>11. Remuxer</span>")
-                && html.contains("<span>12. Renomear Arquivos</span>"),
-            "Numeração da Finalização (11 e 12) ausente"
+            html.contains("<span>12. Remuxer</span>")
+                && html.contains("<span>13. Renomear Arquivos</span>"),
+            "Numeração da Finalização (12 e 13) ausente"
         );
+        org.junit.jupiter.api.Assertions.assertTrue(
+            html.contains("data-modulo=\"traducaoKaraoke\""),
+            "Shell do módulo Tradução de Karaokê ausente no index"
+        );
+    }
+
+    @Test
+    void traducaoKaraokeHtmlEJsDisponiveis() {
+        given()
+            .when().get("/traducaoKaraoke/traducaoKaraoke.html")
+            .then()
+            .statusCode(200)
+            .contentType(containsString("html"))
+            .body(containsString("Tradução de Karaokê"))
+            .body(containsString("id=\"traducao-karaoke-contexto\""))
+            .body(containsString("id=\"traducao-karaoke-entrada\""));
+
+        given()
+            .when().get("/traducaoKaraoke/traducaoKaraoke.js")
+            .then()
+            .statusCode(200)
+            .contentType(containsString("javascript"));
     }
 }

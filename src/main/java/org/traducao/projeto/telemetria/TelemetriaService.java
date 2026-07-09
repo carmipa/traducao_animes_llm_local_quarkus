@@ -2,7 +2,6 @@ package org.traducao.projeto.telemetria;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +51,12 @@ public class TelemetriaService {
     // cache; com o SSE emitindo resumos periódicos, recontar a cada chamada
     // varreria o disco continuamente segurando o lock do serviço.
     private static final long TTL_CONTAGEM_CACHE_MS = 30_000;
+
+    // Avisos por episódio no JSON canônico: sem teto, os textos de aviso
+    // dominavam o arquivo (21,9 mil avisos ≈ 85% dos 3,5MB medidos em
+    // 2026-07-09) e eram regravados a cada registro. A íntegra continua nos
+    // relatórios por operação em relatorios/ — aqui fica só a amostra.
+    private static final int LIMITE_AVISOS_POR_EPISODIO = 30;
 
     // Local canônico dentro do próprio projeto onde a telemetria é sempre
     // mesclada e persistida a cada registro, para sobreviver a restarts do
@@ -110,7 +115,10 @@ public class TelemetriaService {
     }
 
     public TelemetriaService() {
-        this.objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+        // Sem INDENT_OUTPUT: o JSON canônico e os payloads SSE são compactos
+        // (o arquivo é regravado a cada registro; indentação dobrava o custo).
+        // Relatórios legíveis usam writerWithDefaultPrettyPrinter() no ponto de uso.
+        this.objectMapper = new ObjectMapper();
     }
 
     @jakarta.annotation.PostConstruct
@@ -146,10 +154,45 @@ public class TelemetriaService {
 
     public synchronized void registrarTraducao(LlmTelemetria traducao) {
         if (traducao != null) {
-            bancoLlm.put(traducao.nomeEpisodio(), traducao);
+            LlmTelemetria compacta = comAvisosLimitados(traducao);
+            bancoLlm.put(compacta.nomeEpisodio(), compacta);
             persistirCanonico();
             broadcast();
         }
+    }
+
+    // Marcador da compactação. Mantido em ASCII puro: literais com acento são
+    // corrompidos pelo compilador do live-reload do quarkusDev (sem -encoding),
+    // e este texto precisa ser reconhecível pelo próprio regex depois.
+    private static final java.util.regex.Pattern MARCADOR_AVISOS_OMITIDOS =
+        java.util.regex.Pattern.compile("\\(\\+(\\d+) avisos omitidos");
+
+    /**
+     * Aplica o teto de {@value #LIMITE_AVISOS_POR_EPISODIO} avisos por episódio,
+     * trocando o excedente por uma linha-resumo. A íntegra dos avisos vive nos
+     * relatórios da operação (pasta {@code relatorios/}), não no JSON canônico.
+     * <p>
+     * IDEMPOTENTE por contrato: uma lista já compactada (teto + linha-resumo)
+     * passa intacta — sem isso, cada boot re-compactava a compactação anterior
+     * e o total real do marcador era destruído (bug observado em 2026-07-09:
+     * "(+625" virou "(+1" no load seguinte).
+     */
+    static LlmTelemetria comAvisosLimitados(LlmTelemetria traducao) {
+        List<String> avisos = traducao.errosOcorridos();
+        if (avisos == null || avisos.size() <= LIMITE_AVISOS_POR_EPISODIO) {
+            return traducao;
+        }
+        if (avisos.size() == LIMITE_AVISOS_POR_EPISODIO + 1
+            && MARCADOR_AVISOS_OMITIDOS.matcher(avisos.getLast()).find()) {
+            return traducao;
+        }
+        List<String> amostra = new ArrayList<>(avisos.subList(0, LIMITE_AVISOS_POR_EPISODIO));
+        amostra.add("(+" + (avisos.size() - LIMITE_AVISOS_POR_EPISODIO)
+            + " avisos omitidos; integra no relatorio da operacao em relatorios/)");
+        return new LlmTelemetria(
+            traducao.nomeEpisodio(), traducao.modeloLlm(), traducao.totalLinhas(),
+            traducao.falasTraduzidas(), traducao.falasDoCache(), traducao.tempoTotalMs(),
+            List.copyOf(amostra), traducao.animeNome(), traducao.temporada(), traducao.registradoEm());
     }
 
     public synchronized void registrarOperacao(OperacaoTelemetria operacao) {
@@ -228,7 +271,7 @@ public class TelemetriaService {
         Path arquivoTxt = pastaRelatorios.resolve(prefixo + "_" + timestamp + ".txt");
         Path arquivoJson = pastaRelatorios.resolve(prefixo + "_" + timestamp + ".json");
         Files.writeString(arquivoTxt, conteudoRelatorio, StandardCharsets.UTF_8);
-        objectMapper.writeValue(arquivoJson.toFile(), operacao);
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(arquivoJson.toFile(), operacao);
         log.info("Relatório textual salvo em: {}", arquivoTxt);
         log.info("Relatório JSON salvo em: {}", arquivoJson);
     }
@@ -560,7 +603,9 @@ public class TelemetriaService {
                     objectMapper.getTypeFactory().constructCollectionType(List.class, LlmTelemetria.class)
                 );
                 for (LlmTelemetria l : anterioresLlm) {
-                    bancoLlm.put(l.nomeEpisodio(), l);
+                    // Compacta também o legado: entradas antigas com milhares de
+                    // avisos encolhem na primeira regravação após este load.
+                    bancoLlm.put(l.nomeEpisodio(), comAvisosLimitados(l));
                 }
             }
 

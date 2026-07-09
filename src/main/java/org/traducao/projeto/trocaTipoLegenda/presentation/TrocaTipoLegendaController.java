@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.traducao.projeto.core.execucao.FilaExecucaoPipeline;
+import org.traducao.projeto.core.util.DuracaoUtil;
 import org.traducao.projeto.traducao.presentation.web.LogStreamService;
 import org.traducao.projeto.trocaTipoLegenda.application.TrocaTipoLegendaUseCase;
 import org.traducao.projeto.trocaTipoLegenda.domain.ResultadoGeralAuditoria;
@@ -73,6 +74,7 @@ public class TrocaTipoLegendaController {
         // e backups, logando em tempo real no console do SSE.
         filaExecucao.submeter(() -> {
             logStreamService.definirCanalAtual("troca-tipo-legenda");
+            long inicioMs = System.currentTimeMillis();
             try {
                 ResultadoTrocaFonte resultado = useCase.aplicar(diretorio);
                 System.out.println("\n\u001B[32m========================================================================\u001B[0m");
@@ -83,6 +85,8 @@ public class TrocaTipoLegendaController {
                 System.out.println("\u001B[31m  [FAIL] ERRO FATAL AO APLICAR TROCA DE FONTES\u001B[0m");
                 System.out.println("\u001B[31m  • Erro: " + e.getMessage() + "\u001B[0m");
                 System.out.println("\u001B[31m========================================================================\n\u001B[0m");
+            } finally {
+                System.out.println(DuracaoUtil.linhaRelatorioFinal("Troca Tipo Legenda (fontes)", inicioMs));
             }
         });
 

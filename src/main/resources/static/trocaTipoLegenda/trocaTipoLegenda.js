@@ -1,6 +1,6 @@
 import { logNoConsole, mostrarAlerta } from '../js/app.js';
 
-const PAINEL_HTML = 'trocaTipoLegenda/trocaTipoLegenda.html?v=3.0';
+const PAINEL_HTML = 'trocaTipoLegenda/trocaTipoLegenda.html?v=3.1';
 
 function escapeHtml(texto) {
     return String(texto ?? '')

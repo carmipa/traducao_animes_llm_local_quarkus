@@ -25,6 +25,7 @@ import org.traducao.projeto.traducao.domain.StatusLlm;
 import org.traducao.projeto.traducao.domain.exceptions.TradutorException;
 import org.traducao.projeto.traducao.domain.ports.MistralPort;
 import org.traducao.projeto.traducao.infrastructure.config.TradutorProperties;
+import org.traducao.projeto.core.util.DuracaoUtil;
 import org.traducao.projeto.traducao.infrastructure.contexto.GerenciadorContexto;
 import org.traducao.projeto.traducao.presentation.ui.AnsiCores;
 import org.traducao.projeto.traducao.presentation.ui.PastasExecucao;
@@ -69,6 +70,7 @@ public class ApiController {
     private final RemuxarLoteUseCase remuxarLoteUseCase;
     private final GeradorMapaProjetoUseCase geradorMapaProjetoUseCase;
     private final TelemetriaService telemetriaService;
+    private final org.traducao.projeto.telemetria.TelemetriaDatasetService telemetriaDatasetService;
     private final LogStreamService logStreamService;
     private final TradutorProperties propriedades;
     private final PastasExecucao pastasExecucao;
@@ -87,6 +89,7 @@ public class ApiController {
             RemuxarLoteUseCase remuxarLoteUseCase,
             GeradorMapaProjetoUseCase geradorMapaProjetoUseCase,
             TelemetriaService telemetriaService,
+            org.traducao.projeto.telemetria.TelemetriaDatasetService telemetriaDatasetService,
             LogStreamService logStreamService,
             TradutorProperties propriedades,
             PastasExecucao pastasExecucao,
@@ -103,6 +106,7 @@ public class ApiController {
         this.remuxarLoteUseCase = remuxarLoteUseCase;
         this.geradorMapaProjetoUseCase = geradorMapaProjetoUseCase;
         this.telemetriaService = telemetriaService;
+        this.telemetriaDatasetService = telemetriaDatasetService;
         this.logStreamService = logStreamService;
         this.propriedades = propriedades;
         this.pastasExecucao = pastasExecucao;
@@ -147,8 +151,8 @@ public class ApiController {
     }
 
     /**
-     * Estado da fila do pipeline — usado pela UI para habilitar/desabilitar o
-     * botão "Parar" dos menus.
+     * Estado da fila do pipeline — usado pela UI no modal do "Sair" para
+     * avisar quando ainda há trabalho em execução.
      */
     @GetMapping("/pipeline/status")
     public ResponseEntity<RespostaPadrao> statusPipeline() {
@@ -213,8 +217,7 @@ public class ApiController {
             return ResponseEntity.badRequest().body(new RespostaPadrao("Caminho de entrada obrigatório."));
         }
 
-        filaExecucao.submeter(() -> {
-            logStreamService.definirCanalAtual("analise");
+        submeterJobComRelatorio("analise", "Análise de Mídia", () -> {
             try {
                 Path pathEntrada = normalizarCaminho(req.entrada());
                 if (pathEntrada == null) {
@@ -261,6 +264,43 @@ public class ApiController {
         }
     }
 
+
+    /**
+     * Submete um job à fila já com o canal SSE correto e imprime, ao final
+     * (sucesso OU falha), a linha padrão de relatório com o tempo total —
+     * todos os consoles da UI encerram com o mesmo formato de resumo.
+     */
+    private void submeterJobComRelatorio(String canal, String nomeOperacao, Runnable corpo) {
+        filaExecucao.submeter(() -> {
+            logStreamService.definirCanalAtual(canal);
+            long inicioMs = System.currentTimeMillis();
+            try {
+                corpo.run();
+            } finally {
+                System.out.println(DuracaoUtil.linhaRelatorioFinal(nomeOperacao, inicioMs));
+            }
+        });
+    }
+
+    /**
+     * Publica a telemetria sanitizada como dataset público no repositório Git
+     * dedicado ({@code kronos-anime-translation-telemetry-dataset}): snapshot em
+     * {@code metrics/}, commit e push. Síncrono — o push leva poucos segundos
+     * e o resultado volta na própria resposta para o painel exibir.
+     */
+    @PostMapping("/telemetria/publicar-dataset")
+    public ResponseEntity<?> publicarDatasetTelemetria() {
+        try {
+            var resultado = telemetriaDatasetService.publicar();
+            log.info("Publicação do dataset de telemetria: {}", resultado.mensagem());
+            return ResponseEntity.ok(resultado);
+        } catch (Exception e) {
+            log.error("Falha ao publicar o dataset de telemetria", e);
+            return ResponseEntity.internalServerError()
+                .body(new RespostaPadrao("Falha ao publicar o dataset: " + e.getMessage()));
+        }
+    }
+
     /**
      * 2. EXTRAÇÃO DE LEGENDAS
      */
@@ -277,8 +317,7 @@ public class ApiController {
             return ResponseEntity.badRequest().body(new RespostaPadrao(e.getMessage()));
         }
 
-        filaExecucao.submeter(() -> {
-            logStreamService.definirCanalAtual("extracao");
+        submeterJobComRelatorio("extracao", "Extração de Legendas", () -> {
             try {
                 Path pathEntrada = normalizarCaminho(req.entrada());
                 if (pathEntrada == null) {
@@ -346,8 +385,7 @@ public class ApiController {
                     "Contexto de tradução desconhecido: \"" + req.contextoId() + "\". Recarregue a página e selecione um contexto válido."));
         }
 
-        filaExecucao.submeter(() -> {
-            logStreamService.definirCanalAtual("traducao");
+        submeterJobComRelatorio("traducao", "Tradução Local via LLM", () -> {
             try {
                 Path pathEntrada = normalizarCaminho(req.entrada());
                 if (pathEntrada == null) {
@@ -431,8 +469,7 @@ public class ApiController {
             return ResponseEntity.badRequest().body(new RespostaPadrao("Caminho de cache inválido: " + cacheDir));
         }
 
-        filaExecucao.submeter(() -> {
-            logStreamService.definirCanalAtual("correcao");
+        submeterJobComRelatorio("correcao", "Limpeza e Auditoria de Cache", () -> {
             try {
                 limparCacheUseCase.executar(pathCache);
                 System.out.println("\n\u001B[32m========================================================================\u001B[0m");
@@ -459,8 +496,7 @@ public class ApiController {
             return ResponseEntity.badRequest().body(new RespostaPadrao("Caminho de cache inválido: " + cacheDir));
         }
 
-        filaExecucao.submeter(() -> {
-            logStreamService.definirCanalAtual("correcao");
+        submeterJobComRelatorio("correcao", "Correção via Google Translate", () -> {
             try {
                 corrigirComGoogleUseCase.executar(pathCache);
                 System.out.println("\n\u001B[32m========================================================================\u001B[0m");
@@ -492,8 +528,7 @@ public class ApiController {
                 "Contexto desconhecido: \"" + req.contextoId() + "\"."));
         }
 
-        filaExecucao.submeter(() -> {
-            logStreamService.definirCanalAtual("correcao");
+        submeterJobComRelatorio("correcao", "Revisão Gramatical do Cache (LLM)", () -> {
             try {
                 StatusLlm status = mistralPort.verificarDisponibilidade();
                 if (!status.modeloCarregado()) {
@@ -550,8 +585,7 @@ public class ApiController {
             return ResponseEntity.badRequest().body(new RespostaPadrao(erroValidacao.get()));
         }
 
-        filaExecucao.submeter(() -> {
-            logStreamService.definirCanalAtual("revisao");
+        submeterJobComRelatorio("revisao", "Revisão de Legendas Traduzidas", () -> {
             try {
                 ResultadoRevisaoLegendas resultado = revisarLegendasUseCase.executar(
                     pathPt, pathEnFinal, Path.of("cache"), null);
@@ -618,8 +652,7 @@ public class ApiController {
             return ResponseEntity.badRequest().body(new RespostaPadrao(erroValidacao.get()));
         }
 
-        filaExecucao.submeter(() -> {
-            logStreamService.definirCanalAtual("revisao");
+        submeterJobComRelatorio("revisao", "Revisão de Concordância PT-BR (LLM)", () -> {
             try {
                 StatusLlm status = mistralPort.verificarDisponibilidade();
                 if (!status.modeloCarregado()) {
@@ -668,8 +701,7 @@ public class ApiController {
             return ResponseEntity.badRequest().body(new RespostaPadrao("Pasta de vídeos de entrada obrigatória."));
         }
 
-        filaExecucao.submeter(() -> {
-            logStreamService.definirCanalAtual("remuxer");
+        submeterJobComRelatorio("remuxer", "Remuxer (mkvmerge)", () -> {
             try {
                 Path pathVideos = normalizarCaminho(req.entrada());
                 if (pathVideos == null) {

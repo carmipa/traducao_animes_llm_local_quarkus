@@ -27,6 +27,8 @@
     <link rel="stylesheet" href="remuxer/remuxer.css?v=4.0">
     <link rel="stylesheet" href="renomearArquivos/renomearArquivos.css?v=4.0">
     <link rel="stylesheet" href="novoKaraoke/novoKaraoke.css?v=1.0">
+    <link rel="stylesheet" href="traducaoKaraoke/traducaoKaraoke.css?v=1.0">
+    <link rel="icon" type="image/png" href="img/kronos_logo.png">
     <link rel="stylesheet" href="telemetria/telemetria.css?v=4.0">
     <link rel="stylesheet" href="mapa/mapa.css?v=4.0">
     <link rel="stylesheet" href="documentacao/documentacao.css?v=4.0">
@@ -123,9 +125,13 @@
                             <span class="material-symbols-outlined nav-icon">music_off</span>
                             <span>9. Karaokê Simples</span>
                         </button>
+                        <button class="nav-item" data-target="traducao-karaoke" id="btn-menu-traducao-karaoke" data-tooltip="Traduza as letras de música para PT-BR mantendo o romaji original junto na tela — tolerante a inglês misturado na letra japonesa.">
+                            <span class="material-symbols-outlined nav-icon">lyrics</span>
+                            <span>10. Tradução de Karaokê</span>
+                        </button>
                         <button class="nav-item" data-target="cura" id="btn-menu-cura" data-tooltip="Corrija a legenda traduzida usando a original como referência segura.">
                             <span class="material-symbols-outlined nav-icon">music_note</span>
-                            <span>10. Correção de Karaoke</span>
+                            <span>11. Correção de Karaoke</span>
                         </button>
                     </div>
                 </div>
@@ -138,11 +144,11 @@
                     <div class="nav-group-itens">
                         <button class="nav-item" data-target="remuxer" id="btn-menu-remuxer" data-tooltip="Recombine vídeos originais e as legendas traduzidas.">
                             <span class="material-symbols-outlined nav-icon">layers</span>
-                            <span>11. Remuxer</span>
+                            <span>12. Remuxer</span>
                         </button>
                         <button class="nav-item" data-target="renomear-arquivos" id="btn-menu-renomear-arquivos" data-tooltip="Limpe e renomeie arquivos de vídeo e legendas usando um padrão S01E01 com base nos metadados.">
                             <span class="material-symbols-outlined nav-icon">drive_file_rename_outline</span>
-                            <span>12. Renomear Arquivos</span>
+                            <span>13. Renomear Arquivos</span>
                         </button>
                     </div>
                 </div>
@@ -378,10 +384,22 @@
                                 <span class="card-action-link">Acessar Painel →</span>
                             </div>
 
-                            <!-- Card 10 - Correção de Karaoke -->
-                            <div class="pipeline-card card-cura" onclick="document.getElementById('btn-menu-cura').click()" data-tooltip="Clique para corrigir a legenda traduzida">
+                            <!-- Card 10 — Tradução de Karaokê -->
+                            <div class="pipeline-card card-traducao-karaoke" onclick="document.getElementById('btn-menu-traducao-karaoke').click()" data-tooltip="Clique para traduzir letras de música mantendo o romaji original">
                                 <div class="card-glow-bg"></div>
                                 <div class="card-step-num">10</div>
+                                <div class="card-icon-container">
+                                    <span class="material-symbols-outlined">lyrics</span>
+                                </div>
+                                <h4>Tradução de Karaokê</h4>
+                                <p>Traduza as letras em inglês para PT-BR mantendo o japonês/romaji original junto na tela.</p>
+                                <span class="card-action-link">Acessar Painel →</span>
+                            </div>
+
+                            <!-- Card 11 - Correção de Karaoke -->
+                            <div class="pipeline-card card-cura" onclick="document.getElementById('btn-menu-cura').click()" data-tooltip="Clique para corrigir a legenda traduzida">
+                                <div class="card-glow-bg"></div>
+                                <div class="card-step-num">11</div>
                                 <div class="card-icon-container">
                                     <span class="material-symbols-outlined">music_note</span>
                                 </div>
@@ -390,10 +408,10 @@
                                 <span class="card-action-link">Acessar Painel →</span>
                             </div>
 
-                             <!-- Card 11 -->
+                             <!-- Card 12 -->
                              <div class="pipeline-card card-remuxer" onclick="document.getElementById('btn-menu-remuxer').click()" data-tooltip="Clique para acoplar legendas traduzidas nos vídeos">
                                  <div class="card-glow-bg"></div>
-                                 <div class="card-step-num">11</div>
+                                 <div class="card-step-num">12</div>
                                  <div class="card-icon-container">
                                      <span class="material-symbols-outlined">layers</span>
                                  </div>
@@ -402,10 +420,10 @@
                                  <span class="card-action-link">Acessar Painel →</span>
                              </div>
 
-                             <!-- Card 12 -->
+                             <!-- Card 13 -->
                              <div class="pipeline-card card-renomear-arquivos" onclick="document.getElementById('btn-menu-renomear-arquivos').click()" data-tooltip="Clique para renomear e sanitizar arquivos de vídeos">
                                  <div class="card-glow-bg"></div>
-                                 <div class="card-step-num">12</div>
+                                 <div class="card-step-num">13</div>
                                  <div class="card-icon-container">
                                      <span class="material-symbols-outlined">drive_file_rename_outline</span>
                                  </div>
@@ -414,10 +432,10 @@
                                  <span class="card-action-link">Acessar Painel →</span>
                              </div>
 
-                             <!-- Card 13 -->
+                             <!-- Card 14 -->
                              <div class="pipeline-card card-mapa" onclick="document.getElementById('btn-menu-mapa').click()" data-tooltip="Clique para analisar o código Java">
                                  <div class="card-glow-bg"></div>
-                                 <div class="card-step-num">13</div>
+                                 <div class="card-step-num">14</div>
                                  <div class="card-icon-container">
                                      <span class="material-symbols-outlined">account_tree</span>
                                  </div>
@@ -426,10 +444,10 @@
                                  <span class="card-action-link">Acessar Painel →</span>
                              </div>
 
-                             <!-- Card 14 -->
+                             <!-- Card 15 -->
                              <div class="pipeline-card card-telemetria" onclick="document.getElementById('btn-menu-telemetria').click()" data-tooltip="Clique para acessar a telemetria">
                                  <div class="card-glow-bg"></div>
-                                 <div class="card-step-num">14</div>
+                                 <div class="card-step-num">15</div>
                                  <div class="card-icon-container">
                                      <span class="material-symbols-outlined">monitoring</span>
                                  </div>
@@ -597,10 +615,6 @@
                                     <span class="material-symbols-outlined btn-icon">delete_sweep</span>
                                     <span>Limpar Campos</span>
                                 </button>
-                                <button type="button" class="btn btn-secondary btn-parar-pipeline" data-console="console-traducao" data-tooltip="Interrompe o trabalho em execução no pipeline. A parada acontece no próximo ponto seguro e o progresso já salvo (cache/arquivos concluídos) é preservado.">
-                                    <span class="material-symbols-outlined btn-icon">stop</span>
-                                    <span>Parar Execução</span>
-                                </button>
                             </div>
                         </form>
                     </div>
@@ -662,10 +676,6 @@
                                 <button type="button" class="btn btn-secondary btn-clear-form" data-form="form-correcao" data-tooltip="Limpa todos os campos e oculta o cartão do anime">
                                     <span class="material-symbols-outlined btn-icon">delete_sweep</span>
                                     <span>Limpar Campos</span>
-                                </button>
-                                <button type="button" class="btn btn-secondary btn-parar-pipeline" data-console="console-correcao" data-tooltip="Interrompe o trabalho em execução no pipeline. A parada acontece no próximo ponto seguro e o progresso já salvo é preservado.">
-                                    <span class="material-symbols-outlined btn-icon">stop</span>
-                                    <span>Parar Execução</span>
                                 </button>
                             </div>
                         </form>
@@ -729,10 +739,6 @@
                                     <span class="material-symbols-outlined btn-icon">delete_sweep</span>
                                     <span>Limpar Campos</span>
                                 </button>
-                                <button type="button" class="btn btn-secondary btn-parar-pipeline" data-console="console-revisao" data-tooltip="Interrompe o trabalho em execução no pipeline. Arquivos já revisados ficam salvos; a fala em andamento encerra no próximo ponto seguro.">
-                                    <span class="material-symbols-outlined btn-icon">stop</span>
-                                    <span>Parar Execução</span>
-                                </button>
                             </div>
                         </form>
                     </div>
@@ -791,10 +797,6 @@
                                 <button type="button" class="btn btn-secondary btn-clear-form" data-form="form-cura" data-tooltip="Limpa todos os campos e oculta o cartão do anime">
                                     <span class="material-symbols-outlined btn-icon">delete_sweep</span>
                                     <span>Limpar Campos</span>
-                                </button>
-                                <button type="button" class="btn btn-secondary btn-parar-pipeline" data-console="console-cura" data-tooltip="Interrompe o trabalho em execução no pipeline. Arquivos já corrigidos ficam salvos; os restantes não são tocados.">
-                                    <span class="material-symbols-outlined btn-icon">stop</span>
-                                    <span>Parar Execução</span>
                                 </button>
                             </div>
                         </form>
@@ -882,6 +884,10 @@
                 <div class="panel" id="panel-novo-karaoke" data-modulo="novoKaraoke">
                 </div>
 
+                <!-- PAINEL DA TRADUÇÃO DE KARAOKÊ (ROMAJI + PT-BR JUNTOS) -->
+                <div class="panel" id="panel-traducao-karaoke" data-modulo="traducaoKaraoke">
+                </div>
+
                 <!-- 8. PAINEL DE MAPA DO PROJETO -->
                 <div class="panel" id="panel-mapa">
                     <div class="glass-card">
@@ -925,6 +931,10 @@
                                 <button type="button" class="btn btn-primary" id="btn-exportar-telemetria" data-tooltip="Faz download do arquivo de telemetria compartilhado para auditoria">
                                     <span class="material-symbols-outlined btn-icon">download</span>
                                     <span>Exportar Estatisticas</span>
+                                </button>
+                                <button type="button" class="btn btn-primary btn-green" id="btn-publicar-dataset" data-tooltip="Gera um snapshot sanitizado (só métricas, sem textos de legenda nem caminhos), commita e faz push para o repositório público kronos-anime-translation-telemetry-dataset no GitHub.">
+                                    <span class="material-symbols-outlined btn-icon">cloud_upload</span>
+                                    <span>Publicar Dataset</span>
                                 </button>
                             </div>
                         </div>
@@ -1157,11 +1167,14 @@
                                     <span class="doc-nav-group-label">Pipeline</span>
                                     <button class="doc-nav-item" data-pagina="03-modulo-analise-midia" data-titulo="Análise de Mídia"><span class="material-symbols-outlined doc-item-icon">analytics</span>Análise de Mídia</button>
                                     <button class="doc-nav-item" data-pagina="04-modulo-extracao-legendas" data-titulo="Extração de Legendas"><span class="material-symbols-outlined doc-item-icon">download_for_offline</span>Extração</button>
+                                    <button class="doc-nav-item" data-pagina="20-modulo-analise-conteudo" data-titulo="Análise de Conteúdo"><span class="material-symbols-outlined doc-item-icon">content_paste_search</span>Análise de Conteúdo</button>
                                     <button class="doc-nav-item" data-pagina="05-modulo-traducao-llm" data-titulo="Tradução Local (LLM)"><span class="material-symbols-outlined doc-item-icon">translate</span>Tradução Local</button>
                                     <button class="doc-nav-item" data-pagina="06-modulo-correcao-revisao" data-titulo="Correção & Revisão"><span class="material-symbols-outlined doc-item-icon">find_replace</span>Correção & Revisão</button>
                                     <button class="doc-nav-item" data-pagina="07-modulo-cura-tags" data-titulo="Correção de Legendas"><span class="material-symbols-outlined doc-item-icon">music_note</span>Correção de Legendas</button>
                                     <button class="doc-nav-item" data-pagina="16-modulo-revisao-lore" data-titulo="Revisão de Lore"><span class="material-symbols-outlined doc-item-icon">menu_book</span>Revisão de Lore</button>
                                     <button class="doc-nav-item" data-pagina="18-modulo-troca-tipo-legenda" data-titulo="Troca Tipo Legenda"><span class="material-symbols-outlined doc-item-icon">font_download</span>Troca Tipo Legenda</button>
+                                    <button class="doc-nav-item" data-pagina="21-modulo-karaoke-simples" data-titulo="Karaokê Simples"><span class="material-symbols-outlined doc-item-icon">music_off</span>Karaokê Simples</button>
+                                    <button class="doc-nav-item" data-pagina="22-modulo-traducao-karaoke" data-titulo="Tradução de Karaokê"><span class="material-symbols-outlined doc-item-icon">lyrics</span>Tradução de Karaokê</button>
                                     <button class="doc-nav-item" data-pagina="08-modulo-remuxer" data-titulo="Remuxer"><span class="material-symbols-outlined doc-item-icon">layers</span>Remuxer</button>
                                     <button class="doc-nav-item" data-pagina="19-modulo-renomear-arquivos" data-titulo="Renomear Arquivos"><span class="material-symbols-outlined doc-item-icon">cleaning_services</span>Renomear Arquivos</button>
                                 </div>

@@ -338,7 +338,10 @@ public class RevisarLoreUseCase {
                 MascaradorTags.Mascarado mascaraEn = mascarador.mascarar(textoEn);
                 MascaradorTags.Mascarado mascaraPt = mascarador.mascarar(textoPt);
 
-                ResultadoDeteccaoLore deteccao = detector.auditar(mascaraEn.texto(), mascaraPt.texto());
+                // O prompt de lore da obra ativa contextualiza a heurística: regras
+                // de outra franquia (ex.: "freedom"→"liberdade" do SEED) não disparam.
+                ResultadoDeteccaoLore deteccao = detector.auditar(
+                    mascaraEn.texto(), mascaraPt.texto(), promptSistemaRevisaoLore);
                 if (!revisarTodasFalas && !deteccao.suspeito()) {
                     falasSemAlteracao[0]++;
                     sessao.out(AnsiCores.DIM + marcadorFala + " limpo pela heuristica" + AnsiCores.RESET);

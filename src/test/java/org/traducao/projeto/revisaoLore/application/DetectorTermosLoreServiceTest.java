@@ -168,6 +168,67 @@ class DetectorTermosLoreServiceTest {
         assertTrue(nomeCompleto.motivos().stream().anyMatch(m -> m.contains("canela") || m.contains("Shin")));
     }
 
+    private static final String LORE_86 =
+        "- Obra: 86. Personagens: Shinei \"Shin\" Nouzen, Lena. Faccoes: Legion, San Magnolia. "
+            + "Termos: Juggernaut, Handler, Processor, dud rounds.";
+    private static final String LORE_GUNDAM_SEED =
+        "- Obra: Gundam SEED. Mobile suits: Freedom, Justice, Destiny. Faccoes: ZAFT, Orb.";
+
+    @Test
+    void comLoreDaObraNaoAplicaRegraLiteralDeOutraFranquia() {
+        // "freedom"→"liberdade" é proteção do Gundam SEED; no 86, "liberdade"
+        // é a tradução correta e não pode ser sinalizada.
+        ResultadoDeteccaoLore no86 = detector.auditar(
+            "We fight for freedom!",
+            "Nós lutamos pela liberdade!",
+            LORE_86
+        );
+        ResultadoDeteccaoLore noSeed = detector.auditar(
+            "The Freedom is launching!",
+            "A Liberdade está decolando!",
+            LORE_GUNDAM_SEED
+        );
+
+        assertFalse(no86.suspeito());
+        assertTrue(noSeed.suspeito());
+        assertTrue(noSeed.motivos().stream().anyMatch(m -> m.contains("liberdade")));
+    }
+
+    @Test
+    void comLoreDaObraMantemProtecaoDosTermosDaPropriaObra() {
+        ResultadoDeteccaoLore resultado = detector.auditar(
+            "Shin!",
+            "Canela!",
+            LORE_86
+        );
+
+        assertTrue(resultado.suspeito());
+        assertTrue(resultado.motivos().stream().anyMatch(m -> m.contains("canela") || m.contains("Shin")));
+    }
+
+    @Test
+    void comLoreDaObraNaoSinalizaTermoSolteiroDeOutraFranquia() {
+        // "Zeon" no início da fala só é lore em Gundam; com o lore do 86 ativo
+        // a palavra capitalizada vira início de frase comum.
+        ResultadoDeteccaoLore no86 = detector.auditar(
+            "Zeon forces are attacking.",
+            "As forças inimigas estão atacando.",
+            LORE_86
+        );
+
+        assertFalse(no86.suspeito());
+    }
+
+    @Test
+    void semLoreInformadoMantemComportamentoGlobal() {
+        ResultadoDeteccaoLore resultado = detector.auditar(
+            "We fight for freedom!",
+            "Nós lutamos pela liberdade!"
+        );
+
+        assertTrue(resultado.suspeito());
+    }
+
     @Test
     void sinalizaDudRoundsTraduzidoComoRodadasAleatorias() {
         ResultadoDeteccaoLore resultado = detector.auditar(

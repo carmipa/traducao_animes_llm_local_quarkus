@@ -15,11 +15,12 @@ import { initRevisaoLore } from '../revisaoLore/revisaoLore.js?v=3.0';
 import { initTrocaTipoLegenda } from '../trocaTipoLegenda/trocaTipoLegenda.js?v=3.0';
 import { initRemuxer } from '../remuxer/remuxer.js?v=3.0';
 import { initMapa } from '../mapa/mapa.js?v=3.0';
-import { initTelemetria } from '../telemetria/telemetria.js?v=3.0';
+import { initTelemetria } from '../telemetria/telemetria.js?v=3.1';
 import { initDocumentacao } from '../documentacao/documentacao.js?v=3.0';
 import { initSobre } from '../sobre/sobre.js?v=3.0';
 import { initRenomearArquivos } from '../renomearArquivos/renomearArquivos.js?v=3.0';
 import { initNovoKaraoke } from '../novoKaraoke/novoKaraoke.js?v=1.0';
+import { initTraducaoKaraoke } from '../traducaoKaraoke/traducaoKaraoke.js?v=1.0';
 
 // Definições de Títulos e Subtítulos por seção do menu
 const CONFIG_SECOES = {
@@ -63,16 +64,20 @@ const CONFIG_SECOES = {
         titulo: "9. Karaokê Simples",
         subtitulo: "Conversão de karaokê KFX em legendas simples e limpas, preservando o tempo original"
     },
+    "traducao-karaoke": {
+        titulo: "10. Tradução de Karaokê",
+        subtitulo: "Letras de música em PT-BR com o japonês/romaji original preservado junto na tela"
+    },
     cura: {
-        titulo: "10. Correção de Legendas",
+        titulo: "11. Correção de Legendas",
         subtitulo: "Corrige a legenda PT-BR usando a original como referência imutável"
     },
     remuxer: {
-        titulo: "11. Remuxer Industrial",
+        titulo: "12. Remuxer Industrial",
         subtitulo: "Junção de vídeos originais e novas legendas traduzidas em novos MKVs"
     },
     "renomear-arquivos": {
-        titulo: "12. Renomear Arquivos de Vídeo",
+        titulo: "13. Renomear Arquivos de Vídeo",
         subtitulo: "Limpeza de nomes de arquivo usando regex e metadados S01E01"
     },
     mapa: {
@@ -203,6 +208,7 @@ async function inicializarModulos() {
     initExtracao();
     await initAuditorConteudo();
     await initNovoKaraoke();
+    await initTraducaoKaraoke();
     initTraducao();
     initCorrecao();
     initRevisao();
@@ -250,7 +256,8 @@ function conectarFluxoLugsSSE() {
         'cura': 'console-cura',
         'remuxer': 'console-remuxer',
         'renomear-arquivos': 'console-renomear-arquivos',
-        'novo-karaoke': 'console-novo-karaoke'
+        'novo-karaoke': 'console-novo-karaoke',
+        'traducao-karaoke': 'console-traducao-karaoke'
     };
 
     for (const [canal, consoleId] of Object.entries(consoleMap)) {
@@ -490,27 +497,10 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Botão "Parar Execução" dos menus: interrompe o trabalho em execução na
-// fila única do pipeline. A parada é cooperativa — o job encerra no próximo
-// ponto seguro e o progresso já salvo (cache, arquivos concluídos) é
-// preservado. Todos os menus usam o mesmo endpoint porque só um job roda
-// por vez na fila.
-// Delegação no document: o painel de Revisão de Lore é injetado
-// dinamicamente (revisaoLore.html), então listeners registrados no load da
-// página não alcançariam o botão dele.
-document.addEventListener('click', async (e) => {
-    const btn = e.target.closest('.btn-parar-pipeline');
-    if (!btn) return;
-    const consoleId = btn.getAttribute('data-console');
-    logNoConsole(consoleId, 'Solicitando parada do trabalho em execução...', 'aviso');
-    try {
-        const res = await fetch('/api/pipeline/parar', { method: 'POST' });
-        const data = await res.json();
-        logNoConsole(consoleId, data.mensagem || 'Parada solicitada.', 'aviso');
-    } catch (err) {
-        logNoConsole(consoleId, `Erro ao solicitar parada: ${err.message}`, 'erro');
-    }
-});
+// Os botões "Parar Execução" foram removidos da UI (decisão 2026-07-09): a
+// parada cooperativa nunca interrompia o job de forma perceptível para o
+// usuário. O endpoint POST /api/pipeline/parar continua existindo e é usado
+// internamente pelo fluxo de encerramento ("Sair").
 
 // Configura funcionalidade de copiar o conteúdo de um console/relatório
 document.addEventListener('click', async (e) => {
@@ -638,7 +628,8 @@ function inicializarMetadadosDinamicos() {
         { inputId: 'revisao-lore-entrada-original', selectId: 'revisao-lore-contexto', bannerId: 'meta-banner-revisao-lore' },
         { inputId: 'troca-tipo-legenda-entrada', selectId: 'troca-tipo-legenda-contexto', bannerId: 'meta-banner-troca-tipo-legenda' },
         { inputId: 'limpanome-entrada', selectId: 'renomear-arquivos-contexto', bannerId: 'meta-banner-limpanome' },
-        { inputId: 'novo-karaoke-entrada', selectId: 'novo-karaoke-contexto', bannerId: 'meta-banner-novo-karaoke' }
+        { inputId: 'novo-karaoke-entrada', selectId: 'novo-karaoke-contexto', bannerId: 'meta-banner-novo-karaoke' },
+        { inputId: 'traducao-karaoke-entrada', selectId: 'traducao-karaoke-contexto', bannerId: 'meta-banner-traducao-karaoke' }
     ];
 
     const atualizarItem = (item) => {
@@ -673,7 +664,7 @@ function inicializarMetadadosDinamicos() {
 
     // Popula automaticamente todos os selects de contexto dos módulos auxiliares.
     const popularContextos = () => {
-        carregarContextosAuxiliares(['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto', 'troca-tipo-legenda-contexto', 'renomear-arquivos-contexto', 'novo-karaoke-contexto'], () => {
+        carregarContextosAuxiliares(['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto', 'troca-tipo-legenda-contexto', 'renomear-arquivos-contexto', 'novo-karaoke-contexto', 'traducao-karaoke-contexto'], () => {
             mapeamentoFormularios.forEach(atualizarItem);
         });
     };
@@ -727,7 +718,10 @@ async function carregarContextosAuxiliares(idsSelects, onComplete) {
             ? await responseRevisaoLore.json()
             : contextos;
 
-        const todosSelects = ['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto', 'troca-tipo-legenda-contexto', 'renomear-arquivos-contexto', 'novo-karaoke-contexto'];
+        // traducao-karaoke-contexto NÃO é auxiliar: o contexto alimenta o prompt
+        // do LLM (lore), então recebe a obra padrão pré-selecionada, como o
+        // select da Tradução Local.
+        const todosSelects = ['analise-contexto', 'traducao-contexto', 'correcao-contexto', 'revisao-contexto', 'cura-contexto', 'revisao-lore-contexto', 'troca-tipo-legenda-contexto', 'renomear-arquivos-contexto', 'novo-karaoke-contexto', 'traducao-karaoke-contexto'];
         todosSelects.forEach(id => {
             const select = document.getElementById(id);
             if (!select) return;
@@ -919,8 +913,7 @@ function inicializarBotoesProcurarCaminho() {
  * Menu "Sair": encerra a aplicação inteira (servidor + trabalho em execução).
  * Fluxo: abre o modal de confirmação (avisando se a fila do pipeline está
  * ocupada), chama POST /api/sistema/sair e cobre a tela com o aviso final.
- * A parada do job em execução é cooperativa — mesmo comportamento do botão
- * "Parar Execução" dos menus.
+ * A parada do job em execução é cooperativa (próximo ponto seguro).
  */
 function inicializarBotaoSair() {
     const btnMenu = document.getElementById('btn-menu-sair');

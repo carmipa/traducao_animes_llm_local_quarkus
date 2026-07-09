@@ -50,6 +50,10 @@ quarkusDev {
     // UTF-8 do Application.java; sem isso o terminal/console-web.log mistura o
     // codepage do console Windows com UTF-8 e os acentos viram mojibake.
     jvmArgs = ['-Dfile.encoding=UTF-8', '-Dstdout.encoding=UTF-8', '-Dstderr.encoding=UTF-8']
+    // O compilador do LIVE-RELOAD não herda o options.encoding do compileJava:
+    // sem isto, literais com acento recompilados a quente corrompem (mojibake
+    // observado em 2026-07-09 num literal com "í" após hot-reload).
+    compilerArgs = ['-encoding', 'UTF-8']
 }
 
 compileTestJava {

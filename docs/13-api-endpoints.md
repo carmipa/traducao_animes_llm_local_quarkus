@@ -137,6 +137,38 @@ Aplica em lote as substituições de fontes sugeridas, com backup automático. A
 
 ---
 
+### `POST /api/auditoria-conteudo`
+Audita pares original ↔ traduzido com as 5 regras de anomalia (karaokê danificado, efeito vazado, quebra de linha alucinada, metadados, sincronia de estilos). **Síncrono** — devolve o `RelatorioAuditoriaConteudo` na resposta. Ver [Análise de Conteúdo](20-modulo-analise-conteudo.md).
+
+```json
+{ "caminhoOriginal": "C:/animes/Serie/legendas_originais", "caminhoTraduzido": "C:/animes/Serie/legendas-ptbr" }
+```
+**Canal SSE:** `auditor-conteudo`
+
+---
+
+### `POST /api/novo-karaoke/simular`
+### `POST /api/novo-karaoke/aplicar`
+Converte karaokê KFX (milhares de eventos por sílaba/frame) em legendas simples — uma linha limpa por frase, no tempo original. Simulação não grava nada. Ver [Karaokê Simples](21-modulo-karaoke-simples.md).
+
+```json
+{ "caminhoOrigem": "C:/animes/86/legendas-ptbr", "caminhoDestino": "C:/animes/86/legendas-karaoke-simples" }
+```
+**Canal SSE:** `novo-karaoke`
+
+---
+
+### `POST /api/traducao-karaoke/simular`
+### `POST /api/traducao-karaoke/aplicar`
+Traduz as letras de música preservando o romaji/japonês original: a simulação classifica linha a linha **sem LLM**; a aplicação entra na fila do pipeline e traduz via LLM apenas a camada em inglês, com cache editável em `cache/karaoke/`. Ver [Tradução de Karaokê](22-modulo-traducao-karaoke.md).
+
+```json
+{ "caminhoOrigem": "C:/animes/86/legendas-karaoke-simples", "contextoId": "eight_six" }
+```
+**Canal SSE:** `traducao-karaoke` — saída gravada na pasta irmã `<entrada>-karaoke-ptbr`
+
+---
+
 ### `POST /api/renomear-arquivos/simular`
 ### `POST /api/renomear-arquivos/aplicar`
 ### `POST /api/renomear-arquivos/reverter`
@@ -160,7 +192,7 @@ Combina vídeo + legenda em MKV final. Ver [Remuxer](08-modulo-remuxer.md).
 ---
 
 ### `POST /api/pipeline/parar`
-Solicita a **parada cooperativa** do trabalho em execução na fila única do pipeline: o job encerra no próximo ponto seguro e o progresso já salvo (cache, arquivos concluídos) é preservado. Todos os painéis usam este mesmo endpoint (botão "Parar Execução"), porque só um job roda por vez.
+Solicita a **parada cooperativa** do trabalho em execução na fila única do pipeline: o job encerra no próximo ponto seguro e o progresso já salvo (cache, arquivos concluídos) é preservado. Os botões "Parar Execução" foram **removidos da UI em 2026-07-09** (a parada cooperativa não interrompia o job de forma perceptível); o endpoint permanece disponível via API e é usado internamente pelo fluxo de encerramento (`/api/sistema/sair`).
 
 Sem payload. **Resposta:** `{"mensagem": "..."}`
 
@@ -205,6 +237,11 @@ Resumo consolidado de telemetria + métricas de JVM. Ver [Telemetria](10-modulo-
 ### `GET /api/telemetria/exportar`
 Download do `logs/telemetria_compartilhada.json` bruto como `kronos_telemetria_segura.json`.
 
+### `POST /api/telemetria/publicar-dataset`
+Publica a telemetria **sanitizada** (só métricas — sem textos de legenda nem caminhos) como dataset público no repositório dedicado `kronos-anime-translation-telemetry-dataset`: snapshot em `metrics/`, commit e push. Ver [Telemetria](10-modulo-telemetria.md).
+
+Sem payload. **Resposta:** `{ "repositorio", "commit", "pushOk", "mensagem" }`
+
 ---
 
 ## Diálogo Nativo (somente Windows)
@@ -235,6 +272,9 @@ Conexão `EventSource` única para **todos** os logs em tempo real. Cada operaç
 | `cura` | `/api/cura-tags` |
 | `revisao-lore` | `/api/revisar-lore` |
 | `troca-tipo-legenda` | `/api/troca-legenda/aplicar` |
+| `auditor-conteudo` | `/api/auditoria-conteudo` |
+| `novo-karaoke` | `/api/novo-karaoke/*` |
+| `traducao-karaoke` | `/api/traducao-karaoke/*` |
 | `renomear-arquivos` | `/api/renomear-arquivos/*` |
 | `remuxer` | `/api/remuxar` |
 | `console` | Fallback genérico — roteado para a aba ativa no navegador |
@@ -245,6 +285,10 @@ Conexão `EventSource` única para **todos** os logs em tempo real. Cada operaç
 const es = new EventSource('/api/logs/stream');
 es.addEventListener('traducao', (e) => console.log(e.data));
 ```
+
+> 📋 **Relatório final padronizado**: toda operação, em qualquer canal, encerra com a linha
+> `[RELATÓRIO FINAL] Operação: <nome> | Tempo total: <duração> | Término: <hh:mm:ss>` (hora local) —
+> tanto em caso de sucesso quanto de falha.
 
 Cada painel da SPA renderiza seu canal nesta mesma caixa "Logs do..." (exemplo abaixo: canal `analise`, painel Análise de Mídia):
 

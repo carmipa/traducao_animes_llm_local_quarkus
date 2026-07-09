@@ -6,9 +6,9 @@
 
 ## Visão Geral
 
-O **KRONOS CORE** é uma plataforma monolítica modular construída sobre o **Quarkus** (usando as extensões de compatibilidade Spring — `quarkus-spring-di`, `quarkus-spring-web`, `quarkus-spring-boot-properties`), organizada em **17 pacotes verticais** sob `org.traducao.projeto.*`, cada um resolvendo uma etapa específica do pipeline de tradução de legendas de anime.
+O **KRONOS CORE** é uma plataforma monolítica modular construída sobre o **Quarkus** (usando as extensões de compatibilidade Spring — `quarkus-spring-di`, `quarkus-spring-web`, `quarkus-spring-boot-properties`), organizada em **20 pacotes verticais** sob `org.traducao.projeto.*`, cada um resolvendo uma etapa específica do pipeline de tradução de legendas de anime.
 
-Na SPA, o menu lateral agrupa os painéis em **5 grupos acordeão** que espelham o fluxo de trabalho: **Preparação** (1. Análise de Mídia, 2. Extração), **Tradução** (3. Tradução Local, 4. Correção Cache), **Qualidade** (5. Análise de Conteúdo, 6. Revisão de Legendas, 7. Correção de Karaoke, 8. Revisão de Lore, 9. Troca Tipo Legenda), **Finalização** (10. Remuxer, 11. Renomear Arquivos) e **Sistema** (Telemetria, Mapa do Projeto, Documentação, Sobre). Os grupos são recolhíveis e o estado é lembrado por navegador (`localStorage`).
+Na SPA, o menu lateral agrupa os painéis em **6 grupos acordeão** que espelham o fluxo de trabalho: **Preparação** (1. Análise de Mídia, 2. Extração, 3. Análise de Conteúdo), **Tradução** (4. Tradução Local, 5. Correção Cache), **Qualidade** (6. Revisão de Legendas, 7. Revisão de Lore, 8. Troca Tipo Legenda), **Karaokê** (9. Karaokê Simples, 10. Tradução de Karaokê, 11. Correção de Karaoke), **Finalização** (12. Remuxer, 13. Renomear Arquivos) e **Sistema** (Telemetria, Mapa do Projeto, Documentação, Sobre). Os grupos são recolhíveis e o estado é lembrado por navegador (`localStorage`).
 
 O desenho segue **Arquitetura Hexagonal (Ports & Adapters)** por módulo: cada pacote tem, tipicamente, `domain/` (modelos e portas), `application/` (casos de uso, orquestração), `infrastructure/` (adapters concretos — ffmpeg, mkvmerge, HTTP client do LM Studio, scraping do Google Translate) e `presentation/` (controllers REST e/ou CLI).
 
@@ -33,12 +33,15 @@ graph TB
         HOME["🏠 Início"]
         P_AN["🔍 Análise de Mídia"]
         P_EX["✂️ Extração de Legendas"]
+        P_AC["🔎 Análise de Conteúdo"]
         P_TR["🌐 Tradução Local"]
         P_CO["🩹 Correção de Cache"]
         P_RE["📝 Revisão de Legendas"]
-        P_CU["🧵 Correção de Legendas"]
         P_RL["📖 Revisão de Lore"]
         P_TF["🔤 Troca Tipo Legenda"]
+        P_KS["🎵 Karaokê Simples"]
+        P_TK["🎤 Tradução de Karaokê"]
+        P_CU["🧵 Correção de Karaoke"]
         P_RX["📦 Remuxer"]
         P_LN["🧹 Renomear Arquivos"]
         P_MA["🗺️ Mapa do Projeto"]
@@ -57,11 +60,16 @@ graph TB
     subgraph UC["⚙️ Use Cases (application/)"]
         UC_AN["AnalisarMidiaUseCase"]
         UC_EX["ExtrairLegendaUseCase"]
+        UC_AC["AuditorConteudoUseCase"]
         UC_TR["ProcessarArquivoUseCase"]
         UC_CO["RevisarCacheUseCase / CorrigirComGoogleUseCase"]
         UC_RE["RevisarLegendasUseCase"]
+        UC_RL["RevisarLoreUseCase"]
+        UC_KS["ConversorKaraokeUseCase"]
+        UC_TK["TraduzirKaraokeUseCase"]
         UC_CU["CorrigirLegendasUseCase"]
         UC_RX["RemuxarLoteUseCase"]
+        UC_RN["RenomeadorUseCase"]
     end
 
     subgraph ADAPT["🔌 Adapters (infrastructure/)"]
@@ -100,6 +108,9 @@ graph TB
     UC_CO --> AD_LLM
     UC_RE --> AD_GT
     UC_RE --> AD_LLM
+    UC_RL --> AD_LLM
+    UC_TK --> AD_LLM
+    UC_TK --> CACHE
     UC_CU --> AD_LLM
     UC_RX --> AD_MX --> MKVT
     API --> AD_JK --> JIKAN
@@ -107,6 +118,17 @@ graph TB
     UC --> LOGS
     UC_AN --> REL
     API --> SSE --> UI
+
+    classDef ui fill:#1e293b,stroke:#3B82F6,color:#F9FAFB
+    classDef uc fill:#1e2937,stroke:#8B5CF6,color:#F9FAFB
+    classDef adapt fill:#1e293b,stroke:#F59E0B,color:#F9FAFB
+    classDef ext fill:#0f172a,stroke:#10B981,color:#F9FAFB
+    classDef fs fill:#0f172a,stroke:#6B7280,color:#F9FAFB
+    class HOME,P_AN,P_EX,P_AC,P_TR,P_CO,P_RE,P_RL,P_TF,P_KS,P_TK,P_CU,P_RX,P_LN,P_MA,P_TE,P_DOC ui
+    class UC_AN,UC_EX,UC_AC,UC_TR,UC_CO,UC_RE,UC_RL,UC_KS,UC_TK,UC_CU,UC_RX,UC_RN uc
+    class AD_FF,AD_MK,AD_LLM,AD_GT,AD_MX,AD_JK,AD_TM adapt
+    class LM,MKVT,FFM,GT,JIKAN,TMDB ext
+    class CACHE,LOGS,REL fs
 ```
 
 ---
@@ -117,22 +139,36 @@ graph TB
 graph LR
     A["📼 Vídeo Original<br/>.mkv/.mp4"] --> B["🔍 1. Análise de Mídia<br/>ffprobe: codecs, drift de sync"]
     B --> C["✂️ 2. Extração de Legenda<br/>ASS / SRT / PGS"]
-    C --> D["🌐 3. Tradução Local<br/>LLM via LM Studio + cache"]
+    C --> QA["🔎 3. Análise de Conteúdo<br/>anomalias de LLM e efeitos"]
+    QA --> D["🌐 4. Tradução Local<br/>LLM via LM Studio + cache"]
     D --> E{"Resíduo em<br/>inglês?"}
-    E -->|Sim| F["🩹 4. Correção<br/>(cache LLM / Google scraping)"]
-    E -->|Não| QA["🔎 5. Análise de Conteúdo<br/>anomalias de LLM e efeitos"]
-    QA --> G["📝 6. Revisão<br/>concordância PT-BR"]
+    E -->|Sim| F["🩹 5. Correção Cache<br/>(cache LLM / Google scraping)"]
+    E -->|Não| G["📝 6. Revisão<br/>concordância PT-BR"]
     F --> G
-    G --> H["🧵 7. Correção de Legendas<br/>original como referência imutável"]
-    H --> H2["📖 8. Revisão de Lore<br/>nomes, locais e termos de mundo"]
-    H2 --> H3["🔤 9. Troca Tipo Legenda<br/>fontes legadas → Unicode"]
-    H3 --> I["📦 10. Remuxer<br/>mkvmerge: vídeo + legenda PT-BR"]
+    G --> H2["📖 7. Revisão de Lore<br/>nomes, locais e termos de mundo"]
+    H2 --> H3["🔤 8. Troca Tipo Legenda<br/>fontes legadas → Unicode"]
+    H3 --> K1["🎵 9. Karaokê Simples<br/>KFX → linha limpa por frase"]
+    K1 --> K2["🎤 10. Tradução de Karaokê<br/>romaji preservado + letra EN → PT-BR"]
+    K2 --> H["🧵 11. Correção de Karaoke<br/>original como referência imutável"]
+    H --> I["📦 12. Remuxer<br/>mkvmerge: vídeo + legenda PT-BR"]
     I --> J["🎬 MKV Final<br/>pronto para distribuição"]
-    J -.-> K["🧹 11. Renomear Arquivos<br/>padroniza nomes de arquivo (S01E01)"]
+    J -.-> K["🧹 13. Renomear Arquivos<br/>padroniza nomes de arquivo (S01E01)"]
 
-    style A fill:#1e293b,stroke:#3B82F6
-    style J fill:#1e293b,stroke:#10B981
+    classDef prep fill:#0c4a6e,stroke:#38BDF8,color:#F9FAFB
+    classDef trad fill:#312e81,stroke:#818CF8,color:#F9FAFB
+    classDef qual fill:#14532d,stroke:#4ADE80,color:#F9FAFB
+    classDef kara fill:#831843,stroke:#F472B6,color:#F9FAFB
+    classDef fin fill:#7c2d12,stroke:#FB923C,color:#F9FAFB
+    classDef midia fill:#1e293b,stroke:#3B82F6,color:#F9FAFB
+    class B,C,QA prep
+    class D,E,F trad
+    class G,H2,H3 qual
+    class K1,K2,H kara
+    class I,K fin
+    class A,J midia
 ```
+
+> 🎨 **Cores por grupo do menu**: azul = Preparação, índigo = Tradução, verde = Qualidade, rosa = Karaokê, laranja = Finalização.
 
 > Cada etapa é **independente e re-executável** — o operador pode rodar só a extração de novo, ou só a revisão, sem repetir as etapas anteriores. O elo entre etapas é sempre o sistema de arquivos (pastas de entrada/saída informadas manualmente em cada painel).
 
@@ -188,9 +224,12 @@ org.traducao.projeto/
 │   └── presentation/web/   ← ApiController (a maioria dos endpoints REST vive aqui)
 ├── raspagemCorrecao/       ← Correção de cache via Google Translate (scraping)
 ├── raspagemRevisao/        ← Revisão de legendas .ass finais (Google ou LLM) + detector de concordância PT-BR
+├── auditorConteudoLegendas/ ← Análise de Conteúdo: anomalias de LLM, efeitos vazados e metadados nas .ass
 ├── revisaoLore/             ← Refinamento de lore pós-tradução: nomes, lugares, objetos e termos de universo
 ├── correcaoLegendas/        ← Correção estrutural da legenda PT-BR usando a original como referência imutável
 ├── trocaTipoLegenda/        ← Auditoria e troca em lote de fontes legadas (TCVN3/VNI) por fontes Unicode
+├── novoKaraoke/             ← Karaokê Simples: converte KFX (milhares de eventos) em linhas limpas por frase
+├── traducaoKaraoke/         ← Tradução de Karaokê: romaji preservado + camada inglesa da letra → PT-BR via LLM
 ├── remuxer/                 ← Combina vídeo original + legenda traduzida em MKV final (mkvmerge)
 ├── renomearArquivos/        ← Renomeação em lote para o padrão "Nome - S01E01" com dry-run e undo
 ├── sistema/                 ← Ciclo de vida do processo (menu "Sair" — encerramento gracioso)

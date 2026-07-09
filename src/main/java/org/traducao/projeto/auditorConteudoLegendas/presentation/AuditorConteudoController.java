@@ -39,7 +39,10 @@ public class AuditorConteudoController {
             java.nio.file.Path original = java.nio.file.Path.of(request.caminhoOriginal().trim());
             java.nio.file.Path traduzido = java.nio.file.Path.of(request.caminhoTraduzido().trim());
             logStreamService.definirCanalAtual("auditor-conteudo");
+            long inicioMs = System.currentTimeMillis();
             RelatorioAuditoriaConteudo relatorio = auditorConteudoUseCase.auditar(original, traduzido);
+            System.out.println(org.traducao.projeto.core.util.DuracaoUtil.linhaRelatorioFinal(
+                "Análise de Conteúdo de Legendas", inicioMs));
             return Response.ok(relatorio).build();
         } catch (AuditoriaException e) {
             return Response.status(Response.Status.BAD_REQUEST)

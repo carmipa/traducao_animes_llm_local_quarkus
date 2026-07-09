@@ -30,11 +30,14 @@ O **KRONOS CORE** é uma plataforma de automação para **tradução industrial 
 
 - 🔍 **Auditoria técnica de mídia** (ffprobe) com detecção automática de dessincronismo de legenda
 - ✂️ **Extração em lote** de faixas de legenda (ASS/SRT/PGS) de MKV/MP4/qualquer contêiner comum
+- 🔎 **Análise de Conteúdo de legendas** — 5 regras de auditoria contra anomalias de LLM, efeitos vazados e karaokê danificado, antes e depois da tradução
 - 🌐 **Tradução por LLM 100% local** (LM Studio) com cache persistente e lore por anime (56+ contextos)
 - 🩹 **Três fluxos de correção/revisão** (LLM, Google Translate, heurística de concordância PT-BR)
 - 🧵 **Restauração estrutural de tags ASS** corrompidas por alucinação de IA (Aegisub/Kara Templater)
 - 📖 **Revisão de Lore** pós-tradução — nomes, locais e termos de mundo validados contra a lore oficial da obra, com trilha de auditoria por fala
 - 🔤 **Troca de fontes legadas** — detecta e substitui fontes TCVN3/VNI de fansubs (que corrompem a acentuação PT-BR na renderização) por fontes Unicode
+- 🎵 **Karaokê Simples** — converte karaokê KFX (milhares de eventos por sílaba/frame) em uma linha limpa por frase, no mesmo tempo do efeito original
+- 🎤 **Tradução de Karaokê** — romaji/japonês preservado na tela + camada inglesa da letra traduzida para PT-BR via LLM, tolerante a inglês misturado na letra japonesa
 - 📦 **Remuxagem automatizada** com preservação total de qualidade original
 - 🧹 **Renomeação em lote de arquivos** — nomes de tracker viram o padrão `Nome - S01E01`, com dry-run e undo
 - 📊 **Telemetria em tempo real** (SSE) de todas as etapas do pipeline
@@ -61,11 +64,14 @@ Tudo rodando sobre **Java 25 + Quarkus** com uma SPA própria (HTML/CSS/JS puro,
 | 🚀 | [**Instalação & Configuração**](docs/02-instalacao.md) | Pré-requisitos, setup local e primeiros passos |
 | 🔍 | [**Análise de Mídia**](docs/03-modulo-analise-midia.md) | Auditoria ffprobe e detecção de dessincronismo de legenda |
 | ✂️ | [**Extração de Legendas**](docs/04-modulo-extracao-legendas.md) | Extração em lote ASS/SRT/PGS via MKVToolNix/ffmpeg |
+| 🔎 | [**Análise de Conteúdo**](docs/20-modulo-analise-conteudo.md) | Auditoria de anomalias: efeitos vazados, karaokê danificado, alucinações de LLM |
 | 🌐 | [**Tradução Local (LLM)**](docs/05-modulo-traducao-llm.md) | Núcleo: LM Studio, cache, proteção de tags, contextos |
 | 🩹 | [**Correção & Revisão**](docs/06-modulo-correcao-revisao.md) | Os 3 fluxos: LLM, Google Translate, concordância PT-BR |
 | 🧵 | [**Cura de Tags**](docs/07-modulo-cura-tags.md) | Restauração estrutural de tags ASS/Kara Templater |
 | 📖 | [**Revisão de Lore**](docs/16-modulo-revisao-lore.md) | Corrige nomes, locais e termos de lore comparando com o original em inglês |
 | 🔤 | [**Troca Tipo Legenda**](docs/18-modulo-troca-tipo-legenda.md) | Auditoria e troca em lote de fontes legadas (TCVN3/VNI) por fontes Unicode |
+| 🎵 | [**Karaokê Simples**](docs/21-modulo-karaoke-simples.md) | Converte karaokê KFX em linhas simples e limpas, no tempo original |
+| 🎤 | [**Tradução de Karaokê**](docs/22-modulo-traducao-karaoke.md) | Romaji preservado + letra em inglês traduzida para PT-BR, lado a lado |
 | 📦 | [**Remuxer**](docs/08-modulo-remuxer.md) | Combina vídeo + legenda em MKV final |
 | 🧹 | [**Renomear Arquivos**](docs/19-modulo-renomear-arquivos.md) | Renomeação em lote para o padrão `Nome - S01E01`, com dry-run e undo |
 | 🎭 | [**Contextos & Lore**](docs/09-contextos-lore.md) | Sistema de lore por anime — 56+ contextos cadastrados |
@@ -113,7 +119,7 @@ cd traducao_animes_llm_local_quarkus
 │                           KRONOS CORE                                 │
 │                                                                        │
 │  ┌──────────┐    ┌────────────────┐    ┌───────────────────────┐    │
-│  │   SPA    │───▶│ ApiController  │───▶│  Use Cases (17 pacotes)│    │
+│  │   SPA    │───▶│ ApiController  │───▶│  Use Cases (20 pacotes)│    │
 │  │ (HTML/JS)│    │  REST + SSE    │    │  análise → extração →  │    │
 │  └──────────┘    └───────┬────────┘    │  tradução → correção → │    │
 │                          │              │  cura → remuxer        │    │
@@ -136,14 +142,30 @@ cd traducao_animes_llm_local_quarkus
 graph LR
     A["📼 Vídeo"] --> B["🔍 Análise"]
     B --> C["✂️ Extração"]
-    C --> D["🌐 Tradução"]
+    C --> AC["🔎 Análise de Conteúdo"]
+    AC --> D["🌐 Tradução"]
     D --> E["🩹 Correção/Revisão"]
-    E --> F["🧵 Cura de Tags"]
-    F --> F2["📖 Revisão de Lore"]
+    E --> F2["📖 Revisão de Lore"]
     F2 --> F3["🔤 Troca de Fonte"]
-    F3 --> G["📦 Remuxer"]
+    F3 --> K1["🎵 Karaokê Simples"]
+    K1 --> K2["🎤 Tradução de Karaokê"]
+    K2 --> F["🧵 Correção de Karaoke"]
+    F --> G["📦 Remuxer"]
     G --> H["🎬 MKV Final"]
-    H -.-> I["🧹 Limpa Nome"]
+    H -.-> I["🧹 Renomear Arquivos"]
+
+    classDef prep fill:#0c4a6e,stroke:#38BDF8,color:#F9FAFB
+    classDef trad fill:#312e81,stroke:#818CF8,color:#F9FAFB
+    classDef qual fill:#14532d,stroke:#4ADE80,color:#F9FAFB
+    classDef kara fill:#831843,stroke:#F472B6,color:#F9FAFB
+    classDef fin fill:#7c2d12,stroke:#FB923C,color:#F9FAFB
+    classDef midia fill:#1e293b,stroke:#3B82F6,color:#F9FAFB
+    class B,C,AC prep
+    class D,E trad
+    class F2,F3 qual
+    class K1,K2,F kara
+    class G,I fin
+    class A,H midia
 ```
 
 Cada etapa é **independente e re-executável** — rode só a etapa que precisar, sem repetir o pipeline inteiro. Detalhes em [Arquitetura — Pipeline Completo](docs/01-arquitetura.md#diagrama-de-fluxo--pipeline-completo-visão-de-negócio).
@@ -175,9 +197,12 @@ traducao_animes_llm_local_quarkus/
 │   │   │   ├── traducao/              ← Núcleo: LLM, cache, contextos, ApiController
 │   │   │   ├── raspagemCorrecao/      ← Correção via Google Translate
 │   │   │   ├── raspagemRevisao/       ← Revisão de concordância PT-BR
+│   │   │   ├── auditorConteudoLegendas/ ← Análise de Conteúdo (anomalias de LLM/efeitos)
 │   │   │   ├── correcaoLegendas/      ← Correção estrutural (original como referência)
 │   │   │   ├── revisaoLore/           ← Revisão de nomes/termos vs. lore oficial
 │   │   │   ├── trocaTipoLegenda/      ← Troca de fontes legadas por Unicode
+│   │   │   ├── novoKaraoke/           ← Karaokê Simples (KFX → linha limpa)
+│   │   │   ├── traducaoKaraoke/       ← Tradução de Karaokê (romaji + PT-BR juntos)
 │   │   │   ├── remuxer/               ← Combina vídeo + legenda
 │   │   │   ├── renomearArquivos/      ← Renomeação em lote (S01E01) com undo
 │   │   │   ├── sistema/               ← Encerramento gracioso (menu "Sair")
@@ -199,14 +224,15 @@ traducao_animes_llm_local_quarkus/
 
 ## Navegação Interna (dentro do app)
 
-A barra lateral organiza os painéis em **5 grupos acordeão** (recolhíveis, com estado lembrado entre visitas), espelhando a ordem do pipeline:
+A barra lateral organiza os painéis em **6 grupos acordeão** (recolhíveis, com estado lembrado entre visitas), espelhando a ordem do pipeline:
 
 | Grupo | Painéis |
 |-------|---------|
-| 🎬 **Preparação** | `1. Análise de Mídia` · `2. Extração` |
-| 🌐 **Tradução** | `3. Tradução Local` · `4. Correção Cache` |
-| ✅ **Qualidade** | `5. Análise de Conteúdo` · `6. Revisão de Legendas` · `7. Correção de Karaoke` · `8. Revisão de Lore` · `9. Troca Tipo Legenda` |
-| 📦 **Finalização** | `10. Remuxer` · `11. Renomear Arquivos` |
+| 🎬 **Preparação** | `1. Análise de Mídia` · `2. Extração` · `3. Análise de Conteúdo` |
+| 🌐 **Tradução** | `4. Tradução Local` · `5. Correção Cache` |
+| ✅ **Qualidade** | `6. Revisão de Legendas` · `7. Revisão de Lore` · `8. Troca Tipo Legenda` |
+| 🎤 **Karaokê** | `9. Karaokê Simples` · `10. Tradução de Karaokê` · `11. Correção de Karaoke` |
+| 📦 **Finalização** | `12. Remuxer` · `13. Renomear Arquivos` |
 | ⚙️ **Sistema** | `Telemetria` · `Mapa do Projeto` · **`Documentação`** · `Sobre` |
 
 O menu **Documentação** renderiza esta mesma pasta `docs/` dentro da própria aplicação (incluindo os diagramas Mermaid), sem precisar sair do app ou abrir o GitHub.

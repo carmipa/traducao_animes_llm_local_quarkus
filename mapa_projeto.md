@@ -194,6 +194,13 @@ milissegundos, então algumas tentativas com espera crescente resolvem sem
 perder a garantia de "nunca deixa o destino truncado".</p>
 ```
 
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/core/util/DuracaoUtil.java`
+```text
+Formata durações de jobs para o relatório final dos consoles da UI
+(ex.: "1h 04min 12s", "3min 08s", "45s", "0,8s"). Todos os módulos usam o
+mesmo formato para o usuário comparar execuções entre etapas do pipeline.
+```
+
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/core/util/ProcessoExternoUtil.java`
 ```text
 Executa processos externos (ffmpeg, ffprobe, mkvmerge, mkvextract) de forma segura:
@@ -339,7 +346,6 @@ Garantias de segurança:
 <li>O arquivo original NUNCA é alterado — a saída vai para a pasta que o
 usuário escolher.</li>
 <li>Diálogo, placas e Comment são reemitidos byte a byte (linha crua).</li>
-<li>Bloco musical que não puder ser reconstruído com confiança é mantido
 ```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/novoKaraoke/domain/EventoAss.java`
@@ -503,7 +509,6 @@ Exemplo: [10:20:30] [INFO   ] Mensagem...
 ```text
 Regex para pegar o episódio de trackers.
 Ex: "[SubsPlease] Nome Anime - 01 (1080p).mkv" -> 01
-Ex: "[DB]86_-_01_(Dual Audio_10bit_BD1080p_x265)_PTBR.mkv" -> 01
 ```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/renomearArquivos/domain/OperacaoRenomeacao.java`
@@ -644,6 +649,32 @@ Registro persistido de operações do pipeline que não passam pelo LLM de tradu
 Métricas agregadas das sessões de Revisão de Lore para o painel de Telemetria.
 ```
 
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/telemetria/TelemetriaDatasetProperties.java`
+```text
+Configuração do repositório dedicado do dataset público de telemetria
+(seção {@code telemetria-dataset} do application.yml). O nome segue a
+convenção da comunidade para datasets de telemetria:
+{@code [NomeDoSistema]-telemetry-dataset}.
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/telemetria/TelemetriaDatasetService.java`
+```text
+Publica a telemetria acumulada como DATASET PÚBLICO num repositório Git
+DEDICADO ({@code kronos-anime-translation-telemetry-dataset}, seguindo a
+convenção {@code [NomeDoSistema]-telemetry-dataset} para dados de pesquisa/ML).
+<p>
+O serviço é auto-suficiente: se o repositório local não existir, ele clona o
+remoto configurado (ou inicializa um novo e associa o remoto); na primeira
+publicação gera README com declaração de anonimização (LGPD/GDPR), LICENSE e
+a estrutura {@code metrics/}. Cada publicação = 1 commit + push, e o
+histórico Git é o versionamento natural dos snapshots.
+<p>
+Sanitização deliberada — o dataset é feito para consumo externo, então
+carrega apenas MÉTRICAS: nada de textos de legenda (os avisos viram
+contagem), nada de caminhos de máquina (o campo {@code detalhe} das
+operações é descartado e nomes de episódio perdem qualquer diretório).
+```
+
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/telemetria/TelemetriaResumo.java`
 ```text
 Resumo serializável da telemetria acumulada na sessão atual do servidor,
@@ -671,6 +702,75 @@ Ativado quando a propriedade app.modo é configurada como "CORRIGIR_CACHE".
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducaoCorrige/domain/exceptions/CorretorCacheException.java`
 *(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducaoKaraoke/application/ClassificadorLetraKaraokeService.java`
+```text
+Decide o destino de cada evento de música: preservar (letra original),
+traduzir (camada em inglês) ou não tocar (efeito KFX / já em PT-BR).
+<p>
+O problema central que este classificador resolve: cantores japoneses
+misturam inglês no meio da letra ("kimi no heart ni fly away"). A heurística
+estrita de romaji do {@link DetectorEfeitoKaraokeService} exige que TODAS as
+palavras sejam silabáveis em japonês — uma única palavra inglesa derruba a
+detecção e a letra original iria ao LLM. Aqui a decisão é por EVIDÊNCIA:
+partículas/palavras japonesas romanizadas inequívocas votam em "original",
+palavras gramaticais inequívocas de inglês votam em "tradução", e o estilo
+do evento (Romaji/JP vs English) decide antes de qualquer análise de texto.
+Em caso de dúvida o viés é PRESERVAR — o mesmo princípio de todo o projeto:
+deixar uma linha sem traduzir custa menos que destruir a letra original.
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducaoKaraoke/application/TraduzirKaraokeUseCase.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducaoKaraoke/domain/ClasseLinhaKaraoke.java`
+```text
+Classificação de cada evento da legenda sob a ótica da tradução de letras
+de música. O ponto delicado é a letra japonesa romanizada com palavras em
+inglês misturadas (comum em música japonesa: "kimi no heart ni fly away") —
+ela é ORIGINAL_JAPONES e nunca pode ir ao LLM, enquanto a camada de
+TRADUÇÃO em inglês da mesma música é TRADUZIVEL_INGLES.
+Não é música: diálogo, placa, Comment. Copiada byte a byte. /
+Efeito KFX (sílaba/frame, alta densidade de tags). Preservado intacto. /
+Letra original (kana/kanji/romaji, mesmo com inglês misturado). Nunca traduz. /
+Letra que já está em português. Nada a fazer. /
+Camada de tradução em inglês da música: é o que este módulo traduz. /
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducaoKaraoke/domain/ResultadoTraducaoKaraoke.java`
+```text
+Resumo, por arquivo .ass, do que a tradução de karaokê classificou e fez.
+Alimenta o console da UI, o manifesto de auditoria e a telemetria.
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducaoKaraoke/domain/TraducaoKaraokeException.java`
+```text
+Erro de negócio do módulo Tradução de Karaokê (validação de pastas,
+LLM indisponível, falha de leitura/escrita das legendas).
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducaoKaraoke/infrastructure/TraducaoKaraokePersistencia.java`
+```text
+Manifesto de auditoria da tradução de karaokê: registra, por execução, o
+que foi preservado/traduzido em cada arquivo. Fica em
+{@code logs/traducao-karaoke/manifestos} — junto com os originais intocados
+na pasta de origem e o cache JSON editável, é a trilha completa para
+auditar (ou refazer) qualquer tradução de letra.
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducaoKaraoke/presentation/TraducaoKaraokeController.java`
+```text
+Endpoints do módulo Tradução de Karaokê. A simulação só lê arquivos e roda
+async fora da fila (mesmo padrão do Karaokê Simples); a APLICAÇÃO chama o
+LLM e muda o contexto de lore ativo — estado global —, então
+obrigatoriamente entra na {@link FilaExecucaoPipeline}.
+```
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducaoKaraoke/presentation/TraducaoKaraokeRequest.java`
+```text
+Corpo das requisições do painel Tradução de Karaokê: a pasta com as
+legendas .ass e a obra (contexto de lore) selecionada na UI.
+```
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/traducao/Application.java`
 ```text
@@ -1281,7 +1381,31 @@ Ignora
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/revisaoLore/infrastructure/RevisaoLoreAuditoriaCacheTest.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/telemetria/TelemetriaDatasetServiceTest.java`
+```text
+O dataset público carrega SOMENTE métricas: sem textos de legenda (avisos
+viram contagem), sem caminhos de máquina (detalhe descartado, episódio
+reduzido ao nome do arquivo). Estes testes são o contrato de anonimização
+declarado no README do repositório do dataset.
+```
+
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/telemetria/TelemetriaServiceCompactacaoTest.java`
+```text
+Teto de avisos por episódio no JSON canônico: sem ele, os textos de aviso
+dominavam o arquivo de telemetria (21,9 mil avisos ≈ 85% dos 3,5MB medidos
+em 2026-07-09) e eram regravados a cada registro.
+```
+
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/telemetria/TelemetriaServiceRevisaoLoreTest.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/traducaoKaraoke/application/ClassificadorLetraKaraokeServiceTest.java`
+```text
+O caso central do módulo: cantor japonês mistura inglês na letra.
+Estilo real do 86: "ED-ROM".
+```
+
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/traducaoKaraoke/application/TraduzirKaraokeUseCaseTest.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/traducao/application/DetectorEfeitoKaraokeServiceTest.java`

@@ -6,7 +6,7 @@
 
 ## Para que serve
 
-Painel **"8. Revisão de Lore"** da SPA. Compara cada fala de uma legenda `.ass` **já traduzida** (PT-BR) com a mesma fala na legenda **original em inglês**, e usa o LLM local para corrigir **nomes de personagens, locais, facções, mechas e termos de mundo** que tenham saído fora do padrão oficial da obra — sem tocar em concordância de gênero ou reescrever a fala inteira (isso é papel do [fluxo 3 de Correção & Revisão](06-modulo-correcao-revisao.md#fluxo-3--revisão-de-concordância-pt-br-via-llm-raspagemrevisao)).
+Painel **"7. Revisão de Lore"** da SPA. Compara cada fala de uma legenda `.ass` **já traduzida** (PT-BR) com a mesma fala na legenda **original em inglês**, e usa o LLM local para corrigir **nomes de personagens, locais, facções, mechas e termos de mundo** que tenham saído fora do padrão oficial da obra — sem tocar em concordância de gênero ou reescrever a fala inteira (isso é papel do [fluxo 3 de Correção & Revisão](06-modulo-correcao-revisao.md#fluxo-3--revisão-de-concordância-pt-br-via-llm-raspagemrevisao)).
 
 Diferente da tradução principal, aqui a **seleção de obra é obrigatória**: sem contexto/lore selecionado, o backend recusa a requisição (`400 Bad Request`) — não existe modo "sem lore" para esta operação, porque o propósito inteiro é comparar contra uma lore canônica.
 

@@ -11,6 +11,7 @@ import org.traducao.projeto.revisaoLore.application.RevisarLoreUseCase;
 import org.traducao.projeto.revisaoLore.domain.ResultadoRevisaoLore;
 import org.traducao.projeto.revisaoLore.domain.exceptions.RevisaoLoreException;
 import org.traducao.projeto.core.execucao.FilaExecucaoPipeline;
+import org.traducao.projeto.core.util.DuracaoUtil;
 import org.traducao.projeto.traducao.presentation.web.LogStreamService;
 
 import java.nio.file.Path;
@@ -98,6 +99,7 @@ public class RevisaoLoreController {
 
         filaExecucao.submeter(() -> {
             logStreamService.definirCanalAtual("revisao-lore");
+            long inicioMs = System.currentTimeMillis();
             try {
                 ResultadoRevisaoLore resultado = revisarLoreUseCase.executar(
                     pastaOriginal, pastaTraduzida, req.contextoId(), revisarTodas);
@@ -115,6 +117,8 @@ public class RevisaoLoreController {
                 System.out.println("\u001B[31m[ERRO] Revisao de lore: " + e.getMessage() + "\u001B[0m");
             } catch (Exception e) {
                 System.out.println("\u001B[31m[ERRO] Falha inesperada na revisao de lore: " + e.getMessage() + "\u001B[0m");
+            } finally {
+                System.out.println(DuracaoUtil.linhaRelatorioFinal("Revisão de Lore (LLM)", inicioMs));
             }
         });
 

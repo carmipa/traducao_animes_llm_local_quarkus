@@ -1,3 +1,5 @@
+import { mostrarAlerta } from '../js/app.js';
+
 let jvmCpuHistory = [];
 let jvmHeapHistory = [];
 let jvmLabelsHistory = [];
@@ -54,6 +56,32 @@ export function initTelemetria() {
     if (btnExportar) {
         btnExportar.addEventListener('click', () => {
             window.open('/api/telemetria/exportar', '_blank');
+        });
+    }
+
+    // Publica a telemetria sanitizada como dataset público no repositório Git
+    // dedicado (kronos-anime-translation-telemetry-dataset): snapshot + commit + push.
+    const btnPublicar = document.getElementById('btn-publicar-dataset');
+    if (btnPublicar) {
+        const rotulo = btnPublicar.querySelector('span:last-child');
+        btnPublicar.addEventListener('click', async () => {
+            btnPublicar.disabled = true;
+            const textoOriginal = rotulo ? rotulo.textContent : '';
+            if (rotulo) rotulo.textContent = 'Publicando...';
+            try {
+                const res = await fetch('/api/telemetria/publicar-dataset', { method: 'POST' });
+                const dados = await res.json();
+                if (res.ok && dados.pushOk) {
+                    mostrarAlerta(dados.mensagem, 'sucesso');
+                } else {
+                    mostrarAlerta(dados.mensagem || 'Falha ao publicar o dataset.', res.ok ? 'aviso' : 'erro');
+                }
+            } catch (e) {
+                mostrarAlerta('Erro de conexão ao publicar o dataset: ' + e.message, 'erro');
+            } finally {
+                btnPublicar.disabled = false;
+                if (rotulo) rotulo.textContent = textoOriginal;
+            }
         });
     }
 

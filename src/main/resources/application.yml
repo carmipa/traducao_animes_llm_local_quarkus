@@ -47,3 +47,11 @@ extrator:
 
 tmdb:
   api-key: dummy_key
+
+# Repositório dedicado do dataset público de telemetria (botão "Publicar
+# Dataset" no painel de Telemetria). Nome na convenção da comunidade:
+# [NomeDoSistema]-telemetry-dataset. O repositório remoto precisa existir no
+# GitHub (criado uma única vez, vazio); o resto é bootstrap automático.
+telemetria-dataset:
+  repositorio-local: ../kronos-anime-translation-telemetry-dataset
+  repositorio-remoto: https://github.com/carmipa/kronos-anime-translation-telemetry-dataset.git

@@ -85,6 +85,18 @@ Download do arquivo bruto `logs/telemetria_compartilhada.json` como anexo `krono
 
 Implementado em `TelemetriaStreamResource` (não em `ApiController` Spring-style, para evitar colisão de rota) — um `ScheduledExecutorService` interno faz `broadcast()` do `TelemetriaResumo` serializado a cada **1 segundo** para todos os clientes conectados.
 
+### `POST /api/telemetria/publicar-dataset`
+
+Botão **"Publicar Dataset"** do painel: publica a telemetria como **dataset público** no repositório Git dedicado **[`kronos-anime-translation-telemetry-dataset`](https://github.com/carmipa/kronos-anime-translation-telemetry-dataset)** (convenção da comunidade `[NomeDoSistema]-telemetry-dataset`, voltada a pesquisa/ML/AIOps).
+
+Fluxo do `TelemetriaDatasetService`:
+
+1. **Sanitiza** — só métricas: avisos viram `quantidadeAvisos` (nenhum texto de legenda), o campo `detalhe` das operações é descartado e nomes de episódio perdem qualquer diretório (nenhum caminho de máquina/PII — declaração LGPD/GDPR no README do dataset);
+2. **Gera** `metrics/kronos-telemetria-dataset.json` no repositório local (clonado/bootstrapado automaticamente, com README e LICENSE na primeira publicação);
+3. **Commita e faz push** — cada publicação é um commit; o histórico Git é a linha do tempo dos snapshots.
+
+Configuração em `application.yml` (`telemetria-dataset.repositorio-local` / `repositorio-remoto`). Único passo manual, uma vez: criar o repositório vazio no GitHub.
+
 ---
 
 ## Navegação

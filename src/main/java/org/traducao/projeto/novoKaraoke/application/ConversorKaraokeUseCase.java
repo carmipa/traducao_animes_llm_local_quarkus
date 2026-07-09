@@ -8,6 +8,7 @@ import org.traducao.projeto.novoKaraoke.domain.EventoAss;
 import org.traducao.projeto.novoKaraoke.domain.LinhaSimplesKaraoke;
 import org.traducao.projeto.novoKaraoke.domain.NovoKaraokeException;
 import org.traducao.projeto.novoKaraoke.domain.ResultadoConversaoKaraoke;
+import org.traducao.projeto.core.util.DuracaoUtil;
 import org.traducao.projeto.novoKaraoke.infrastructure.NovoKaraokePersistencia;
 import org.traducao.projeto.telemetria.TelemetriaService;
 import org.traducao.projeto.traducao.application.DetectorEfeitoKaraokeService;
@@ -746,6 +747,9 @@ public class ConversorKaraokeUseCase {
         } else {
             logStream.publicarLog(CANAL_LOG, "[ATENÇÃO] Operação concluída com " + falhas + " falha(s) — verifique o log acima.");
         }
+        logStream.publicarLog(CANAL_LOG, DuracaoUtil.linhaRelatorioFinal(
+            gravar ? "Karaokê Simples (conversão)" : "Karaokê Simples (simulação)",
+            System.currentTimeMillis() - duracaoMs));
     }
 
     private void registrarTelemetriaEManifesto(Path origem, Path destino, List<ResultadoConversaoKaraoke> resultados, long duracaoMs) {

@@ -5,6 +5,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.traducao.projeto.core.util.DuracaoUtil;
 import org.traducao.projeto.renomearArquivos.domain.OperacaoRenomeacao;
 import org.traducao.projeto.telemetria.TelemetriaService;
 import org.traducao.projeto.traducao.presentation.web.LogStreamService;
@@ -71,6 +72,16 @@ public class RenomeadorUseCase {
     LogStreamService logStream;
 
     public List<OperacaoRenomeacao.ItemRenomeado> simularRenomeacao(Path pasta, String nomePadrao) {
+        long inicioMs = System.currentTimeMillis();
+        List<OperacaoRenomeacao.ItemRenomeado> itens = simularInterno(pasta, nomePadrao);
+        logStream.publicarLog("renomear-arquivos",
+            DuracaoUtil.linhaRelatorioFinal("Renomear Arquivos (simulação)", inicioMs));
+        return itens;
+    }
+
+    // Núcleo da simulação sem o relatório final: a aplicação reusa este método
+    // e emite um único relatório ao término, em vez de um por fase.
+    private List<OperacaoRenomeacao.ItemRenomeado> simularInterno(Path pasta, String nomePadrao) {
         logStream.publicarLog("renomear-arquivos", "Iniciando simulação (Dry-Run) em: " + pasta);
         List<OperacaoRenomeacao.ItemRenomeado> itens = new ArrayList<>();
         
@@ -139,8 +150,9 @@ public class RenomeadorUseCase {
     }
 
     public void aplicarRenomeacao(Path pasta, String nomePadrao) {
+        long inicioMs = System.currentTimeMillis();
         logStream.publicarLog("renomear-arquivos", "Iniciando APLICAÇÃO da renomeação em: " + pasta);
-        List<OperacaoRenomeacao.ItemRenomeado> simulação = simularRenomeacao(pasta, nomePadrao);
+        List<OperacaoRenomeacao.ItemRenomeado> simulação = simularInterno(pasta, nomePadrao);
         
         if (simulação.isEmpty()) {
             logStream.publicarLog("renomear-arquivos", "Nenhum arquivo precisa ser renomeado.");
@@ -184,9 +196,12 @@ public class RenomeadorUseCase {
         telemetriaService.registrarArquivosSanitizados(sucesso);
 
         logStream.publicarLog("renomear-arquivos", "PROCESSO CONCLUÍDO! Renomeados: " + sucesso + " | Erros: " + erros);
+        logStream.publicarLog("renomear-arquivos",
+            DuracaoUtil.linhaRelatorioFinal("Renomear Arquivos (aplicação)", inicioMs));
     }
 
     public void reverterRenomeacao(Path pasta) {
+        long inicioMs = System.currentTimeMillis();
         logStream.publicarLog("renomear-arquivos", "Iniciando REVERSÃO de arquivos em: " + pasta);
         Path arquivoUndo = resolverArquivoUndo(pasta);
         
@@ -220,6 +235,8 @@ public class RenomeadorUseCase {
             }
             
             logStream.publicarLog("renomear-arquivos", "Reversão concluída. Sucessos: " + sucesso + " | Erros: " + erros);
+            logStream.publicarLog("renomear-arquivos",
+                DuracaoUtil.linhaRelatorioFinal("Renomear Arquivos (reversão)", inicioMs));
             
             if (sucesso > 0 && erros == 0) {
                 Files.deleteIfExists(arquivoUndo);

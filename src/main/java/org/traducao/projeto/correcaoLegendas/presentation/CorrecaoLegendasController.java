@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.traducao.projeto.correcaoLegendas.application.CorrigirLegendasUseCase;
 import org.traducao.projeto.core.execucao.FilaExecucaoPipeline;
+import org.traducao.projeto.core.util.DuracaoUtil;
 import org.traducao.projeto.traducao.infrastructure.contexto.GerenciadorContexto;
 import org.traducao.projeto.traducao.presentation.web.LogStreamService;
 
@@ -90,8 +91,10 @@ public class CorrecaoLegendasController {
 
         filaExecucao.submeter(() -> {
             logStreamService.definirCanalAtual("correcao-legendas");
+            long inicioMs = System.currentTimeMillis();
             try {
                 corrigirLegendasUseCase.corrigirPasta(fOriginal, fTraduzida, fContextoId);
+                System.out.println(DuracaoUtil.linhaRelatorioFinal("Correção de Karaoke/Legendas (LLM)", inicioMs));
             } catch (Exception e) {
                 log.error("Falha ao executar correção de legendas em background", e);
                 System.out.println("\u001B[31m[FAIL] Erro na correção de legendas: " + e.getMessage() + "\u001B[0m");
