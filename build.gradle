@@ -18,6 +18,11 @@ dependencies {
     implementation 'io.quarkus:quarkus-rest'
     implementation 'io.quarkus:quarkus-config-yaml'
 
+    // Servidor MCP (Model Context Protocol) via transporte SSE/HTTP: expoe o
+    // pipeline do KRONOS como ferramentas para clientes MCP (ex.: Claude Code)
+    // no mesmo servidor web ja iniciado em modo dev (endpoint /mcp/sse).
+    implementation 'io.quarkiverse.mcp:quarkus-mcp-server-sse:1.13.1'
+
     implementation 'org.springframework.boot:spring-boot-autoconfigure:3.3.0'
 
     implementation 'me.tongfei:progressbar:0.10.1'
