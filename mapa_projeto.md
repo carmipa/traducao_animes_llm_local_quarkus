@@ -550,6 +550,9 @@ Monta os prompts de sistema e usuario para revisao de terminologia/lore
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/contexto/ContextoRevisaoLoreDanMachiS5.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/contexto/ContextoRevisaoLoreGuiltyCrown.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/contexto/ContextoRevisaoLoreGundam0080.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
@@ -563,6 +566,15 @@ Monta os prompts de sistema e usuario para revisao de terminologia/lore
 *(Sem docstring ou cabeçalho explicativo)*
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/contexto/ContextoRevisaoLoreGundamNT.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/contexto/ContextoRevisaoLoreGundamUnicorn.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/contexto/ContextoRevisaoLoreGundamZeta.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/contexto/ContextoRevisaoLoreGundamZZ.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
 ### 📄 Arquivo: `src/main/java/org/traducao/projeto/revisaoLore/domain/EntradaAuditoriaRevisaoLore.java`
@@ -1387,6 +1399,9 @@ Ignora
 *(Sem docstring ou cabeçalho explicativo)*
 
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/revisaoLore/application/RevisarLoreUseCaseTest.java`
+*(Sem docstring ou cabeçalho explicativo)*
+
+### 📄 Arquivo: `src/test/java/org/traducao/projeto/revisaoLore/contexto/ContextosRevisaoLoreCatalogoTest.java`
 *(Sem docstring ou cabeçalho explicativo)*
 
 ### 📄 Arquivo: `src/test/java/org/traducao/projeto/revisaoLore/infrastructure/RevisaoLoreAuditoriaCacheTest.java`
