@@ -2,9 +2,9 @@
  MAPA ESTRUTURAL DO PROJETO - TRACKER ANIMES
 ================================================================================
  Raiz do repositorio      : traducao_animes_llm_local_quarkus
- Pastas mapeadas          : 228
- Arquivos (na arvore)     : 417
- Arquivos-fonte indexados : 316  (.java: 316 | .py: 0)
+ Pastas mapeadas          : 230
+ Arquivos (na arvore)     : 418
+ Arquivos-fonte indexados : 317  (.java: 317 | .py: 0)
  Memoria viva do projeto  : CEREBRO_IA.md (na raiz do repositorio)
 
  Objetivo: mapa de contexto para LLMs navegarem os diretorios e
@@ -34,8 +34,8 @@ traducao_animes_llm_local_quarkus/
 │   ├── console-web.log
 │   └── telemetria_compartilhada.json
 ├── relatorios/
-│   └── junit-4832848609591537337/
-│       ├── auditoria_conteudo_20260713_114719.json
+│   └── junit-2986606889368261458/
+│       ├── auditoria_conteudo_20260713_120246.json
 │       └── telemetria_compartilhada.json
 ├── src/
 │   ├── main/
@@ -606,6 +606,9 @@ traducao_animes_llm_local_quarkus/
 │                       ├── raspagemCorrecao/
 │                       │   └── infrastructure/
 │                       │       └── GoogleTranslateScraperTest.java
+│                       ├── raspagemRevisao/
+│                       │   └── application/
+│                       │       └── DetectorConcordanciaServiceTest.java
 │                       ├── remuxer/
 │                       │   └── application/
 │                       │       └── MapeadorMidiaServiceTest.java
@@ -1835,6 +1838,11 @@ traducao_animes_llm_local_quarkus/
       transporte HTTP ({@code executarGet}) por respostas canônicas e anula a espera
       ({@code dormir}). Verifica o mapeamento de cada desfecho para
       {@link StatusRaspagem} e que só a falha transitória é retentada.
+
+[PASTA] src/test/java/org/traducao/projeto/raspagemRevisao/application/
+  - DetectorConcordanciaServiceTest.java
+      Cobre as heurísticas de concordância de gênero (calques do inglês): o núcleo
+      algorítmico da revisão de legendas. Serviço de lógica pura — sem I/O nem LLM.
 
 [PASTA] src/test/java/org/traducao/projeto/remuxer/application/
   - MapeadorMidiaServiceTest.java
