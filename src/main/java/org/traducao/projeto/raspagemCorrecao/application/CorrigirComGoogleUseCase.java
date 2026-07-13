@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.traducao.projeto.raspagemCorrecao.domain.exceptions.RaspagemCorrecaoException;
 import org.traducao.projeto.raspagemCorrecao.infrastructure.GoogleTranslateScraper;
+import org.traducao.projeto.raspagemCorrecao.infrastructure.ResultadoRaspagem;
 import org.traducao.projeto.telemetria.OperacaoTelemetria;
 import org.traducao.projeto.telemetria.TelemetriaService;
 import org.traducao.projeto.traducao.application.DetectorEfeitoKaraokeService;
@@ -169,17 +170,21 @@ public class CorrigirComGoogleUseCase {
                     System.out.println("  -> Traduzindo linha " + entrada.get("indice") + " [" + entrada.get("estilo") + "]:");
                     System.out.println("     Inglês: " + AnsiCores.YELLOW + original + AnsiCores.RESET);
 
-                    String traduzidoNovo = googleScraper.traduzir(original);
-                    System.out.println("     Português: " + AnsiCores.GREEN + traduzidoNovo + AnsiCores.RESET);
+                    ResultadoRaspagem resultado = googleScraper.traduzir(original);
+                    System.out.println("     Português: " + AnsiCores.GREEN + resultado.texto() + AnsiCores.RESET);
 
-                    if (traduzidoNovo.equals(original)) {
-                        System.out.println(AnsiCores.YELLOW + "     [AVISO] Google Translate falhou/indisponível; fala mantida sem correção." + AnsiCores.RESET);
-                    } else {
-                        entrada.put("traduzido", traduzidoNovo);
-                        entrada.put("idiomaTraduzido", "pt-br");
-
-                        linhasCorrigidasNesteArquivo++;
-                        modificado = true;
+                    switch (resultado.status()) {
+                        case SUCESSO -> {
+                            entrada.put("traduzido", resultado.texto());
+                            entrada.put("idiomaTraduzido", "pt-br");
+                            linhasCorrigidasNesteArquivo++;
+                            modificado = true;
+                        }
+                        case SEM_ALTERACAO -> System.out.println(AnsiCores.YELLOW
+                            + "     [INFO] Google não alterou a fala (já equivalente); mantida." + AnsiCores.RESET);
+                        default -> System.out.println(AnsiCores.YELLOW
+                            + "     [AVISO] Google Translate indisponível/inválido (" + resultado.status()
+                            + "); fala mantida sem correção." + AnsiCores.RESET);
                     }
 
                     try {

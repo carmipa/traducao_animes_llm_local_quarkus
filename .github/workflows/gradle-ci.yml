@@ -1,0 +1,29 @@
+name: CI
+
+# Salvaguarda de linha de base: bloqueia merges que quebrem a compilação ou os
+# testes. Uma verificação assim teria interceptado imediatamente um literal de
+# caractere inválido que passou despercebido localmente por falta de CI.
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Configurar Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Compilar e testar
+        run: ./gradlew compileJava test --no-daemon --console=plain

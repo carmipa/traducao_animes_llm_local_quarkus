@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.traducao.projeto.correcaoLegendas.application.SanitizadorTagsService;
 import org.traducao.projeto.raspagemCorrecao.infrastructure.GoogleTranslateScraper;
+import org.traducao.projeto.raspagemCorrecao.infrastructure.ResultadoRaspagem;
 import org.traducao.projeto.raspagemRevisao.domain.ResultadoDeteccaoConcordancia;
 import org.traducao.projeto.raspagemRevisao.domain.exceptions.RaspagemRevisaoException;
 import org.traducao.projeto.telemetria.OperacaoTelemetria;
@@ -502,15 +503,17 @@ public class RevisarLegendasUseCase {
                     continue;
                 }
             } else {
-                novaTraducao = googleScraper.traduzir(originalEn);
+                ResultadoRaspagem resultadoGoogle = googleScraper.traduzir(originalEn);
                 pausaGoogle();
 
-                if (novaTraducao.equals(originalEn) || novaTraducao.equals(traducaoAtual)) {
-                    out("     " + AnsiCores.DIM + "Google manteve texto igual; sem alteração." + AnsiCores.RESET);
+                if (!resultadoGoogle.sucesso() || resultadoGoogle.texto().equals(traducaoAtual)) {
+                    out("     " + AnsiCores.DIM + "Google sem alteração aplicável ("
+                        + resultadoGoogle.status() + "); mantido." + AnsiCores.RESET);
                     cacheRevisaoMasc.put(textoMascOriginal, textoMascOriginal);
                     eventosAtualizados.add(evento);
                     continue;
                 }
+                novaTraducao = resultadoGoogle.texto();
             }
 
             try {
