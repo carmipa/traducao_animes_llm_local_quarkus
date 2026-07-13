@@ -45,7 +45,14 @@ application-local.yml
 /cache/
 /relatorios/
 /logs/
+*.log
 /backups/
+/telemetria/
 
 # Playwright MCP (screenshots/snapshots de sessões de teste)
 /.playwright-mcp/
+
+# Arquivos de Legenda
+*.ass
+*.srt
+*.vtt

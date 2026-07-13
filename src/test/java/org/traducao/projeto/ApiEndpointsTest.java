@@ -232,7 +232,11 @@ class ApiEndpointsTest {
             .then()
             .statusCode(200)
             .body("size()", greaterThanOrEqualTo(1))
-            .body("find { it.id == 'gundam_nt' }.nome", containsString("Revisao de Lore"));
+            .body("find { it.id == 'gundam_nt' }.nome", containsString("Revisao de Lore"))
+            .body("find { it.id == 'gundam_unicorn' }.nome", containsString("Revisao de Lore"))
+            .body("find { it.id == 'gundam_zeta' }.nome", containsString("Revisao de Lore"))
+            .body("find { it.id == 'gundam_zz' }.nome", containsString("Revisao de Lore"))
+            .body("find { it.id == 'guilty_crown' }.nome", containsString("Revisao de Lore"));
     }
 
     @Test
