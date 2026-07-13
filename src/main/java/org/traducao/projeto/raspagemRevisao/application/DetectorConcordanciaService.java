@@ -10,8 +10,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Heurísticas para calques de gênero do inglês: concordância nominal,
- * pronomes pessoais/objetos, tratamentos e predicados verbais.
+ * PROPÓSITO DE NEGÓCIO: detecta erros objetivos de gênero e concordância que
+ * tornam uma legenda em português incoerente com a fala original.
+ *
+ * <p>INVARIANTES DO DOMÍNIO: somente evidências presentes na própria entrada
+ * podem gerar suspeita; primeira e segunda pessoas sem identificação do falante
+ * não autorizam inferência de gênero; tags ASS não interferem na análise.
+ *
+ * <p>COMPORTAMENTO EM CASO DE FALHA: texto traduzido ausente é tratado como
+ * limpo por este detector e permanece sob responsabilidade dos validadores de
+ * tradução pendente.
  */
 @Service
 public class DetectorConcordanciaService {
@@ -25,7 +33,7 @@ public class DetectorConcordanciaService {
 
     private static final String SUBST_MASC =
         "menino|garoto|moço|moco|homem|deus|príncipe|principe|irmão|irmao|pai|filho|avô|"
-            + "tio|amigo|rei|herói|heroi|aventureiro|novato|campeão|campeao|rapaz|cara|"
+            + "tio|amigo|rei|herói|heroi|aventureiro|novato|campeão|campeao|rapaz|"
             + "sacerdote|mago|ladrao|ladrão|deus|garoto";
 
     private static final String ADJ_MASC =
@@ -116,16 +124,6 @@ public class DetectorConcordanciaService {
 
     private static final Pattern ELES_COM_PREDICADO_FEM =
         Pattern.compile("\\beles\\s+(" + VERBO_AUX + ")\\s+(" + PARTIC_FEM + ")\\b", FLAGS);
-
-    private static final Pattern INGLES_FALA_AMBIGUA =
-        Pattern.compile("\\b(i|i'm|im|i am|me|my|you|you're|you are|your)\\b", FLAGS);
-
-    private static final Pattern MASCULINO_AMBIGUO_PT =
-        Pattern.compile("\\b("
-            + "estou|to|tô|estava|fiquei|fico|vou ficar|me sinto|sinto-me|sinto me|"
-            + "voce esta|você está|voce ta|você tá|tu estas|tu estás|tu ta|tu tá|"
-            + "esta|está|estas|estás|ta|tá"
-            + ")\\s+(" + PARTIC_MASC + ")\\b|\\bobrigado\\b", FLAGS);
 
     private static final String PREPOSICOES_OBJETO = "para|com|de|a|ao|à|pela|pelo";
 
@@ -237,6 +235,16 @@ public class DetectorConcordanciaService {
             "Artigo/pronome oblíquo incompatível (o ela / a ele / lo ela)");
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: compara marcas explícitas de gênero do inglês com
+     * pronomes, tratamentos e predicados usados na tradução brasileira.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: exige evidência masculina ou feminina no
+     * original; `I` e `you` isolados nunca revelam o gênero de falante ou alvo.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: ausência de evidência explícita não
+     * adiciona motivo e preserva a fala para eventual revisão contextual.
+     */
     private void detectarPronomesECruzamento(String original, String texto, Set<String> motivos) {
         if (HER_EN.matcher(original).find()) {
             adicionarSeEncontrado(motivos, OBJETO_MASC_COM_HER_EN, texto,
@@ -298,12 +306,6 @@ public class DetectorConcordanciaService {
             motivos.add("Original indica masculino, mas participio/adjetivo predicativo está no feminino");
         }
 
-        if (!PRONOME_FEMININO_EN.matcher(original).find()
-            && !PRONOME_MASCULINO_EN.matcher(original).find()
-            && INGLES_FALA_AMBIGUA.matcher(original).find()
-            && MASCULINO_AMBIGUO_PT.matcher(texto).find()) {
-            motivos.add("Original não indica gênero, mas a tradução usa masculino marcado; revisar pela lore ou neutralizar");
-        }
     }
 
     private void detectarTratamentos(String original, String texto, Set<String> motivos) {

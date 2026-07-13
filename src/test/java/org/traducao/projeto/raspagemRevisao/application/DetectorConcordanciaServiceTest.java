@@ -7,8 +7,14 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Cobre as heurísticas de concordância de gênero (calques do inglês): o núcleo
- * algorítmico da revisão de legendas. Serviço de lógica pura — sem I/O nem LLM.
+ * PROPÓSITO DE NEGÓCIO: comprova que a revisão automática encontra divergências
+ * objetivas de gênero sem reescrever falas corretas por inferência do falante.
+ *
+ * <p>INVARIANTES DO DOMÍNIO: evidência explícita continua detectável; `I/you`
+ * e palavras polissêmicas como `cara` não produzem falso positivo.
+ *
+ * <p>COMPORTAMENTO EM CASO DE FALHA: qualquer regressão reprova o teste antes
+ * que uma proposta indevida alcance o cache operacional.
  */
 class DetectorConcordanciaServiceTest {
 
@@ -44,9 +50,38 @@ class DetectorConcordanciaServiceTest {
         assertTrue(detector.analisar("She smiled at me.", "ele sorriu para mim.").suspeito());
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: preserva gênero escolhido na tradução quando a fala
+     * inglesa isolada não identifica quem está falando.
+     * <p>INVARIANTES DO DOMÍNIO: primeira pessoa não permite inferir gênero.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: falso positivo reprova o teste.
+     */
     @Test
-    void originalSemGeneroComMasculinoMarcadoEhSuspeito() {
-        assertTrue(detector.analisar("I am so tired.", "estou cansado.").suspeito());
+    void primeiraPessoaSemContextoDeGeneroNaoEhSuspeita() {
+        assertFalse(detector.analisar("I am so tired.", "estou cansado.").suspeito());
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: impede neutralização semântica de perguntas dirigidas
+     * a personagem cujo gênero não está codificado na fala inglesa isolada.
+     * <p>INVARIANTES DO DOMÍNIO: `you` não define gênero do interlocutor.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: marcação de `vivo` reprova o teste.
+     */
+    @Test
+    void segundaPessoaSemContextoDeGeneroNaoEhSuspeita() {
+        assertFalse(detector.analisar("Are you alive?!", "Você está vivo?!").suspeito());
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: preserva o uso brasileiro de `cara` como sinônimo
+     * feminino de rosto em traduções naturais.
+     * <p>INVARIANTES DO DOMÍNIO: `sua cara` possui concordância válida.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: falso conflito nominal reprova o teste.
+     */
+    @Test
+    void suaCaraComoRostoNaoEhSuspeita() {
+        assertFalse(detector.analisar("It's written all over your face.",
+            "Isso fica estampado na sua cara.").suspeito());
     }
 
     @Test
