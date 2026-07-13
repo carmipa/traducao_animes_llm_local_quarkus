@@ -142,7 +142,11 @@ public class CorrigirComGoogleUseCase {
             String contextoId = contextoService.ativar(doc, contextoFallback);
             ProvenienciaCache prov = doc.proveniencia();
             int alteradas = 0;
+            int atual = 0;
+            int totalCandidatos = contarCandidatos(doc);
             Path backup = null;
+            out("[ARQUIVO] " + arquivo.getFileName() + " — " + totalCandidatos
+                + " entrada(s) pendente(s) para correção.");
             for (JsonNode no : doc.entradas()) {
                 if (Thread.currentThread().isInterrupted()) {
                     c.cancelado = true;
@@ -154,9 +158,13 @@ public class CorrigirComGoogleUseCase {
                 }
                 ClassificadorEntradaCacheService.Classificacao cls = classificador.classificar(entrada);
                 if (!cls.precisaCorrecao()) continue;
+                atual++;
                 c.itensDetectados++;
                 String original = ClassificadorEntradaCacheService.texto(entrada, "original");
                 String antes = ClassificadorEntradaCacheService.texto(entrada, "traduzido");
+                int indice = entrada.path("indice").asInt(-1);
+                out("[CORRIGINDO " + atual + "/" + totalCandidatos + "] Evento " + indice
+                    + " — " + resumirParaPainel(original));
 
                 ProtetorTermosLoreService.TextoProtegido protegido = protetorLore.mascarar(
                     original, contextoService.loreAtiva(), contextoService.termosProtegidosAtivos());
@@ -167,6 +175,9 @@ public class CorrigirComGoogleUseCase {
                         c.itensIgnorados++;
                         auditar(arquivo, entrada, prov, contextoId, "NAO_CORRIGIDA", cls.motivo(), antes,
                             antes, "TERMO_LORE_CORROMPIDO");
+                        out(AnsiCores.YELLOW + "[PENDENTE " + atual + "/" + totalCandidatos
+                            + "] Evento " + indice + " — termo da lore não pôde ser restaurado."
+                            + AnsiCores.RESET);
                         continue;
                     }
                     entrada.put("traduzido", restaurado);
@@ -181,10 +192,16 @@ public class CorrigirComGoogleUseCase {
                     c.itensCorrigidos++;
                     auditar(arquivo, entrada, prov, contextoId, "CORRIGIDA", cls.motivo(), antes,
                         restaurado, resposta.status().name());
+                    out(AnsiCores.GREEN + "[CORRIGIDA " + atual + "/" + totalCandidatos
+                        + "] Evento " + indice + " — " + resumirParaPainel(restaurado)
+                        + AnsiCores.RESET);
                 } else {
                     c.itensIgnorados++;
                     auditar(arquivo, entrada, prov, contextoId, "NAO_CORRIGIDA", cls.motivo(), antes,
                         antes, resposta.status().name());
+                    out(AnsiCores.YELLOW + "[PENDENTE " + atual + "/" + totalCandidatos
+                        + "] Evento " + indice + " — " + resposta.status().name()
+                        + AnsiCores.RESET);
                 }
 
                 try {
@@ -228,6 +245,42 @@ public class CorrigirComGoogleUseCase {
     }
 
     /**
+     * PROPÓSITO DE NEGÓCIO: calcula o denominador exibido no progresso do painel
+     * antes de iniciar chamadas demoradas ao Google.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: usa o mesmo classificador da execução real e
+     * conta somente entradas objeto que exigem correção.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: nós desconhecidos são ignorados e não
+     * interrompem o arquivo.
+     */
+    private int contarCandidatos(CacheManutencaoService.DocumentoEditavel doc) {
+        int total = 0;
+        for (JsonNode no : doc.entradas()) {
+            if (no instanceof ObjectNode entrada && classificador.classificar(entrada).precisaCorrecao()) {
+                total++;
+            }
+        }
+        return total;
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: mantém o painel legível enquanto revela qual fala
+     * está sendo processada ou acabou de ser corrigida.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: quebras ASS aparecem como espaço e a prévia tem
+     * no máximo 180 caracteres, sem alterar o conteúdo persistido.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: texto nulo é representado por marcador
+     * explícito em vez de provocar exceção.
+     */
+    private String resumirParaPainel(String texto) {
+        if (texto == null) return "<texto ausente>";
+        String limpo = texto.replace("\\N", " ").replaceAll("\\s+", " ").strip();
+        return limpo.length() <= 180 ? limpo : limpo.substring(0, 177) + "...";
+    }
+
+    /**
      * PROPÓSITO DE NEGÓCIO: finaliza a contingência com métricas confiáveis.
      *
      * <p>INVARIANTES DO DOMÍNIO: status e falhas constam na telemetria e no
@@ -263,9 +316,18 @@ public class CorrigirComGoogleUseCase {
         return r;
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: envia uma única linha operacional ao terminal e ao
+     * SSE do painel de correção por meio do redirecionador global.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: não replica a mesma mensagem no SLF4J, evitando
+     * duplicidade visual e no arquivo {@code console-web.log}.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: {@code System.out} mantém o comportamento
+     * padrão do runtime; não há dependência direta de cliente SSE conectado.
+     */
     private void out(String mensagem) {
         System.out.println(mensagem);
-        log.info(mensagem);
     }
 
     /** Estado mutável restrito à execução serializada na fila do pipeline. */

@@ -108,6 +108,11 @@ class ObterMetadataAnimeUseCaseTest {
         private final CountDownLatch iniciada = new CountDownLatch(1);
         private final CountDownLatch liberar = new CountDownLatch(1);
 
+        /**
+         * PROPÓSITO DE NEGÓCIO: prepara o adapter falso sem comunicação externa.
+         * <p>INVARIANTES DO DOMÍNIO: propriedades e mapper existem apenas em memória.
+         * <p>COMPORTAMENTO EM CASO DE FALHA: erro de construção reprova o teste.
+         */
         AniListContador() {
             super(new LlmProperties(), new ObjectMapper());
         }

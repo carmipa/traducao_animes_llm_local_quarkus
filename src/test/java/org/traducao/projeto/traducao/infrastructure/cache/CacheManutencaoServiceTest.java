@@ -71,6 +71,12 @@ class CacheManutencaoServiceTest {
         assertEquals("Corra!", salvo.path("entradas").get(0).path("traduzido").asText());
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: garante rollback para o estado anterior ao primeiro
+     * checkpoint de uma correção longa.
+     * <p>INVARIANTES DO DOMÍNIO: checkpoints atualizam o cache, não o backup-base.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: conteúdo divergente reprova o teste.
+     */
     @Test
     void checkpointsNaoSobrescrevemBackupDoInicioDaSessao() throws Exception {
         Path raiz = temp.resolve("cache-checkpoint");

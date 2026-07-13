@@ -22,6 +22,12 @@ class ProtetorTermosLoreServiceTest {
 
     private final ProtetorTermosLoreService service = new ProtetorTermosLoreService();
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: valida a preservação de nomes oficiais declarados
+     * textualmente na lore.
+     * <p>INVARIANTES DO DOMÍNIO: grafia e caixa do original são restauradas.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: diferença textual reprova o teste.
+     */
     @Test
     void preservaTermosDaRegraManterSempre() {
         String lore = "- Manter sempre em inglês ou forma oficial: Sleeves, Psycho-Frame, Phenex.";
@@ -37,6 +43,11 @@ class ProtetorTermosLoreServiceTest {
             service.restaurar(resposta, protegido));
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: impede persistir tradução que perdeu um termo oficial.
+     * <p>INVARIANTES DO DOMÍNIO: todo marcador criado precisa voltar intacto.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: restauração devolve {@code null}.
+     */
     @Test
     void rejeitaRespostaQuePerdeMarcadorDeLore() {
         var protegido = service.mascarar("Protect Phenex!", "", Set.of("Phenex"));

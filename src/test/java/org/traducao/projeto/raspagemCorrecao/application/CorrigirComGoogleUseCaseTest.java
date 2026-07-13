@@ -74,6 +74,12 @@ class CorrigirComGoogleUseCaseTest {
         assertEquals("CONCLUIDO", resultado.status());
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: prova que uma parada durante a correção não apaga o
+     * último item já confirmado no disco.
+     * <p>INVARIANTES DO DOMÍNIO: primeiro item persiste; segundo permanece vazio.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: limpa o sinal de interrupção no finally.
+     */
     @Test
     void interrupcaoPreservaCheckpointJaConfirmadoNoDisco() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
@@ -112,7 +118,17 @@ class CorrigirComGoogleUseCaseTest {
     }
 
     private static final class GoogleInterrompendoStub extends GoogleTranslateScraper {
+        /**
+         * PROPÓSITO DE NEGÓCIO: cria a contingência falsa sem acesso à rede.
+         * <p>INVARIANTES DO DOMÍNIO: usa apenas o mapper do teste.
+         * <p>COMPORTAMENTO EM CASO DE FALHA: construção delega ao scraper-base.
+         */
         GoogleInterrompendoStub(ObjectMapper mapper) { super(mapper); }
+        /**
+         * PROPÓSITO DE NEGÓCIO: simula cancelamento logo após uma resposta válida.
+         * <p>INVARIANTES DO DOMÍNIO: resposta permite checkpoint antes da parada.
+         * <p>COMPORTAMENTO EM CASO DE FALHA: marca a thread como interrompida.
+         */
         @Override public ResultadoRaspagem traduzir(String textoOriginal) {
             Thread.currentThread().interrupt();
             return ResultadoRaspagem.sucesso("Ajude!");
