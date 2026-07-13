@@ -476,10 +476,13 @@ public class ApiController {
                         registrarTelemetriaFalhaTraducao(arquivo, loreNome, org.traducao.projeto.traducao.domain.StatusArquivoTraducao.BLOQUEADO, ex.getMessage());
                         System.out.println("[BLOQUEADO] " + arquivo.getFileName() + ": " + ex.getMessage());
                     } catch (org.traducao.projeto.traducao.domain.exceptions.TraducaoParcialException ex) {
+                        // Abortou antes de escrever a legenda de saída: é FALHA deste run
+                        // (nenhum _PT-BR gerado), mesmo que N linhas tenham sido salvas no
+                        // cache para retomar depois. Não pode contar como "ok" no lote.
                         int salvas = ex.getDicionarioParcial() != null ? ex.getDicionarioParcial().size() : 0;
-                        resultados.add(org.traducao.projeto.traducao.domain.ResultadoTraducaoArquivo.parcialAbortado(arquivo.getFileName().toString(), loreNome, salvas));
-                        registrarTelemetriaFalhaTraducao(arquivo, loreNome, org.traducao.projeto.traducao.domain.StatusArquivoTraducao.PARCIAL, ex.getMessage());
-                        System.out.println("[PARCIAL] " + arquivo.getFileName() + " (" + salvas + " salvas antes de abortar)");
+                        resultados.add(org.traducao.projeto.traducao.domain.ResultadoTraducaoArquivo.falha(arquivo.getFileName().toString(), loreNome));
+                        registrarTelemetriaFalhaTraducao(arquivo, loreNome, org.traducao.projeto.traducao.domain.StatusArquivoTraducao.FALHOU, ex.getMessage());
+                        System.out.println("[FALHA] " + arquivo.getFileName() + " abortado sem gerar saída (" + salvas + " linha(s) salvas no cache para retomar).");
                     } catch (Exception ex) {
                         resultados.add(org.traducao.projeto.traducao.domain.ResultadoTraducaoArquivo.falha(arquivo.getFileName().toString(), loreNome));
                         registrarTelemetriaFalhaTraducao(arquivo, loreNome, org.traducao.projeto.traducao.domain.StatusArquivoTraducao.FALHOU, ex.getMessage());

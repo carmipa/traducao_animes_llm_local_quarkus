@@ -34,8 +34,8 @@ traducao_animes_llm_local_quarkus/
 │   ├── console-web.log
 │   └── telemetria_compartilhada.json
 ├── relatorios/
-│   └── junit-15795719248406774696/
-│       ├── auditoria_conteudo_20260713_143844.json
+│   └── junit-15608222720682838516/
+│       ├── auditoria_conteudo_20260713_151006.json
 │       └── telemetria_compartilhada.json
 ├── src/
 │   ├── main/

@@ -36,10 +36,6 @@ public record ResultadoTraducaoArquivo(
         return new ResultadoTraducaoArquivo(null, arquivo, lore, 0, 0, 0, 1, StatusArquivoTraducao.FALHOU);
     }
 
-    public static ResultadoTraducaoArquivo parcialAbortado(String arquivo, String lore, int salvas) {
-        return new ResultadoTraducaoArquivo(null, arquivo, lore, 0, 0, salvas, 1, StatusArquivoTraducao.PARCIAL);
-    }
-
     public static ResultadoTraducaoArquivo bloqueado(String arquivo, String lore) {
         return new ResultadoTraducaoArquivo(null, arquivo, lore, 0, 0, 0, 1, StatusArquivoTraducao.BLOQUEADO);
     }
