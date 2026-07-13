@@ -16,11 +16,33 @@ class ObterMetadataAnimeUseCaseTest {
 
     @Test
     void removeSufixoRevisaoDeLoreDoTermoDeBusca() {
-        assertEquals("86", useCase.extrairNomeTermoBusca("86 (Eighty-Six) - Revisao de Lore"));
+        assertEquals("86 Eighty Six", useCase.extrairNomeTermoBusca("86 (Eighty-Six) - Revisao de Lore"));
         assertEquals("DanMachi", useCase.extrairNomeTermoBusca("DanMachi S5 - Revisao de Lore"));
         assertEquals(
             "Mobile Suit Gundam: The 08th MS Team",
             useCase.extrairNomeTermoBusca("Mobile Suit Gundam: The 08th MS Team - Revisao de Lore")
+        );
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: garante que o contexto Gundam Narrative mantenha o
+     * alias usado pelas APIs de capa tanto na tradução quanto na revisão de lore.
+     * <p>
+     * INVARIANTES DO DOMÍNIO: parênteses são apenas delimitadores; a palavra
+     * {@code Narrative} nunca pode ser descartada do termo de busca.
+     * <p>
+     * COMPORTAMENTO EM CASO DE FALHA: qualquer regressão reprova a suíte com a
+     * diferença entre o termo esperado e o termo sanitizado.
+     */
+    @Test
+    void preservaAliasNarrativeEntreParentesesParaBuscaDeCapa() {
+        assertEquals(
+            "Mobile Suit Gundam NT Narrative",
+            useCase.extrairNomeTermoBusca("Mobile Suit Gundam NT (Narrative)")
+        );
+        assertEquals(
+            "Mobile Suit Gundam NT Narrative",
+            useCase.extrairNomeTermoBusca("Mobile Suit Gundam NT (Narrative) - Revisao de Lore")
         );
     }
 

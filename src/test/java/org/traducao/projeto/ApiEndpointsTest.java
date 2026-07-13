@@ -92,7 +92,7 @@ class ApiEndpointsTest {
             .when().post("/api/corrigir-cache")
             .then()
             .statusCode(200)
-            .body("mensagem", containsString("Limpeza de cache iniciada"));
+            .body("mensagem", containsString("Limpeza de cache aceita pela fila"));
     }
 
     @Test
@@ -103,7 +103,7 @@ class ApiEndpointsTest {
             .when().post("/api/corrigir-scraping")
             .then()
             .statusCode(200)
-            .body("mensagem", containsString("Google Translate"));
+            .body("mensagem", containsString("Correção online aceita pela fila"));
     }
 
     @Test

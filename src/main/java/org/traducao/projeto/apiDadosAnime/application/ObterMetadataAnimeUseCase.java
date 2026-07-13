@@ -107,6 +107,17 @@ public class ObterMetadataAnimeUseCase {
         return obtidoOpt;
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: transforma nomes de contextos e caminhos de releases
+     * em termos reconhecíveis pelas APIs de anime sem perder partes do título.
+     * <p>
+     * INVARIANTES DO DOMÍNIO: conteúdo semântico entre parênteses é preservado
+     * (por exemplo, {@code Narrative} e {@code Eighty-Six}); tags de fansub,
+     * resolução, codec, temporada técnica e ano isolado são removidos.
+     * <p>
+     * COMPORTAMENTO EM CASO DE FALHA: uma entrada sem conteúdo útil resulta em
+     * texto vazio, levando {@link #executar(String)} a devolver {@link Optional#empty()}.
+     */
     public String extrairNomeTermoBusca(String entrada) {
         String texto = entrada.replace('\\', '/');
         if (texto.contains("/")) {
@@ -125,13 +136,18 @@ public class ObterMetadataAnimeUseCase {
         texto = texto.replaceAll("(?:\\.[A-Za-z0-9]{1,5})+$", "");
 
         texto = texto.replaceAll("\\[[^\\]]*\\]", " ")
-                     .replaceAll("\\([^\\)]*\\)", " ")
+                     // Parenteses em nomes de contexto frequentemente carregam
+                     // aliases essenciais: "NT (Narrative)", "86 (Eighty-Six)".
+                     // Remove apenas os delimitadores; o filtro de ruido abaixo
+                     // descarta codecs/temporadas que estavam dentro deles.
+                     .replaceAll("\\(([^\\)]*)\\)", " $1 ")
                      .replaceAll("(?i)\\s*-?\\s*Revis[aã]o\\s+de\\s+Lore\\s*$", " ")
                      // Separadores primeiro: "_ENG" so e removido pela lista de ruido
                      // abaixo se o "_" já tiver virado espaço (\b não separa "_E").
                      .replaceAll("[_.-]", " ")
                      .replaceAll("(?i)\\bS\\d{1,2}E\\d{1,3}\\b|\\b(Season|S)\\s*\\d+\\b|\\bE\\d{1,3}\\b", " ")
                      .replaceAll("(?i)\\b(1080p|720p|4k|BD|AV1|HEVC|x264|x265|Dual Audio|Multi-Audio|ENG|PTBR|PT\\s*BR|Track\\d+)\\b", " ")
+                     .replaceAll("\\b(?:19|20)\\d{2}\\b", " ")
                      .replaceAll("\\s+", " ")
                      .trim();
 

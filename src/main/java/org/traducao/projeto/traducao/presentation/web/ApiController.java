@@ -31,6 +31,7 @@ import org.traducao.projeto.traducao.infrastructure.contexto.GerenciadorContexto
 import org.traducao.projeto.traducao.presentation.ui.AnsiCores;
 import org.traducao.projeto.traducao.presentation.ui.PastasExecucao;
 import org.traducao.projeto.traducaoCorrige.application.LimparCacheUseCase;
+import org.traducao.projeto.traducaoCorrige.domain.ResultadoManutencaoCache;
 
 import org.traducao.projeto.core.execucao.FilaExecucaoPipeline;
 
@@ -518,7 +519,9 @@ public class ApiController {
     }
 
     /**
-     * 4. LIMPAR CACHE
+     * PROPÓSITO DE NEGÓCIO: aceita a limpeza segura da pasta persistente de cache.
+     * <p>INVARIANTES DO DOMÍNIO: caminho e contexto informado são validados antes da fila.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: retorna 400 para entrada inválida; falhas do job aparecem no console/status final.
      */
     @PostMapping("/corrigir-cache")
     public ResponseEntity<RespostaPadrao> limparCache(@RequestBody OperacaoRequest req) {
@@ -527,25 +530,30 @@ public class ApiController {
         if (pathCache == null) {
             return ResponseEntity.badRequest().body(new RespostaPadrao("Caminho de cache inválido: " + cacheDir));
         }
+        if (req.contextoId() != null && !req.contextoId().isBlank()
+            && !gerenciadorContexto.existeContexto(req.contextoId())) {
+            return ResponseEntity.badRequest().body(new RespostaPadrao(
+                "Contexto desconhecido: \"" + req.contextoId() + "\"."));
+        }
 
         submeterJobComRelatorio("correcao", "Limpeza e Auditoria de Cache", () -> {
             try {
-                limparCacheUseCase.executar(pathCache);
-                System.out.println("\n\u001B[32m========================================================================\u001B[0m");
-                System.out.println("\u001B[32m  🎉 [SUCESSO] LIMPEZA E AUDITORIA DE CACHE CONCLUÍDAS COM SUCESSO!\u001B[0m");
-                System.out.println("\u001B[32m========================================================================\n\u001B[0m");
-                log.info("[SUCESSO] Limpeza de cache concluída.");
+                ResultadoManutencaoCache resultado = limparCacheUseCase.executar(pathCache, req.contextoId());
+                imprimirResultadoCache("LIMPEZA E AUDITORIA DE CACHE", resultado);
             } catch (Exception e) {
                 log.error("Erro ao limpar cache", e);
                 System.out.println("\u001B[31m[ERRO] Limpeza do cache falhou: " + e.getMessage() + "\u001B[0m");
             }
         });
 
-        return ResponseEntity.ok(new RespostaPadrao("Limpeza de cache iniciada no servidor."));
+        return ResponseEntity.ok(new RespostaPadrao(
+            "Limpeza de cache aceita pela fila. A conclusão e o status real aparecerão no console."));
     }
 
     /**
-     * 5. CORREÇÃO VIA SCRAPING GOOGLE
+     * PROPÓSITO DE NEGÓCIO: aceita o preenchimento online de lacunas do cache.
+     * <p>INVARIANTES DO DOMÍNIO: somente contexto conhecido entra na fila; o uso online é explícito.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: retorna 400 antes da fila ou registra falha real no console do job.
      */
     @PostMapping("/corrigir-scraping")
     public ResponseEntity<RespostaPadrao> corrigirScraping(@RequestBody OperacaoRequest req) {
@@ -554,25 +562,30 @@ public class ApiController {
         if (pathCache == null) {
             return ResponseEntity.badRequest().body(new RespostaPadrao("Caminho de cache inválido: " + cacheDir));
         }
+        if (req.contextoId() != null && !req.contextoId().isBlank()
+            && !gerenciadorContexto.existeContexto(req.contextoId())) {
+            return ResponseEntity.badRequest().body(new RespostaPadrao(
+                "Contexto desconhecido: \"" + req.contextoId() + "\"."));
+        }
 
         submeterJobComRelatorio("correcao", "Correção via Google Translate", () -> {
             try {
-                corrigirComGoogleUseCase.executar(pathCache);
-                System.out.println("\n\u001B[32m========================================================================\u001B[0m");
-                System.out.println("\u001B[32m  🎉 [SUCESSO] CORREÇÃO VIA GOOGLE TRANSLATE FINALIZADA COM SUCESSO!\u001B[0m");
-                System.out.println("\u001B[32m========================================================================\n\u001B[0m");
-                log.info("[SUCESSO] Correção via Google Translate finalizada.");
+                ResultadoManutencaoCache resultado = corrigirComGoogleUseCase.executar(pathCache, req.contextoId());
+                imprimirResultadoCache("CORREÇÃO ONLINE VIA GOOGLE TRANSLATE", resultado);
             } catch (Exception e) {
                 log.error("Erro ao executar scraping", e);
                 System.out.println("\u001B[31m[ERRO] Raspagem do Google falhou: " + e.getMessage() + "\u001B[0m");
             }
         });
 
-        return ResponseEntity.ok(new RespostaPadrao("Auditoria e correção via Google Translate iniciada."));
+        return ResponseEntity.ok(new RespostaPadrao(
+            "Correção online aceita pela fila. A conclusão e o status real aparecerão no console."));
     }
 
     /**
-     * 5b. REVISÃO GRAMATICAL DO CACHE (concordância PT-BR via LLM)
+     * PROPÓSITO DE NEGÓCIO: aceita a revisão de concordância do cache via LLM local.
+     * <p>INVARIANTES DO DOMÍNIO: contexto é validado e disponibilidade do modelo é checada antes da revisão.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: rejeita contexto inválido e registra indisponibilidade/status parcial no console.
      */
     @PostMapping("/revisar-cache")
     public ResponseEntity<RespostaPadrao> revisarCache(@RequestBody OperacaoRequest req) {
@@ -595,18 +608,49 @@ public class ApiController {
                         + status.mensagem() + "\u001B[0m");
                     return;
                 }
-                revisarCacheUseCase.executar(pathCache, req.contextoId());
-                System.out.println("\n\u001B[32m========================================================================\u001B[0m");
-                System.out.println("\u001B[32m  🎉 [SUCESSO] REVISÃO GRAMATICAL DO CACHE FINALIZADA COM SUCESSO!\u001B[0m");
-                System.out.println("\u001B[32m========================================================================\n\u001B[0m");
-                log.info("[SUCESSO] Revisão gramatical do cache finalizada.");
+                ResultadoManutencaoCache resultado = revisarCacheUseCase.executar(pathCache, req.contextoId());
+                imprimirResultadoCache("REVISÃO GRAMATICAL DO CACHE", resultado);
             } catch (Exception e) {
                 log.error("Erro na revisão gramatical do cache", e);
                 System.out.println("\u001B[31m[ERRO] Revisão gramatical falhou: " + e.getMessage() + "\u001B[0m");
             }
         });
 
-        return ResponseEntity.ok(new RespostaPadrao("Revisão de concordância PT-BR iniciada no servidor."));
+        return ResponseEntity.ok(new RespostaPadrao(
+            "Revisão local aceita pela fila. A conclusão e o status real aparecerão no console."));
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: apresenta no console web o desfecho real dos três
+     * modos de manutenção do banco de cache, incluindo falhas e cancelamento.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: somente {@code CONCLUIDO} usa banner verde;
+     * qualquer outro status informa que o resultado exige atenção; a orientação
+     * de regenerar ASS/SRT aparece após toda execução que pode alterar o cache.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: resultado nulo é tratado como falha e
+     * não provoca {@link NullPointerException} no job de background.
+     */
+    private void imprimirResultadoCache(String operacao, ResultadoManutencaoCache resultado) {
+        if (resultado == null) {
+            System.out.println(AnsiCores.RED + "[FALHA] " + operacao + " não retornou resultado." + AnsiCores.RESET);
+            return;
+        }
+        String resumo = operacao + " — status=" + resultado.status()
+            + ", arquivos=" + resultado.arquivosAnalisados()
+            + ", alterados=" + resultado.arquivosAlterados()
+            + ", corrigidos=" + resultado.itensCorrigidos()
+            + ", falhas=" + resultado.falhas();
+        if ("CONCLUIDO".equals(resultado.status())) {
+            System.out.println(AnsiCores.GREEN + "[SUCESSO] " + resumo + AnsiCores.RESET);
+        } else {
+            System.out.println(AnsiCores.YELLOW + "[ATENÇÃO] " + resumo + AnsiCores.RESET);
+        }
+        if (resultado.arquivosAlterados() > 0) {
+            System.out.println(AnsiCores.CYAN
+                + "[PRÓXIMO PASSO] Execute novamente a Tradução Local para regenerar o ASS/SRT com o cache corrigido."
+                + AnsiCores.RESET);
+        }
     }
 
     /**

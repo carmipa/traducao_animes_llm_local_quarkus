@@ -3,7 +3,6 @@ package org.traducao.projeto.traducao.application;
 import org.springframework.stereotype.Service;
 import org.traducao.projeto.traducao.infrastructure.contexto.GerenciadorContexto;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -15,6 +14,13 @@ import java.util.regex.Pattern;
  * consulta os termos protegidos do lore ATIVO ({@link GerenciadorContexto}),
  * para que um termo novo anexado ao contexto selecionado seja protegido sem
  * precisar editar este detector.
+ *
+ * <p>PROPÓSITO DE NEGÓCIO: impedir que manutenção ou retomada do cache apague
+ * nomes canônicos e, simultaneamente, não aceite frases inglesas como tradução.
+ * <p>INVARIANTES DO DOMÍNIO: a lore ativa é a fonte dos termos protegidos;
+ * expressões conversacionais comuns continuam exigindo tradução.
+ * <p>COMPORTAMENTO EM CASO DE FALHA: texto sem evidência suficiente é preservado
+ * para evitar uma decisão destrutiva.
  */
 @Service
 public class DetectorTraducaoIdenticaService {
@@ -30,23 +36,20 @@ public class DetectorTraducaoIdenticaService {
     private static final Set<String> PALAVRAS_INGLES_COMUNS = Set.of(
         "hello", "hi", "hey", "goodbye", "bye", "yes", "no", "yeah", "yep", "nope",
         "thanks", "thank", "sorry", "please", "wait", "stop", "go", "come", "run",
-        "what", "why", "who", "where", "when", "how", "right", "okay", "ok", "fine"
+        "what", "why", "who", "where", "when", "how", "right", "okay", "ok", "fine",
+        "good", "morning", "night", "help", "me", "you", "away", "back", "welcome"
     );
 
-    private static final Set<String> TERMOS_DE_LORE = Set.of(
-        "bell", "hestia", "ais", "orario", "dungeon", "falna", "familia",
-        "zeon", "gundam", "zaku", "alex", "kampfer", "axis", "aeug", "titans",
-        "macross", "zentradi", "meltrandi", "valkyrie", "marduk",
-        "gauna", "sidonia", "legion", "juggernaut"
-    );
-
-    private static final List<String> TERMOS_IGNORADOS_MULTIPALAVRA = List.of(
-        "fire bolt", "argo vesta", "caelus hildr", "hildrsleif", "dios aedes vesta",
-        "vana freya", "vana seith", "vana seith.", "zeo gullveig", "hildis vini",
-        "agallis arvesynth", "remiste felis", "uchide no kozuchi", "feles cruz",
-        "dubh daol", "zekka", "gralineze fromel", "gokoh", "astrea record"
-    );
-
+    /**
+     * PROPÓSITO DE NEGÓCIO: decide se um conteúdo idêntico pode permanecer no
+     * cache por ser nome, sigla, número ou termo canônico da lore.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: expressões conversacionais em inglês não são
+     * protegidas só por estarem em Title Case; termo exato da lore tem prioridade.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: texto nulo/sem base suficiente é
+     * preservado para evitar limpeza destrutiva por heurística fraca.
+     */
     public boolean deveManterIdentico(String texto) {
         if (texto == null) {
             return true;
@@ -65,14 +68,18 @@ public class DetectorTraducaoIdenticaService {
             return deveManterPalavraUnicaIdentica(textoLimpo);
         }
 
+        String minusculo = textoLimpo.toLowerCase(Locale.ROOT);
+        if (termoDoLoreAtivo(minusculo)) {
+            return true;
+        }
         if (palavras.length == 2
             && Character.isUpperCase(palavras[0].charAt(0))
             && Character.isUpperCase(palavras[1].charAt(0))) {
-            return true;
+            return java.util.Arrays.stream(palavras)
+                .map(p -> p.toLowerCase(Locale.ROOT))
+                .noneMatch(PALAVRAS_INGLES_COMUNS::contains);
         }
-
-        String minusculo = textoLimpo.toLowerCase(Locale.ROOT);
-        return TERMOS_IGNORADOS_MULTIPALAVRA.contains(minusculo) || termoDoLoreAtivo(minusculo);
+        return false;
     }
 
     /**
@@ -80,13 +87,28 @@ public class DetectorTraducaoIdenticaService {
      * atualmente selecionado — permite proteger nomes/facções do contexto ativo
      * sem depender só da lista global fixa neste detector.
      */
+    /**
+     * PROPÓSITO DE NEGÓCIO: reconhece nomes e terminologia diretamente na lore
+     * ativa, eliminando listas hardcoded específicas de DanMachi/Gundam.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: comparação exige termo inteiro; termos
+     * declarados explicitamente pelo provedor continuam tendo prioridade.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: lore vazia ou termo vazio retorna falso.
+     */
     private boolean termoDoLoreAtivo(String termoMinusculo) {
         for (String termo : gerenciadorContexto.termosProtegidosAtivos()) {
             if (termo != null && termo.toLowerCase(Locale.ROOT).equals(termoMinusculo)) {
                 return true;
             }
         }
-        return false;
+        String lore = gerenciadorContexto.obterLoreAtiva();
+        if (lore == null || lore.isBlank() || termoMinusculo == null || termoMinusculo.isBlank()) {
+            return false;
+        }
+        Pattern termoInteiro = Pattern.compile(
+            "(?iu)(?<![\\p{L}\\p{N}])" + Pattern.quote(termoMinusculo) + "(?![\\p{L}\\p{N}])");
+        return termoInteiro.matcher(lore.toLowerCase(Locale.ROOT)).find();
     }
 
     private boolean deveManterPalavraUnicaIdentica(String textoLimpo) {
@@ -102,7 +124,7 @@ public class DetectorTraducaoIdenticaService {
             return false;
         }
 
-        return TERMOS_DE_LORE.contains(minusculo) || termoDoLoreAtivo(minusculo);
+        return termoDoLoreAtivo(minusculo);
     }
 
     /**

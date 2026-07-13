@@ -761,15 +761,18 @@
                 <div class="panel" id="panel-correcao">
                     <div class="glass-card">
                         <h2>Correção do Cache de Tradução</h2>
-                        <p class="card-desc">Resolva falas persistentes em inglês, limpando caches antigos ou
-                            preenchendo automaticamente com o Google Tradutor online.</p>
+                        <p class="card-desc">Corrija o banco persistente da pasta <code>cache</code> sem perder a
+                            proveniência da lore. A limpeza prepara falhas para nova tradução, o Google preenche
+                            lacunas como contingência online e o LLM local revisa concordância. Cada alteração gera
+                            backup e auditoria. <strong>O ASS/SRT já exportado não muda: execute novamente a Tradução
+                            Local para regenerá-lo com o cache corrigido.</strong></p>
 
                         <div class="anime-meta-banner hidden" id="meta-banner-correcao"></div>
 
                         <form id="form-correcao" class="standard-form">
                             <div class="form-group">
-                                <label for="correcao-contexto">Obra / Contexto (Opcional): <span class="help-icon"
-                                        data-tooltip="Selecione a obra para exibir dados e capa durante a correção do cache.">?</span></label>
+                                <label for="correcao-contexto">Obra / Contexto para cache antigo: <span class="help-icon"
+                                        data-tooltip="Caches novos usam automaticamente a lore registrada na proveniência de cada arquivo. Se houver cache antigo sem proveniência, selecione aqui a obra correta.">?</span></label>
                                 <select id="correcao-contexto">
                                     <option value="" disabled selected>Carregando contextos...</option>
                                 </select>
@@ -789,13 +792,13 @@
 
                             <div class="correcao-actions">
                                 <button type="button" class="btn btn-secondary btn-yellow" id="btn-limpar-cache"
-                                    data-tooltip="Remove traduções marcadas como falhas, vazias ou contendo alucinações de LLM.">
+                                    data-tooltip="Invalida somente fallbacks e respostas defeituosas; nomes e termos autorizados pela lore são preservados.">
                                     <span class="material-symbols-outlined btn-icon">delete_sweep</span>
                                     <span>Limpar Falhas do Cache</span>
                                 </button>
 
                                 <button type="button" class="btn btn-primary btn-yellow" id="btn-scraping-google"
-                                    data-tooltip="Varre as lacunas e termos não traduzidos e realiza tradução online de contingência.">
+                                    data-tooltip="Preenche traduções vazias ou inválidas enviando somente essas falas ao Google Translate online.">
                                     <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor"
                                         stroke-width="2" fill="none">
                                         <path
@@ -807,7 +810,7 @@
                                 </button>
 
                                 <button type="button" class="btn btn-primary btn-purple" id="btn-revisar-cache"
-                                    data-tooltip="Revisa o cache já traduzido com LLM local e contexto da obra para corrigir gênero, pronomes e concordância.">
+                                    data-tooltip="Revisa apenas traduções PT-BR suspeitas com o LLM local e a lore registrada em cada arquivo.">
                                     <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor"
                                         stroke-width="2" fill="none">
                                         <path d="M12 20h9"></path>

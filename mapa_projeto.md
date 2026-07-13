@@ -2,9 +2,9 @@
  MAPA ESTRUTURAL DO PROJETO - TRACKER ANIMES
 ================================================================================
  Raiz do repositorio      : traducao_animes_llm_local_quarkus
- Pastas mapeadas          : 235
- Arquivos (na arvore)     : 441
- Arquivos-fonte indexados : 339  (.java: 339 | .py: 0)
+ Pastas mapeadas          : 243
+ Arquivos (na arvore)     : 457
+ Arquivos-fonte indexados : 347  (.java: 347 | .py: 0)
  Memoria viva do projeto  : CEREBRO_IA.md (na raiz do repositorio)
 
  Objetivo: mapa de contexto para LLMs navegarem os diretorios e
@@ -34,8 +34,20 @@ traducao_animes_llm_local_quarkus/
 │   ├── console-web.log
 │   └── telemetria_compartilhada.json
 ├── relatorios/
-│   └── junit-7285729391134718083/
-│       ├── auditoria_conteudo_20260713_162124.json
+│   ├── junit-13402307570477410047/
+│   │   ├── auditoria_conteudo_20260713_165526.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-16720836899289524256/
+│   │   ├── auditoria_conteudo_20260713_165157.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-1969105398596805114/
+│   │   ├── auditoria_conteudo_20260713_165701.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-9294522055024582474/
+│   │   ├── auditoria_conteudo_20260713_163957.json
+│   │   └── telemetria_compartilhada.json
+│   └── junit-9361332529415025650/
+│       ├── auditoria_conteudo_20260713_164907.json
 │       └── telemetria_compartilhada.json
 ├── src/
 │   ├── main/
@@ -439,11 +451,16 @@ traducao_animes_llm_local_quarkus/
 │   │   │               │   └── Application.java
 │   │   │               ├── traducaoCorrige/
 │   │   │               │   ├── application/
+│   │   │               │   │   ├── ClassificadorEntradaCacheService.java
+│   │   │               │   │   ├── ContextoManutencaoCacheService.java
 │   │   │               │   │   └── LimparCacheUseCase.java
 │   │   │               │   ├── domain/
-│   │   │               │   │   └── exceptions/
-│   │   │               │   │       └── CorretorCacheException.java
-│   │   │               │   ├── CorretorCache.java
+│   │   │               │   │   ├── exceptions/
+│   │   │               │   │   │   └── CorretorCacheException.java
+│   │   │               │   │   ├── EntradaAuditoriaCorrecaoCache.java
+│   │   │               │   │   └── ResultadoManutencaoCache.java
+│   │   │               │   ├── infrastructure/
+│   │   │               │   │   └── CorrecaoCacheAuditoria.java
 │   │   │               │   └── CorretorCacheCLI.java
 │   │   │               ├── traducaoKaraoke/
 │   │   │               │   ├── application/
@@ -629,11 +646,14 @@ traducao_animes_llm_local_quarkus/
 │                       │   └── application/
 │                       │       └── ConversorKaraokeUseCaseTest.java
 │                       ├── raspagemCorrecao/
+│                       │   ├── application/
+│                       │   │   └── CorrigirComGoogleUseCaseTest.java
 │                       │   └── infrastructure/
 │                       │       └── GoogleTranslateScraperTest.java
 │                       ├── raspagemRevisao/
 │                       │   └── application/
-│                       │       └── DetectorConcordanciaServiceTest.java
+│                       │       ├── DetectorConcordanciaServiceTest.java
+│                       │       └── RevisarCacheUseCaseTest.java
 │                       ├── remuxer/
 │                       │   └── application/
 │                       │       └── MapeadorMidiaServiceTest.java
@@ -668,6 +688,10 @@ traducao_animes_llm_local_quarkus/
 │                       │       └── web/
 │                       │           ├── ConsoleRedirectorTest.java
 │                       │           └── LogStreamServiceTest.java
+│                       ├── traducaoCorrige/
+│                       │   └── application/
+│                       │       ├── ClassificadorEntradaCacheServiceTest.java
+│                       │       └── LimparCacheUseCaseTest.java
 │                       ├── traducaoKaraoke/
 │                       │   └── application/
 │                       │       ├── ClassificadorLetraKaraokeServiceTest.java
@@ -1148,7 +1172,16 @@ traducao_animes_llm_local_quarkus/
 
 [PASTA] src/main/java/org/traducao/projeto/raspagemCorrecao/application/
   - CorrigirComGoogleUseCase.java
-      (sem cabecalho explicativo)
+      PROPÓSITO DE NEGÓCIO: preenche por contingência online as lacunas e falhas do
+      banco de tradução que a Tradução Local não pode reutilizar.
+      
+      <p>INVARIANTES DO DOMÍNIO: somente candidatos do classificador canônico são
+      enviados ao Google; nomes/termos protegidos vêm da lore do próprio cache;
+      tags e efeitos protegidos não são tocados; toda gravação tem backup e troca
+      atômica.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: falhas de rede permanecem pendentes no
+      cache, são auditadas e não impedem salvar correções válidas já obtidas.
 
 [PASTA] src/main/java/org/traducao/projeto/raspagemCorrecao/
   - CorretorRaspagemCLI.java
@@ -1201,7 +1234,13 @@ traducao_animes_llm_local_quarkus/
   - ResultadoRevisaoLegendas.java
       (sem cabecalho explicativo)
   - RevisarCacheUseCase.java
-      (sem cabecalho explicativo)
+      PROPÓSITO DE NEGÓCIO: revisa concordância, gênero e resíduos em traduções
+      válidas já persistidas, usando a lore vinculada a cada arquivo da pasta cache.
+      
+      <p>INVARIANTES DO DOMÍNIO: entradas vazias/inválidas ficam para tradução ou
+      contingência, não para revisão; uma pasta com vários animes nunca compartilha
+      a mesma lore por engano; tags, karaokê e linhas gráficas são preservados;
+      toda alteração possui backup, escrita atômica e auditoria.
   - RevisarLegendasUseCase.java
       (sem cabecalho explicativo)
 
@@ -1405,21 +1444,82 @@ traducao_animes_llm_local_quarkus/
       (sem cabecalho explicativo)
 
 [PASTA] src/main/java/org/traducao/projeto/traducaoCorrige/application/
+  - ClassificadorEntradaCacheService.java
+      PROPÓSITO DE NEGÓCIO: aplica ao menu Correção do Cache a mesma decisão de
+      validade usada pela Tradução Local, distinguindo falha real de nome, sigla,
+      número, termo de lore, karaokê ou efeito que deve permanecer intocado.
+      
+      <p>INVARIANTES DO DOMÍNIO: entrada protegida nunca é enviada ao Google/LLM;
+      tradução idêntica autorizada pela lore é válida; vazio, fallback não
+      autorizado e resposta rejeitada pelo validador são candidatos à correção.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: campos ausentes são classificados como
+      {@code IGNORADA}; exceções do validador viram {@code INVALIDA} com motivo.
+  - ContextoManutencaoCacheService.java
+      PROPÓSITO DE NEGÓCIO: garante que cada arquivo da pasta cache seja analisado
+      com a lore da obra que realmente o originou, mesmo quando a raiz contém
+      caches de vários animes.
+      
+      <p>INVARIANTES DO DOMÍNIO: a proveniência versionada tem prioridade; contexto
+      manual serve somente como fallback para cache legado; contexto desconhecido
+      nunca cai silenciosamente no padrão.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: lança {@link IllegalArgumentException} e o
+      arquivo é contabilizado como falha sem ser modificado.
   - LimparCacheUseCase.java
-      (sem cabecalho explicativo)
+      PROPÓSITO DE NEGÓCIO: limpa do banco persistente apenas traduções comprovadas
+      como fallback ou inválidas, deixando-as vazias para serem refeitas pela
+      Tradução Local sem apagar nomes e termos legitimamente preservados pela lore.
+      
+      <p>INVARIANTES DO DOMÍNIO: cache versionado/legado é preservado; linhas
+      protegidas não mudam; cada arquivo alterado recebe backup e escrita atômica;
+      cache vazio já representa trabalho pendente e não é regravado.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: a falha é contabilizada e auditada por
+      arquivo, o original permanece no disco e o lote termina com status
+      {@code CONCLUIDO_COM_FALHAS}.
 
 [PASTA] src/main/java/org/traducao/projeto/traducaoCorrige/
-  - CorretorCache.java
-      Programa Utilitário que realiza a limpeza seletiva do cache de tradução.
-      Remove traduções que falharam e foram salvas com o texto original em inglês (fallbacks),
-      permitindo que sejam reprocessadas com a nova lógica e prompts corrigidos.
   - CorretorCacheCLI.java
       CommandLineRunner que realiza a limpeza do cache de tradução integrado ao fluxo do Spring.
       Ativado quando a propriedade app.modo é configurada como "CORRIGIR_CACHE".
 
+[PASTA] src/main/java/org/traducao/projeto/traducaoCorrige/domain/
+  - EntradaAuditoriaCorrecaoCache.java
+      PROPÓSITO DE NEGÓCIO: registra cada decisão que alterou ou tentou reparar uma
+      tradução persistida, formando dataset auditável para descobrir falhas e
+      aperfeiçoar o pipeline.
+      
+      <p>INVARIANTES DO DOMÍNIO: o registro é append-only e contém antes/depois,
+      operação, resultado, motivo, lore e arquivo de origem.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: record imutável; a infraestrutura de
+      persistência registra warning sem interromper a correção principal.
+  - ResultadoManutencaoCache.java
+      PROPÓSITO DE NEGÓCIO: resume de forma verificável o resultado de uma operação
+      sobre a pasta de cache para que console, API, relatório e telemetria não
+      anunciem sucesso quando arquivos falharam.
+      
+      <p>INVARIANTES DO DOMÍNIO: contadores nunca são negativos; uma execução com
+      falhas não possui status {@code CONCLUIDO}; cancelamento tem precedência.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: record imutável; entradas negativas são
+      normalizadas para zero pelo construtor compacto.
+
 [PASTA] src/main/java/org/traducao/projeto/traducaoCorrige/domain/exceptions/
   - CorretorCacheException.java
       (sem cabecalho explicativo)
+
+[PASTA] src/main/java/org/traducao/projeto/traducaoCorrige/infrastructure/
+  - CorrecaoCacheAuditoria.java
+      PROPÓSITO DE NEGÓCIO: persiste em JSONL o histórico granular do menu Correção
+      do Cache para auditoria, recuperação e uso como dataset de melhoria.
+      
+      <p>INVARIANTES DO DOMÍNIO: arquivo canônico fica no projeto, em
+      {@code cache/auditoria}; registros existentes nunca são reescritos.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: emite warning e não derruba a operação que
+      já preserva o cache por backup e escrita atômica.
 
 [PASTA] src/main/java/org/traducao/projeto/traducaoKaraoke/application/
   - ClassificadorLetraKaraokeService.java
@@ -1503,6 +1603,13 @@ traducao_animes_llm_local_quarkus/
       consulta os termos protegidos do lore ATIVO ({@link GerenciadorContexto}),
       para que um termo novo anexado ao contexto selecionado seja protegido sem
       precisar editar este detector.
+      
+      <p>PROPÓSITO DE NEGÓCIO: impedir que manutenção ou retomada do cache apague
+      nomes canônicos e, simultaneamente, não aceite frases inglesas como tradução.
+      <p>INVARIANTES DO DOMÍNIO: a lore ativa é a fonte dos termos protegidos;
+      expressões conversacionais comuns continuam exigindo tradução.
+      <p>COMPORTAMENTO EM CASO DE FALHA: texto sem evidência suficiente é preservado
+      para evitar uma decisão destrutiva.
   - ProcessarArquivoUseCase.java
       (sem cabecalho explicativo)
   - ProcessarEpisodioUseCase.java
@@ -2002,7 +2109,14 @@ traducao_animes_llm_local_quarkus/
 
 [PASTA] src/test/java/org/traducao/projeto/apiDadosAnime/application/
   - ObterMetadataAnimeUseCaseTest.java
-      (sem cabecalho explicativo)
+      PROPÓSITO DE NEGÓCIO: garante que o contexto Gundam Narrative mantenha o
+      alias usado pelas APIs de capa tanto na tradução quanto na revisão de lore.
+      <p>
+      INVARIANTES DO DOMÍNIO: parênteses são apenas delimitadores; a palavra
+      {@code Narrative} nunca pode ser descartada do termo de busca.
+      <p>
+      COMPORTAMENTO EM CASO DE FALHA: qualquer regressão reprova a suíte com a
+      diferença entre o termo esperado e o termo sanitizado.
 
 [PASTA] src/test/java/org/traducao/projeto/apiDadosAnime/infrastructure/adapters/
   - AniListApiClientAdapterTest.java
@@ -2094,6 +2208,17 @@ traducao_animes_llm_local_quarkus/
   - ConversorKaraokeUseCaseTest.java
       (sem cabecalho explicativo)
 
+[PASTA] src/test/java/org/traducao/projeto/raspagemCorrecao/application/
+  - CorrigirComGoogleUseCaseTest.java
+      PROPÓSITO DE NEGÓCIO: prova a regressão central do menu — uma entrada vazia
+      produzida pela limpeza precisa ser preenchida pela contingência Google.
+      
+      <p>INVARIANTES DO DOMÍNIO: teste não acessa a internet nem grava telemetria no
+      projeto; cache versionado e proveniência permanecem intactos.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: qualquer ausência de tradução aplicada ou
+      alteração do envelope falha o teste.
+
 [PASTA] src/test/java/org/traducao/projeto/raspagemCorrecao/infrastructure/
   - GoogleTranslateScraperTest.java
       Cobre o contrato tipado e o retry curado sem tocar na rede: substitui o
@@ -2105,6 +2230,11 @@ traducao_animes_llm_local_quarkus/
   - DetectorConcordanciaServiceTest.java
       Cobre as heurísticas de concordância de gênero (calques do inglês): o núcleo
       algorítmico da revisão de legendas. Serviço de lógica pura — sem I/O nem LLM.
+  - RevisarCacheUseCaseTest.java
+      PROPÓSITO DE NEGÓCIO: comprova que uma raiz cache com várias obras ativa a
+      lore registrada em cada arquivo antes da respectiva revisão LLM.
+      
+      <p>INVARIANTES DO DOMÍNIO: DanMachi e Gundam não compartilham contexto global;
 
 [PASTA] src/test/java/org/traducao/projeto/remuxer/application/
   - MapeadorMidiaServiceTest.java
@@ -2143,6 +2273,26 @@ traducao_animes_llm_local_quarkus/
       em 2026-07-09) e eram regravados a cada registro.
   - TelemetriaServiceRevisaoLoreTest.java
       (sem cabecalho explicativo)
+
+[PASTA] src/test/java/org/traducao/projeto/traducaoCorrige/application/
+  - ClassificadorEntradaCacheServiceTest.java
+      PROPÓSITO DE NEGÓCIO: cobre a fronteira que impede o menu de apagar termos
+      legítimos da lore e garante que lacunas/fallbacks reais sejam reparáveis.
+      
+      <p>INVARIANTES DO DOMÍNIO: a decisão deriva da lore ativa e não de uma lista
+      fixa de um anime; expressões inglesas em Title Case continuam sendo falhas.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: cada cenário retorna status explícito, sem
+      depender de exceção ou igualdade ambígua.
+  - LimparCacheUseCaseTest.java
+      PROPÓSITO DE NEGÓCIO: testa o fluxo completo de limpeza sobre a pasta cache,
+      incluindo proveniência, lore, backup, auditoria e formato versionado.
+      
+      <p>INVARIANTES DO DOMÍNIO: fallback inglês é invalidado, termo de lore é
+      preservado e cache legado sem seleção não sofre alteração destrutiva.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: o resultado acusa falha e o arquivo
+      original permanece byte a byte igual.
 
 [PASTA] src/test/java/org/traducao/projeto/traducaoKaraoke/application/
   - ClassificadorLetraKaraokeServiceTest.java
