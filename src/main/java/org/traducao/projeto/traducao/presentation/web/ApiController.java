@@ -47,8 +47,15 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 /**
- * REST Controller que expõe a API REST para a interface web.
- * Permite acionar todos os módulos do pipeline em segundo plano.
+ * PROPÓSITO DE NEGÓCIO: expõe os módulos do pipeline local à interface web e
+ * coordena sua entrada na fila única de execução.
+ *
+ * <p>INVARIANTES DO DOMÍNIO: caminhos são normalizados antes do uso; jobs
+ * pesados passam pela fila compartilhada; respostas não executam shell com
+ * concatenação de entrada do navegador.
+ *
+ * <p>COMPORTAMENTO EM CASO DE FALHA: entradas inválidas retornam 400, conflitos
+ * de execução retornam 409 e falhas internas são registradas no canal SSE.
  */
 @RestController
 @RequestMapping("/api")
@@ -123,6 +130,15 @@ public class ApiController {
     // DTOs
     public record OperacaoRequest(String entrada, String saida, String contextoId, Long syncOffsetMs,
                                   Boolean permitirRetraducao) {}
+    /**
+     * PROPÓSITO DE NEGÓCIO: transporta as opções exclusivas do Remuxer.
+     * INVARIANTES DO DOMÍNIO: pasta de vídeo é obrigatória; offset e política de
+     * faixas são validados pelo endpoint.
+     * COMPORTAMENTO EM CASO DE FALHA: campos ausentes recebem fallback seguro ou
+     * geram HTTP 400 antes de entrar na fila.
+     */
+    public record RemuxRequest(String entrada, String saida, Long syncOffsetMs,
+                               Boolean preservarLegendasOriginais) {}
     public record ExtracaoRequest(String entrada, String saida, String formato) {}
     public record RespostaPadrao(String mensagem) {}
     public record MapaResponse(String conteudo, String arvoreGithub, String nomeProjeto) {}
@@ -827,57 +843,70 @@ public class ApiController {
     }
 
     /**
-     * 6. REMUXER
+     * PROPÓSITO DE NEGÓCIO: valida e agenda um único lote de remux com política
+     * explícita para legendas originais.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: pastas existem antes da aceitação; offset fica em
+     * faixa operacional; nenhuma segunda operação entra enquanto a fila está
+     * ocupada.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: entrada inválida retorna 400, fila ocupada
+     * retorna 409 e falha do lote aparece no status final do console.
      */
     @PostMapping("/remuxar")
-    public ResponseEntity<RespostaPadrao> remuxar(@RequestBody OperacaoRequest req) {
-        if (req.entrada() == null || req.entrada().isBlank()) {
+    public synchronized ResponseEntity<RespostaPadrao> remuxar(@RequestBody RemuxRequest req) {
+        if (req == null || req.entrada() == null || req.entrada().isBlank()) {
             return ResponseEntity.badRequest().body(new RespostaPadrao("Pasta de vídeos de entrada obrigatória."));
         }
-
+        Path pathVideos = normalizarCaminho(req.entrada());
+        if (pathVideos == null || !Files.isDirectory(pathVideos)) {
+            return ResponseEntity.badRequest().body(new RespostaPadrao("Pasta de vídeos inválida: " + req.entrada()));
+        }
+        Path pathLegendas = req.saida() == null || req.saida().isBlank()
+            ? localizarPastaLegendasAutomatica(pathVideos)
+            : normalizarCaminho(req.saida());
+        if (pathLegendas == null || !Files.isDirectory(pathLegendas)) {
+            return ResponseEntity.badRequest().body(new RespostaPadrao(
+                "Pasta de legendas inválida. Informe-a ou crie uma subpasta como 'legendas pt' dentro da pasta de vídeos."));
+        }
+        long sincronismoMs = req.syncOffsetMs() == null ? 0 : req.syncOffsetMs();
+        if (sincronismoMs < -86_400_000L || sincronismoMs > 86_400_000L) {
+            return ResponseEntity.badRequest().body(new RespostaPadrao(
+                "Sincronismo fora do limite seguro de ±86.400.000 ms (24 horas)."));
+        }
+        if (filaExecucao.ocupada()) {
+            return ResponseEntity.status(409).body(new RespostaPadrao(
+                "O pipeline já possui uma operação em andamento ou aguardando. Aguarde a conclusão antes de iniciar o Remuxer."));
+        }
+        boolean preservarOriginais = Boolean.TRUE.equals(req.preservarLegendasOriginais());
         submeterJobComRelatorio("remuxer", "Remuxer (mkvmerge)", () -> {
             try {
-                Path pathVideos = normalizarCaminho(req.entrada());
-                if (pathVideos == null) {
-                    log.error("Caminho de vídeos inválido informado para remuxer: {}", req.entrada());
-                    System.out.println("[FAIL] Caminho de vídeos inválido: " + req.entrada());
-                    return;
-                }
-                String saidaDir = req.saida() != null && !req.saida().isBlank() ? req.saida() : "legendas-ptbr"; // Padrão
-                Path pathLegendas = normalizarCaminho(saidaDir);
-                if (pathLegendas == null) {
-                    log.error("Caminho de legendas inválido informado para remuxer: {}", saidaDir);
-                    System.out.println("[FAIL] Caminho de legendas inválido: " + saidaDir);
-                    return;
-                }
-
-                if (!Files.isDirectory(pathVideos)) {
-                    System.out.println("\u001B[31m[FAIL] Pasta de vídeos inválida: " + pathVideos + "\u001B[0m");
-                    return;
-                }
-                if (!Files.isDirectory(pathLegendas)) {
-                    System.out.println("\u001B[31m[FAIL] Pasta de legendas traduzidas inválida: " + pathLegendas + "\u001B[0m");
-                    return;
-                }
-
-                long sincronismoMs = req.syncOffsetMs() != null ? req.syncOffsetMs() : 0;
-                RelatorioRemux relatorio = remuxarLoteUseCase.executar(pathVideos, pathLegendas, sincronismoMs);
-                boolean semFalhas = relatorio.getTotalErros() == 0 && relatorio.getMkvProcessadosSucesso() > 0;
-                String resumo = relatorio.getMkvProcessadosSucesso() + " sucesso, " + relatorio.getTotalErros() + " erro(s)"
-                    + (relatorio.getErrosLegendaInvalida() > 0
-                        ? " (" + relatorio.getErrosLegendaInvalida() + " com legenda vazia/corrompida)"
-                        : "");
+                RelatorioRemux relatorio = remuxarLoteUseCase.executar(
+                    pathVideos, pathLegendas, sincronismoMs, preservarOriginais);
+                String status = relatorio.getStatusFinal();
+                String resumo = "status=" + status
+                    + ", sucessos=" + relatorio.getMkvProcessadosSucesso()
+                    + ", pendências=" + relatorio.getTotalPendencias()
+                    + ", falhas=" + relatorio.getTotalErros()
+                    + ", semLegenda=" + relatorio.getVideosSemLegenda()
+                    + ", ambíguos=" + relatorio.getPareamentosAmbiguos()
+                    + ", existentesPreservados=" + relatorio.getSaidasJaExistentes();
                 String linhaSeparadora = "========================================================================";
-                if (semFalhas) {
+                if ("CONCLUIDO".equals(status)) {
                     System.out.println("\n" + AnsiCores.GREEN + linhaSeparadora + AnsiCores.RESET);
                     System.out.println(AnsiCores.GREEN + "  [SUCESSO] REMUXER FINALIZADO! (" + resumo + ")" + AnsiCores.RESET);
                     System.out.println(AnsiCores.GREEN + linhaSeparadora + AnsiCores.RESET + "\n");
                     log.info("[SUCESSO] Remuxer de videos finalizado: {}", resumo);
+                } else if ("CONCLUIDO_COM_PENDENCIAS".equals(status) || "SEM_ARQUIVOS".equals(status)) {
+                    System.out.println("\n" + AnsiCores.YELLOW + linhaSeparadora + AnsiCores.RESET);
+                    System.out.println(AnsiCores.YELLOW + "  [ATENÇÃO] REMUXER FINALIZADO! (" + resumo + ")" + AnsiCores.RESET);
+                    System.out.println(AnsiCores.YELLOW + linhaSeparadora + AnsiCores.RESET + "\n");
+                    log.warn("[ATENÇÃO] Remuxer finalizado: {}", resumo);
                 } else {
                     System.out.println("\n" + AnsiCores.RED + linhaSeparadora + AnsiCores.RESET);
-                    System.out.println(AnsiCores.RED + "  [FALHA] REMUXER FINALIZADO COM ERROS! (" + resumo + ")" + AnsiCores.RESET);
+                    System.out.println(AnsiCores.RED + "  [FALHA/CANCELADO] REMUXER FINALIZADO! (" + resumo + ")" + AnsiCores.RESET);
                     System.out.println(AnsiCores.RED + linhaSeparadora + AnsiCores.RESET + "\n");
-                    log.error("[FALHA] Remuxer de videos finalizado com erros: {}", resumo);
+                    log.error("[FALHA/CANCELADO] Remuxer finalizado: {}", resumo);
                 }
             } catch (Exception e) {
                 log.error("Erro no remuxer em background", e);
@@ -885,7 +914,33 @@ public class ApiController {
             }
         });
 
-        return ResponseEntity.ok(new RespostaPadrao("Remuxer de vídeos iniciado no servidor."));
+        return ResponseEntity.ok(new RespostaPadrao(
+            "Remuxer aceito pela fila. O resultado real, arquivo por arquivo, aparecerá no console."));
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: encontra automaticamente a pasta local de legendas ao
+     * lado dos vídeos usando nomes adotados no pipeline do Paulo.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: somente subdiretórios diretos são considerados e
+     * a comparação ignora caixa, espaço, hífen e underscore.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: erro de leitura ou ausência devolve
+     * {@code null}, fazendo o endpoint pedir um caminho explícito.
+     */
+    private Path localizarPastaLegendasAutomatica(Path pastaVideos) {
+        Set<String> nomesAceitos = Set.of("legendaspt", "legendasptbr", "legendasportugues");
+        try (Stream<Path> stream = Files.list(pastaVideos)) {
+            return stream.filter(Files::isDirectory)
+                .filter(p -> nomesAceitos.contains(p.getFileName().toString().toLowerCase()
+                    .replace("-", "").replace("_", "").replace(" ", "")))
+                .sorted()
+                .findFirst()
+                .orElse(null);
+        } catch (IOException e) {
+            log.warn("Não foi possível procurar pasta automática de legendas em {}: {}", pastaVideos, e.getMessage());
+            return null;
+        }
     }
 
     /**

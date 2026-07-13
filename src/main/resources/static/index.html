@@ -1051,7 +1051,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="remuxer-legendas">Pasta com as legendas traduzidas (.ass): <span
+                                <label for="remuxer-legendas">Pasta com as legendas traduzidas (.ass/.srt): <span
                                         class="help-icon"
                                         data-tooltip="Diretório onde estão as novas legendas ASS traduzidas. Pressione Enter para buscar automaticamente na pasta padrão do projeto.">?</span></label>
                                 <div class="input-with-button">
@@ -1067,11 +1067,20 @@
                                         class="help-icon"
                                         data-tooltip="Use quando o vídeo e a legenda vêm de releases/fontes diferentes e a legenda fica atrasada ou adiantada em relação à fala. Positivo atrasa a legenda, negativo adianta. Ex: 350 ou -1200.">?</span></label>
                                 <input type="number" id="remuxer-sync-offset"
-                                    placeholder="Ex: 350 (atrasa) ou -1200 (adianta)" step="1">
+                                    placeholder="Ex: 350 (atrasa) ou -1200 (adianta)" step="1"
+                                    min="-86400000" max="86400000">
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label" for="remuxer-preservar-legendas">
+                                    <input type="checkbox" id="remuxer-preservar-legendas">
+                                    Preservar as legendas originais do MKV
+                                    <span class="help-icon"
+                                        data-tooltip="Desmarcado: remove as legendas antigas e inclui somente a nova PT-BR. Marcado: mantém as faixas antigas e também adiciona PT-BR como padrão.">?</span>
+                                </label>
                             </div>
                             <div class="correcao-actions">
                                 <button type="submit" class="btn btn-primary btn-cyan"
-                                    data-tooltip="Mescla os arquivos de vídeo e legendas traduzidas em novos arquivos usando mkvmerge">
+                                    data-tooltip="Cria um temporário, valida vídeo/áudio/legenda PT-BR e só então publica o MKV final. Destinos existentes nunca são sobrescritos.">
                                     <span>Iniciar Remuxing</span>
                                     <span class="material-symbols-outlined btn-icon">play_arrow</span>
                                 </button>

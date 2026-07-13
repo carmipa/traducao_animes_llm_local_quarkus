@@ -14,6 +14,16 @@ import org.traducao.projeto.traducao.presentation.ui.PastasExecucao;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * PROPÓSITO DE NEGÓCIO: oferece execução local por terminal da mesma etapa de
+ * remux usada na interface web.
+ *
+ * <p>INVARIANTES DO DOMÍNIO: valida pastas antes do lote e imprime o status real
+ * consolidado, sem anunciar sucesso quando existem pendências ou falhas.
+ *
+ * <p>COMPORTAMENTO EM CASO DE FALHA: configuração/pasta inválida encerra sem
+ * criar saída; falhas do lote permanecem no relatório final.
+ */
 @Component
 @ConditionalOnProperty(name = "app.modo", havingValue = "REMUXAR")
 public class RemuxerCLI implements ExecucaoCli {
@@ -31,6 +41,13 @@ public class RemuxerCLI implements ExecucaoCli {
         this.propriedades = propriedades;
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: coleta configuração CLI, executa o lote e apresenta
+     * contadores e status final.
+     * INVARIANTES DO DOMÍNIO: o fluxo CLI usa as mesmas proteções do caso de uso.
+     * COMPORTAMENTO EM CASO DE FALHA: retorna ao processo após imprimir causa e
+     * não força código de sucesso textual.
+     */
     @Override
     public void executar() {
         logger.cabecalho("PROCESSAMENTO MULTIPLEXAR EM SEGUNDO PLANO");
@@ -72,7 +89,18 @@ public class RemuxerCLI implements ExecucaoCli {
         System.out.println(AnsiCores.colorir(String.format("  Erros de Mkvmerge Runtime   : %d", relatorio.getErrosMkvmergeRuntime()), AnsiCores.RED));
         System.out.println(AnsiCores.colorir(String.format("  Erros de Permissão de I/O   : %d", relatorio.getErrosPermissaoIo()), AnsiCores.RED));
         System.out.println(AnsiCores.colorir(String.format("  Erros Inesperados/Hardware  : %d", relatorio.getErrosInesperados()), AnsiCores.RED));
+        System.out.printf("  Vídeos sem legenda          : %d%n", relatorio.getVideosSemLegenda());
+        System.out.printf("  Pareamentos ambíguos        : %d%n", relatorio.getPareamentosAmbiguos());
+        System.out.printf("  Saídas existentes preservadas: %d%n", relatorio.getSaidasJaExistentes());
+        System.out.printf("  Status Final                : %s%n", relatorio.getStatusFinal());
         System.out.println("================================================================================");
-        logger.sucesso("Esteira finalizada e consolidada com sucesso!");
+        if ("CONCLUIDO".equals(relatorio.getStatusFinal())) {
+            logger.sucesso("Esteira finalizada e validada com sucesso!");
+        } else if ("CONCLUIDO_COM_PENDENCIAS".equals(relatorio.getStatusFinal())
+                || "SEM_ARQUIVOS".equals(relatorio.getStatusFinal())) {
+            logger.aviso("Esteira encerrada com pendências; revise os contadores acima.");
+        } else {
+            logger.erro("Esteira encerrada sem sucesso completo: " + relatorio.getStatusFinal());
+        }
     }
 }
