@@ -28,21 +28,8 @@ public class FfprobeAdapter {
      * Executa ffprobe no vídeo e obtém o JSON com as informações gerais e faixas.
      */
     public AuditoriaResultado analisarMidia(Path caminhoVideo) {
-        List<String> cmd = List.of(
-            "ffprobe", "-v", "quiet", "-print_format", "json", "-show_format", "-show_streams",
-            caminhoVideo.toAbsolutePath().toString()
-        );
-
+        String jsonString = executarFfprobeJson(caminhoVideo);
         try {
-            log.debug("Executando: {}", String.join(" ", cmd));
-            ProcessoExternoUtil.Resultado resultado = ProcessoExternoUtil.executar(cmd, TIMEOUT);
-
-            if (resultado.codigoSaida() != 0) {
-                String stderr = new String(resultado.stderr(), StandardCharsets.UTF_8);
-                throw new AnalisadorException("ffprobe falhou com código " + resultado.codigoSaida() + ". Erro: " + stderr);
-            }
-
-            String jsonString = new String(resultado.stdout(), StandardCharsets.UTF_8);
             JsonNode root = objectMapper.readTree(jsonString);
 
             // Parsing do Container
@@ -81,7 +68,30 @@ public class FfprobeAdapter {
                 legendas,
                 new ArrayList<>()
             );
+        } catch (IOException e) {
+            throw new AnalisadorException("Erro ao interpretar o JSON do ffprobe para " + caminhoVideo, e);
+        }
+    }
 
+    /**
+     * Executa o ffprobe e devolve o JSON cru. Isolado num método {@code protected}
+     * para os testes substituírem o processo externo (sem ffprobe real).
+     */
+    protected String executarFfprobeJson(Path caminhoVideo) {
+        List<String> cmd = List.of(
+            "ffprobe", "-v", "quiet", "-print_format", "json", "-show_format", "-show_streams",
+            caminhoVideo.toAbsolutePath().toString()
+        );
+
+        try {
+            log.debug("Executando: {}", String.join(" ", cmd));
+            ProcessoExternoUtil.Resultado resultado = ProcessoExternoUtil.executar(cmd, TIMEOUT);
+
+            if (resultado.codigoSaida() != 0) {
+                String stderr = new String(resultado.stderr(), StandardCharsets.UTF_8);
+                throw new AnalisadorException("ffprobe falhou com código " + resultado.codigoSaida() + ". Erro: " + stderr);
+            }
+            return new String(resultado.stdout(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new AnalisadorException("Erro de E/S ao executar o ffprobe em " + caminhoVideo, e);
         } catch (InterruptedException e) {

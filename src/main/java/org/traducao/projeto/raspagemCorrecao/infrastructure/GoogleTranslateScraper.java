@@ -16,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,6 +35,13 @@ public class GoogleTranslateScraper {
 
     private static final Logger log = LoggerFactory.getLogger(GoogleTranslateScraper.class);
 
+    // Retry curado: só transitórios (FALHA_TRANSITORIA) são repetidos, no
+    // máximo uma vez. Erro estrutural (RESPOSTA_INVALIDA/TAG_CORROMPIDA) morre
+    // na primeira, sem gastar rede à toa nem arriscar intensificar bloqueio.
+    private static final int MAX_TENTATIVAS = 2;
+    private static final long BACKOFF_BASE_MS = 400;
+    private static final long JITTER_MAX_MS = 200;
+
     // Marcador [Tn]/[B] (com mutilações comuns de espaçamento/parênteses) que
     // sobrou depois da restauração das tags — sinal de resposta corrompida.
     private static final Pattern PADRAO_MARCADOR_RESIDUAL =
@@ -51,6 +59,21 @@ public class GoogleTranslateScraper {
     }
 
     public ResultadoRaspagem traduzir(String textoOriginal) {
+        for (int n = 1; ; n++) {
+            Tentativa tentativa = tentarTraduzir(textoOriginal);
+            boolean transitoria = tentativa.resultado().status() == StatusRaspagem.FALHA_TRANSITORIA;
+            if (!transitoria || n >= MAX_TENTATIVAS) {
+                return tentativa.resultado();
+            }
+            long espera = tentativa.esperaSugeridaMs() > 0 ? tentativa.esperaSugeridaMs() : backoffComJitter();
+            log.info("Falha transitória do Google Translate; nova tentativa em {} ms ({}/{}).",
+                espera, n + 1, MAX_TENTATIVAS);
+            dormir(espera);
+        }
+    }
+
+    /** Uma única tentativa: mascara tags, chama o transporte e mapeia o desfecho. */
+    private Tentativa tentarTraduzir(String textoOriginal) {
         List<String> tags = new ArrayList<>();
         Pattern patternTags = Pattern.compile("\\{[^}]+\\}");
         Matcher matcher = patternTags.matcher(textoOriginal);
@@ -74,7 +97,7 @@ public class GoogleTranslateScraper {
         textoMascarado = textoMascarado.replaceAll("\\s+", " ").strip();
 
         if (textoMascarado.isEmpty()) {
-            return ResultadoRaspagem.semAlteracao(textoOriginal);
+            return semEspera(ResultadoRaspagem.semAlteracao(textoOriginal));
         }
 
         RespostaHttp resposta;
@@ -85,14 +108,16 @@ public class GoogleTranslateScraper {
             resposta = executarGet(url);
         } catch (Exception e) {
             log.error("Erro na comunicação com a API do Google Translate: {}", e.getMessage());
-            return ResultadoRaspagem.falhaTransitoria(textoOriginal);
+            return semEspera(ResultadoRaspagem.falhaTransitoria(textoOriginal));
         }
 
         if (resposta.statusCode() != 200) {
             log.warn("Erro HTTP na chamada do Google Translate: {}", resposta.statusCode());
-            return ehTransitorio(resposta.statusCode())
-                ? ResultadoRaspagem.falhaTransitoria(textoOriginal)
-                : ResultadoRaspagem.respostaInvalida(textoOriginal);
+            if (ehTransitorio(resposta.statusCode())) {
+                // Honra Retry-After (quando presente) na próxima tentativa.
+                return new Tentativa(ResultadoRaspagem.falhaTransitoria(textoOriginal), resposta.retryAfterMs());
+            }
+            return semEspera(ResultadoRaspagem.respostaInvalida(textoOriginal));
         }
 
         String traduzido;
@@ -111,12 +136,12 @@ public class GoogleTranslateScraper {
             traduzido = resultadoTraduzido.toString();
         } catch (Exception e) {
             log.warn("Resposta do Google Translate em formato inesperado ({}); mantendo texto original.", e.getMessage());
-            return ResultadoRaspagem.respostaInvalida(textoOriginal);
+            return semEspera(ResultadoRaspagem.respostaInvalida(textoOriginal));
         }
 
         if (traduzido.isBlank()) {
             log.warn("Resposta do Google Translate sem segmentos traduzíveis; mantendo texto original.");
-            return ResultadoRaspagem.respostaInvalida(textoOriginal);
+            return semEspera(ResultadoRaspagem.respostaInvalida(textoOriginal));
         }
 
         if (temQuebra) {
@@ -130,26 +155,32 @@ public class GoogleTranslateScraper {
 
         traduzido = traduzido.replace("\\ N", "\\N").replace("\\ n", "\\N");
 
-        // O Google às vezes mutila os marcadores ("[ T0 ]", "(T0)", "[b ]"...).
-        // Nesse caso o replace acima não casa: sobraria marcador VISÍVEL na
-        // legenda e/ou a tag ASS original seria perdida. Sinalizamos TAG_CORROMPIDA
-        // (o chamador mantém o original) em vez de gravar uma linha corrompida.
+        // O Google às vezes mutila os marcadores ("[ T0 ]", "(T0)", "[b ]"...): o
+        // replace acima não casa e sobraria marcador visível/tag ASS perdida.
+        // TAG_CORROMPIDA (o chamador mantém o original) não deve ser retentada.
         if (PADRAO_MARCADOR_RESIDUAL.matcher(traduzido).find()) {
             log.warn("Google Translate mutilou marcadores de tag/quebra; mantendo texto original: {}", traduzido);
-            return ResultadoRaspagem.tagCorrompida(textoOriginal);
+            return semEspera(ResultadoRaspagem.tagCorrompida(textoOriginal));
         }
         for (String tag : tags) {
             if (!traduzido.contains(tag)) {
                 log.warn("Google Translate perdeu a tag ASS {}; mantendo texto original.", tag);
-                return ResultadoRaspagem.tagCorrompida(textoOriginal);
+                return semEspera(ResultadoRaspagem.tagCorrompida(textoOriginal));
             }
         }
 
         if (traduzido.equals(textoOriginal)) {
-            return ResultadoRaspagem.semAlteracao(textoOriginal);
+            return semEspera(ResultadoRaspagem.semAlteracao(textoOriginal));
         }
-        return ResultadoRaspagem.sucesso(traduzido);
+        return semEspera(ResultadoRaspagem.sucesso(traduzido));
     }
+
+    private static Tentativa semEspera(ResultadoRaspagem resultado) {
+        return new Tentativa(resultado, 0);
+    }
+
+    /** Resultado de uma tentativa + espera sugerida (ex.: Retry-After) para o retry. */
+    private record Tentativa(ResultadoRaspagem resultado, long esperaSugeridaMs) {}
 
     /**
      * Transporte HTTP cru (status + corpo). Isolado num método {@code protected}
@@ -165,11 +196,40 @@ public class GoogleTranslateScraper {
             .build();
         HttpResponse<String> response = httpClient.send(
             request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
-        return new RespostaHttp(response.statusCode(), response.body());
+        long retryAfterMs = parseRetryAfter(response.headers().firstValue("Retry-After").orElse(null));
+        return new RespostaHttp(response.statusCode(), response.body(), retryAfterMs);
     }
 
-    /** Resposta HTTP mínima (status + corpo) usada como seam de transporte. */
-    protected record RespostaHttp(int statusCode, String corpo) {}
+    /** Resposta HTTP mínima (status, corpo e Retry-After em ms) usada como seam de transporte. */
+    protected record RespostaHttp(int statusCode, String corpo, long retryAfterMs) {}
+
+    /** Espera do backoff — {@code protected} para os testes anularem sem dormir de verdade. */
+    protected void dormir(long ms) {
+        if (ms <= 0) {
+            return;
+        }
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    private static long backoffComJitter() {
+        return BACKOFF_BASE_MS + ThreadLocalRandom.current().nextLong(JITTER_MAX_MS);
+    }
+
+    /** Retry-After no formato de segundos (o formato de data HTTP é ignorado). Retorna ms; 0 se ausente. */
+    private static long parseRetryAfter(String header) {
+        if (header == null || header.isBlank()) {
+            return 0;
+        }
+        try {
+            return Long.parseLong(header.trim()) * 1000L;
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
 
     /** 408/429 e 5xx são transitórios (vale retry); os demais não. */
     private static boolean ehTransitorio(int statusCode) {

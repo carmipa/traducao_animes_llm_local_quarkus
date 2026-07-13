@@ -2,9 +2,9 @@
  MAPA ESTRUTURAL DO PROJETO - TRACKER ANIMES
 ================================================================================
  Raiz do repositorio      : traducao_animes_llm_local_quarkus
- Pastas mapeadas          : 221
- Arquivos (na arvore)     : 413
- Arquivos-fonte indexados : 312  (.java: 312 | .py: 0)
+ Pastas mapeadas          : 224
+ Arquivos (na arvore)     : 414
+ Arquivos-fonte indexados : 313  (.java: 313 | .py: 0)
  Memoria viva do projeto  : CEREBRO_IA.md (na raiz do repositorio)
 
  Objetivo: mapa de contexto para LLMs navegarem os diretorios e
@@ -34,8 +34,8 @@ traducao_animes_llm_local_quarkus/
 │   ├── console-web.log
 │   └── telemetria_compartilhada.json
 ├── relatorios/
-│   └── junit-17140869617729914164/
-│       ├── auditoria_conteudo_20260713_112540.json
+│   └── junit-6910115959496644261/
+│       ├── auditoria_conteudo_20260713_113858.json
 │       └── telemetria_compartilhada.json
 ├── src/
 │   ├── main/
@@ -562,6 +562,10 @@ traducao_animes_llm_local_quarkus/
 │           └── org/
 │               └── traducao/
 │                   └── projeto/
+│                       ├── analisadorMidia/
+│                       │   └── infrastructure/
+│                       │       └── adapters/
+│                       │           └── FfprobeAdapterTest.java
 │                       ├── apiDadosAnime/
 │                       │   └── application/
 │                       │       └── ObterMetadataAnimeUseCaseTest.java
@@ -686,6 +690,8 @@ traducao_animes_llm_local_quarkus/
 [PASTA] src/main/java/org/traducao/projeto/analisadorMidia/infrastructure/adapters/
   - FfprobeAdapter.java
       Executa ffprobe no vídeo e obtém o JSON com as informações gerais e faixas.
+      Parsing do Container
+      Parsing das faixas (streams)
 
 [PASTA] src/main/java/org/traducao/projeto/analisadorMidia/presentation/
   - AnalisadorMidiaCLI.java
@@ -1723,6 +1729,12 @@ traducao_animes_llm_local_quarkus/
   - TrocaTipoLegendaController.java
       (sem cabecalho explicativo)
 
+[PASTA] src/test/java/org/traducao/projeto/analisadorMidia/infrastructure/adapters/
+  - FfprobeAdapterTest.java
+      Cobre o parsing ffprobe-JSON → domínio sem executar ffprobe real: substitui o
+      seam de processo externo ({@code executarFfprobeJson}) por JSON canônico e
+      verifica container, faixas de vídeo/áudio/legenda e casos-limite.
+
 [PASTA] src/test/java/org/traducao/projeto/
   - ApiControllerTest.java
       (sem cabecalho explicativo)
@@ -1796,9 +1808,10 @@ traducao_animes_llm_local_quarkus/
 
 [PASTA] src/test/java/org/traducao/projeto/raspagemCorrecao/infrastructure/
   - GoogleTranslateScraperTest.java
-      Cobre o contrato tipado da raspagem sem tocar na rede: substitui o transporte
-      HTTP ({@code executarGet}) por respostas canônicas e verifica o mapeamento de
-      cada desfecho para {@link StatusRaspagem}.
+      Cobre o contrato tipado e o retry curado sem tocar na rede: substitui o
+      transporte HTTP ({@code executarGet}) por respostas canônicas e anula a espera
+      ({@code dormir}). Verifica o mapeamento de cada desfecho para
+      {@link StatusRaspagem} e que só a falha transitória é retentada.
 
 [PASTA] src/test/java/org/traducao/projeto/remuxer/application/
   - MapeadorMidiaServiceTest.java
