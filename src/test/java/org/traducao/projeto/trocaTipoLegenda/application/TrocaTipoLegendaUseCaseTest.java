@@ -1,7 +1,6 @@
 package org.traducao.projeto.trocaTipoLegenda.application;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -26,6 +25,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * PROPÓSITO DE NEGÓCIO: valida auditoria e substituição de fontes sem acessar
+ * backups ou relatórios reais do projeto.
+ * <p>INVARIANTES DO DOMÍNIO: todos os artefatos ficam sob diretórios temporários.
+ * <p>COMPORTAMENTO EM CASO DE FALHA: qualquer acesso à raiz real reprova os testes.
+ */
 class TrocaTipoLegendaUseCaseTest {
 
     private TrocaTipoLegendaUseCase useCase;
@@ -60,36 +65,21 @@ class TrocaTipoLegendaUseCaseTest {
     private final TelemetriaServiceStub telemetriaStub = new TelemetriaServiceStub();
     private final AuditoriaCacheStub cacheStub = new AuditoriaCacheStub();
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: compõe cada teste com backup isolado pelo JUnit.
+     * <p>INVARIANTES DO DOMÍNIO: nenhuma sessão usa `Path.of("backups")`.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: erro de preparação interrompe o teste.
+     */
     @BeforeEach
     void setUp(@TempDir Path tempDir) throws IOException {
         LeitorLegendaAss leitor = new LeitorLegendaAss();
         EscritorLegendaAss escritor = new EscritorLegendaAss();
         AuditoriaFontesService auditoriaService = new AuditoriaFontesService();
         
-        useCase = new TrocaTipoLegendaUseCase(leitor, escritor, auditoriaService, telemetriaStub, cacheStub);
-        
         tempDirBackups = tempDir.resolve("backups");
         Files.createDirectories(tempDirBackups);
-    }
-
-    @AfterEach
-    void tearDown() throws IOException {
-        deleteDirectoryRecursively(Path.of("backups"));
-        deleteDirectoryRecursively(Path.of("relatorios"));
-    }
-
-    private void deleteDirectoryRecursively(Path path) throws IOException {
-        if (Files.exists(path)) {
-            try (var walk = Files.walk(path)) {
-                walk.sorted((a, b) -> b.compareTo(a))
-                    .forEach(p -> {
-                        try {
-                            Files.delete(p);
-                        } catch (IOException e) {
-                        }
-                    });
-            }
-        }
+        useCase = TrocaTipoLegendaUseCase.criarParaTeste(
+            leitor, escritor, auditoriaService, telemetriaStub, cacheStub, tempDirBackups);
     }
 
     @Test

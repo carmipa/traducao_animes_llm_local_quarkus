@@ -105,6 +105,60 @@ public class ProtetorTermosLoreService {
     }
 
     /**
+     * PROPÓSITO DE NEGÓCIO: identifica nomes e termos oficiais presentes no
+     * original que uma proposta externa removeu, traduziu ou alterou.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: a comparação ignora caixa, mas exige a grafia
+     * canônica completa e respeita fronteiras alfanuméricas.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: proposta nula é considerada violação
+     * de todos os termos canônicos encontrados; ausência de termos retorna lista vazia.
+     */
+    public List<String> termosCanonicosAlterados(
+        String original,
+        String proposta,
+        String lore,
+        Set<String> termosExplicitos
+    ) {
+        TextoProtegido protegido = mascarar(original, lore, termosExplicitos);
+        Set<String> termosOriginais = new LinkedHashSet<>(protegido.termosPorMarcador().values());
+        if (termosOriginais.isEmpty()) return List.of();
+        if (proposta == null) return List.copyOf(termosOriginais);
+
+        List<String> alterados = new ArrayList<>();
+        for (String termo : termosOriginais) {
+            Pattern ocorrencia = Pattern.compile(
+                "(?iu)(?<![\\p{L}\\p{N}])" + Pattern.quote(termo) + "(?![\\p{L}\\p{N}])");
+            if (!ocorrencia.matcher(proposta).find()) alterados.add(termo);
+        }
+        return List.copyOf(alterados);
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: reconhece vocativos e referências formados apenas
+     * por nomes oficiais, evitando enviar `Jona!`, `Rita...` ou `Narrative?` à IA.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: exige ao menos um termo da lore; tags ASS,
+     * espaços e pontuação podem cercar o nome, mas nenhuma outra palavra é aceita.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: texto vazio ou sem termo protegido
+     * retorna {@code false} e segue para a auditoria normal.
+     */
+    public boolean contemSomenteTermosCanonicos(
+        String texto,
+        String lore,
+        Set<String> termosExplicitos
+    ) {
+        TextoProtegido protegido = mascarar(texto, lore, termosExplicitos);
+        if (protegido.termosPorMarcador().isEmpty()) return false;
+        String restante = protegido.textoMascarado()
+            .replaceAll("(?i)ZXQLORE\\d+QXZ", "")
+            .replaceAll("\\{[^{}]*}", "")
+            .replaceAll("[\\p{P}\\p{S}\\s]+", "");
+        return restante.isEmpty();
+    }
+
+    /**
      * PROPÓSITO DE NEGÓCIO: converte regras textuais, catálogo de personagens
      * e declarações de nomes oficiais da lore em glossário operacional sem
      * exigir listas hardcoded por anime.

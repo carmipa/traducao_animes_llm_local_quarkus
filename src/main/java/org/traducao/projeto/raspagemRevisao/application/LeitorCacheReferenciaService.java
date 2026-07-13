@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.traducao.projeto.traducao.infrastructure.cache.CacheManutencaoService;
 import org.traducao.projeto.traducao.infrastructure.cache.EntradaCache;
+import org.traducao.projeto.traducao.infrastructure.cache.ProvenienciaCache;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,6 +25,15 @@ import java.util.List;
  */
 @Service
 public class LeitorCacheReferenciaService {
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: transporta juntas as falas e a identidade da lore
+     * que produziu o cache usado pela Opção 6.
+     * <p>INVARIANTES DO DOMÍNIO: entradas são imutáveis e proveniência pode ser
+     * nula somente para cache legado.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: record não executa I/O nem normalização.
+     */
+    public record DocumentoReferencia(List<EntradaCache> entradas, ProvenienciaCache proveniencia) {}
 
     private final CacheManutencaoService cacheService;
     private final ObjectMapper mapper;
@@ -50,12 +60,26 @@ public class LeitorCacheReferenciaService {
      * corrompido e devolve lista vazia quando o arquivo não existe.
      */
     public List<EntradaCache> carregar(Path arquivo) throws IOException {
-        if (!Files.isRegularFile(arquivo)) return List.of();
+        return carregarDocumento(arquivo).entradas();
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: lê entradas e proveniência em uma única operação para
+     * que a revisão ative automaticamente a lore correta de cada obra.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: cache versionado preserva seu contexto; cache
+     * legado devolve proveniência nula e depende de fallback explícito.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: arquivo ausente produz documento vazio;
+     * JSON corrompido propaga {@link IOException} sem alterar o cache.
+     */
+    public DocumentoReferencia carregarDocumento(Path arquivo) throws IOException {
+        if (!Files.isRegularFile(arquivo)) return new DocumentoReferencia(List.of(), null);
         CacheManutencaoService.DocumentoEditavel documento = cacheService.carregar(arquivo);
         List<EntradaCache> entradas = new ArrayList<>();
         for (JsonNode no : documento.entradas()) {
             if (no.isObject()) entradas.add(mapper.treeToValue(no, EntradaCache.class));
         }
-        return List.copyOf(entradas);
+        return new DocumentoReferencia(List.copyOf(entradas), documento.proveniencia());
     }
 }

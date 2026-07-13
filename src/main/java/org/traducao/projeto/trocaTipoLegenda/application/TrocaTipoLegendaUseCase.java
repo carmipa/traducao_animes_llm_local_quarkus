@@ -2,6 +2,7 @@ package org.traducao.projeto.trocaTipoLegenda.application;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import jakarta.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,7 @@ public class TrocaTipoLegendaUseCase {
     private final TelemetriaService telemetriaService;
     private final TrocaTipoLegendaAuditoriaCache auditoriaCache;
     private final ObjectMapper objectMapper;
+    private final Path raizBackups;
 
     private static final class SessaoTroca {
         final long inicioMs = System.currentTimeMillis();
@@ -66,6 +68,13 @@ public class TrocaTipoLegendaUseCase {
         }
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: compõe a troca de fontes usando a pasta operacional
+     * padrão de backups do projeto.
+     * <p>INVARIANTES DO DOMÍNIO: produção grava somente sob `backups`.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: dependência inválida impede a operação.
+     */
+    @Inject
     public TrocaTipoLegendaUseCase(
         LeitorLegendaAss leitor,
         EscritorLegendaAss escritor,
@@ -73,12 +82,49 @@ public class TrocaTipoLegendaUseCase {
         TelemetriaService telemetriaService,
         TrocaTipoLegendaAuditoriaCache auditoriaCache
     ) {
+        this(leitor, escritor, auditoriaService, telemetriaService, auditoriaCache, Path.of("backups"));
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: permite isolar backups em ambiente controlado de teste
+     * sem tocar nos artefatos reais do projeto.
+     * <p>INVARIANTES DO DOMÍNIO: toda sessão permanece dentro da raiz informada.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: raiz nula impede construção útil e falha
+     * ao tentar normalizar o caminho.
+     */
+    private TrocaTipoLegendaUseCase(
+        LeitorLegendaAss leitor,
+        EscritorLegendaAss escritor,
+        AuditoriaFontesService auditoriaService,
+        TelemetriaService telemetriaService,
+        TrocaTipoLegendaAuditoriaCache auditoriaCache,
+        Path raizBackups
+    ) {
         this.leitor = leitor;
         this.escritor = escritor;
         this.auditoriaService = auditoriaService;
         this.telemetriaService = telemetriaService;
         this.auditoriaCache = auditoriaCache;
         this.objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+        this.raizBackups = raizBackups.toAbsolutePath().normalize();
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: cria uma instância de teste com raiz de backup
+     * explicitamente isolada, sem ampliar o contrato público de produção.
+     * <p>INVARIANTES DO DOMÍNIO: a raiz temporária é obrigatória e normalizada.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: caminho nulo falha imediatamente.
+     */
+    static TrocaTipoLegendaUseCase criarParaTeste(
+        LeitorLegendaAss leitor,
+        EscritorLegendaAss escritor,
+        AuditoriaFontesService auditoriaService,
+        TelemetriaService telemetriaService,
+        TrocaTipoLegendaAuditoriaCache auditoriaCache,
+        Path raizBackups
+    ) {
+        return new TrocaTipoLegendaUseCase(
+            leitor, escritor, auditoriaService, telemetriaService, auditoriaCache, raizBackups);
     }
 
     public ResultadoGeralAuditoria escanear(Path diretorio) {
@@ -131,7 +177,7 @@ public class TrocaTipoLegendaUseCase {
 
         // Criar pasta de backup automático
         String timestamp = TIMESTAMP_DIR.format(LocalDateTime.now());
-        Path pastaBackup = Path.of("backups", "troca_tipo_legenda_" + timestamp).toAbsolutePath();
+        Path pastaBackup = raizBackups.resolve("troca_tipo_legenda_" + timestamp).normalize();
         try {
             Files.createDirectories(pastaBackup);
             sessao.out("Diretório de backup criado com sucesso: " + pastaBackup);

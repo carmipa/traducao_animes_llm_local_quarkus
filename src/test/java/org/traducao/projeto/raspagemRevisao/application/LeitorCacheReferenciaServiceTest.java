@@ -39,11 +39,13 @@ class LeitorCacheReferenciaServiceTest {
             """);
         var leitor = criarLeitor();
 
-        var entradas = leitor.carregar(arquivo);
+        var documento = leitor.carregarDocumento(arquivo);
+        var entradas = documento.entradas();
 
         assertEquals(1, entradas.size());
         assertEquals(7, entradas.get(0).indice());
         assertEquals("Jona!", entradas.get(0).traduzido());
+        assertEquals("gundam_nt", documento.proveniencia().contextoId());
     }
 
     /**

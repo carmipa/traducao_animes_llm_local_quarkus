@@ -2,11 +2,13 @@ package org.traducao.projeto.raspagemCorrecao.application;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * PROPÓSITO DE NEGÓCIO: prova que a contingência online preserva terminologia
@@ -77,5 +79,43 @@ class ProtetorTermosLoreServiceTest {
         assertFalse(protegido.textoMascarado().contains("Brick"));
         assertEquals("Jona! Narrative! Avise Brick.",
             service.restaurar(protegido.textoMascarado().replace("Tell", "Avise"), protegido));
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: bloqueia na revisão final propostas que traduzam ou
+     * deformem nomes oficiais mesmo quando não passaram pelo mascaramento.
+     * <p>INVARIANTES DO DOMÍNIO: Narrative, Jona, Phenex e Zoltan mantêm grafia.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: termo não detectado reprova o teste.
+     */
+    @Test
+    void detectaTermosCanonicosAlteradosNaPropostaFinal() {
+        String lore = """
+            - Jona Basta (homem): piloto.
+            - Zoltan Akkanen (homem): piloto.
+            - Manter sempre em inglês ou forma oficial: Phenex.
+            - "Narrative" e "Narrative Gundam" são nomes oficiais.
+            """;
+
+        assertEquals(List.of("Narrative"), service.termosCanonicosAlterados(
+            "Narrative!", "Narrativa!", lore, Set.of()));
+        assertEquals(List.of("Jona"), service.termosCanonicosAlterados(
+            "Jona!", "Joana!", lore, Set.of()));
+        assertTrue(service.termosCanonicosAlterados(
+            "Phenex and Zoltan", "Phenex e Zoltan", lore, Set.of()).isEmpty());
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: reconhece vocativo canônico como conteúdo válido,
+     * evitando retraduzir nomes que devem permanecer idênticos ao inglês.
+     * <p>INVARIANTES DO DOMÍNIO: pontuação e tags ASS são permitidas; palavras
+     * adicionais obrigam auditoria normal.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: classificação invertida reprova o teste.
+     */
+    @Test
+    void reconheceFalaFormadaSomentePorNomeCanonico() {
+        String lore = "- Jona Basta (homem): piloto.";
+        assertTrue(service.contemSomenteTermosCanonicos("{\\i1}Jona!{\\i0}", lore, Set.of()));
+        assertFalse(service.contemSomenteTermosCanonicos("Jona, pare!", lore, Set.of()));
+        assertFalse(service.contemSomenteTermosCanonicos("Fransson!", lore, Set.of()));
     }
 }

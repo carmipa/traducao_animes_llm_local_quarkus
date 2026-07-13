@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.traducao.projeto.correcaoLegendas.application.SanitizadorTagsService;
 import org.traducao.projeto.raspagemCorrecao.infrastructure.GoogleTranslateScraper;
 import org.traducao.projeto.raspagemCorrecao.infrastructure.ResultadoRaspagem;
+import org.traducao.projeto.raspagemCorrecao.application.ProtetorTermosLoreService;
 import org.traducao.projeto.raspagemRevisao.domain.ResultadoDeteccaoConcordancia;
 import org.traducao.projeto.raspagemRevisao.domain.exceptions.RaspagemRevisaoException;
 import org.traducao.projeto.telemetria.OperacaoTelemetria;
@@ -16,6 +17,7 @@ import org.traducao.projeto.traducao.domain.legenda.DocumentoLegenda;
 import org.traducao.projeto.traducao.domain.legenda.EventoLegenda;
 import org.traducao.projeto.traducao.domain.ports.MistralPort;
 import org.traducao.projeto.traducao.infrastructure.cache.EntradaCache;
+import org.traducao.projeto.traducao.infrastructure.cache.ProvenienciaCache;
 import org.traducao.projeto.traducao.infrastructure.contexto.GerenciadorContexto;
 import org.traducao.projeto.traducao.infrastructure.legenda.EscritorLegendaAss;
 import org.traducao.projeto.traducao.infrastructure.legenda.LeitorLegendaAss;
@@ -70,6 +72,7 @@ public class RevisarLegendasUseCase {
     private final TradutorProperties propriedades;
     private final DetectorEfeitoKaraokeService detectorKaraoke;
     private final ProtecaoLegendaAssService protecaoAss;
+    private final ProtetorTermosLoreService protetorLore;
 
     /**
      * PROPÓSITO DE NEGÓCIO: compõe a revisão final de legendas com leitura de
@@ -96,7 +99,8 @@ public class RevisarLegendasUseCase {
         SanitizadorTagsService sanitizadorTags,
         TradutorProperties propriedades,
         DetectorEfeitoKaraokeService detectorKaraoke,
-        ProtecaoLegendaAssService protecaoAss
+        ProtecaoLegendaAssService protecaoAss,
+        ProtetorTermosLoreService protetorLore
     ) {
         this.leitor = leitor;
         this.escritor = escritor;
@@ -113,6 +117,7 @@ public class RevisarLegendasUseCase {
         this.propriedades = propriedades;
         this.detectorKaraoke = detectorKaraoke;
         this.protecaoAss = protecaoAss;
+        this.protetorLore = protetorLore;
     }
 
     /**
@@ -202,14 +207,13 @@ public class RevisarLegendasUseCase {
         if (modo == ModoRevisaoLegendas.LLM_CONCORDANCIA) {
             out("Iniciando revisão de concordância PT-BR (LLM) em legendas: "
                 + pastaLegendasPt.toAbsolutePath());
-            aplicarContextoLlm(contextoId);
         } else {
             out("Iniciando revisão de legendas traduzidas em: " + pastaLegendasPt.toAbsolutePath());
         }
 
         if (!Files.isDirectory(pastaLegendasPt)) {
             out(AnsiCores.RED + "Erro: pasta de legendas traduzidas inválida." + AnsiCores.RESET);
-            return new ResultadoRevisaoLegendas(0, 0);
+            return new ResultadoRevisaoLegendas(0, 0, 0, 0);
         }
 
         Path pastaEn = pastaLegendasEn != null ? pastaLegendasEn : pastaLegendasPt;
@@ -223,6 +227,7 @@ public class RevisarLegendasUseCase {
         int[] falasComProblema = {0};
         int[] falasAuditadas = {0};
         int[] falasSemOriginal = {0};
+        int[] falasPendentes = {0};
 
         try (Stream<Path> stream = Files.list(pastaLegendasPt)) {
             List<Path> arquivos = stream
@@ -236,8 +241,8 @@ public class RevisarLegendasUseCase {
                 Optional<String> erro = validarPastaEntrada(pastaLegendasPt);
                 out(AnsiCores.YELLOW + erro.orElse("Nenhum arquivo .ass/.ssa traduzido encontrado na pasta.")
                     + AnsiCores.RESET);
-                registrarTelemetria(pastaLegendasPt, inicioMs, 0, 0, 0, 0, 0, modo);
-                return new ResultadoRevisaoLegendas(0, 0);
+                registrarTelemetria(pastaLegendasPt, inicioMs, 0, 0, 0, 0, 0, 0, modo);
+                return new ResultadoRevisaoLegendas(0, 0, 0, 0);
             }
 
             out("Originais EN: .ass em " + pastaEn.toAbsolutePath()
@@ -254,7 +259,7 @@ public class RevisarLegendasUseCase {
                 processarArquivo(
                     arquivoPt, pastaEn, cacheDir, saidaDir, pastaBackup, modo,
                     arquivosProcessados, falasCorrigidas, falasComProblema,
-                    falasAuditadas, falasSemOriginal);
+                    falasAuditadas, falasSemOriginal, falasPendentes, contextoId);
             }
         } catch (IOException e) {
             out(AnsiCores.RED + "Erro ao listar legendas: " + e.getMessage() + AnsiCores.RESET);
@@ -265,27 +270,62 @@ public class RevisarLegendasUseCase {
         out("Falas auditadas: " + falasAuditadas[0]);
         out("Falas sem original EN (ignoradas): " + falasSemOriginal[0]);
         out("Falas com problemas detectados: " + falasComProblema[0]);
+        out("Falas ainda pendentes: " + falasPendentes[0]);
         if (modo == ModoRevisaoLegendas.LLM_CONCORDANCIA) {
             out("Falas corrigidas via LLM e salvas: " + falasCorrigidas[0]);
         } else {
             out("Falas corrigidas via Google e salvas: " + falasCorrigidas[0]);
         }
         registrarTelemetria(pastaLegendasPt, inicioMs, arquivosProcessados[0], falasComProblema[0],
-            falasCorrigidas[0], falasAuditadas[0], falasSemOriginal[0], modo);
-        return new ResultadoRevisaoLegendas(arquivosProcessados[0], falasCorrigidas[0]);
+            falasCorrigidas[0], falasAuditadas[0], falasSemOriginal[0], falasPendentes[0], modo);
+        return new ResultadoRevisaoLegendas(
+            arquivosProcessados[0], falasCorrigidas[0], falasComProblema[0], falasPendentes[0]);
     }
 
-    private void aplicarContextoLlm(String contextoId) {
-        if (contextoId != null && !contextoId.isBlank()) {
-            if (gerenciadorContexto.existeContexto(contextoId)) {
-                gerenciadorContexto.definirContextoAtivo(contextoId);
-                out(AnsiCores.CYAN + "Contexto ativo: "
-                    + gerenciadorContexto.obterNomeContextoAtivo() + AnsiCores.RESET);
-            } else {
-                out(AnsiCores.YELLOW + "Contexto desconhecido \""
-                    + contextoId + "\" — usando contexto padrão." + AnsiCores.RESET);
-            }
+    /**
+     * PROPÓSITO DE NEGÓCIO: ativa para cada legenda a lore registrada no cache
+     * que a originou, impedindo revisão de uma obra com o contexto de outra.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: proveniência versionada sempre vence a seleção
+     * manual; seleção da interface é fallback apenas para cache legado.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: contexto inexistente interrompe o
+     * arquivo antes de qualquer chamada externa ou sobrescrita da legenda.
+     */
+    ContextoRevisao ativarContextoDoArquivo(
+        ProvenienciaCache proveniencia,
+        String contextoFallback,
+        Path cachePath
+    ) {
+        String contextoProveniencia = proveniencia != null ? proveniencia.contextoId() : null;
+        String contextoEfetivo = contextoProveniencia != null && !contextoProveniencia.isBlank()
+            ? contextoProveniencia : contextoFallback;
+
+        if (contextoProveniencia != null && !contextoProveniencia.isBlank()
+            && contextoFallback != null && !contextoFallback.isBlank()
+            && !contextoProveniencia.equals(contextoFallback)) {
+            out(AnsiCores.YELLOW + "  [CONTEXTO] Seleção manual \"" + contextoFallback
+                + "\" ignorada: a proveniência do cache exige \"" + contextoProveniencia + "\"."
+                + AnsiCores.RESET);
         }
+        if (contextoEfetivo == null || contextoEfetivo.isBlank()) {
+            contextoEfetivo = gerenciadorContexto.obterIdContextoAtivo();
+            out(AnsiCores.YELLOW + "  [CONTEXTO] Cache legado sem proveniência e sem seleção; "
+                + "usando contexto ativo \"" + contextoEfetivo + "\"." + AnsiCores.RESET);
+        }
+        if (!gerenciadorContexto.existeContexto(contextoEfetivo)) {
+            throw new RaspagemRevisaoException(
+                "Contexto \"" + contextoEfetivo + "\" do cache não existe no projeto: " + cachePath);
+        }
+
+        gerenciadorContexto.definirContextoAtivo(contextoEfetivo);
+        out(AnsiCores.CYAN + "  Contexto ativo: " + gerenciadorContexto.obterNomeContextoAtivo()
+            + " (fonte: " + (contextoProveniencia != null ? "proveniência do cache" : "seleção/fallback")
+            + ")" + AnsiCores.RESET);
+        return new ContextoRevisao(
+            contextoEfetivo,
+            gerenciadorContexto.obterLoreAtiva(),
+            gerenciadorContexto.termosProtegidosAtivos());
     }
 
     private void registrarTelemetria(
@@ -296,6 +336,7 @@ public class RevisarLegendasUseCase {
         int corrigidas,
         int auditadas,
         int semOriginal,
+        int pendentes,
         ModoRevisaoLegendas modo
     ) {
         long duracaoMs = System.currentTimeMillis() - inicioMs;
@@ -321,6 +362,7 @@ public class RevisarLegendasUseCase {
             Falas sem original EN (ignoradas): %d
             Problemas detectados: %d
             Falas corrigidas via LLM: %d
+            Falas pendentes: %d
             """.formatted(
             pastaLegendasPt.toAbsolutePath(),
             formatarDuracaoMs(duracaoMs),
@@ -328,7 +370,8 @@ public class RevisarLegendasUseCase {
             auditadas,
             semOriginal,
             problemas,
-            corrigidas
+            corrigidas,
+            pendentes
         ) : """
             REVISÃO DE LEGENDAS (.ass)
             ==========================
@@ -339,6 +382,7 @@ public class RevisarLegendasUseCase {
             Falas sem original EN (ignoradas): %d
             Problemas detectados: %d
             Falas corrigidas via Google: %d
+            Falas pendentes: %d
             """.formatted(
             pastaLegendasPt.toAbsolutePath(),
             formatarDuracaoMs(duracaoMs),
@@ -346,7 +390,8 @@ public class RevisarLegendasUseCase {
             auditadas,
             semOriginal,
             problemas,
-            corrigidas
+            corrigidas,
+            pendentes
         );
         telemetriaService.finalizarOperacao(
             operacao, pastaLegendasPt,
@@ -368,9 +413,9 @@ public class RevisarLegendasUseCase {
      * PROPÓSITO DE NEGÓCIO: sincroniza uma legenda com o cache corrigido mais
      * recente e aplica a revisão linguística correspondente ao modo selecionado.
      *
-     * <p>INVARIANTES DO DOMÍNIO: cache vazio nunca apaga fala; cache mais antigo
-     * nunca sobrescreve revisão posterior; qualquer gravação sobre a origem cria
-     * backup e preserva tempos, estilos e estrutura ASS.
+     * <p>INVARIANTES DO DOMÍNIO: cache vazio nunca apaga fala; a proveniência
+     * define a lore; cache mais antigo nunca sobrescreve revisão posterior;
+     * qualquer gravação cria backup e preserva tempos, estilos e estrutura ASS.
      *
      * <p>COMPORTAMENTO EM CASO DE FALHA: exceções de leitura/escrita interrompem
      * o arquivo atual sem produzir uma substituição parcial.
@@ -386,7 +431,9 @@ public class RevisarLegendasUseCase {
         int[] totalCorrigidas,
         int[] totalProblemas,
         int[] totalAuditadas,
-        int[] totalSemOriginal
+        int[] totalSemOriginal,
+        int[] totalPendentes,
+        String contextoFallback
     ) {
         totalArquivos[0]++;
         out("\nAnalisando legenda: " + arquivoPt.getFileName());
@@ -396,7 +443,9 @@ public class RevisarLegendasUseCase {
         Map<Integer, String> originaisPorIndice = carregarOriginaisDeLegenda(arquivoEn);
 
         Path cachePath = resolverArquivoCache(arquivoPt, cacheDir);
-        List<EntradaCache> entradasCache = carregarEntradasCache(cachePath);
+        LeitorCacheReferenciaService.DocumentoReferencia cache = carregarDocumentoCache(cachePath);
+        List<EntradaCache> entradasCache = cache.entradas();
+        ContextoRevisao contexto = ativarContextoDoArquivo(cache.proveniencia(), contextoFallback, cachePath);
         Map<String, String> originalPorTraduzido = indexarOriginalPorTraduzido(entradasCache);
         for (EntradaCache entrada : entradasCache) {
             if (entrada.original() != null && !entrada.original().isBlank()) {
@@ -501,6 +550,16 @@ public class RevisarLegendasUseCase {
             falasAuditadas++;
             totalAuditadas[0]++;
 
+            if (temOriginalEn
+                && normalizarTexto(originalEn).equals(normalizarTexto(traducaoAtual))
+                && protetorLore.contemSomenteTermosCanonicos(
+                    originalEn, contexto.lore(), contexto.termosProtegidos())) {
+                out("  [LORE] Evento " + evento.indice()
+                    + " contém somente nome/termo canônico; mantido sem chamar IA.");
+                eventosAtualizados.add(evento);
+                continue;
+            }
+
             ResultadoDeteccaoConcordancia auditoria = auditor.auditar(originalEn, traducaoAtual);
             if (!auditoria.suspeito()) {
                 eventosAtualizados.add(evento);
@@ -520,6 +579,7 @@ public class RevisarLegendasUseCase {
                 ? mascaradorTags.mascarar(originalEn).texto()
                 : null;
             if (textoMascOriginal != null && revisoesSemAlteracao.contains(textoMascOriginal)) {
+                totalPendentes[0]++;
                 eventosAtualizados.add(evento);
                 continue;
             }
@@ -534,13 +594,16 @@ public class RevisarLegendasUseCase {
                         + "Cache local ignorado na linha " + evento.indice()
                         + ": marcadores de tags incompatíveis com a tradução atual."
                         + AnsiCores.RESET);
+                    totalPendentes[0]++;
                     eventosAtualizados.add(evento);
                     continue;
                 }
 
                 if (novaTraducaoCache.equals(traducaoAtual)
-                    || !correcaoEhSegura(originalEn, traducaoAtual, novaTraducaoCache, auditoria)) {
+                    || !correcaoEhSegura(
+                        originalEn, traducaoAtual, novaTraducaoCache, auditoria, contexto)) {
                     revisoesSemAlteracao.add(textoMascOriginal);
+                    totalPendentes[0]++;
                     eventosAtualizados.add(evento);
                     continue;
                 }
@@ -559,11 +622,12 @@ public class RevisarLegendasUseCase {
             String novaTraducao;
             if (modo == ModoRevisaoLegendas.LLM_CONCORDANCIA) {
                 Optional<String> revisadoOpt = tentarRevisarConcordancia(
-                    originalEn, traducaoAtual, auditoria.motivos());
+                    originalEn, traducaoAtual, auditoria.motivos(), contexto);
                 if (revisadoOpt.isEmpty()) {
                     out("     " + AnsiCores.RED
                         + "Revisão não aplicada (LLM indisponível ou resposta inválida)."
                         + AnsiCores.RESET);
+                    totalPendentes[0]++;
                     eventosAtualizados.add(evento);
                     continue;
                 }
@@ -571,6 +635,7 @@ public class RevisarLegendasUseCase {
                 if (novaTraducao.equals(traducaoAtual)) {
                     out("     " + AnsiCores.DIM + "LLM manteve o texto original." + AnsiCores.RESET);
                     registrarSemAlteracao(textoMascOriginal, revisoesSemAlteracao);
+                    totalPendentes[0]++;
                     eventosAtualizados.add(evento);
                     continue;
                 }
@@ -579,28 +644,37 @@ public class RevisarLegendasUseCase {
                     out("     " + AnsiCores.DIM
                         + "Google não acionado: problema reservado à revisão LLM." + AnsiCores.RESET);
                     registrarSemAlteracao(textoMascOriginal, revisoesSemAlteracao);
+                    totalPendentes[0]++;
                     eventosAtualizados.add(evento);
                     continue;
                 }
-                ResultadoRaspagem resultadoGoogle = googleScraper.traduzir(originalEn);
+                ProtetorTermosLoreService.TextoProtegido originalProtegido = protetorLore.mascarar(
+                    originalEn, contexto.lore(), contexto.termosProtegidos());
+                ResultadoRaspagem resultadoGoogle = googleScraper.traduzir(originalProtegido.textoMascarado());
                 pausaGoogle();
 
-                if (!resultadoGoogle.sucesso() || resultadoGoogle.texto().equals(traducaoAtual)) {
+                String restauradaGoogle = resultadoGoogle.sucesso()
+                    ? protetorLore.restaurar(resultadoGoogle.texto(), originalProtegido)
+                    : null;
+                if (!resultadoGoogle.sucesso() || restauradaGoogle == null
+                    || restauradaGoogle.equals(traducaoAtual)) {
                     out("     " + AnsiCores.DIM + "Google sem alteração aplicável ("
                         + resultadoGoogle.status() + "); mantido." + AnsiCores.RESET);
                     registrarSemAlteracao(textoMascOriginal, revisoesSemAlteracao);
+                    totalPendentes[0]++;
                     eventosAtualizados.add(evento);
                     continue;
                 }
-                novaTraducao = resultadoGoogle.texto();
+                novaTraducao = restauradaGoogle;
             }
 
-            if (!correcaoEhSegura(originalEn, traducaoAtual, novaTraducao, auditoria)) {
+            if (!correcaoEhSegura(originalEn, traducaoAtual, novaTraducao, auditoria, contexto)) {
                 String motivo = modo == ModoRevisaoLegendas.LLM_CONCORDANCIA
                     ? "Correção descartada: resposta LLM inválida ou sem melhoria."
                     : "Correção descartada: resposta Google inválida ou sem melhoria.";
                 out("     " + AnsiCores.YELLOW + motivo + AnsiCores.RESET);
                 registrarSemAlteracao(textoMascOriginal, revisoesSemAlteracao);
+                totalPendentes[0]++;
                 eventosAtualizados.add(evento);
                 continue;
             }
@@ -649,8 +723,9 @@ public class RevisarLegendasUseCase {
      * PROPÓSITO DE NEGÓCIO: decide se uma resposta externa pode substituir a
      * fala atual sem introduzir alucinação ou piorar a auditoria.
      *
-     * <p>INVARIANTES DO DOMÍNIO: texto vazio, suspeita estrutural e resultado com
-     * quantidade igual/maior de problemas são sempre rejeitados.
+     * <p>INVARIANTES DO DOMÍNIO: texto vazio, alteração de termo canônico,
+     * suspeita estrutural e resultado com quantidade igual/maior de problemas
+     * são sempre rejeitados.
      *
      * <p>COMPORTAMENTO EM CASO DE FALHA: validação que lança exceção retorna
      * {@code false} e mantém a legenda anterior.
@@ -659,9 +734,18 @@ public class RevisarLegendasUseCase {
         String original,
         String traducaoAtual,
         String candidata,
-        ResultadoDeteccaoConcordancia auditoriaAnterior
+        ResultadoDeteccaoConcordancia auditoriaAnterior,
+        ContextoRevisao contexto
     ) {
         if (candidata == null || candidata.isBlank() || candidata.equals(traducaoAtual)) return false;
+        List<String> termosAlterados = protetorLore.termosCanonicosAlterados(
+            original, candidata, contexto.lore(), contexto.termosProtegidos());
+        if (!termosAlterados.isEmpty()) {
+            out("     " + AnsiCores.YELLOW
+                + "[LORE] Correção rejeitada: alteraria termo(s) canônico(s): "
+                + String.join(", ", termosAlterados) + AnsiCores.RESET);
+            return false;
+        }
         try {
             validador.validarFala(candidata);
             if (protecaoAss.respostaSuspeita(original, candidata)) return false;
@@ -851,25 +935,25 @@ public class RevisarLegendasUseCase {
     }
 
     /**
-     * PROPÓSITO DE NEGÓCIO: fornece à revisão as referências EN/PT produzidas
-     * pelas etapas 4 e 5, aceitando cache legado e versionado.
+     * PROPÓSITO DE NEGÓCIO: fornece à revisão as referências EN/PT e a
+     * proveniência produzidas pelas etapas 4 e 5.
      *
-     * <p>INVARIANTES DO DOMÍNIO: somente objetos de entrada são convertidos e a
-     * leitura nunca modifica o banco de cache.
+     * <p>INVARIANTES DO DOMÍNIO: entradas e contexto pertencem ao mesmo documento
+     * e a leitura nunca modifica o banco de cache.
      *
      * <p>COMPORTAMENTO EM CASO DE FALHA: registra aviso e devolve lista vazia,
      * permitindo usar uma legenda inglesa externa como fallback.
      */
-    private List<EntradaCache> carregarEntradasCache(Path cachePath) {
+    private LeitorCacheReferenciaService.DocumentoReferencia carregarDocumentoCache(Path cachePath) {
         if (!Files.isRegularFile(cachePath)) {
-            return new ArrayList<>();
+            return new LeitorCacheReferenciaService.DocumentoReferencia(List.of(), null);
         }
         try {
-            return leitorCache.carregar(cachePath);
+            return leitorCache.carregarDocumento(cachePath);
         } catch (IOException e) {
             out(AnsiCores.YELLOW + "  Aviso: não foi possível ler cache "
                 + cachePath.getFileName() + ": " + e.getMessage() + AnsiCores.RESET);
-            return new ArrayList<>();
+            return new LeitorCacheReferenciaService.DocumentoReferencia(List.of(), null);
         }
     }
 
@@ -984,12 +1068,29 @@ public class RevisarLegendasUseCase {
         return matcher.find() ? matcher.group(1).toUpperCase() : null;
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: solicita ao LLM uma revisão pontual sem permitir que
+     * nomes e termos oficiais definidos pela lore sejam traduzidos.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: tags ASS e termos canônicos são mascarados antes
+     * da chamada e precisam ser restaurados integralmente antes da validação.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: resposta vazia, marcador perdido ou
+     * proposta estruturalmente inválida devolve {@link Optional#empty()}.
+     */
     private Optional<String> tentarRevisarConcordancia(
-        String original, String traduzido, List<String> motivos
+        String original,
+        String traduzido,
+        List<String> motivos,
+        ContextoRevisao contexto
     ) {
         String textoOriginal = original != null ? original : "";
-        MascaradorTags.Mascarado mascOriginal = mascaradorTags.mascarar(textoOriginal);
-        MascaradorTags.Mascarado mascTraduzido = mascaradorTags.mascarar(traduzido);
+        ProtetorTermosLoreService.TextoProtegido originalProtegido = protetorLore.mascarar(
+            textoOriginal, contexto.lore(), contexto.termosProtegidos());
+        ProtetorTermosLoreService.TextoProtegido traducaoProtegida = protetorLore.mascarar(
+            traduzido, contexto.lore(), contexto.termosProtegidos());
+        MascaradorTags.Mascarado mascOriginal = mascaradorTags.mascarar(originalProtegido.textoMascarado());
+        MascaradorTags.Mascarado mascTraduzido = mascaradorTags.mascarar(traducaoProtegida.textoMascarado());
 
         boolean precisaRetraducaoCompleta = motivos.stream().anyMatch(
             m -> m.contains("Resíduo gringo") || m.contains("não traduzida"));
@@ -1015,11 +1116,13 @@ public class RevisarLegendasUseCase {
 
         try {
             String desmascarado = mascaradorTags.desmascarar(resposta.get(), mascTraduzido.tags());
-            validador.validarFala(desmascarado);
-            if (protecaoAss.respostaSuspeita(original, desmascarado)) {
+            String restaurado = protetorLore.restaurar(desmascarado, traducaoProtegida);
+            if (restaurado == null) return Optional.empty();
+            validador.validarFala(restaurado);
+            if (protecaoAss.respostaSuspeita(original, restaurado)) {
                 return Optional.empty();
             }
-            return Optional.of(desmascarado);
+            return Optional.of(restaurado);
         } catch (AlucinacaoDetectadaException e) {
             return Optional.empty();
         }
@@ -1037,4 +1140,12 @@ public class RevisarLegendasUseCase {
         String nome = arquivo.getFileName().toString().toLowerCase();
         return EXTENSOES.stream().anyMatch(nome::endsWith);
     }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: mantém a identidade e o glossário operacional da
+     * obra ativos durante a revisão de um arquivo.
+     * <p>INVARIANTES DO DOMÍNIO: lore nunca é nula e termos pertencem ao contexto.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: record imutável não executa I/O.
+     */
+    record ContextoRevisao(String id, String lore, Set<String> termosProtegidos) {}
 }

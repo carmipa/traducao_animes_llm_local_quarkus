@@ -672,6 +672,11 @@ public class ApiController {
             return ResponseEntity.badRequest().body(new RespostaPadrao(
                 "Pasta com legendas traduzidas em português (.ass) é obrigatória."));
         }
+        if (req.contextoId() != null && !req.contextoId().isBlank()
+            && !gerenciadorContexto.existeContexto(req.contextoId())) {
+            return ResponseEntity.badRequest().body(new RespostaPadrao(
+                "Contexto desconhecido: \"" + req.contextoId() + "\"."));
+        }
 
         Optional<Path> pathPtOpt = parseCaminhoSeguro(req.entrada(), "legendas traduzidas");
         if (pathPtOpt.isEmpty()) {
@@ -701,20 +706,9 @@ public class ApiController {
         submeterJobComRelatorio("revisao", "Revisão de Legendas Traduzidas", () -> {
             try {
                 ResultadoRevisaoLegendas resultado = revisarLegendasUseCase.executar(
-                    pathPt, pathEnFinal, Path.of("cache"), null);
-                if (resultado.arquivosAnalisados() == 0) {
-                    System.out.println(
-                        "\u001B[33m[AVISO] Revisão concluída sem arquivos .ass/.ssa para analisar.\u001B[0m");
-                } else {
-                    System.out.println("\n\u001B[32m========================================================================\u001B[0m");
-                    System.out.println("\u001B[32m  🎉 [SUCESSO] REVISÃO DE LEGENDAS TRADUZIDAS FINALIZADA!\u001B[0m");
-                    System.out.println("\u001B[32m========================================================================\u001B[0m");
-                    System.out.println("\u001B[36m  • Arquivos Analisados : " + resultado.arquivosAnalisados() + "\u001B[0m");
-                    System.out.println("\u001B[32m  • Falas Corrigidas    : " + resultado.falasCorrigidas() + "\u001B[0m");
-                    System.out.println("\u001B[32m========================================================================\n\u001B[0m");
-                    log.info("[SUCESSO] Revisão de legendas: {} arquivo(s), {} corrigidas.",
-                        resultado.arquivosAnalisados(), resultado.falasCorrigidas());
-                }
+                    pathPt, pathEnFinal, Path.of("cache"), null,
+                    RevisarLegendasUseCase.ModoRevisaoLegendas.GOOGLE, req.contextoId());
+                imprimirResultadoRevisaoLegendas("REVISÃO DE LEGENDAS TRADUZIDAS", resultado);
             } catch (Exception e) {
                 log.error("Erro na revisão de legendas", e);
                 System.out.println("\u001B[31m[ERRO] Revisão de legendas falhou: " + e.getMessage() + "\u001B[0m");
@@ -781,19 +775,7 @@ public class ApiController {
                     RevisarLegendasUseCase.ModoRevisaoLegendas.LLM_CONCORDANCIA,
                     req.contextoId()
                 );
-                if (resultado.arquivosAnalisados() == 0) {
-                    System.out.println(
-                        "\u001B[33m[AVISO] Revisão de concordância concluída sem arquivos .ass/.ssa.\u001B[0m");
-                } else {
-                    System.out.println("\n\u001B[32m========================================================================\u001B[0m");
-                    System.out.println("\u001B[32m  🎉 [SUCESSO] REVISÃO DE CONCORDÂNCIA PT-BR (LLM) FINALIZADA!\u001B[0m");
-                    System.out.println("\u001B[32m========================================================================\u001B[0m");
-                    System.out.println("\u001B[36m  • Arquivos Analisados : " + resultado.arquivosAnalisados() + "\u001B[0m");
-                    System.out.println("\u001B[32m  • Falas Corrigidas    : " + resultado.falasCorrigidas() + "\u001B[0m");
-                    System.out.println("\u001B[32m========================================================================\n\u001B[0m");
-                    log.info("[SUCESSO] Revisão concordância legendas: {} arquivo(s), {} corrigidas.",
-                        resultado.arquivosAnalisados(), resultado.falasCorrigidas());
-                }
+                imprimirResultadoRevisaoLegendas("REVISÃO DE CONCORDÂNCIA PT-BR (LLM)", resultado);
             } catch (Exception e) {
                 log.error("Erro na revisão de concordância das legendas", e);
                 System.out.println("\u001B[31m[ERRO] Revisão de concordância falhou: "
@@ -803,6 +785,45 @@ public class ApiController {
 
         return ResponseEntity.ok(new RespostaPadrao(
             "Revisão de concordância PT-BR (LLM) iniciada no servidor."));
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: apresenta o desfecho verdadeiro da Opção 6 sem
+     * transformar execução tecnicamente estável com pendências em sucesso total.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: verde exige zero pendências; amarelo informa
+     * problemas restantes e zero arquivos mantém o aviso histórico.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: resultado nulo é tratado como falha e
+     * não provoca erro no job de background.
+     */
+    private void imprimirResultadoRevisaoLegendas(String titulo, ResultadoRevisaoLegendas resultado) {
+        if (resultado == null) {
+            System.out.println(AnsiCores.RED + "[FALHA] " + titulo + " não retornou resultado."
+                + AnsiCores.RESET);
+            return;
+        }
+        if (resultado.arquivosAnalisados() == 0) {
+            System.out.println(AnsiCores.YELLOW
+                + "[AVISO] Revisão concluída sem arquivos .ass/.ssa para analisar."
+                + AnsiCores.RESET);
+            return;
+        }
+
+        boolean concluido = "CONCLUIDO".equals(resultado.status());
+        String cor = concluido ? AnsiCores.GREEN : AnsiCores.YELLOW;
+        String rotulo = concluido ? "[SUCESSO]" : "[ATENÇÃO]";
+        System.out.println("\n" + cor + "========================================================================" + AnsiCores.RESET);
+        System.out.println(cor + "  " + rotulo + " " + titulo + " — " + resultado.status() + AnsiCores.RESET);
+        System.out.println(cor + "========================================================================" + AnsiCores.RESET);
+        System.out.println(AnsiCores.CYAN + "  • Arquivos Analisados : " + resultado.arquivosAnalisados() + AnsiCores.RESET);
+        System.out.println(AnsiCores.CYAN + "  • Problemas Detectados: " + resultado.falasComProblema() + AnsiCores.RESET);
+        System.out.println(AnsiCores.GREEN + "  • Falas Corrigidas    : " + resultado.falasCorrigidas() + AnsiCores.RESET);
+        System.out.println((resultado.falasPendentes() > 0 ? AnsiCores.YELLOW : AnsiCores.GREEN)
+            + "  • Falas Pendentes     : " + resultado.falasPendentes() + AnsiCores.RESET);
+        System.out.println(cor + "========================================================================\n" + AnsiCores.RESET);
+        log.info("[{}] {}: arquivos={}, corrigidas={}, pendentes={}.", resultado.status(), titulo,
+            resultado.arquivosAnalisados(), resultado.falasCorrigidas(), resultado.falasPendentes());
     }
 
     /**
