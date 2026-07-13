@@ -10,5 +10,7 @@ public record AuditoriaResultado(
     List<VideoInfo> videos,
     List<AudioInfo> audios,
     List<LegendaInfo> legendas,
+    List<CapituloInfo> capitulos,
+    List<AnexoInfo> anexos,
     List<String> logsAuditoria
 ) {}

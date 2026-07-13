@@ -18,8 +18,8 @@ public record MidiaTelemetria(
         String idioma,
         String formato,
         String tipo,
-        String veredicto,
-        Double driftRatioSegundosPorHora,
+        String categoria,
+        boolean traduzivel,
         Double diferencaFimSegundos
     ) {}
 }

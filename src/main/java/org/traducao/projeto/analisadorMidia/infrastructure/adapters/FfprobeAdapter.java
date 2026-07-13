@@ -40,6 +40,7 @@ public class FfprobeAdapter {
             List<VideoInfo> videos = new ArrayList<>();
             List<AudioInfo> audios = new ArrayList<>();
             List<LegendaInfo> legendas = new ArrayList<>();
+            List<AnexoInfo> anexos = new ArrayList<>();
 
             JsonNode streamsNode = root.get("streams");
             int legendaIdx = 0; // index relativo para ffprobe select_streams s:<idx>
@@ -55,9 +56,13 @@ public class FfprobeAdapter {
                         audios.add(parseAudio(stream, index));
                     } else if ("subtitle".equals(codecType)) {
                         legendas.add(parseLegenda(stream, index, legendaIdx++));
+                    } else if ("attachment".equals(codecType)) {
+                        anexos.add(parseAnexo(stream));
                     }
                 }
             }
+
+            List<CapituloInfo> capitulos = parseCapitulos(root.path("chapters"));
 
             return new AuditoriaResultado(
                 caminhoVideo,
@@ -66,6 +71,8 @@ public class FfprobeAdapter {
                 videos,
                 audios,
                 legendas,
+                capitulos,
+                anexos,
                 new ArrayList<>()
             );
         } catch (IOException e) {
@@ -79,7 +86,8 @@ public class FfprobeAdapter {
      */
     protected String executarFfprobeJson(Path caminhoVideo) {
         List<String> cmd = List.of(
-            "ffprobe", "-v", "quiet", "-print_format", "json", "-show_format", "-show_streams",
+            "ffprobe", "-v", "quiet", "-print_format", "json",
+            "-show_format", "-show_streams", "-show_chapters",
             caminhoVideo.toAbsolutePath().toString()
         );
 
@@ -268,11 +276,53 @@ public class FfprobeAdapter {
             }
         }
 
+        JsonNode disp = stream.path("disposition");
+        boolean isDefault = disp.path("default").asInt(0) == 1;
+        boolean isForced = disp.path("forced").asInt(0) == 1;
+        boolean acessibilidade = disp.path("hearing_impaired").asInt(0) == 1
+            || disp.path("visual_impaired").asInt(0) == 1;
+
+        // Classificação (tipo/categoria/traduzibilidade) é preenchida no use case.
         return new LegendaInfo(
             index, indexRelativo, idioma, format, codecId, titulo,
-            null, null, duracao > 0.0 ? duracao : null, null,
-            "Metadados", null, null, null, null
+            null, null, null, false, false, false,
+            isDefault, isForced, acessibilidade,
+            duracao > 0.0 ? duracao : null, null
         );
+    }
+
+    private AnexoInfo parseAnexo(JsonNode stream) {
+        JsonNode tags = stream.path("tags");
+        String nome = tags.path("filename").asText(tags.path("FILENAME").asText("(sem nome)"));
+        String mime = tags.path("mimetype").asText(tags.path("MIMETYPE").asText("N/A"));
+        long tamanho = stream.path("extradata_size").asLong(0L);
+        return new AnexoInfo(nome, mime, tamanho);
+    }
+
+    private List<CapituloInfo> parseCapitulos(JsonNode chaptersNode) {
+        List<CapituloInfo> capitulos = new ArrayList<>();
+        if (chaptersNode == null || !chaptersNode.isArray()) {
+            return capitulos;
+        }
+        int numero = 1;
+        for (JsonNode cap : chaptersNode) {
+            double inicio = parseTempo(cap.path("start_time").asText(null));
+            double fim = parseTempo(cap.path("end_time").asText(null));
+            String titulo = cap.path("tags").path("title").asText("Capitulo " + numero);
+            capitulos.add(new CapituloInfo(numero++, titulo, inicio, fim));
+        }
+        return capitulos;
+    }
+
+    private static double parseTempo(String valor) {
+        if (valor == null || valor.isBlank()) {
+            return 0.0;
+        }
+        try {
+            return Double.parseDouble(valor);
+        } catch (NumberFormatException e) {
+            return 0.0;
+        }
     }
 
     private double converterDuracaoTagParaSegundos(String durTag) {
