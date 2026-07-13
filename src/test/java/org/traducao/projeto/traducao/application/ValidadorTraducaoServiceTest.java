@@ -43,6 +43,26 @@ class ValidadorTraducaoServiceTest {
             validador.validarFala("Se você terminou sua missão, it's seu dever me dar um relatório."));
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: cobre os resíduos reais que a Opção 6 declarou
+     * incorretamente como conformes no Gundam Narrative.
+     * <p>INVARIANTES DO DOMÍNIO: cada exemplo contém inglês visível fora da lore.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: qualquer fala aceita reprova o teste.
+     */
+    @Test
+    void rejeitaResiduosReaisDoGundamNarrative() {
+        assertThrows(AlucinacaoDetectadaException.class, () ->
+            validador.validarFala("Will transform a sociedade humana até seu núcleo."));
+        assertThrows(AlucinacaoDetectadaException.class, () ->
+            validador.validarFala("Or rather, he thought."));
+        assertThrows(AlucinacaoDetectadaException.class, () ->
+            validador.validarFala("Ensign Jona."));
+        assertThrows(AlucinacaoDetectadaException.class, () ->
+            validador.validarFala("Ensign Jona! Luta para recuperar a situação!"));
+        assertThrows(AlucinacaoDetectadaException.class, () ->
+            validador.validarFala("Unknown, senhor! Incomensurável!"));
+    }
+
     @Test
     void aceitaFalaLimpaEmPortugues() {
         assertDoesNotThrow(() ->

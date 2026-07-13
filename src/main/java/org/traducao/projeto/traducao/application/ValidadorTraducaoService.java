@@ -5,6 +5,16 @@ import org.traducao.projeto.traducao.domain.exceptions.AlucinacaoDetectadaExcept
 
 import java.util.regex.Pattern;
 
+/**
+ * PROPÓSITO DE NEGÓCIO: impede que textos parcialmente traduzidos, respostas
+ * rotuladas ou conteúdo em idioma indevido cheguem às legendas e ao cache.
+ * <p>INVARIANTES DO DOMÍNIO: comentários ASS não visíveis são ignorados, nomes
+ * próprios conhecidos não viram falso positivo e resíduos visíveis inequívocos
+ * sempre bloqueiam a proposta.
+ * <p>COMPORTAMENTO EM CASO DE FALHA: lança
+ * {@link AlucinacaoDetectadaException} com diagnóstico e o chamador preserva a
+ * tradução anterior.
+ */
 @Service
 public class ValidadorTraducaoService {
     
@@ -24,8 +34,9 @@ public class ValidadorTraducaoService {
             + "about|above|across|after|against|along|among|around|before|behind|below|beneath|"
             + "beside|between|beyond|down|during|into|outside|over|past|since|through|"
             + "throughout|till|toward|under|underneath|until|upon|within|although|unless|"
-            + "does|did|been|had|went|gone|got|make|made|take|took|saw|seen|"
-            + "always|never|sometimes|often|usually|really|also|even|every|please|thank|thanks|sorry)\\b",
+            + "does|did|been|had|went|gone|got|make|made|take|took|saw|seen|thought|transform|"
+            + "rather|unknown|ensign|always|never|sometimes|often|usually|really|also|even|"
+            + "every|please|thank|thanks|sorry)\\b",
         Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS
     );
 
@@ -76,6 +87,14 @@ public class ValidadorTraducaoService {
     // "{\i1}Tradução: ...", escapava da âncora ^ do padrão de preâmbulo).
     private static final Pattern PADRAO_BLOCO_ASS = Pattern.compile("\\{[^}]*\\}");
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: valida o texto visível de uma fala antes de sua
+     * persistência, detectando resíduos e respostas fora do contrato PT-BR.
+     * <p>INVARIANTES DO DOMÍNIO: tags e comentários ASS são retirados somente
+     * para a inspeção; o texto recebido nunca é modificado.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: texto vazio é aceito; violação lança
+     * {@link AlucinacaoDetectadaException} com a fala original no diagnóstico.
+     */
     public void validarFala(String textoTraduzido) {
         if (textoTraduzido == null || textoTraduzido.trim().isEmpty()) {
             return;
@@ -112,10 +131,13 @@ public class ValidadorTraducaoService {
     }
 
     /**
-     * true quando há resíduo em inglês de verdade: qualquer palavra do padrão
-     * conta, EXCETO quando todas as ocorrências são palavras de
-     * {@link #RESIDUOS_TAMBEM_NOMES} escritas Capitalizadas (não CAIXA ALTA),
-     * o que indica nome próprio e não fala sem traduzir.
+     * PROPÓSITO DE NEGÓCIO: diferencia resíduo inglês visível de palavra que é
+     * também nome próprio de personagem.
+     * <p>INVARIANTES DO DOMÍNIO: a exceção vale somente para ocorrência
+     * capitalizada cadastrada; outro token inglês na mesma fala continua
+     * produzindo bloqueio, como em {@code Will transform}.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: ausência de correspondência retorna
+     * falso; qualquer resíduo inequívoco retorna verdadeiro.
      */
     private boolean temResiduoRelevante(String texto) {
         var matcher = PADRAO_RESIDUO.matcher(texto);

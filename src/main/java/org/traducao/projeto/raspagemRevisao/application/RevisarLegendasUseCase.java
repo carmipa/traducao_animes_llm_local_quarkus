@@ -473,8 +473,10 @@ public class RevisarLegendasUseCase {
         Set<String> revisoesSemAlteracao = new LinkedHashSet<>();
         int corrigidasNesteArquivo = 0;
         boolean sincronizarCache = cacheMaisNovoQueLegenda(cachePath, arquivoPt);
+        Set<Integer> indicesCanonicosProtegidos = localizarIndicesCanonicosProtegidos(
+            documentoPt, entradasCache, contexto);
         SincronizadorLegendaCacheService.Resultado sincronizacao = sincronizadorCache.sincronizar(
-            documentoPt, entradasCache, sincronizarCache);
+            documentoPt, entradasCache, sincronizarCache, indicesCanonicosProtegidos);
         documentoPt = sincronizacao.documento();
         int sincronizadasNesteArquivo = sincronizacao.total();
         int problemasNesteArquivo = 0;
@@ -843,6 +845,41 @@ public class RevisarLegendasUseCase {
                 + "sincronização automática desativada." + AnsiCores.RESET);
             return false;
         }
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: identifica falas válidas que coincidem com o inglês
+     * apenas porque são formadas exclusivamente por nomes ou termos canônicos.
+     * <p>INVARIANTES DO DOMÍNIO: exige igualdade exata com o original do cache,
+     * evento dialogado e confirmação pelo protetor da lore ativa.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: entradas ausentes retornam conjunto
+     * vazio; nenhuma fala ambígua recebe proteção automática.
+     */
+    private Set<Integer> localizarIndicesCanonicosProtegidos(
+        DocumentoLegenda documento,
+        List<EntradaCache> entradas,
+        ContextoRevisao contexto
+    ) {
+        if (documento == null || entradas == null || entradas.isEmpty() || contexto == null) {
+            return Set.of();
+        }
+        Map<Integer, EntradaCache> porIndice = new HashMap<>();
+        for (EntradaCache entrada : entradas) {
+            porIndice.putIfAbsent(entrada.indice(), entrada);
+        }
+        Set<Integer> protegidos = new LinkedHashSet<>();
+        for (EventoLegenda evento : documento.eventos()) {
+            EntradaCache entrada = porIndice.get(evento.indice());
+            if (!evento.isDialogo() || entrada == null || entrada.original() == null
+                || !entrada.original().equals(evento.texto())) {
+                continue;
+            }
+            if (protetorLore.contemSomenteTermosCanonicos(
+                entrada.original(), contexto.lore(), contexto.termosProtegidos())) {
+                protegidos.add(evento.indice());
+            }
+        }
+        return Set.copyOf(protegidos);
     }
 
     /**

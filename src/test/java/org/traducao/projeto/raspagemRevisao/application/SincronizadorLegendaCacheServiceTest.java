@@ -6,6 +6,7 @@ import org.traducao.projeto.traducao.domain.legenda.EventoLegenda;
 import org.traducao.projeto.traducao.infrastructure.cache.EntradaCache;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -82,5 +83,30 @@ class SincronizadorLegendaCacheServiceTest {
         assertEquals(List.of(1), resultado.indicesRecuperadosDoOriginal());
         assertEquals("Ajude-me, Jona!", resultado.documento().eventos().get(0).texto());
         assertEquals("Revisão humana melhor", resultado.documento().eventos().get(1).texto());
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: impede que cache antigo remova um nome canônico
+     * restaurado pela Opção 7 só porque a fala válida coincide com o inglês.
+     * <p>INVARIANTES DO DOMÍNIO: índice protegido não é recuperado; outra
+     * regressão verdadeira continua elegível pelo mesmo algoritmo.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: retorno a `Michele!` reprova o teste.
+     */
+    @Test
+    void naoConfundeFalaCanonicaComRegressaoAoIngles() {
+        DocumentoLegenda documento = new DocumentoLegenda("", List.of(
+            new EventoLegenda(59, "Dialogue", "Default", "", "Jona! Michele!"),
+            new EventoLegenda(60, "Dialogue", "Default", "", "Help me!")), "\n", false);
+        List<EntradaCache> entradas = List.of(
+            new EntradaCache(59, "Default", "Jona! Michele!", "Michele!", "en", "pt-br"),
+            new EntradaCache(60, "Default", "Help me!", "Ajude-me!", "en", "pt-br"));
+
+        var resultado = new SincronizadorLegendaCacheService().sincronizar(
+            documento, entradas, false, Set.of(59));
+
+        assertEquals(1, resultado.total());
+        assertEquals(List.of(60), resultado.indicesRecuperadosDoOriginal());
+        assertEquals("Jona! Michele!", resultado.documento().eventos().get(0).texto());
+        assertEquals("Ajude-me!", resultado.documento().eventos().get(1).texto());
     }
 }

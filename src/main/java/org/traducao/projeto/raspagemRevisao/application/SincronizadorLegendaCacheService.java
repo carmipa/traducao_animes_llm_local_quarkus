@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * PROPÓSITO DE NEGÓCIO: materializa no ASS/SSA as correções confirmadas pela
@@ -62,9 +63,30 @@ public class SincronizadorLegendaCacheService {
         List<EntradaCache> entradas,
         boolean autorizado
     ) {
+        return sincronizar(documento, entradas, autorizado, Set.of());
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: sincroniza o cache sem confundir uma fala composta
+     * somente por nomes canônicos com regressão ao inglês.
+     * <p>INVARIANTES DO DOMÍNIO: {@code indicesCanonicosProtegidos} só bloqueia
+     * recuperação de cache antigo; cache realmente mais novo continua sendo a
+     * autoridade da ponte Opção 5 → Opção 6.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: conjunto nulo é tratado como vazio e
+     * os demais contratos conservadores permanecem ativos.
+     */
+    public Resultado sincronizar(
+        DocumentoLegenda documento,
+        List<EntradaCache> entradas,
+        boolean autorizado,
+        Set<Integer> indicesCanonicosProtegidos
+    ) {
         if (documento == null || entradas == null || entradas.isEmpty()) {
             return new Resultado(documento, List.of(), List.of());
         }
+        Set<Integer> protegidos = indicesCanonicosProtegidos != null
+            ? indicesCanonicosProtegidos
+            : Set.of();
         Map<Integer, EntradaCache> porIndice = new HashMap<>();
         for (EntradaCache entrada : entradas) porIndice.putIfAbsent(entrada.indice(), entrada);
 
@@ -74,7 +96,8 @@ public class SincronizadorLegendaCacheService {
         for (EventoLegenda evento : documento.eventos()) {
             EntradaCache entrada = porIndice.get(evento.indice());
             boolean regrediuAoOriginal = entrada != null && entrada.original() != null
-                && entrada.original().equals(evento.texto());
+                && entrada.original().equals(evento.texto())
+                && !protegidos.contains(evento.indice());
             boolean podeAplicar = autorizado || regrediuAoOriginal;
             if (podeAplicar && evento.isDialogo() && entrada != null && entrada.traduzido() != null
                 && !entrada.traduzido().isBlank() && !entrada.traduzido().equals(evento.texto())) {
