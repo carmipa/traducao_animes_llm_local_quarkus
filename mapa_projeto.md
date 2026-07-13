@@ -2,9 +2,9 @@
  MAPA ESTRUTURAL DO PROJETO - TRACKER ANIMES
 ================================================================================
  Raiz do repositorio      : traducao_animes_llm_local_quarkus
- Pastas mapeadas          : 233
- Arquivos (na arvore)     : 438
- Arquivos-fonte indexados : 337  (.java: 337 | .py: 0)
+ Pastas mapeadas          : 235
+ Arquivos (na arvore)     : 441
+ Arquivos-fonte indexados : 339  (.java: 339 | .py: 0)
  Memoria viva do projeto  : CEREBRO_IA.md (na raiz do repositorio)
 
  Objetivo: mapa de contexto para LLMs navegarem os diretorios e
@@ -34,8 +34,8 @@ traducao_animes_llm_local_quarkus/
 │   ├── console-web.log
 │   └── telemetria_compartilhada.json
 ├── relatorios/
-│   └── junit-15608222720682838516/
-│       ├── auditoria_conteudo_20260713_151006.json
+│   └── junit-7285729391134718083/
+│       ├── auditoria_conteudo_20260713_162124.json
 │       └── telemetria_compartilhada.json
 ├── src/
 │   ├── main/
@@ -82,6 +82,7 @@ traducao_animes_llm_local_quarkus/
 │   │   │               │   │       └── AnimeMetadata.java
 │   │   │               │   ├── infrastructure/
 │   │   │               │   │   └── adapters/
+│   │   │               │   │       ├── AniListApiClientAdapter.java
 │   │   │               │   │       ├── JikanApiClientAdapter.java
 │   │   │               │   │       └── TmdbApiClientAdapter.java
 │   │   │               │   └── presentation/
@@ -569,6 +570,7 @@ traducao_animes_llm_local_quarkus/
 │   │       │   │   ├── trocaTipoLegenda.html
 │   │       │   │   └── trocaTipoLegenda.js
 │   │       │   └── index.html
+│   │       ├── application-local.yml
 │   │       ├── application-local.yml.example
 │   │       ├── application.properties
 │   │       └── application.yml
@@ -586,8 +588,11 @@ traducao_animes_llm_local_quarkus/
 │                       │       └── adapters/
 │                       │           └── FfprobeAdapterTest.java
 │                       ├── apiDadosAnime/
-│                       │   └── application/
-│                       │       └── ObterMetadataAnimeUseCaseTest.java
+│                       │   ├── application/
+│                       │   │   └── ObterMetadataAnimeUseCaseTest.java
+│                       │   └── infrastructure/
+│                       │       └── adapters/
+│                       │           └── AniListApiClientAdapterTest.java
 │                       ├── auditorConteudoLegendas/
 │                       │   ├── application/
 │                       │   │   ├── regras/
@@ -747,7 +752,14 @@ traducao_animes_llm_local_quarkus/
 
 [PASTA] src/main/java/org/traducao/projeto/apiDadosAnime/application/
   - ObterMetadataAnimeUseCase.java
-      (sem cabecalho explicativo)
+      PROPÓSITO DE NEGÓCIO: fornece capa e dados oficiais da obra selecionada aos
+      formulários, reutilizando cache e fontes externas redundantes.
+      <p>
+      INVARIANTES DO DOMÍNIO: cache válido tem prioridade; TMDB autenticado é a fonte
+      preferencial, AniList é o fallback público primário e Jikan o último fallback.
+      <p>
+      COMPORTAMENTO EM CASO DE FALHA: fontes indisponíveis resultam em tentativa da
+      próxima integração; sem resultado em todas elas, devolve {@link Optional#empty()}.
 
 [PASTA] src/main/java/org/traducao/projeto/apiDadosAnime/domain/exceptions/
   - AnimeNaoEncontradoException.java
@@ -760,6 +772,15 @@ traducao_animes_llm_local_quarkus/
       (sem cabecalho explicativo)
 
 [PASTA] src/main/java/org/traducao/projeto/apiDadosAnime/infrastructure/adapters/
+  - AniListApiClientAdapter.java
+      PROPÓSITO DE NEGÓCIO: consulta a API pública GraphQL da AniList para manter
+      capas e dados das obras disponíveis quando a fonte principal estiver fora.
+      <p>
+      INVARIANTES DO DOMÍNIO: pesquisa somente mídia do tipo ANIME; não exige chave
+      ou autenticação; converte a nota percentual da AniList para a escala de 0 a 10.
+      <p>
+      COMPORTAMENTO EM CASO DE FALHA: registra a causa e devolve
+      {@link Optional#empty()}, permitindo que o use case tente a próxima fonte.
   - JikanApiClientAdapter.java
       (sem cabecalho explicativo)
   - TmdbApiClientAdapter.java
@@ -1899,8 +1920,16 @@ traducao_animes_llm_local_quarkus/
       beans não-usados em build-time (beans com método {@code @Observes} nunca são
       removidos).
   - DialogoArquivoController.java
-      Usa OpenFileDialog (UI moderna do Explorer) em vez de FolderBrowserDialog/Shell.Application,
-      cuja janela de seleção de pasta ainda usa a interface antiga (estilo Windows 95).
+      PROPÓSITO DE NEGÓCIO: disponibiliza aos formulários web do KRONOS um seletor
+      nativo e responsivo para arquivos e pastas existentes no computador local.
+      <p>
+      INVARIANTES DO DOMÍNIO: existe no máximo um diálogo aberto por vez; o helper
+      gráfico deve executar em STA; caminhos trafegam em UTF-8/Base64 para preservar
+      acentos; o processo PowerShell é reutilizado e nunca recriado a cada clique.
+      <p>
+      COMPORTAMENTO EM CASO DE FALHA: reinicia o helper uma vez quando ele morre ou
+      perde o protocolo; após nova falha ou timeout, encerra o helper e devolve caminho
+      vazio, mantendo a interface utilizável e permitindo nova tentativa.
   - DocumentacaoController.java
       Serve o conteúdo bruto das páginas de documentação (pasta {@code docs/} na
       raiz do projeto) para o painel "Documentação" da SPA, que renderiza o
@@ -1974,6 +2003,17 @@ traducao_animes_llm_local_quarkus/
 [PASTA] src/test/java/org/traducao/projeto/apiDadosAnime/application/
   - ObterMetadataAnimeUseCaseTest.java
       (sem cabecalho explicativo)
+
+[PASTA] src/test/java/org/traducao/projeto/apiDadosAnime/infrastructure/adapters/
+  - AniListApiClientAdapterTest.java
+      PROPÓSITO DE NEGÓCIO: protege o contrato entre a resposta pública da AniList
+      e o banner de capa exibido em todos os formulários do KRONOS.
+      <p>
+      INVARIANTES DO DOMÍNIO: título, capa, escala da nota, episódios e descrição
+      limpa devem permanecer compatíveis com {@link AnimeMetadata}.
+      <p>
+      COMPORTAMENTO EM CASO DE FALHA: qualquer mudança incompatível no mapeamento
+      reprova a suíte antes de produzir banners vazios em execução.
 
 [PASTA] src/test/java/org/traducao/projeto/auditorConteudoLegendas/application/
   - AuditorConteudoUseCaseTest.java
