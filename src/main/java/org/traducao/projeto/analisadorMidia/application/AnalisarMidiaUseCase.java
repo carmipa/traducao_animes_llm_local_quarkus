@@ -1,7 +1,5 @@
 package org.traducao.projeto.analisadorMidia.application;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import me.tongfei.progressbar.ProgressBar;
 import me.tongfei.progressbar.ProgressBarBuilder;
 import me.tongfei.progressbar.ProgressBarStyle;
@@ -11,17 +9,14 @@ import org.springframework.stereotype.Service;
 import org.traducao.projeto.analisadorMidia.domain.*;
 import org.traducao.projeto.analisadorMidia.infrastructure.adapters.FfprobeAdapter;
 import org.traducao.projeto.telemetria.MidiaTelemetria;
+import org.traducao.projeto.telemetria.OperacaoTelemetria;
 import org.traducao.projeto.telemetria.TelemetriaService;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -42,12 +37,10 @@ public class AnalisarMidiaUseCase {
 
     private final FfprobeAdapter ffprobeAdapter;
     private final TelemetriaService telemetriaService;
-    private final ObjectMapper objectMapper;
 
     public AnalisarMidiaUseCase(FfprobeAdapter ffprobeAdapter, TelemetriaService telemetriaService) {
         this.ffprobeAdapter = ffprobeAdapter;
         this.telemetriaService = telemetriaService;
-        this.objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     }
 
     public ResultadoAnaliseLote executar(Path entrada, Path saidaEfetiva) {
@@ -57,23 +50,24 @@ public class AnalisarMidiaUseCase {
             throw new AnalisadorException("Nenhum arquivo de vídeo suportado encontrado no caminho especificado.");
         }
 
-        // Define a pasta de relatórios/logs
-        Path pastaRelatorios = saidaEfetiva;
-        if (pastaRelatorios == null) {
+        // Pasta usada apenas para a telemetria — o relatório da análise NÃO é
+        // mais gravado em disco automaticamente (exportação é manual, via UI).
+        Path pastaTelemetria = saidaEfetiva;
+        if (pastaTelemetria == null) {
             Path entradaAbsoluta = entrada.toAbsolutePath();
             Path pastaPai = Files.isDirectory(entrada) ? entradaAbsoluta : entradaAbsoluta.getParent();
-            pastaRelatorios = (pastaPai != null) ? pastaPai.resolve("relatorios") : Path.of("relatorios").toAbsolutePath();
+            pastaTelemetria = (pastaPai != null) ? pastaPai.resolve("relatorios") : Path.of("relatorios").toAbsolutePath();
         }
         try {
-            Files.createDirectories(pastaRelatorios);
+            Files.createDirectories(pastaTelemetria);
         } catch (IOException e) {
-            throw new AnalisadorException("Não foi possível criar a pasta de relatórios: " + pastaRelatorios, e);
+            throw new AnalisadorException("Não foi possível criar a pasta de telemetria: " + pastaTelemetria, e);
         }
 
         log.info("Iniciando auditoria técnica para {} arquivo(s) de vídeo.", arquivosAnalisar.size());
-        log.info("Relatórios serão salvos em: {}", pastaRelatorios.toAbsolutePath());
 
         List<AuditoriaResultado> resultados = new ArrayList<>();
+        List<FalhaAnalise> falhas = new ArrayList<>();
         telemetriaService.limparLote();
 
         // Barra de progresso para a análise do lote. É puramente cosmética: uma
@@ -102,6 +96,7 @@ public class AnalisarMidiaUseCase {
 
                 } catch (Exception e) {
                     log.error("Falha ao analisar o arquivo {}: {}", arquivo.getFileName(), e.getMessage(), e);
+                    falhas.add(new FalhaAnalise(arquivo.getFileName().toString(), e.getMessage()));
                 } finally {
                     if (pb != null) {
                         try {
@@ -123,21 +118,22 @@ public class AnalisarMidiaUseCase {
             }
         }
 
-        // Salvar relatórios consolidados e telemetria consolidada
-        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        // Registra a operação do lote na telemetria: os dados por arquivo já vão
+        // via registrarMidia; aqui entram o total analisado e as falhas.
+        telemetriaService.registrarOperacao(new OperacaoTelemetria(
+            "Analise de Midia",
+            "Analisados: " + resultados.size() + " | Falhas: " + falhas.size(),
+            null,
+            arquivosAnalisar.size(),
+            resultados.size(),
+            0,
+            java.time.Instant.now().toString()
+        ));
 
-        // Se for um único arquivo, já salvou o individual. Se for mais, salvamos o consolidado
-        Path relatorioPrincipal = null;
-        if (resultados.size() > 1) {
-            relatorioPrincipal = salvarRelatorioConsolidado(resultados, pastaRelatorios, entrada.getFileName().toString(), timestamp);
-        } else if (resultados.size() == 1) {
-            relatorioPrincipal = salvarRelatorioIndividual(resultados.getFirst(), pastaRelatorios, timestamp);
-        }
+        // Persiste apenas a telemetria (dados + falhas da análise).
+        telemetriaService.salvar(pastaTelemetria);
 
-        // Persiste a telemetria consolidada na pasta de relatórios
-        telemetriaService.salvar(pastaRelatorios);
-
-        return new ResultadoAnaliseLote(resultados, relatorioPrincipal);
+        return new ResultadoAnaliseLote(resultados, falhas);
     }
 
     private List<Path> encontrarVideos(Path entrada) {
@@ -188,7 +184,7 @@ public class AnalisarMidiaUseCase {
         logs.add("FORMATO DE LEGENDA DETECTADO");
         logs.add("=".repeat(80));
         if (base.legendas().isEmpty()) {
-            logs.add("  NENHUMA LEGENDA ENCONTRADA (arquivo RAW ou legenda queimada/hardsub)");
+            logs.add("  NENHUMA FAIXA DE LEGENDA ENCONTRADA (RAW; hardsub nao confirmado por esta analise)");
         } else {
             for (LegendaInfo leg : base.legendas()) {
                 String[] classifResumo = classificarLegenda(leg.codecId(), leg.formato());
@@ -250,95 +246,45 @@ public class AnalisarMidiaUseCase {
         }
 
         if (base.legendas().isEmpty()) {
-            logs.add("\n    NENHUMA LEGENDA ENCONTRADA");
-            logs.add("    - Arquivo eh uma RAW (sem legenda)");
-            logs.add("    - Ou a legenda esta com HARDSUB (queimada na imagem)");
-            logs.add("    - Verifique o arquivo antes de usar no pipeline");
+            logs.add("\n    NENHUMA FAIXA DE LEGENDA ENCONTRADA");
+            logs.add("    - Pode ser um arquivo RAW (sem faixa de legenda softsub)");
+            logs.add("    - A legenda pode estar embutida como hardsub (NAO confirmado por esta analise)");
         } else {
             for (LegendaInfo leg : base.legendas()) {
                 logs.add(String.format("\n  Legenda %d (Track ID: %d)", leg.indexRelativo() + 1, leg.index()));
                 logs.add(String.format("    Idioma: %s", leg.idioma()));
                 logs.add(String.format("    Formato: %s", leg.formato()));
-                
+
                 String[] classif = classificarLegenda(leg.codecId(), leg.formato());
                 String tipoCompleto = classif[0];
                 String tipoCurto = classif[1];
-                
-                logs.add(String.format("    Tipo: %s", tipoCompleto));
+                String categoria = categoriaDe(tipoCurto);
+                boolean texto = TIPOS_TEXTO.contains(tipoCurto);
+                boolean bitmap = TIPOS_BITMAP.contains(tipoCurto);
+
+                logs.add(String.format("    Tipo: %s (%s)", tipoCompleto, categoria));
                 logs.add(String.format("    Codec ID: %s", leg.codecId()));
                 logs.add(String.format("    Titulo: %s", leg.titulo()));
+                logs.add(String.format("    Flags: default=%s forced=%s acessibilidade=%s",
+                    leg.isDefault(), leg.isForced(), leg.acessibilidade()));
+                logs.add(String.format("    Extraivel: %s | Traduzivel: %s | Exige OCR: %s", texto, texto, bitmap));
 
-                // Auditoria de Sincronia de Legenda
-                Double duracaoLegendaSegundos = leg.duracaoMetadadosSegundos();
-                String metodoDuracao = "Metadados";
-                Double duracaoPacotesSegundos = null;
-
-                // Se a duracao nos metadados for nula ou muito proxima da duracao do video (um placeholder comum),
-                // tenta obter de forma precisa via ffprobe por pacotes
-                if (duracaoVideoSegundos > 0.0) {
-                    if (duracaoLegendaSegundos == null || Math.abs(duracaoLegendaSegundos - duracaoVideoSegundos) < 0.05) {
-                        double[] range = ffprobeAdapter.obterTimestampsLegenda(arquivo, leg.indexRelativo());
-                        if (range != null) {
-                            duracaoPacotesSegundos = range[1];
-                            duracaoLegendaSegundos = range[1];
-                            metodoDuracao = "Analise de Pacotes (ffprobe)";
-                        }
-                    }
+                // Indicadores temporais como INFORMACAO TECNICA (sem veredito de sincronia).
+                Double duracaoLegenda = leg.duracaoSegundos();
+                Double diferencaFim = (duracaoVideoSegundos > 0.0 && duracaoLegenda != null)
+                    ? duracaoVideoSegundos - duracaoLegenda : null;
+                if (duracaoLegenda != null) {
+                    logs.add(String.format("    Duracao Legenda: %s", formatarSegundos(duracaoLegenda)));
                 }
-
-                Double diferencaFim = null;
-                Double driftRatio = null;
-                String veredicto = "N/A";
-
-                if (duracaoVideoSegundos > 0.0 && duracaoLegendaSegundos != null) {
-                    diferencaFim = duracaoVideoSegundos - duracaoLegendaSegundos;
-                    double diffAbs = Math.abs(diferencaFim);
-                    double duracaoHoras = duracaoVideoSegundos / 3600.0;
-                    driftRatio = diffAbs / duracaoHoras;
-
-                    logs.add(String.format("    Duracao Legenda: %s (via %s)", formatarSegundos(duracaoLegendaSegundos), metodoDuracao));
-                    logs.add(String.format("    Diferenca Fim: %+.3fs (Video - Legenda)", diferencaFim));
-                    logs.add(String.format("    Taxa de Drift: %.3f s/hora", driftRatio));
-
-                    // Veredicto
-                    if (duracaoLegendaSegundos < (duracaoVideoSegundos * 0.5)) {
-                        veredicto = "Legenda Parcial Muxed (Sem necessidade de alteracao de sync global)";
-                    } else if (diffAbs <= 1.5) {
-                        veredicto = "Legenda Sincronizada! (Diferenca dentro da margem segura)";
-                    } else {
-                        double ratio = duracaoVideoSegundos / duracaoLegendaSegundos;
-                        boolean fpsMismatch = false;
-                        String label = "";
-
-                        if (Math.abs(ratio - 1.042709) < 0.0015) {
-                            fpsMismatch = true;
-                            label = "25.000 -> 23.976 fps (Estiramento PAL para NTSC)";
-                        } else if (Math.abs(ratio - 0.959040) < 0.0015) {
-                            fpsMismatch = true;
-                            label = "23.976 -> 25.000 fps (Estiramento NTSC para PAL)";
-                        } else if (Math.abs(ratio - 1.001001) < 0.0015) {
-                            fpsMismatch = true;
-                            label = "24.000 -> 23.976 fps";
-                        } else if (Math.abs(ratio - 0.999000) < 0.0015) {
-                            fpsMismatch = true;
-                            label = "23.976 -> 24.000 fps";
-                        }
-
-                        if (fpsMismatch) {
-                            veredicto = "Legenda Desalinhada - Necessita Estiramento de Tempo! (FPS Mismatch: " + label + ")";
-                        } else {
-                            long sugeridoMs = Math.round(diferencaFim * 1000.0);
-                            veredicto = String.format("Legenda Desalinhada - Possivel atraso constante! (Sugestao: Offset de %d ms)", sugeridoMs);
-                        }
-                    }
-
-                    logs.add("    Veredito de Sincronia: " + veredicto);
+                if (diferencaFim != null) {
+                    logs.add(String.format("    Diferenca p/ o video: %+.3fs (informativo)", diferencaFim));
                 }
 
                 legendasProcessadas.add(new LegendaInfo(
                     leg.index(), leg.indexRelativo(), leg.idioma(), leg.formato(), leg.codecId(), leg.titulo(),
-                    tipoCompleto, tipoCurto, leg.duracaoMetadadosSegundos(), duracaoPacotesSegundos,
-                    metodoDuracao, duracaoLegendaSegundos, diferencaFim, driftRatio, veredicto
+                    tipoCompleto, tipoCurto, categoria, texto, texto, bitmap,
+                    leg.isDefault(), leg.isForced(), leg.acessibilidade(),
+                    duracaoLegenda, diferencaFim
                 ));
             }
         }
@@ -367,8 +313,19 @@ public class AnalisarMidiaUseCase {
         logs.add("=".repeat(80) + "\n");
 
         return new AuditoriaResultado(
-            arquivo, base.nomeArquivo(), base.container(), base.videos(), base.audios(), legendasProcessadas, logs
+            arquivo, base.nomeArquivo(), base.container(), base.videos(), base.audios(), legendasProcessadas,
+            base.capitulos(), base.anexos(), logs
         );
+    }
+
+    private static String categoriaDe(String tipoCurto) {
+        if (TIPOS_TEXTO.contains(tipoCurto)) {
+            return "TEXTO";
+        }
+        if (TIPOS_BITMAP.contains(tipoCurto)) {
+            return "BITMAP";
+        }
+        return "DESCONHECIDO";
     }
 
     static String[] classificarLegenda(String codecId, String formato) {
@@ -443,8 +400,8 @@ public class AnalisarMidiaUseCase {
                 leg.idioma(),
                 leg.formato(),
                 leg.tipoCurto(),
-                leg.veredicto(),
-                leg.driftRatio(),
+                leg.categoria(),
+                leg.traduzivel(),
                 leg.diferencaFimSegundos()
             ));
         }
@@ -462,52 +419,6 @@ public class AnalisarMidiaUseCase {
         );
 
         telemetriaService.registrarMidia(tel);
-    }
-
-    private Path salvarRelatorioIndividual(AuditoriaResultado res, Path pasta, String timestamp) {
-        String nomeBase = getNomeSemExtensao(res.nomeArquivo());
-        Path arqTxt = pasta.resolve(nomeBase + "_" + timestamp + ".txt");
-        Path arqJson = pasta.resolve(nomeBase + "_" + timestamp + ".json");
-
-        try {
-            // Salva TXT
-            Files.write(arqTxt, res.logsAuditoria());
-            log.info("Relatório de texto salvo: {}", arqTxt);
-
-            // Salva JSON
-            objectMapper.writeValue(arqJson.toFile(), res);
-            log.info("Relatório JSON salvo: {}", arqJson);
-            return arqTxt;
-        } catch (IOException e) {
-            log.error("Erro ao salvar relatórios individuais para {}: {}", res.nomeArquivo(), e.getMessage());
-            return null;
-        }
-    }
-
-    private Path salvarRelatorioConsolidado(List<AuditoriaResultado> resultados, Path pasta, String nomeEntrada, String timestamp) {
-        Path arqTxt = pasta.resolve("consolidado_" + nomeEntrada + "_" + timestamp + ".txt");
-        List<String> consolidado = new ArrayList<>();
-
-        // Resumo escaneável no topo: por arquivo, o tipo de legenda e se é
-        // traduzível — o dado vital para decidir o que segue no pipeline.
-        consolidado.addAll(montarResumoLegendasLote(resultados));
-
-        for (AuditoriaResultado res : resultados) {
-            consolidado.addAll(res.logsAuditoria());
-            consolidado.add("\n" + "=".repeat(100) + "\n\n");
-
-            // Também salvamos o JSON individual de cada arquivo para auditoria fina
-            salvarRelatorioIndividual(res, pasta, timestamp);
-        }
-
-        try {
-            Files.write(arqTxt, consolidado);
-            log.info("Relatório consolidado de texto salvo com {} arquivos em: {}", resultados.size(), arqTxt);
-            return arqTxt;
-        } catch (IOException e) {
-            log.error("Erro ao salvar relatório consolidado em {}: {}", arqTxt, e.getMessage());
-            return null;
-        }
     }
 
     /**
@@ -532,83 +443,4 @@ public class AnalisarMidiaUseCase {
         return "N/A - sem legenda (RAW ou hardsub)";
     }
 
-    /**
-     * Resumo escaneável do lote com o dado vital para a tradução: por arquivo, o
-     * tipo de legenda encontrado e se é traduzível, mais contagens agregadas.
-     */
-    private List<String> montarResumoLegendasLote(List<AuditoriaResultado> resultados) {
-        int comTexto = 0, comBitmap = 0, semLegenda = 0, indeterminado = 0;
-        Map<String, Integer> contagemTipo = new LinkedHashMap<>();
-        List<String> linhasArquivos = new ArrayList<>();
-
-        for (AuditoriaResultado res : resultados) {
-            List<LegendaInfo> legs = res.legendas();
-            LegendaInfo texto = legs.stream().filter(l -> TIPOS_TEXTO.contains(l.tipoCurto())).findFirst().orElse(null);
-            LegendaInfo bitmap = legs.stream().filter(l -> TIPOS_BITMAP.contains(l.tipoCurto())).findFirst().orElse(null);
-            long faixasTexto = legs.stream().filter(l -> TIPOS_TEXTO.contains(l.tipoCurto())).count();
-
-            String verdict;
-            String tipo;
-            String idioma;
-            if (texto != null) {
-                verdict = "SIM"; tipo = texto.tipoCurto(); idioma = idiomaCurto(texto.idioma());
-                contagemTipo.merge(tipo, 1, Integer::sum);
-                comTexto++;
-            } else if (bitmap != null) {
-                verdict = "NAO"; tipo = bitmap.tipoCurto(); idioma = idiomaCurto(bitmap.idioma());
-                contagemTipo.merge(tipo, 1, Integer::sum);
-                comBitmap++;
-            } else if (!legs.isEmpty()) {
-                verdict = "?"; tipo = legs.getFirst().tipoCurto(); idioma = idiomaCurto(legs.getFirst().idioma());
-                contagemTipo.merge(tipo, 1, Integer::sum);
-                indeterminado++;
-            } else {
-                verdict = "---"; tipo = "SEM"; idioma = "-";
-                semLegenda++;
-            }
-            String extra = faixasTexto > 1 ? "  (+" + (faixasTexto - 1) + " faixa(s) de texto)" : "";
-            linhasArquivos.add(String.format(" [%-3s] %-9s %-7s %s%s", verdict, tipo, idioma, res.nomeArquivo(), extra));
-        }
-
-        List<String> linhas = new ArrayList<>();
-        linhas.add("=".repeat(80));
-        linhas.add("RESUMO DE LEGENDAS DO LOTE  (dado vital para a traducao)");
-        linhas.add("=".repeat(80));
-        linhas.add("  Arquivos analisados                  : " + resultados.size());
-        linhas.add("  Com legenda de TEXTO (traduzivel)    : " + comTexto);
-        linhas.add("  Com legenda BITMAP (precisa de OCR)  : " + comBitmap);
-        if (indeterminado > 0) {
-            linhas.add("  Tipo indeterminado                   : " + indeterminado);
-        }
-        linhas.add("  Sem legenda (RAW/hardsub)            : " + semLegenda);
-        if (!contagemTipo.isEmpty()) {
-            String detalhe = contagemTipo.entrySet().stream()
-                .map(e -> e.getKey() + "=" + e.getValue())
-                .collect(Collectors.joining("  "));
-            linhas.add("  Contagem por tipo detectado          : " + detalhe);
-        }
-        linhas.add("-".repeat(80));
-        linhas.add("  Legenda:  [SIM]=texto traduzivel   [NAO]=bitmap (OCR)   [---]=sem legenda");
-        linhas.add("  Colunas:  [verdict] TIPO  IDIOMA  ARQUIVO");
-        linhas.add("-".repeat(80));
-        linhas.addAll(linhasArquivos);
-        linhas.add("=".repeat(80));
-        linhas.add("");
-        return linhas;
-    }
-
-    private String idiomaCurto(String idioma) {
-        if (idioma == null || idioma.isBlank() || idioma.equalsIgnoreCase("Desconhecido")) {
-            return "?";
-        }
-        return idioma.length() > 6 ? idioma.substring(0, 6) : idioma;
-    }
-
-    private String getNomeSemExtensao(String nome) {
-        int dotIdx = nome.lastIndexOf('.');
-        if (dotIdx > 0) {
-            return nome.substring(0, dotIdx);
-        }
-        return nome;
-    }
 }

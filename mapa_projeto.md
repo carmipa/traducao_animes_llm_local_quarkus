@@ -2,9 +2,9 @@
  MAPA ESTRUTURAL DO PROJETO - TRACKER ANIMES
 ================================================================================
  Raiz do repositorio      : traducao_animes_llm_local_quarkus
- Pastas mapeadas          : 230
- Arquivos (na arvore)     : 418
- Arquivos-fonte indexados : 317  (.java: 317 | .py: 0)
+ Pastas mapeadas          : 232
+ Arquivos (na arvore)     : 429
+ Arquivos-fonte indexados : 328  (.java: 328 | .py: 0)
  Memoria viva do projeto  : CEREBRO_IA.md (na raiz do repositorio)
 
  Objetivo: mapa de contexto para LLMs navegarem os diretorios e
@@ -34,8 +34,8 @@ traducao_animes_llm_local_quarkus/
 │   ├── console-web.log
 │   └── telemetria_compartilhada.json
 ├── relatorios/
-│   └── junit-2986606889368261458/
-│       ├── auditoria_conteudo_20260713_120246.json
+│   └── junit-1120960169084371018/
+│       ├── auditoria_conteudo_20260713_134149.json
 │       └── telemetria_compartilhada.json
 ├── src/
 │   ├── main/
@@ -55,9 +55,12 @@ traducao_animes_llm_local_quarkus/
 │   │   │               │   │   ├── exceptions/
 │   │   │               │   │   │   └── AnaliseStreamException.java
 │   │   │               │   │   ├── AnalisadorException.java
+│   │   │               │   │   ├── AnexoInfo.java
 │   │   │               │   │   ├── AudioInfo.java
 │   │   │               │   │   ├── AuditoriaResultado.java
+│   │   │               │   │   ├── CapituloInfo.java
 │   │   │               │   │   ├── ContainerInfo.java
+│   │   │               │   │   ├── FalhaAnalise.java
 │   │   │               │   │   ├── LegendaInfo.java
 │   │   │               │   │   ├── ResultadoAnaliseLote.java
 │   │   │               │   │   └── VideoInfo.java
@@ -139,16 +142,20 @@ traducao_animes_llm_local_quarkus/
 │   │   │               │   │   │   ├── ExtratorPgsStrategy.java
 │   │   │               │   │   │   ├── ExtratorSrtStrategy.java
 │   │   │               │   │   │   └── ExtratorStrategy.java
-│   │   │               │   │   └── ExtrairLegendaUseCase.java
+│   │   │               │   │   ├── ExtrairLegendaUseCase.java
+│   │   │               │   │   └── ValidadorSaidaExtracao.java
 │   │   │               │   ├── domain/
 │   │   │               │   │   ├── exceptions/
+│   │   │               │   │   │   ├── ExtracaoTimeoutException.java
 │   │   │               │   │   │   └── FormatoLegendaInvalidoException.java
 │   │   │               │   │   ├── ports/
 │   │   │               │   │   │   └── ExtratorVideoPort.java
 │   │   │               │   │   ├── ExtratorException.java
 │   │   │               │   │   ├── FaixaLegenda.java
 │   │   │               │   │   ├── FormatoLegenda.java
-│   │   │               │   │   └── RelatorioExtracao.java
+│   │   │               │   │   ├── ItemExtracao.java
+│   │   │               │   │   ├── RelatorioExtracao.java
+│   │   │               │   │   └── StatusExtracao.java
 │   │   │               │   ├── infrastructure/
 │   │   │               │   │   ├── adapters/
 │   │   │               │   │   │   ├── FfmpegAdapter.java
@@ -157,7 +164,8 @@ traducao_animes_llm_local_quarkus/
 │   │   │               │   │       └── ExtratorProperties.java
 │   │   │               │   └── presentation/
 │   │   │               │       ├── ui/
-│   │   │               │       │   └── ConsoleExtratorLogger.java
+│   │   │               │       │   ├── ConsoleExtratorLogger.java
+│   │   │               │       │   └── TabelaExtracaoRenderer.java
 │   │   │               │       └── ExtratorCLI.java
 │   │   │               ├── mapaProjeto/
 │   │   │               │   ├── application/
@@ -565,6 +573,8 @@ traducao_animes_llm_local_quarkus/
 │                       ├── analisadorMidia/
 │                       │   ├── application/
 │                       │   │   └── AnalisarMidiaClassificacaoTest.java
+│                       │   ├── domain/
+│                       │   │   └── ResultadoAnaliseLoteSerializacaoTest.java
 │                       │   └── infrastructure/
 │                       │       └── adapters/
 │                       │           └── FfprobeAdapterTest.java
@@ -591,6 +601,9 @@ traducao_animes_llm_local_quarkus/
 │                       │   └── application/
 │                       │       └── CorrigirLegendasUseCaseTest.java
 │                       ├── legendasExtracao/
+│                       │   ├── application/
+│                       │   │   ├── ExtrairLegendaUseCaseTest.java
+│                       │   │   └── ValidadorSaidaExtracaoTest.java
 │                       │   └── infrastructure/
 │                       │       └── adapters/
 │                       │           ├── FfmpegAdapterTest.java
@@ -677,19 +690,30 @@ traducao_animes_llm_local_quarkus/
 [PASTA] src/main/java/org/traducao/projeto/analisadorMidia/domain/
   - AnalisadorException.java
       (sem cabecalho explicativo)
+  - AnexoInfo.java
+      Anexo do contêiner (ex.: fontes de karaokê em MKV), reportado pelo ffprobe
+      como stream {@code codec_type: attachment}.
   - AudioInfo.java
       (sem cabecalho explicativo)
   - AuditoriaResultado.java
       (sem cabecalho explicativo)
+  - CapituloInfo.java
+      Capítulo (marcador de tempo) do contêiner, como reportado por
+      {@code ffprobe -show_chapters}.
   - ContainerInfo.java
       (sem cabecalho explicativo)
+  - FalhaAnalise.java
+      Falha individual na análise de um arquivo do lote — representada no resultado
+      (em vez de apenas logada), para que a UI exiba o que não pôde ser analisado.
   - LegendaInfo.java
-      (sem cabecalho explicativo)
+      Faixa de legenda detectada, com classificação de traduzibilidade e flags do
+      contêiner. Os indicadores temporais ({@code duracaoSegundos},
+      {@code diferencaFimSegundos}) são apenas INFORMAÇÃO TÉCNICA — o módulo não
+      emite veredito automático de sincronismo.
   - ResultadoAnaliseLote.java
-      Resultado de uma execução de auditoria sobre um lote de vídeos, incluindo o
-      caminho do relatório de texto efetivamente gravado em disco (individual,
-      se um único arquivo foi analisado, ou consolidado, se foram vários).
-      {@code relatorioPrincipal} é {@code null} se nada foi gravado (ex.: falha de IO).
+      Resultado de uma execução de auditoria sobre um lote de vídeos: os arquivos
+      analisados com sucesso e as falhas individuais. A análise não grava mais
+      relatório em disco automaticamente — a exportação é manual (via UI).
   - VideoInfo.java
       (sem cabecalho explicativo)
 
@@ -868,6 +892,21 @@ traducao_animes_llm_local_quarkus/
 [PASTA] src/main/java/org/traducao/projeto/legendasExtracao/application/
   - ExtrairLegendaUseCase.java
       (sem cabecalho explicativo)
+  - ValidadorSaidaExtracao.java
+      PROPÓSITO DE NEGÓCIO: Garante que o arquivo recém-extraído é uma legenda de
+      verdade no formato pedido — não um arquivo vazio nem uma faixa de outro tipo
+      gravada por engano. É a blindagem que separa "extração concluída" de "arquivo
+      criado", exigida para nunca entregar lixo ao módulo de tradução.
+      
+      <p>INVARIANTES DO DOMÍNIO: um arquivo só é válido se (1) existe, (2) tem
+      tamanho maior que zero e (3) seu conteúdo bate com a assinatura do formato:
+      ASS contém marcador de seção/{@code Dialogue:}; SRT contém a seta de
+      timestamp {@code -->}; PGS começa com o magic {@code PG} (0x50 0x47). A
+      verificação lê apenas o início do arquivo (amostra), nunca o carrega inteiro.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: lança {@link ExtratorException} com a razão
+      específica (inexistente / vazio / formato divergente / erro de leitura). Não
+      remove o arquivo — o cleanup do parcial é responsabilidade do use case.
 
 [PASTA] src/main/java/org/traducao/projeto/legendasExtracao/application/strategy/
   - ExtratorAssStrategy.java
@@ -881,6 +920,17 @@ traducao_animes_llm_local_quarkus/
       (sem cabecalho explicativo)
 
 [PASTA] src/main/java/org/traducao/projeto/legendasExtracao/domain/exceptions/
+  - ExtracaoTimeoutException.java
+      PROPÓSITO DE NEGÓCIO: Sinaliza que a ferramenta externa (mkvextract/ffmpeg)
+      estourou o tempo limite durante a extração, para o use case contabilizar
+      timeouts separadamente das demais falhas na telemetria e na tabela de resultado.
+      
+      <p>INVARIANTES DO DOMÍNIO: só deve ser lançada em caso de {@code TimeoutException}
+      real do processo externo — nunca reaproveitada para erros genéricos.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: é ela própria a falha; herda de
+      {@link ExtratorException} para continuar sendo capturada por quem trata a
+      hierarquia genérica, mas permite {@code catch} específico antes.
   - FormatoLegendaInvalidoException.java
       (sem cabecalho explicativo)
 
@@ -891,8 +941,44 @@ traducao_animes_llm_local_quarkus/
       (sem cabecalho explicativo)
   - FormatoLegenda.java
       (sem cabecalho explicativo)
+  - ItemExtracao.java
+      PROPÓSITO DE NEGÓCIO: Linha da tabela de resultado da extração — o que Paulo vê
+      por vídeo (Vídeo | Formato | Track | Arquivo gerado | Status). É o registro
+      granular que o relatório agregado ({@link RelatorioExtracao}) não expunha antes.
+      
+      <p>INVARIANTES DO DOMÍNIO: {@code video}, {@code formato} e {@code status}
+      nunca são nulos. {@code trackId} e {@code arquivoGerado} são nulos justamente
+      quando não houve faixa/arquivo (ex.: {@link StatusExtracao#FAIXA_NAO_ENCONTRADA}),
+      e a UI os renderiza como "—".
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: record imutável; as fábricas não validam e
+      não lançam — o chamador é responsável por passar dados coerentes com o status.
   - RelatorioExtracao.java
-      (sem cabecalho explicativo)
+      PROPÓSITO DE NEGÓCIO: Acumula o resultado de uma execução de extração — tanto
+      os contadores agregados (para o resumo e a telemetria) quanto a lista granular
+      por vídeo ({@link ItemExtracao}, que alimenta a tabela da UI). É o objeto que o
+      use case devolve à camada de apresentação.
+      
+      <p>INVARIANTES DO DOMÍNIO: cada vídeo processado incrementa {@code arquivosDetectados}
+      e adiciona exatamente um item; a soma de extraídas + sem-faixa + já-existentes +
+      falhas + timeouts nunca ultrapassa os vídeos detectados. {@code timeouts} é
+      contado à parte de {@code falhasInesperadas}. A lista de itens é exposta como
+      cópia imutável.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: mutador simples, não lança. Contadores
+      começam em zero; a lista de itens começa vazia.
+  - StatusExtracao.java
+      PROPÓSITO DE NEGÓCIO: Classifica o desfecho da tentativa de extrair a legenda
+      de um único vídeo, para a UI e a telemetria distinguirem "não tinha a faixa"
+      de "falhou de verdade" de "já existia" — informação que Paulo usa para decidir
+      se reprocessa, troca de formato ou ignora o item.
+      
+      <p>INVARIANTES DO DOMÍNIO: cada vídeo processado termina em exatamente um
+      status. {@link #JA_EXISTE} nunca sobrescreve arquivo; {@link #TIMEOUT} é
+      sempre separado de {@link #FALHA} para a telemetria contabilizá-los à parte.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: enum puro, não lança. O rótulo é sempre
+      não-nulo (definido no construtor).
 
 [PASTA] src/main/java/org/traducao/projeto/legendasExtracao/domain/ports/
   - ExtratorVideoPort.java
@@ -919,6 +1005,18 @@ traducao_animes_llm_local_quarkus/
   - ConsoleExtratorLogger.java
       Tag colorida em negrito (chama atenção), corpo da mensagem em peso normal
       (mais fácil de ler em blocos de texto maiores) — INFO fica sem cor nenhuma.
+  - TabelaExtracaoRenderer.java
+      PROPÓSITO DE NEGÓCIO: Monta a tabela simples de resultado da extração
+      (Vídeo | Formato | Track | Arquivo gerado | Status) que aparece nos consoles
+      da UI web e do CLI, dando a Paulo a visão por vídeo — inclusive qual Track ID
+      foi extraído — que os contadores agregados não mostravam.
+      
+      <p>INVARIANTES DO DOMÍNIO: colunas com largura ajustada ao maior valor;
+      campos ausentes ({@code trackId}/{@code arquivoGerado} nulos) viram "—". Só de
+      apresentação — não decide nada sobre a extração.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: sem itens, devolve string vazia (o chamador
+      simplesmente não imprime). Não lança.
 
 [PASTA] src/main/java/org/traducao/projeto/mapaProjeto/application/
   - GeradorMapaProjetoUseCase.java
@@ -1745,6 +1843,12 @@ traducao_animes_llm_local_quarkus/
       tipo) e o veredicto de traduzibilidade (texto = traduzível; bitmap = OCR;
       nenhuma = RAW/hardsub). Decide se um episódio segue no pipeline de tradução.
 
+[PASTA] src/test/java/org/traducao/projeto/analisadorMidia/domain/
+  - ResultadoAnaliseLoteSerializacaoTest.java
+      Verifica o contrato JSON publicado no SSE da Análise de Mídia (o que o front
+      renderiza em cartões/tabelas): campos estruturados presentes e SEM vazar o
+      caminho local nem os logs internos (via {@code @JsonIgnore}).
+
 [PASTA] src/test/java/org/traducao/projeto/analisadorMidia/infrastructure/adapters/
   - FfprobeAdapterTest.java
       Cobre o parsing ffprobe-JSON → domínio sem executar ffprobe real: substitui o
@@ -1800,6 +1904,16 @@ traducao_animes_llm_local_quarkus/
 [PASTA] src/test/java/org/traducao/projeto/correcaoLegendas/application/
   - CorrigirLegendasUseCaseTest.java
       (sem cabecalho explicativo)
+
+[PASTA] src/test/java/org/traducao/projeto/legendasExtracao/application/
+  - ExtrairLegendaUseCaseTest.java
+      Cobre a orquestração do extrator sem ferramentas externas: seleção de faixa
+      pela strategy real, extração para arquivo temporário, validação de saída,
+      guarda anti-sobrescrita, cleanup de parcial, classificação de timeout e o
+      mapeamento da telemetria.
+  - ValidadorSaidaExtracaoTest.java
+      Cobre a blindagem de saída: existência, tamanho > 0 e correspondência de
+      formato (ASS/SRT/PGS) do arquivo recém-extraído.
 
 [PASTA] src/test/java/org/traducao/projeto/legendasExtracao/infrastructure/adapters/
   - FfmpegAdapterTest.java

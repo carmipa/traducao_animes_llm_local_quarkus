@@ -1,10 +1,12 @@
 package org.traducao.projeto.analisadorMidia.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.nio.file.Path;
 import java.util.List;
 
 public record AuditoriaResultado(
-    Path caminhoArquivo,
+    @JsonIgnore Path caminhoArquivo,
     String nomeArquivo,
     ContainerInfo container,
     List<VideoInfo> videos,
@@ -12,5 +14,5 @@ public record AuditoriaResultado(
     List<LegendaInfo> legendas,
     List<CapituloInfo> capitulos,
     List<AnexoInfo> anexos,
-    List<String> logsAuditoria
+    @JsonIgnore List<String> logsAuditoria
 ) {}

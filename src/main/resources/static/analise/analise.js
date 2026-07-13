@@ -1,6 +1,26 @@
-import { logNoConsole } from '../js/app.js';
+import { logNoConsole, montarTxtAnaliseMidia } from '../js/app.js';
 
 export function initAnalise() {
+    const btnExportar = document.getElementById('btn-exportar-analise');
+    if (btnExportar) {
+        btnExportar.addEventListener('click', () => {
+            const texto = montarTxtAnaliseMidia(window.__ultimaAnaliseMidia);
+            if (!texto || !texto.trim()) {
+                logNoConsole('console-analise', 'Nenhuma análise para exportar. Rode a análise primeiro.', 'aviso');
+                return;
+            }
+            const blob = new Blob([texto], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'analise_midia.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+    }
+
     const form = document.getElementById('form-analise');
     if (!form) return;
 

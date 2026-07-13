@@ -10,6 +10,7 @@ import org.traducao.projeto.legendasExtracao.application.ExtrairLegendaUseCase;
 import org.traducao.projeto.legendasExtracao.domain.FormatoLegenda;
 import org.traducao.projeto.legendasExtracao.domain.RelatorioExtracao;
 import org.traducao.projeto.legendasExtracao.domain.exceptions.FormatoLegendaInvalidoException;
+import org.traducao.projeto.legendasExtracao.presentation.ui.TabelaExtracaoRenderer;
 import org.traducao.projeto.mapaProjeto.application.GeradorMapaProjetoUseCase;
 import org.traducao.projeto.raspagemCorrecao.application.CorrigirComGoogleUseCase;
 import org.traducao.projeto.raspagemRevisao.application.ResultadoRevisaoLegendas;
@@ -77,6 +78,7 @@ public class ApiController {
     private final MistralPort mistralPort;
     private final GerenciadorContexto gerenciadorContexto;
     private final LlmProperties llmProperties;
+    private final com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
 
     public ApiController(
             FilaExecucaoPipeline filaExecucao,
@@ -251,7 +253,7 @@ public class ApiController {
                 }
                 Path pathSaida = normalizarCaminho(req.saida());
                 ResultadoAnaliseLote resultadoLote = analisarMidiaUseCase.executar(pathEntrada, pathSaida);
-                publicarRelatorioSalvoNoConsole(resultadoLote.relatorioPrincipal());
+                publicarResultadoAnalise(resultadoLote);
                 System.out.println("\n\u001B[32m========================================================================\u001B[0m");
                 System.out.println("\u001B[32m  🎉 [SUCESSO] ANÁLISE DE MÍDIA FINALIZADA COM SUCESSO!\u001B[0m");
                 System.out.println("\u001B[32m========================================================================\n\u001B[0m");
@@ -266,25 +268,16 @@ public class ApiController {
     }
 
     /**
-     * Publica no canal SSE dedicado "analise-relatorio" o conteúdo exato do
-     * relatório .txt que a auditoria acabou de gravar em disco, para que o
-     * navegador exiba o relatório efetivamente salvo (fonte única de verdade),
-     * em vez de reconstruí-lo a partir do log ao vivo da execução.
+     * Publica o resultado ESTRUTURADO (JSON) da análise no canal SSE
+     * "analise-relatorio"; o navegador renderiza cartões/tabelas a partir dele.
+     * A análise não grava mais relatório em disco — a exportação TXT é manual.
      */
-    private void publicarRelatorioSalvoNoConsole(Path relatorioPrincipal) {
-        if (relatorioPrincipal == null) {
-            log.warn("Nenhum relatório de análise foi gravado em disco; nada para exibir no navegador.");
-            return;
-        }
+    private void publicarResultadoAnalise(ResultadoAnaliseLote lote) {
         try {
-            // Normaliza CRLF -> LF: o framing de eventos SSE multilinha trata \r
-            // e \n como quebras de linha separadas, então um \r\n do arquivo
-            // (line separator padrão no Windows) viraria uma linha em branco
-            // extra a cada linha real depois de recomposto no navegador.
-            String conteudo = Files.readString(relatorioPrincipal).replace("\r\n", "\n");
-            logStreamService.publicarLog("analise-relatorio", conteudo);
-        } catch (IOException e) {
-            log.error("Erro ao ler o relatório salvo em {} para exibição no navegador: {}", relatorioPrincipal, e.getMessage());
+            String json = objectMapper.writeValueAsString(lote);
+            logStreamService.publicarLog("analise-relatorio", json);
+        } catch (Exception e) {
+            log.error("Erro ao serializar o resultado da análise para o navegador: {}", e.getMessage());
         }
     }
 
@@ -351,6 +344,12 @@ public class ApiController {
                 Path pathSaida = normalizarCaminho(req.saida());
                 FormatoLegenda formato = formatoSelecionado;
                 RelatorioExtracao rel = extrairLegendaUseCase.executar(pathEntrada, pathSaida, formato);
+
+                String tabela = TabelaExtracaoRenderer.render(rel);
+                if (!tabela.isBlank()) {
+                    System.out.print("[36m" + tabela + "[0m");
+                }
+
                 if (rel.getArquivosDetectados() == 0) {
                     System.out.println("\n\u001B[33m========================================================================\u001B[0m");
                     System.out.println("\u001B[33m  ⚠️ [AVISO] NENHUM ARQUIVO DE VÍDEO SUPORTADO FOI ENCONTRADO!\u001B[0m");

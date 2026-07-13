@@ -90,9 +90,8 @@ public class ConsoleAnalisadorLogger {
         // 4. Fluxos de Legenda
         System.out.println("\n" + AnsiCores.colorir("FAIXAS DE LEGENDAS", AnsiCores.MAGENTA, true));
         if (res.legendas().isEmpty()) {
-            System.out.println(AnsiCores.colorir("    NENHUMA LEGENDA ENCONTRADA", AnsiCores.RED, true));
-            System.out.println(AnsiCores.colorir("    - Arquivo é uma RAW (sem legenda softsub)", AnsiCores.YELLOW));
-            System.out.println(AnsiCores.colorir("    - Ou a legenda está fixada na imagem (hardsub)", AnsiCores.YELLOW));
+            System.out.println(AnsiCores.colorir("    NENHUMA FAIXA DE LEGENDA ENCONTRADA", AnsiCores.RED, true));
+            System.out.println(AnsiCores.colorir("    - Pode ser RAW (sem softsub); hardsub NÃO confirmado por esta análise", AnsiCores.YELLOW));
         } else {
             for (LegendaInfo leg : res.legendas()) {
                 System.out.printf("  Legenda %d (Track ID: %d)%n", leg.indexRelativo() + 1, leg.index());
@@ -100,24 +99,20 @@ public class ConsoleAnalisadorLogger {
                 System.out.println("    Formato: " + leg.formato());
 
                 String corTipo = obterCorPorTipo(leg.tipoCurto());
-                System.out.println("    Tipo: " + AnsiCores.colorir(leg.tipoCompleto(), corTipo));
+                System.out.println("    Tipo: " + AnsiCores.colorir(leg.tipoCompleto() + " (" + leg.categoria() + ")", corTipo));
                 System.out.println("    Codec ID: " + leg.codecId());
                 System.out.println("    Título: " + leg.titulo());
+                System.out.printf("    Flags: default=%s forced=%s acessibilidade=%s%n",
+                    leg.isDefault(), leg.isForced(), leg.acessibilidade());
+                System.out.printf("    Extraível: %s | Traduzível: %s | Exige OCR: %s%n",
+                    leg.extraivel(), leg.traduzivel(), leg.exigeOcr());
 
+                if (leg.duracaoSegundos() != null) {
+                    System.out.println("    Duração Legenda: " + formatarSegundos(leg.duracaoSegundos()) + " (informativo)");
+                }
                 if (leg.diferencaFimSegundos() != null) {
-                    System.out.printf("    Duração Legenda: %s %s%n",
-                        formatarSegundos(leg.duracaoEfetivaSegundos()),
-                        AnsiCores.colorir("(via " + leg.metodoDuracao() + ")", AnsiCores.YELLOW)
-                    );
-                    System.out.printf("    Diferença Fim: %s (Video - Legenda)%n",
-                        String.format("%+.3fs", leg.diferencaFimSegundos())
-                    );
-                    System.out.printf("    Taxa de Drift: %s%n",
-                        String.format("%.3f s/hora", leg.driftRatio())
-                    );
-
-                    String corVeredicto = obterCorPorVeredicto(leg.veredicto());
-                    System.out.println("    Veredicto de Sincronia: " + AnsiCores.colorir(leg.veredicto(), corVeredicto, true));
+                    System.out.printf("    Diferença p/ o vídeo: %s (informativo)%n",
+                        String.format("%+.3fs", leg.diferencaFimSegundos()));
                 }
             }
         }
@@ -159,17 +154,6 @@ public class ConsoleAnalisadorLogger {
             case "SRT", "WEBVTT", "MOV_TEXT" -> AnsiCores.GREEN;
             default -> "";
         };
-    }
-
-    private String obterCorPorVeredicto(String veredicto) {
-        if (veredicto == null) return "";
-        if (veredicto.contains("Sincronizada") || veredicto.contains("Parcial")) {
-            return AnsiCores.GREEN;
-        }
-        if (veredicto.contains("Estiramento") || veredicto.contains("FPS")) {
-            return AnsiCores.RED;
-        }
-        return AnsiCores.YELLOW;
     }
 
     private String formatarSegundos(Double seconds) {

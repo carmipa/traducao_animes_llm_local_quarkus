@@ -76,11 +76,11 @@ public class KronosMcpTools {
 
     private String montarResumo(ResultadoAnaliseLote lote) {
         StringBuilder sb = new StringBuilder();
-        sb.append("Auditoria concluida: ").append(lote.resultados().size()).append(" arquivo(s).\n");
-        if (lote.relatorioPrincipal() != null) {
-            sb.append("Relatorio: ").append(lote.relatorioPrincipal().toAbsolutePath()).append('\n');
+        sb.append("Auditoria concluida: ").append(lote.resultados().size()).append(" arquivo(s)");
+        if (lote.falhas() != null && !lote.falhas().isEmpty()) {
+            sb.append(" (").append(lote.falhas().size()).append(" com falha)");
         }
-        sb.append('\n');
+        sb.append(".\n\n");
 
         for (AuditoriaResultado r : lote.resultados()) {
             sb.append("- ").append(r.nomeArquivo()).append('\n');
@@ -92,10 +92,10 @@ public class KronosMcpTools {
               .append('\n');
             for (LegendaInfo leg : r.legendas()) {
                 sb.append("    legenda [").append(leg.indexRelativo() + 1).append("] ")
-                  .append(leg.idioma()).append(" / ").append(leg.tipoCurto());
-                if (leg.veredicto() != null && !"N/A".equals(leg.veredicto())) {
-                    sb.append(" -> ").append(leg.veredicto());
-                }
+                  .append(leg.idioma()).append(" / ").append(leg.tipoCurto())
+                  .append(" (").append(leg.categoria()).append(", ")
+                  .append(leg.traduzivel() ? "traduzivel" : (leg.exigeOcr() ? "OCR" : "?"))
+                  .append(")");
                 sb.append('\n');
             }
         }

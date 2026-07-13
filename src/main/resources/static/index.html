@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
     <link rel="stylesheet" href="css/base.css?v=5.0">
     <link rel="stylesheet" href="inicio/inicio.css?v=4.0">
-    <link rel="stylesheet" href="analise/analise.css?v=4.0">
+    <link rel="stylesheet" href="analise/analise.css?v=5.0">
     <link rel="stylesheet" href="extracao/extracao.css?v=4.0">
     <link rel="stylesheet" href="traducao/traducao.css?v=4.0">
     <link rel="stylesheet" href="correcao/correcao.css?v=4.0">
@@ -586,6 +586,10 @@
                                 <button class="btn-toggle-console" data-target="console-analise"
                                     data-tooltip="Alternar altura expandida do console"><span
                                         class="material-symbols-outlined console-action-icon">unfold_more</span>Expandir</button>
+                                <button id="btn-exportar-analise" type="button" class="btn-copy-viewer"
+                                    data-tooltip="Baixar o resultado da análise como arquivo .txt"><span
+                                        class="material-symbols-outlined console-action-icon">download</span>Exportar
+                                    TXT</button>
                                 <button class="btn-copy-console" data-target="console-analise"
                                     data-tooltip="Copiar conteúdo do console"><span
                                         class="material-symbols-outlined console-action-icon">content_copy</span>Copiar</button>
@@ -632,11 +636,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="extracao-formato">Formato desejado: <span class="help-icon"
-                                        data-tooltip="O formato de destino da extração. Prefira ASS para animes para preservar estilos, fontes e posições dos textos.">?</span></label>
+                                        data-tooltip="O formato de destino da extração. Prefira ASS para animes para preservar estilos, fontes e posições dos textos. Dica: rode a Análise de Mídia antes para descobrir o formato e o tipo de cada faixa (texto = traduzível; bitmap = requer OCR). Apenas ASS e SRT seguem para a tradução; PGS é bitmap e não é traduzível.">?</span></label>
                                 <select id="extracao-formato">
-                                    <option value="ASS" selected>ASS (Legendas de Estilo Complexo)</option>
-                                    <option value="PGS">PGS (Imagens Embutidas / BD)</option>
-                                    <option value="SRT">SRT (SubRip Texto Simples)</option>
+                                    <option value="ASS" selected>ASS (estilos/karaokê — recomendado p/ tradução)</option>
+                                    <option value="SRT">SRT (texto simples — traduzível)</option>
+                                    <option value="PGS">PGS (bitmap/BD — requer OCR, não traduzível)</option>
                                 </select>
                             </div>
                             <div class="correcao-actions">

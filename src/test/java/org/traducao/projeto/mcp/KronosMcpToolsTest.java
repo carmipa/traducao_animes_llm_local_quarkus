@@ -101,7 +101,7 @@ class KronosMcpToolsTest {
     }
 
     private static ResultadoAnaliseLote loteVazio() {
-        return new ResultadoAnaliseLote(List.of(), null);
+        return new ResultadoAnaliseLote(List.of(), List.of());
     }
 
     /** Fake do use case (sem ffprobe/telemetria reais): conta chamadas e devolve o resultado/erro combinado. */

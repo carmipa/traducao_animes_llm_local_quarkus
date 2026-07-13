@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.traducao.projeto.legendasExtracao.domain.ExtratorException;
 import org.traducao.projeto.legendasExtracao.domain.FaixaLegenda;
+import org.traducao.projeto.legendasExtracao.domain.exceptions.ExtracaoTimeoutException;
 import org.traducao.projeto.legendasExtracao.domain.ports.ExtratorVideoPort;
 import org.traducao.projeto.legendasExtracao.infrastructure.config.ExtratorProperties;
 import org.traducao.projeto.core.util.ProcessoExternoUtil;
@@ -130,7 +131,7 @@ public class MkvToolNixAdapter implements ExtratorVideoPort {
             if (e instanceof InterruptedException) Thread.currentThread().interrupt();
             throw new ExtratorException("Falha ao invocar mkvmerge para identificar: " + mkvPath, e);
         } catch (TimeoutException e) {
-            throw new ExtratorException("Tempo limite excedido ao identificar faixas com mkvmerge: " + mkvPath, e);
+            throw new ExtracaoTimeoutException("Tempo limite excedido ao identificar faixas com mkvmerge: " + mkvPath, e);
         }
     }
 
@@ -159,7 +160,7 @@ public class MkvToolNixAdapter implements ExtratorVideoPort {
             if (e instanceof InterruptedException) Thread.currentThread().interrupt();
             throw new ExtratorException("Falha ao invocar mkvextract para o arquivo: " + mkvPath, e);
         } catch (TimeoutException e) {
-            throw new ExtratorException("Tempo limite excedido ao extrair trilha com mkvextract: " + mkvPath, e);
+            throw new ExtracaoTimeoutException("Tempo limite excedido ao extrair trilha com mkvextract: " + mkvPath, e);
         }
     }
 }

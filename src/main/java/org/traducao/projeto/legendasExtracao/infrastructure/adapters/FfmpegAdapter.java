@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.traducao.projeto.legendasExtracao.domain.ExtratorException;
 import org.traducao.projeto.legendasExtracao.domain.FaixaLegenda;
+import org.traducao.projeto.legendasExtracao.domain.exceptions.ExtracaoTimeoutException;
 import org.traducao.projeto.legendasExtracao.domain.ports.ExtratorVideoPort;
 import org.traducao.projeto.legendasExtracao.infrastructure.config.ExtratorProperties;
 import org.traducao.projeto.core.util.ProcessoExternoUtil;
@@ -126,7 +127,7 @@ public class FfmpegAdapter implements ExtratorVideoPort {
             if (e instanceof InterruptedException) Thread.currentThread().interrupt();
             throw new ExtratorException("Falha ao invocar ffprobe para identificar: " + videoPath, e);
         } catch (TimeoutException e) {
-            throw new ExtratorException("Tempo limite excedido ao identificar faixas com ffprobe: " + videoPath, e);
+            throw new ExtracaoTimeoutException("Tempo limite excedido ao identificar faixas com ffprobe: " + videoPath, e);
         }
     }
 
@@ -157,7 +158,7 @@ public class FfmpegAdapter implements ExtratorVideoPort {
             if (e instanceof InterruptedException) Thread.currentThread().interrupt();
             throw new ExtratorException("Falha ao invocar ffmpeg para o arquivo: " + videoPath, e);
         } catch (TimeoutException e) {
-            throw new ExtratorException("Tempo limite excedido ao extrair trilha com ffmpeg: " + videoPath, e);
+            throw new ExtracaoTimeoutException("Tempo limite excedido ao extrair trilha com ffmpeg: " + videoPath, e);
         }
     }
 }

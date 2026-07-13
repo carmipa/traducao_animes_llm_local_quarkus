@@ -12,6 +12,7 @@ import org.traducao.projeto.legendasExtracao.application.ExtrairLegendaUseCase;
 import org.traducao.projeto.legendasExtracao.domain.FormatoLegenda;
 import org.traducao.projeto.legendasExtracao.domain.RelatorioExtracao;
 import org.traducao.projeto.legendasExtracao.presentation.ui.ConsoleExtratorLogger;
+import org.traducao.projeto.legendasExtracao.presentation.ui.TabelaExtracaoRenderer;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -58,15 +59,29 @@ public class ExtratorCLI implements ExecucaoCli {
 
         RelatorioExtracao relatorio = extrairLegendaUseCase.executar(pastaVideos, formato);
 
+        String tabela = TabelaExtracaoRenderer.render(relatorio);
+        if (!tabela.isBlank()) {
+            System.out.println(AnsiCores.colorir(tabela, AnsiCores.CYAN));
+        }
+
         logger.cabecalho("RELATÓRIO DE EXTRAÇÃO");
         System.out.printf("  Total de arquivos de vídeo detectados : %d%n", relatorio.getArquivosDetectados());
+        System.out.printf("  Faixas de legenda encontradas         : %d%n", relatorio.getFaixasEncontradas());
         System.out.printf("  Arquivos sem legendas %-3s         : %s%n", formato.name(),
             AnsiCores.colorir(String.valueOf(relatorio.getArquivosSemLegenda()), AnsiCores.YELLOW));
         System.out.printf("  Legendas extraídas com sucesso    : %s%n",
             AnsiCores.colorir(String.valueOf(relatorio.getLegendasExtraidas()), AnsiCores.GREEN));
+        if (relatorio.getArquivosJaExistentes() > 0) {
+            System.out.printf("  Preservados (já existiam)         : %s%n",
+                AnsiCores.colorir(String.valueOf(relatorio.getArquivosJaExistentes()), AnsiCores.YELLOW));
+        }
         if (relatorio.getFalhasInesperadas() > 0) {
             System.out.printf("  Falhas de extração                : %s%n",
                 AnsiCores.colorir(String.valueOf(relatorio.getFalhasInesperadas()), AnsiCores.RED));
+        }
+        if (relatorio.getTimeouts() > 0) {
+            System.out.printf("  Timeouts                          : %s%n",
+                AnsiCores.colorir(String.valueOf(relatorio.getTimeouts()), AnsiCores.RED));
         }
         System.out.println("=".repeat(80));
         logger.sucesso("Processamento finalizado!");

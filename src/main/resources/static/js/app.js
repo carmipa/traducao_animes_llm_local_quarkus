@@ -4,7 +4,7 @@
  * ==========================================================================
  */
 
-import { initAnalise } from '../analise/analise.js?v=3.0';
+import { initAnalise } from '../analise/analise.js?v=4.0';
 import { initExtracao } from '../extracao/extracao.js?v=3.0';
 import { initAuditorConteudo } from '../auditorConteudoLegendas/auditorConteudoLegendas.js?v=3.4';
 import { initTraducao } from '../traducao/traducao.js?v=3.0';
@@ -283,12 +283,11 @@ function conectarFluxoLugsSSE() {
         }
     });
 
-    // Relatório final da Análise de Mídia: o backend lê de volta o .txt que
-    // acabou de salvar em disco e manda o conteúdo completo em um único
-    // evento. Diferente do canal 'analise' (log linha a linha ao vivo), aqui
-    // substituímos o console inteiro pelo relatório salvo.
+    // Resultado ESTRUTURADO (JSON) da Análise de Mídia: o backend publica o
+    // resultado num único evento e aqui o console é substituído por cartões +
+    // tabela de legendas (a análise não grava mais relatório em disco).
     eventSource.addEventListener('analise-relatorio', (event) => {
-        exibirRelatorioSalvo('console-analise', event.data);
+        renderizarAnaliseMidia('console-analise', event.data);
     });
 
     eventSource.addEventListener('sistema', (event) => {
@@ -455,43 +454,141 @@ function logNoConsoleFormatado(consoleId, rawMessage) {
 }
 
 /**
- * Substitui todo o conteúdo de um painel de console pelo texto de um
- * relatório já salvo em disco (ex.: relatório de Análise de Mídia), em vez
- * de acrescentar mais uma linha de log. Usado quando o backend manda o
- * conteúdo integral de um arquivo via SSE, não uma linha de log ao vivo.
+ * Renderiza o resultado ESTRUTURADO da Análise de Mídia (JSON via SSE) em
+ * cartões + tabela de legendas em destaque. Guarda o resultado em
+ * window.__ultimaAnaliseMidia para a exportação TXT manual.
  */
-function exibirRelatorioSalvo(consoleId, textoRelatorio) {
+function renderizarAnaliseMidia(consoleId, jsonText) {
     const consoleDiv = document.getElementById(consoleId);
     if (!consoleDiv) return;
 
-    const texto = textoRelatorio || '';
-    consoleDiv.innerHTML = '';
+    let dados;
+    try {
+        dados = JSON.parse(jsonText);
+    } catch (e) {
+        consoleDiv.innerHTML = '<div class="system-message">Falha ao interpretar o resultado da análise.</div>';
+        return;
+    }
+    window.__ultimaAnaliseMidia = dados;
 
-    const wrapper = document.createElement('div');
-    wrapper.className = 'relatorio-wrapper';
+    const resultados = Array.isArray(dados.resultados) ? dados.resultados : [];
+    const falhas = Array.isArray(dados.falhas) ? dados.falhas : [];
 
-    // Cabeçalho fixo deixa claro que o console passou a exibir o relatório
-    // salvo em disco (e não mais o log ao vivo), com contagem de linhas.
-    const cabecalho = document.createElement('div');
-    cabecalho.className = 'relatorio-cabecalho';
-    const totalLinhas = texto ? texto.split('\n').length : 0;
-    const titulo = document.createElement('span');
-    titulo.className = 'relatorio-titulo';
-    titulo.innerHTML = '<span class="material-symbols-outlined relatorio-icone">description</span>Relatório de Análise de Mídia — salvo em disco';
-    const meta = document.createElement('span');
-    meta.className = 'relatorio-meta';
-    meta.textContent = `${totalLinhas} linha${totalLinhas === 1 ? '' : 's'}`;
-    cabecalho.appendChild(titulo);
-    cabecalho.appendChild(meta);
-    wrapper.appendChild(cabecalho);
+    const esc = (v) => String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const kbps = (b) => (b > 0 ? Math.round(b / 1000) + ' kbps' : 'N/A');
+    const gib = (bytes) => (bytes > 0 ? (bytes / (1024 ** 3)).toFixed(2) + ' GiB' : 'N/A');
+    const dur = (s) => {
+        if (!s || s <= 0) return 'N/A';
+        const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = Math.floor(s % 60);
+        return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+    };
+    const badgeTrad = (leg) => leg.traduzivel
+        ? '<span class="badge-trad sim">Traduzível</span>'
+        : (leg.exigeOcr ? '<span class="badge-trad ocr">OCR</span>' : '<span class="badge-trad nao">—</span>');
+    const flags = (leg) => {
+        const f = [];
+        if (leg.isDefault) f.push('default');
+        if (leg.isForced) f.push('forced');
+        if (leg.acessibilidade) f.push('acess.');
+        return f.length ? f.join(', ') : '—';
+    };
+    const lista = (arr, render, limite = 12) => {
+        const a = arr || [];
+        if (!a.length) return '<li>—</li>';
+        return a.slice(0, limite).map(render).join('') + (a.length > limite ? `<li class="ac-dim">+${a.length - limite}…</li>` : '');
+    };
 
-    const pre = document.createElement('pre');
-    pre.className = 'relatorio-salvo';
-    pre.textContent = texto;
-    wrapper.appendChild(pre);
+    const comTexto = resultados.filter(r => (r.legendas || []).some(l => l.traduzivel)).length;
 
-    consoleDiv.appendChild(wrapper);
+    let html = '<div class="analise-wrapper">';
+    html += '<div class="analise-cabecalho"><span class="material-symbols-outlined">fact_check</span>'
+        + '<span>Análise de Mídia</span>'
+        + `<span class="analise-resumo">${resultados.length} arquivo(s) · ${comTexto} com legenda de texto · ${falhas.length} falha(s)</span></div>`;
+
+    if (!resultados.length && !falhas.length) {
+        html += '<div class="system-message">Nenhum resultado.</div>';
+    }
+
+    for (const r of resultados) {
+        const c = r.container || {};
+        html += '<div class="analise-card">';
+        html += `<div class="ac-titulo"><span class="material-symbols-outlined">movie</span>${esc(r.nomeArquivo)}</div>`;
+        html += '<div class="ac-grid">';
+        html += '<div class="ac-bloco"><h5>Contêiner</h5><ul>'
+            + `<li>Formato: ${esc(c.formato)}</li><li>Tamanho: ${gib(c.tamanhoBytes)}</li>`
+            + `<li>Duração: ${dur(c.duracaoSegundos)}</li><li>Bitrate: ${kbps(c.bitrateGeral)}</li>`
+            + `<li>Escrito por: ${esc(c.aplicacaoEscrita)}</li></ul></div>`;
+        html += `<div class="ac-bloco"><h5>Vídeo (${(r.videos || []).length})</h5><ul>`
+            + lista(r.videos, v => `<li>${esc(v.codecId)} · ${v.width}x${v.height} · ${v.bitDepth}bit · ${(v.fps || 0).toFixed(3)}fps · ${kbps(v.bitrate)}</li>`) + '</ul></div>';
+        html += `<div class="ac-bloco"><h5>Áudio (${(r.audios || []).length})</h5><ul>`
+            + lista(r.audios, a => `<li>${esc(a.idioma)} · ${esc(a.format)} · ${a.channels}ch · ${(a.sampleRateKHz || 0).toFixed(1)}kHz · ${kbps(a.bitrate)}</li>`) + '</ul></div>';
+        html += `<div class="ac-bloco"><h5>Capítulos (${(r.capitulos || []).length})</h5><ul>`
+            + lista(r.capitulos, cap => `<li>${cap.numero}. ${esc(cap.titulo)} <span class="ac-dim">(${dur(cap.inicioSegundos)})</span></li>`) + '</ul></div>';
+        html += `<div class="ac-bloco"><h5>Anexos (${(r.anexos || []).length})</h5><ul>`
+            + lista(r.anexos, an => `<li>${esc(an.nomeArquivo)} <span class="ac-dim">${esc(an.mimeType)}</span></li>`) + '</ul></div>';
+        html += '</div>';
+
+        html += `<div class="ac-legendas"><h5>Legendas (${(r.legendas || []).length})</h5>`;
+        if (!(r.legendas || []).length) {
+            html += '<p class="ac-sem-legenda">Nenhuma faixa de legenda encontrada — pode ser RAW; hardsub não confirmado por esta análise.</p>';
+        } else {
+            html += '<table class="ac-tabela"><thead><tr><th>#</th><th>Idioma</th><th>Formato</th><th>Tipo</th><th>Flags</th><th>Traduzível</th></tr></thead><tbody>';
+            for (const leg of r.legendas) {
+                html += `<tr><td>${(leg.indexRelativo ?? 0) + 1}</td><td>${esc(leg.idioma)}</td><td>${esc(leg.formato)}</td>`
+                    + `<td>${esc(leg.tipoCurto)} <span class="ac-dim">(${esc(leg.categoria)})</span></td>`
+                    + `<td>${esc(flags(leg))}</td><td>${badgeTrad(leg)}</td></tr>`;
+            }
+            html += '</tbody></table>';
+        }
+        html += '</div></div>';
+    }
+
+    if (falhas.length) {
+        html += '<div class="analise-falhas"><h5>Falhas na análise (' + falhas.length + ')</h5><ul>'
+            + falhas.map(f => `<li><strong>${esc(f.arquivo)}</strong>: ${esc(f.erro)}</li>`).join('') + '</ul></div>';
+    }
+
+    html += '</div>';
+    consoleDiv.innerHTML = html;
     consoleDiv.scrollTop = 0;
+}
+
+/**
+ * Constrói o TXT (exportação manual) a partir do resultado estruturado da análise.
+ */
+export function montarTxtAnaliseMidia(dados) {
+    if (!dados) return '';
+    const resultados = dados.resultados || [];
+    const falhas = dados.falhas || [];
+    const L = [];
+    L.push('RELATORIO DE ANALISE DE MIDIA');
+    L.push('Arquivos: ' + resultados.length + ' | Falhas: ' + falhas.length);
+    L.push('');
+    for (const r of resultados) {
+        const c = r.container || {};
+        L.push('='.repeat(70));
+        L.push('ARQUIVO: ' + (r.nomeArquivo || ''));
+        L.push('='.repeat(70));
+        L.push('Conteiner: ' + (c.formato || '') + ' | Duracao: ' + (c.duracaoSegundos || 0).toFixed(2) + 's | ' + ((c.tamanhoBytes || 0) / (1024 ** 3)).toFixed(2) + ' GiB');
+        L.push('Faixas: video=' + (r.videos || []).length + ' audio=' + (r.audios || []).length
+            + ' legenda=' + (r.legendas || []).length + ' capitulos=' + (r.capitulos || []).length + ' anexos=' + (r.anexos || []).length);
+        L.push('Legendas:');
+        if (!(r.legendas || []).length) {
+            L.push('  (nenhuma faixa; hardsub nao confirmado por esta analise)');
+        } else {
+            for (const leg of r.legendas) {
+                L.push('  [' + ((leg.indexRelativo || 0) + 1) + '] ' + (leg.idioma || '') + ' / ' + (leg.tipoCurto || '')
+                    + ' (' + (leg.categoria || '') + ') -> ' + (leg.traduzivel ? 'traduzivel' : (leg.exigeOcr ? 'OCR' : '-'))
+                    + ' | default=' + !!leg.isDefault + ' forced=' + !!leg.isForced + ' acess=' + !!leg.acessibilidade);
+            }
+        }
+        L.push('');
+    }
+    if (falhas.length) {
+        L.push('FALHAS:');
+        for (const f of falhas) L.push('  ' + (f.arquivo || '') + ': ' + (f.erro || ''));
+    }
+    return L.join('\r\n');
 }
 
 /**

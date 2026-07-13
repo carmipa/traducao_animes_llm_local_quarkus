@@ -60,6 +60,6 @@ class AnalisarMidiaClassificacaoTest {
 
     private static LegendaInfo leg(String tipoCurto) {
         return new LegendaInfo(0, 0, "eng", "ASS", "ass", "(Sem titulo)",
-            null, tipoCurto, null, null, "Metadados", null, null, null, null);
+            null, tipoCurto, null, false, false, false, false, false, false, null, null);
     }
 }

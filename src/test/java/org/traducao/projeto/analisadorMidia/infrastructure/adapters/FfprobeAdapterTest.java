@@ -11,6 +11,7 @@ import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Cobre o parsing ffprobe-JSON → domínio sem executar ffprobe real: substitui o
@@ -104,6 +105,41 @@ class FfprobeAdapterTest {
         LegendaInfo leg = r.legendas().get(0);
         assertEquals("HDMV_PGS_SUBTITLE", leg.formato());
         assertEquals("Desconhecido", leg.idioma());
+    }
+
+    @Test
+    void leCapitulosAnexosEFlagsDeDisposition() {
+        String json = """
+            {"streams":[
+              {"index":0,"codec_type":"video","codec_name":"h264","width":1280,"height":720,
+               "pix_fmt":"yuv420p","r_frame_rate":"24/1"},
+              {"index":1,"codec_type":"subtitle","codec_name":"ass","tags":{"language":"eng"},
+               "disposition":{"default":1,"forced":1,"hearing_impaired":1}},
+              {"index":2,"codec_type":"attachment","codec_name":"ttf","extradata_size":12345,
+               "tags":{"filename":"font.ttf","mimetype":"application/x-truetype-font"}}
+            ],
+            "chapters":[
+              {"start_time":"0.000","end_time":"60.000","tags":{"title":"Abertura"}},
+              {"start_time":"60.000","end_time":"120.000","tags":{"title":"Parte A"}}
+            ],
+            "format":{"format_name":"matroska","size":"1","duration":"120"}}
+            """;
+
+        AuditoriaResultado r = comJson(json).analisarMidia(Path.of("ep.mkv"));
+
+        assertEquals(1, r.legendas().size());
+        LegendaInfo leg = r.legendas().get(0);
+        assertTrue(leg.isDefault());
+        assertTrue(leg.isForced());
+        assertTrue(leg.acessibilidade());
+
+        assertEquals(2, r.capitulos().size());
+        assertEquals(1, r.capitulos().get(0).numero());
+        assertEquals("Abertura", r.capitulos().get(0).titulo());
+
+        assertEquals(1, r.anexos().size());
+        assertEquals("font.ttf", r.anexos().get(0).nomeArquivo());
+        assertEquals("application/x-truetype-font", r.anexos().get(0).mimeType());
     }
 
     @Test
