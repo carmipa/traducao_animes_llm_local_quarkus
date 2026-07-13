@@ -92,6 +92,24 @@ public class GerenciadorContexto {
         return this.provedorAtivo != null ? this.provedorAtivo.getNomeExibicao() : "Padrao";
     }
 
+    /**
+     * Id do contexto ativo (não o nome de exibição). Usado para carimbar a
+     * proveniência do cache de tradução, de modo que uma legenda em cache saiba
+     * com qual lore foi produzida. Retorna {@code null} se não houver contexto ativo.
+     */
+    public String obterIdContextoAtivo() {
+        return this.provedorAtivo != null ? this.provedorAtivo.getId() : null;
+    }
+
+    /**
+     * Termos protegidos (não traduzir) do lore atualmente ativo. Usado pelo
+     * detector de tradução idêntica para acompanhar o lore selecionado. Vazio
+     * quando não há contexto ativo ou o contexto não declara termos.
+     */
+    public java.util.Set<String> termosProtegidosAtivos() {
+        return this.provedorAtivo != null ? this.provedorAtivo.termosProtegidos() : java.util.Set.of();
+    }
+
     private ProvedorContexto encontrarProvedorPadrao() {
         return provedores.stream()
                 .filter(p -> ID_CONTEXTO_PADRAO.equals(p.getId()))

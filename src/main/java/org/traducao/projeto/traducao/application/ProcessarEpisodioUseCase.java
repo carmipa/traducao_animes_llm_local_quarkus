@@ -45,12 +45,22 @@ public class ProcessarEpisodioUseCase {
     }
 
     public List<TraducaoLote> processarEpisodio(List<Lote> lotes) throws InterruptedException, ExecutionException {
+        return processarEpisodio(lotes, null);
+    }
+
+    /**
+     * @param promptSistemaCongelado prompt de sistema capturado no início do job;
+     *        garante que uma troca de contexto (lore) no estado global não vaze
+     *        para o meio do episódio. {@code null} usa o prompt do contexto ativo.
+     */
+    public List<TraducaoLote> processarEpisodio(List<Lote> lotes, String promptSistemaCongelado)
+            throws InterruptedException, ExecutionException {
         if (lotes.isEmpty()) {
             return List.of();
         }
 
         log.info("Iniciando processamento de {} lote(s) de forma sequencial (preservando LM Studio/GPU)", lotes.size());
-        
+
         java.util.List<TraducaoLote> resultado = new java.util.ArrayList<>();
         for (Lote lote : lotes) {
             // Parada cooperativa (botão "Parar" da UI interrompe a thread da
@@ -62,7 +72,7 @@ public class ProcessarEpisodioUseCase {
                     "Tradução interrompida pelo usuário.", resultado, null);
             }
             try {
-                TraducaoLote tl = traduzirEValidar(lote);
+                TraducaoLote tl = traduzirEValidar(lote, promptSistemaCongelado);
                 resultado.add(tl);
             } catch (Exception e) {
                 // Aborta e guarda as traduções parciais que passaram!
@@ -85,10 +95,10 @@ public class ProcessarEpisodioUseCase {
      * tenta de novo. Só uma falha de comunicação real (HTTP/timeout, já
      * esgotadas as tentativas do {@link MistralPort}) aborta o episódio.
      */
-    private TraducaoLote traduzirEValidar(Lote lote) {
+    private TraducaoLote traduzirEValidar(Lote lote, String promptSistemaCongelado) {
         MDC.put(MDC_LOTE_ID, String.valueOf(lote.idLote()));
         try {
-            List<String> traduzidas = traduzirComDivisao(lote);
+            List<String> traduzidas = traduzirComDivisao(lote, promptSistemaCongelado);
 
             log.debug("Lote {} validado com sucesso", lote.idLote());
             uiLogger.log("[ OK ] Lote " + lote.idLote() + " traduzido com sucesso.");
@@ -111,13 +121,13 @@ public class ProcessarEpisodioUseCase {
      * de descartar o lote inteiro (que pode ter 20+ falas, das quais só 1
      * costuma ser a culpada).
      */
-    private List<String> traduzirComDivisao(Lote lote) {
+    private List<String> traduzirComDivisao(Lote lote, String promptSistemaCongelado) {
         if (lote.linhasOriginais().size() <= 1) {
-            return traduzirLinhaUnicaComFallback(lote);
+            return traduzirLinhaUnicaComFallback(lote, promptSistemaCongelado);
         }
 
         try {
-            return traduzirERevalidarBruto(lote, null);
+            return traduzirERevalidarBruto(lote, null, promptSistemaCongelado);
         } catch (DivergenciaLinhasException | AlucinacaoDetectadaException e) {
             int total = lote.linhasOriginais().size();
             int meio = total / 2;
@@ -128,8 +138,8 @@ public class ProcessarEpisodioUseCase {
             Lote primeiraMetade = new Lote(lote.idLote(), lote.linhasOriginais().subList(0, meio));
             Lote segundaMetade = new Lote(lote.idLote(), lote.linhasOriginais().subList(meio, total));
 
-            List<String> traduzidas = new ArrayList<>(traduzirComDivisao(primeiraMetade));
-            traduzidas.addAll(traduzirComDivisao(segundaMetade));
+            List<String> traduzidas = new ArrayList<>(traduzirComDivisao(primeiraMetade, promptSistemaCongelado));
+            traduzidas.addAll(traduzirComDivisao(segundaMetade, promptSistemaCongelado));
             return traduzidas;
         }
     }
@@ -141,7 +151,7 @@ public class ProcessarEpisodioUseCase {
      * sinalizada no log/console para revisão manual (o cache JSON aceita
      * correções manuais, ver {@link ProcessarArquivoUseCase}).
      */
-    private List<String> traduzirLinhaUnicaComFallback(Lote lote) {
+    private List<String> traduzirLinhaUnicaComFallback(Lote lote, String promptSistemaCongelado) {
         if (lote.linhasOriginais().isEmpty()) {
             return List.of();
         }
@@ -151,7 +161,7 @@ public class ProcessarEpisodioUseCase {
             try {
                 Double temperatura = TEMPERATURA_POR_TENTATIVA[
                     Math.min(tentativa - 1, TEMPERATURA_POR_TENTATIVA.length - 1)];
-                return traduzirERevalidarBruto(lote, temperatura);
+                return traduzirERevalidarBruto(lote, temperatura, promptSistemaCongelado);
             } catch (DivergenciaLinhasException | AlucinacaoDetectadaException e) {
                 ultimaFalha = e;
             }
@@ -166,8 +176,8 @@ public class ProcessarEpisodioUseCase {
         return List.of(original);
     }
 
-    private List<String> traduzirERevalidarBruto(Lote lote, Double temperaturaOverride) {
-        TraducaoLote resultado = mistralPort.traduzir(lote, temperaturaOverride);
+    private List<String> traduzirERevalidarBruto(Lote lote, Double temperaturaOverride, String promptSistemaCongelado) {
+        TraducaoLote resultado = mistralPort.traduzir(lote, temperaturaOverride, promptSistemaCongelado);
 
         if (!resultado.sucesso() || resultado.linhasTraduzidas() == null) {
             throw new TradutorException("Lote " + lote.idLote() + " falhou na comunicação: " + resultado.mensagemErro());

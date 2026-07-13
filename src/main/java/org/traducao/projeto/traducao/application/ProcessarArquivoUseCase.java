@@ -4,18 +4,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.traducao.projeto.traducao.domain.Lote;
+import org.traducao.projeto.traducao.domain.ResultadoTraducaoArquivo;
+import org.traducao.projeto.traducao.domain.StatusArquivoTraducao;
 import org.traducao.projeto.traducao.domain.TraducaoLote;
 import org.traducao.projeto.traducao.domain.exceptions.AlucinacaoDetectadaException;
 import org.traducao.projeto.traducao.domain.exceptions.ArquivoLegendaException;
+import org.traducao.projeto.traducao.domain.exceptions.EntradaJaTraduzidaException;
 import org.traducao.projeto.traducao.domain.legenda.DocumentoLegenda;
 import org.traducao.projeto.traducao.domain.legenda.EventoLegenda;
 import org.traducao.projeto.traducao.domain.exceptions.TraducaoParcialException;
 import org.traducao.projeto.traducao.infrastructure.cache.CacheTraducaoService;
 import org.traducao.projeto.traducao.infrastructure.cache.EntradaCache;
+import org.traducao.projeto.traducao.infrastructure.cache.ProvenienciaCache;
+import org.traducao.projeto.traducao.infrastructure.contexto.GerenciadorContexto;
 import org.traducao.projeto.traducao.infrastructure.config.LlmProperties;
 import org.traducao.projeto.traducao.infrastructure.config.TradutorProperties;
 import org.traducao.projeto.traducao.infrastructure.legenda.EscritorLegendaAss;
+import org.traducao.projeto.traducao.infrastructure.legenda.EscritorLegendaSrt;
 import org.traducao.projeto.traducao.infrastructure.legenda.LeitorLegendaAss;
+import org.traducao.projeto.traducao.infrastructure.legenda.LeitorLegendaSrt;
 import org.traducao.projeto.traducao.infrastructure.legenda.MascaradorTags;
 import org.traducao.projeto.traducao.presentation.ui.ConsoleUILogger;
 import org.traducao.projeto.traducao.presentation.ui.PastasExecucao;
@@ -54,6 +61,8 @@ public class ProcessarArquivoUseCase {
 
     private final LeitorLegendaAss leitor;
     private final EscritorLegendaAss escritor;
+    private final LeitorLegendaSrt leitorSrt;
+    private final EscritorLegendaSrt escritorSrt;
     private final MascaradorTags mascarador;
     private final CacheTraducaoService cacheService;
     private final ProcessarEpisodioUseCase processarEpisodioUseCase;
@@ -66,10 +75,13 @@ public class ProcessarArquivoUseCase {
     private final TelemetriaService telemetriaService;
     private final DetectorEfeitoKaraokeService detectorKaraoke;
     private final ProtecaoLegendaAssService protecaoAss;
+    private final GerenciadorContexto gerenciadorContexto;
 
     public ProcessarArquivoUseCase(
         LeitorLegendaAss leitor,
         EscritorLegendaAss escritor,
+        LeitorLegendaSrt leitorSrt,
+        EscritorLegendaSrt escritorSrt,
         MascaradorTags mascarador,
         CacheTraducaoService cacheService,
         ProcessarEpisodioUseCase processarEpisodioUseCase,
@@ -81,10 +93,13 @@ public class ProcessarArquivoUseCase {
         PastasExecucao pastasExecucao,
         TelemetriaService telemetriaService,
         DetectorEfeitoKaraokeService detectorKaraoke,
-        ProtecaoLegendaAssService protecaoAss
+        ProtecaoLegendaAssService protecaoAss,
+        GerenciadorContexto gerenciadorContexto
     ) {
         this.leitor = leitor;
         this.escritor = escritor;
+        this.leitorSrt = leitorSrt;
+        this.escritorSrt = escritorSrt;
         this.mascarador = mascarador;
         this.cacheService = cacheService;
         this.processarEpisodioUseCase = processarEpisodioUseCase;
@@ -97,23 +112,85 @@ public class ProcessarArquivoUseCase {
         this.telemetriaService = telemetriaService;
         this.detectorKaraoke = detectorKaraoke;
         this.protecaoAss = protecaoAss;
+        this.gerenciadorContexto = gerenciadorContexto;
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: Carimbo de origem da tradução em cache — qual lore,
+     * hash do prompt de sistema, modelo e idiomas estão em vigor nesta execução.
+     * É o que impede o cache de reusar traduções feitas com um lore diferente.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: o hash reflete o prompt ativo inteiro; qualquer
+     * mudança de lore/regra o altera e invalida o cache antigo.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: não lança; se não houver contexto ativo,
+     * {@code contextoId} vem nulo e o {@code hashDe} do prompt padrão ainda é
+     * calculado — a comparação de proveniência trata nulos como divergência.
+     */
+    private ProvenienciaCache provenienciaAtual() {
+        return new ProvenienciaCache(
+            ProvenienciaCache.SCHEMA_ATUAL,
+            gerenciadorContexto.obterIdContextoAtivo(),
+            ProvenienciaCache.hashDe(gerenciadorContexto.obterPromptAtivo()),
+            llmPropriedades.model(),
+            propriedades.idiomaOriginal(),
+            propriedades.idiomaTraduzido()
+        );
     }
 
     public Path processar(Path arquivoEntrada) throws InterruptedException, ExecutionException {
+        return processar(arquivoEntrada, false).arquivoSaida();
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: Traduz um arquivo de legenda. Quando a entrada aparenta
+     * já estar em PT-BR, a retradução é BLOQUEADA por padrão — evita traduzir de
+     * novo uma legenda já traduzida e sobrescrever trabalho bom.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: só reprocessa uma entrada que parece traduzida se
+     * {@code permitirRetraducao} for explicitamente verdadeiro (confirmação do
+     * usuário); a decisão é registrada nos avisos/telemetria.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: entrada aparentemente já traduzida sem
+     * confirmação → lança {@link ArquivoLegendaException} (o lote registra o
+     * arquivo como falha e segue para o próximo).
+     */
+    public ResultadoTraducaoArquivo processar(Path arquivoEntrada, boolean permitirRetraducao) throws InterruptedException, ExecutionException {
         long inicioMs = System.currentTimeMillis();
+        boolean ehSrt = ehSrt(arquivoEntrada);
         log.info("Lendo arquivo de legenda: {}", arquivoEntrada);
-        DocumentoLegenda documento = leitor.ler(arquivoEntrada);
+        DocumentoLegenda documento = ehSrt ? leitorSrt.ler(arquivoEntrada) : leitor.ler(arquivoEntrada);
 
         Path arquivoCache = resolverArquivoCache(arquivoEntrada);
-        Map<String, String> cacheExistente = cacheService.carregar(arquivoCache);
+        ProvenienciaCache proveniencia = provenienciaAtual();
+        // Congela o prompt de sistema no início do arquivo: se o contexto global
+        // mudar (troca de lore) enquanto este episódio traduz, o prompt já capturado
+        // continua valendo até o fim — a mesma origem carimbada na proveniência.
+        String promptCongelado = gerenciadorContexto.obterPromptAtivo();
+        CacheTraducaoService.ResultadoCarga carga = cacheService.carregar(arquivoCache, proveniencia);
+        Map<String, String> cacheExistente = carga.mapa();
 
         // Avisos de falas que ficaram sem tradução confiável (tags corrompidas,
         // resíduo detectado na revalidação final). Alimenta o campo
         // errosOcorridos da telemetria para o painel refletir o que exige
         // revisão manual.
         List<String> avisos = new ArrayList<>();
+        if (carga.invalidadas() > 0) {
+            String aviso = carga.invalidadas()
+                + " entrada(s) do cache anterior invalidadas por mudança de lore/modelo (serão retraduzidas com o lore atual).";
+            log.warn(aviso);
+            uiLogger.log("[ INFO ] " + aviso);
+            avisos.add(aviso);
+        }
         if (protecaoAss.caminhoPareceTraduzido(arquivoEntrada)) {
-            String aviso = "A entrada parece ser uma pasta/legenda ja traduzida: " + arquivoEntrada;
+            if (!permitirRetraducao) {
+                String msg = "Entrada parece já traduzida (PT-BR): " + arquivoEntrada
+                    + ". Retradução BLOQUEADA por padrão — confirme explicitamente para reprocessar.";
+                log.warn(msg);
+                uiLogger.log("[ BLOQUEADO ] " + msg);
+                throw new EntradaJaTraduzidaException(msg);
+            }
+            String aviso = "Entrada parece já traduzida; reprocessando por confirmação explícita: " + arquivoEntrada;
             log.warn(aviso);
             uiLogger.log("[ WARN ] " + aviso);
             avisos.add(aviso);
@@ -148,7 +225,7 @@ public class ProcessarArquivoUseCase {
 
         Map<String, String> traducoesNovas;
         try {
-            traducoesNovas = traduzirPendentes(textosPendentes, arquivoEntrada.getFileName().toString(), avisos);
+            traducoesNovas = traduzirPendentes(textosPendentes, arquivoEntrada.getFileName().toString(), avisos, promptCongelado);
             uiLogger.registrarFalasNovas(traducoesNovas.size());
         } catch (TraducaoParcialException e) {
             Map<String, String> traducoesParciais = e.getDicionarioParcial();
@@ -169,7 +246,7 @@ public class ProcessarArquivoUseCase {
                     }
                 }
                 if (!entradasCacheParcial.isEmpty()) {
-                    cacheService.salvar(arquivoCache, entradasCacheParcial);
+                    cacheService.salvar(arquivoCache, proveniencia, entradasCacheParcial);
                 }
             }
             throw e;
@@ -212,11 +289,18 @@ public class ProcessarArquivoUseCase {
             documento.cabecalho(), eventosFinais, documento.quebraDeLinha(), documento.comBom());
 
         Path arquivoSaida = resolverArquivoSaida(arquivoEntrada);
-        escritor.escrever(arquivoSaida, documentoFinal);
-        cacheService.salvar(arquivoCache, entradasCache);
+        if (ehSrt) {
+            escritorSrt.escrever(arquivoSaida, documentoFinal);
+        } else {
+            escritor.escrever(arquivoSaida, documentoFinal);
+        }
+        cacheService.salvar(arquivoCache, proveniencia, entradasCache);
 
         long tempoTotalMs = System.currentTimeMillis() - inicioMs;
         String animeNome = animeAPartirDoArquivo(arquivoEntrada);
+        String loreNome = gerenciadorContexto.obterNomeContextoAtivo();
+        StatusArquivoTraducao status = avisos.isEmpty()
+            ? StatusArquivoTraducao.CONCLUIDO : StatusArquivoTraducao.PARCIAL;
         telemetriaService.registrarTraducao(new LlmTelemetria(
             arquivoEntrada.getFileName().toString(),
             llmPropriedades.model(),
@@ -227,15 +311,19 @@ public class ProcessarArquivoUseCase {
             List.copyOf(avisos),
             animeNome,
             temporadaAPartirDoNome(animeNome),
-            java.time.Instant.now().toString()
+            java.time.Instant.now().toString(),
+            loreNome,
+            status.name()
         ));
 
         log.info("Arquivo traduzido salvo em {} (cache em {})", arquivoSaida, arquivoCache);
-        return arquivoSaida;
+        return ResultadoTraducaoArquivo.concluido(
+            arquivoSaida, arquivoEntrada.getFileName().toString(), loreNome,
+            eventosTraduziveis.size(), cacheReaproveitavel.size(), traducoesNovas.size(), avisos.size());
     }
 
     private Map<String, String> traduzirPendentes(
-            LinkedHashSet<String> textosPendentes, String nomeArquivo, List<String> avisos)
+            LinkedHashSet<String> textosPendentes, String nomeArquivo, List<String> avisos, String promptCongelado)
             throws InterruptedException, ExecutionException {
         if (textosPendentes.isEmpty()) {
             return Map.of();
@@ -264,7 +352,7 @@ public class ProcessarArquivoUseCase {
         uiLogger.iniciarLotes(lotes.size(), nomeArquivo);
         List<TraducaoLote> resultados;
         try {
-            resultados = processarEpisodioUseCase.processarEpisodio(lotes);
+            resultados = processarEpisodioUseCase.processarEpisodio(lotes, promptCongelado);
         } catch (TraducaoParcialException e) {
             Map<String, String> traducoesParciais = new HashMap<>();
             if (e.getLotesSalvos() != null) {
@@ -437,9 +525,21 @@ public class ProcessarArquivoUseCase {
         return texto == null ? "" : texto.replaceAll("\\s+", " ").trim();
     }
 
+    private static boolean ehSrt(Path arquivo) {
+        return arquivo.getFileName().toString().toLowerCase().endsWith(".srt");
+    }
+
+    private static String extensaoLegenda(String nome) {
+        String lower = nome.toLowerCase();
+        if (lower.endsWith(".srt")) {
+            return ".srt";
+        }
+        return lower.endsWith(".ssa") ? ".ssa" : ".ass";
+    }
+
     private Path resolverArquivoSaida(Path entrada) {
         String nome = entrada.getFileName().toString();
-        String extensao = nome.toLowerCase().endsWith(".ssa") ? ".ssa" : ".ass";
+        String extensao = extensaoLegenda(nome);
         String base = nome.substring(0, nome.length() - extensao.length());
         String baseSemSufixoIngles = base.replaceFirst("(?i)_ENG$", "");
         return pastasExecucao.diretorioSaida().resolve(baseSemSufixoIngles + "_PT-BR" + extensao);
@@ -447,7 +547,7 @@ public class ProcessarArquivoUseCase {
 
     private Path resolverArquivoCache(Path entrada) {
         String nome = entrada.getFileName().toString();
-        String extensao = nome.toLowerCase().endsWith(".ssa") ? ".ssa" : ".ass";
+        String extensao = extensaoLegenda(nome);
         String base = nome.substring(0, nome.length() - extensao.length());
         String animeNome = animeAPartirDoArquivo(entrada);
         return pastasExecucao.diretorioCache().resolve(animeNome).resolve(base + ".cache.json");

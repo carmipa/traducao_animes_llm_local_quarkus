@@ -21,6 +21,15 @@ public interface MistralPort {
     }
 
     /**
+     * Variante que recebe o prompt de sistema CONGELADO no início do job. Assim,
+     * uma troca de contexto (lore) no estado global não pode vazar para o meio da
+     * tradução de um episódio. {@code null} usa o prompt do contexto ativo.
+     */
+    default TraducaoLote traduzir(Lote lote, Double temperaturaOverride, String promptSistemaCongelado) {
+        return traduzir(lote, temperaturaOverride);
+    }
+
+    /**
      * Verifica, antes de iniciar a tradução, se o servidor LLM local está
      * online e se o modelo configurado está efetivamente carregado em
      * memória — evita descobrir isso só depois de várias tentativas/timeouts

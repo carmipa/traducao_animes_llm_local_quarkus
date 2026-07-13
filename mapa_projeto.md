@@ -2,9 +2,9 @@
  MAPA ESTRUTURAL DO PROJETO - TRACKER ANIMES
 ================================================================================
  Raiz do repositorio      : traducao_animes_llm_local_quarkus
- Pastas mapeadas          : 232
- Arquivos (na arvore)     : 429
- Arquivos-fonte indexados : 328  (.java: 328 | .py: 0)
+ Pastas mapeadas          : 233
+ Arquivos (na arvore)     : 438
+ Arquivos-fonte indexados : 337  (.java: 337 | .py: 0)
  Memoria viva do projeto  : CEREBRO_IA.md (na raiz do repositorio)
 
  Objetivo: mapa de contexto para LLMs navegarem os diretorios e
@@ -34,8 +34,8 @@ traducao_animes_llm_local_quarkus/
 │   ├── console-web.log
 │   └── telemetria_compartilhada.json
 ├── relatorios/
-│   └── junit-1120960169084371018/
-│       ├── auditoria_conteudo_20260713_134149.json
+│   └── junit-15795719248406774696/
+│       ├── auditoria_conteudo_20260713_143844.json
 │       └── telemetria_compartilhada.json
 ├── src/
 │   ├── main/
@@ -381,6 +381,7 @@ traducao_animes_llm_local_quarkus/
 │   │   │               │   │   │   ├── ArquivoLegendaException.java
 │   │   │               │   │   │   ├── ContextoNaoEncontradoException.java
 │   │   │               │   │   │   ├── DivergenciaLinhasException.java
+│   │   │               │   │   │   ├── EntradaJaTraduzidaException.java
 │   │   │               │   │   │   ├── LlmFalhaComunicacaoException.java
 │   │   │               │   │   │   ├── LmStudioOfflineException.java
 │   │   │               │   │   │   ├── RespostaLlmVaziaException.java
@@ -393,7 +394,10 @@ traducao_animes_llm_local_quarkus/
 │   │   │               │   │   │   ├── MistralPort.java
 │   │   │               │   │   │   └── ProvedorContexto.java
 │   │   │               │   │   ├── Lote.java
+│   │   │               │   │   ├── ResultadoTraducaoArquivo.java
+│   │   │               │   │   ├── StatusArquivoTraducao.java
 │   │   │               │   │   ├── StatusLlm.java
+│   │   │               │   │   ├── StatusLoteTraducao.java
 │   │   │               │   │   └── TraducaoLote.java
 │   │   │               │   ├── infrastructure/
 │   │   │               │   │   ├── adapters/
@@ -410,14 +414,17 @@ traducao_animes_llm_local_quarkus/
 │   │   │               │   │   │   └── JsonHttpClient.java
 │   │   │               │   │   └── legenda/
 │   │   │               │   │       ├── EscritorLegendaAss.java
+│   │   │               │   │       ├── EscritorLegendaSrt.java
 │   │   │               │   │       ├── LeitorLegendaAss.java
+│   │   │               │   │       ├── LeitorLegendaSrt.java
 │   │   │               │   │       └── MascaradorTags.java
 │   │   │               │   ├── presentation/
 │   │   │               │   │   ├── ui/
 │   │   │               │   │   │   ├── AnsiCores.java
 │   │   │               │   │   │   ├── ConsoleEntrada.java
 │   │   │               │   │   │   ├── ConsoleUILogger.java
-│   │   │               │   │   │   └── PastasExecucao.java
+│   │   │               │   │   │   ├── PastasExecucao.java
+│   │   │               │   │   │   └── TabelaTraducaoRenderer.java
 │   │   │               │   │   ├── web/
 │   │   │               │   │   │   ├── ApiController.java
 │   │   │               │   │   │   ├── BrowserLauncher.java
@@ -646,9 +653,12 @@ traducao_animes_llm_local_quarkus/
 │                       │   │   ├── DetectorEfeitoKaraokeServiceTest.java
 │                       │   │   ├── ProcessarArquivoUseCaseGuardTest.java
 │                       │   │   └── ValidadorTraducaoServiceTest.java
+│                       │   ├── domain/
+│                       │   │   └── StatusLoteTraducaoTest.java
 │                       │   ├── infrastructure/
 │                       │   │   └── legenda/
-│                       │   │       └── EscritorLegendaAssTest.java
+│                       │   │       ├── EscritorLegendaAssTest.java
+│                       │   │       └── LeitorEscritorSrtTest.java
 │                       │   └── presentation/
 │                       │       └── web/
 │                       │           ├── ConsoleRedirectorTest.java
@@ -891,7 +901,19 @@ traducao_animes_llm_local_quarkus/
 
 [PASTA] src/main/java/org/traducao/projeto/legendasExtracao/application/
   - ExtrairLegendaUseCase.java
-      (sem cabecalho explicativo)
+      PROPÓSITO DE NEGÓCIO: Orquestra a extração de softsubs de vídeos — recebe um
+      arquivo ou pasta, o formato desejado (ASS/SRT/PGS) e a pasta de saída,
+      localiza a faixa daquele formato e a extrai sem conversão, preservando
+      timestamps, estilos e conteúdo. Delega a leitura do contêiner aos adaptadores
+      ({@link ExtratorVideoPort}) e a escolha da faixa às strategies
+      ({@link ExtratorStrategy}).
+      
+      <p>INVARIANTES DO DOMÍNIO: extrai exatamente o formato pedido, sem fallback
+      para outro; nunca sobrescreve arquivo de saída existente; só publica resultado
+      validado (existe, não-vazio, formato correto); cada vídeo gera um item no
+      relatório e é contabilizado na telemetria.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: falhas por vídeo são isoladas — o item vira
   - ValidadorSaidaExtracao.java
       PROPÓSITO DE NEGÓCIO: Garante que o arquivo recém-extraído é uma legenda de
       verdade no formato pedido — não um arquivo vazio nem uma faixa de outro tipo
@@ -1323,7 +1345,9 @@ traducao_animes_llm_local_quarkus/
   - AmbienteExecucaoDatasetService.java
       Detecta apenas metadados publicáveis do ambiente de execução.
   - LlmTelemetria.java
-      (sem cabecalho explicativo)
+      Compat: construtor antigo (sem lore/status) para chamadas legadas — assume
+      lore desconhecido e status CONCLUIDO. Novos registros usam o construtor
+      completo para carregar a proveniência (lore) e o desfecho na telemetria.
   - MidiaTelemetria.java
       (sem cabecalho explicativo)
   - OperacaoHistorico.java
@@ -1454,13 +1478,12 @@ traducao_animes_llm_local_quarkus/
   - DetectorTraducaoIdenticaService.java
       Decide se uma fala pode legitimamente permanecer idêntica ao original (nomes
       próprios, números, siglas, termos de lore) ou se a igualdade é sinal de que o
-      LLM simplesmente devolveu a fala sem traduzir.
+      LLM simplesmente devolveu a fala sem traduzir. Além da lista global fixa,
+      consulta os termos protegidos do lore ATIVO ({@link GerenciadorContexto}),
+      para que um termo novo anexado ao contexto selecionado seja protegido sem
+      precisar editar este detector.
   - ProcessarArquivoUseCase.java
-      Orquestra a tradução de um único arquivo de legenda: le -> reaproveita o
-      cache existente -> traduz só o que falta (deduplicando falas repetidas) ->
-      valida -> escreve a legenda final em PT-BR -> grava/atualiza o cache.
-      <p>
-      Correções manuais feitas pelo usuário no JSON de cache são respeitadas na
+      (sem cabecalho explicativo)
   - ProcessarEpisodioUseCase.java
       Quantas tentativas extras (alem da primeira) sao feitas numa fala isolada
       (lote de tamanho 1) antes de desistir e manter o texto original sem traducao.
@@ -1648,6 +1671,17 @@ traducao_animes_llm_local_quarkus/
       (sem cabecalho explicativo)
   - DivergenciaLinhasException.java
       (sem cabecalho explicativo)
+  - EntradaJaTraduzidaException.java
+      PROPÓSITO DE NEGÓCIO: Sinaliza que a entrada aparenta já estar em PT-BR e a
+      retradução não foi confirmada — o arquivo é bloqueado para não retraduzir e
+      sobrescrever trabalho bom.
+      
+      <p>INVARIANTES DO DOMÍNIO: só lançada quando a heurística de caminho já
+      traduzido dispara e {@code permitirRetraducao} é falso.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: é a própria sinalização; herda de
+      {@link ArquivoLegendaException} para o lote registrar o arquivo como
+      BLOQUEADO e seguir para o próximo.
   - LlmFalhaComunicacaoException.java
       (sem cabecalho explicativo)
   - LmStudioOfflineException.java
@@ -1669,9 +1703,42 @@ traducao_animes_llm_local_quarkus/
 [PASTA] src/main/java/org/traducao/projeto/traducao/domain/
   - Lote.java
       (sem cabecalho explicativo)
+  - ResultadoTraducaoArquivo.java
+      PROPÓSITO DE NEGÓCIO: Resultado por arquivo da tradução — o que a tabela da UI
+      mostra (Arquivo | Lore | Falas | Cache | Traduzidas | Avisos | Status) e o que
+      consolida o status do lote. Substitui o retorno "só o Path", que escondia se o
+      arquivo concluiu, falhou ou foi bloqueado.
+      
+      <p>INVARIANTES DO DOMÍNIO: {@code arquivo} e {@code status} nunca nulos;
+      {@code arquivoSaida} é nulo quando o arquivo não gerou saída (falha/bloqueio);
+      as contagens são zero nesses casos.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: record imutável; as fábricas não lançam.
+  - StatusArquivoTraducao.java
+      PROPÓSITO DE NEGÓCIO: Desfecho da tradução de um único arquivo de legenda,
+      para a tabela por arquivo e a telemetria distinguirem sucesso limpo, sucesso
+      com ressalvas, falha e bloqueio (entrada já traduzida).
+      
+      <p>INVARIANTES DO DOMÍNIO: cada arquivo processado recebe exatamente um status.
+      {@code PARCIAL} = traduziu mas houve avisos (falas mantidas sem tradução para
+      revisão); {@code BLOQUEADO} = entrada aparentava já estar em PT-BR e a
+      retradução não foi confirmada.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: enum puro; rótulo sempre não-nulo.
   - StatusLlm.java
       Resultado da checagem de disponibilidade do servidor LLM local (ex: LM Studio)
       feita no início da execução, antes de começar a traduzir qualquer episódio.
+  - StatusLoteTraducao.java
+      PROPÓSITO DE NEGÓCIO: Desfecho do LOTE de tradução (vários arquivos), para a
+      UI/telemetria pararem de mostrar "sucesso" quando houve arquivos com falha.
+      
+      <p>INVARIANTES DO DOMÍNIO: derivado dos status por arquivo — todos concluídos
+      (com ou sem ressalvas) → {@code CONCLUIDO}; nenhum concluído → {@code FALHOU};
+      mistura → {@code CONCLUIDO_COM_FALHAS}. {@code CANCELADO} é reservado para
+      interrupção explícita do usuário.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: {@link #consolidar(List)} nunca lança; lote
+      vazio devolve {@code FALHOU}.
   - TraducaoLote.java
       (sem cabecalho explicativo)
 
@@ -1681,16 +1748,21 @@ traducao_animes_llm_local_quarkus/
       isolada: repetir a MESMA requisição com a mesma temperatura tende a
       reproduzir a mesma alucinação; subir a temperatura muda a amostragem e
       dá chance real de recuperação. {@code null} usa a temperatura configurada.
+      Variante que recebe o prompt de sistema CONGELADO no início do job. Assim,
+      uma troca de contexto (lore) no estado global não pode vazar para o meio da
+      tradução de um episódio. {@code null} usa o prompt do contexto ativo.
       Verifica, antes de iniciar a tradução, se o servidor LLM local está
       online e se o modelo configurado está efetivamente carregado em
       memória — evita descobrir isso só depois de várias tentativas/timeouts
       já no meio da tradução do primeiro episódio.
-      Revisa uma fala já traduzida, corrigindo concordância de gênero/pronomes.
-      Retorna vazio se o LLM falhar ou a resposta for inválida.
   - ProvedorContexto.java
       Retorna o ID único para seleção via UI.
       Retorna o nome amigável para exibição no combo box da UI.
       Retorna o prompt de sistema completo para o LLM, com regras gerais e lore especifico da midia.
+      Termos desta obra que NÃO devem ser traduzidos (nomes próprios, facções,
+      patentes, lugares, mecha). Por padrão vazio; cada contexto pode
+      sobrescrever para que o detector de "tradução idêntica" proteja o lore
+      selecionado, em vez de depender só da lista global fixa no detector.
 
 [PASTA] src/main/java/org/traducao/projeto/traducao/infrastructure/adapters/
   - MistralClientAdapter.java
@@ -1728,11 +1800,38 @@ traducao_animes_llm_local_quarkus/
       Reconstroi o arquivo .ass a partir do {@link DocumentoLegenda}, repetindo o
       cabecalho original e as linhas nao traduziveis byte a byte, e so trocando o
       campo Text dos eventos Dialogue pela versao traduzida.
+  - EscritorLegendaSrt.java
+      PROPÓSITO DE NEGÓCIO: Reescreve um .srt a partir do {@link DocumentoLegenda},
+      preservando numeração e timestamps (guardados no índice e no {@code prefixo}
+      do evento) e trocando apenas o texto pela versão traduzida. É o par de saída
+      do {@link LeitorLegendaSrt}.
+      
+      <p>INVARIANTES DO DOMÍNIO: cada evento vira um bloco SRT válido (índice, linha
+      de tempo, texto, linha em branco de separação); as marcas {@code \N} de quebra
+      interna voltam a ser quebras reais no EOL do documento; escrita atômica.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: erro de IO → {@link ArquivoLegendaException},
+      sem deixar arquivo truncado (grava em temporário e move atomicamente).
   - LeitorLegendaAss.java
       Le arquivos .ass/.ssa preservando byte a byte tudo que nao for o campo Text
       dos eventos Dialogue (estilos, timestamps, secoes de metadados). So o campo
       Text e exposto para traducao; o resto e reconstruido identico pelo
       {@link EscritorLegendaAss}.
+  - LeitorLegendaSrt.java
+      PROPÓSITO DE NEGÓCIO: Lê legendas SubRip (.srt) para o mesmo
+      {@link DocumentoLegenda} usado pelo ASS, para que o pipeline de tradução
+      (cache, máscara de tags, validação) opere sobre SRT sem convertê-lo para ASS.
+      Numeração e timestamps ficam no {@code prefixo} do evento (a linha de tempo) e
+      no índice; só o texto é traduzido. Quebras internas viram {@code \N} (convenção
+      ASS), que o {@link EscritorLegendaSrt} devolve para quebras reais.
+      
+      <p>INVARIANTES DO DOMÍNIO: cada bloco SRT (índice + "start --> end" + texto)
+      vira um {@link EventoLegenda} {@code Dialogue} de estilo "Default"; o EOL e o
+      BOM originais são preservados no documento.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: erro de leitura do arquivo →
+      {@link ArquivoLegendaException}. Blocos malformados (índice não numérico) são
+      tolerados: o índice cai para a posição sequencial.
   - MascaradorTags.java
       Isola tags de formatação ASS/SSA (ex: {\i1}, {\pos(...)}) e códigos de quebra
       (\N, \n, \h) do texto antes de enviar ao LLM, trocando-os por marcadores
@@ -1771,6 +1870,15 @@ traducao_animes_llm_local_quarkus/
   - PastasExecucao.java
       Pastas efetivas da execução atual. Preenchidas pelo {@code TradutorCLI} a
       partir do diálogo Swing ou das propriedades/linha de comando.
+  - TabelaTraducaoRenderer.java
+      PROPÓSITO DE NEGÓCIO: Monta a tabela por arquivo do lote de tradução
+      (Arquivo | Lore | Falas | Cache | Traduzidas | Avisos | Status) para o console
+      da UI, dando a Paulo a visão granular que o "sucesso" agregado escondia.
+      
+      <p>INVARIANTES DO DOMÍNIO: larguras ajustadas ao maior valor; só de
+      apresentação — não decide nada sobre a tradução.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: sem resultados, devolve string vazia; não lança.
 
 [PASTA] src/main/java/org/traducao/projeto/traducao/presentation/web/
   - ApiController.java
@@ -2013,9 +2121,18 @@ traducao_animes_llm_local_quarkus/
       Caso real (Gundam Narrative): LLM rotulou a resposta em vez de só traduzir.
       Caso real (G-Reconguista): marcador do pipeline Python antigo na legenda final.
 
+[PASTA] src/test/java/org/traducao/projeto/traducao/domain/
+  - StatusLoteTraducaoTest.java
+      Cobre a consolidação do status do lote a partir dos status por arquivo —
+      o núcleo do fix "não mostrar sucesso quando houve falhas".
+
 [PASTA] src/test/java/org/traducao/projeto/traducao/infrastructure/legenda/
   - EscritorLegendaAssTest.java
       (sem cabecalho explicativo)
+  - LeitorEscritorSrtTest.java
+      Cobre a leitura/escrita nativa de SRT: preservação de índice e timestamps,
+      quebra interna via \N, round-trip e troca apenas do texto (o pipeline traduz
+      só o texto, mantendo tempos).
 
 [PASTA] src/test/java/org/traducao/projeto/traducao/presentation/web/
   - ConsoleRedirectorTest.java

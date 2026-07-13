@@ -54,7 +54,7 @@ import java.util.stream.Stream;
 public class ApiController {
 
     private static final Logger log = LoggerFactory.getLogger(ApiController.class);
-    private static final Set<String> EXTENSOES_SUPORTADAS = Set.of(".ass", ".ssa");
+    private static final Set<String> EXTENSOES_SUPORTADAS = Set.of(".ass", ".ssa", ".srt");
 
     // Fila única compartilhada por todos os módulos (ver FilaExecucaoPipeline):
     // garante execução sequencial em segundo plano e impede que outro endpoint
@@ -120,7 +120,8 @@ public class ApiController {
     }
 
     // DTOs
-    public record OperacaoRequest(String entrada, String saida, String contextoId, Long syncOffsetMs) {}
+    public record OperacaoRequest(String entrada, String saida, String contextoId, Long syncOffsetMs,
+                                  Boolean permitirRetraducao) {}
     public record ExtracaoRequest(String entrada, String saida, String formato) {}
     public record RespostaPadrao(String mensagem) {}
     public record MapaResponse(String conteudo, String arvoreGithub, String nomeProjeto) {}
@@ -403,7 +404,12 @@ public class ApiController {
         if (req.entrada() == null || req.entrada().isBlank()) {
             return ResponseEntity.badRequest().body(new RespostaPadrao("Pasta de legendas de entrada obrigatória."));
         }
-        if (req.contextoId() != null && !req.contextoId().isBlank() && !gerenciadorContexto.existeContexto(req.contextoId())) {
+        if (req.contextoId() == null || req.contextoId().isBlank()) {
+            return ResponseEntity.badRequest().body(new RespostaPadrao(
+                    "Contexto de tradução (lore) obrigatório: selecione o contexto antes de traduzir. "
+                    + "Não há fallback silencioso para a obra usada na execução anterior."));
+        }
+        if (!gerenciadorContexto.existeContexto(req.contextoId())) {
             return ResponseEntity.badRequest().body(new RespostaPadrao(
                     "Contexto de tradução desconhecido: \"" + req.contextoId() + "\". Recarregue a página e selecione um contexto válido."));
         }
@@ -448,29 +454,56 @@ public class ApiController {
                 }
 
                 if (arquivos.isEmpty()) {
-                    System.out.println("\u001B[33mNenhum arquivo de legenda .ass/.ssa encontrado.\u001B[0m");
+                    System.out.println("\u001B[33mNenhum arquivo de legenda .ass/.ssa/.srt encontrado.\u001B[0m");
                     return;
                 }
 
                 System.out.println("Iniciando tradução de " + arquivos.size() + " arquivo(s)...");
 
+                java.util.List<org.traducao.projeto.traducao.domain.ResultadoTraducaoArquivo> resultados = new java.util.ArrayList<>();
+                boolean permitir = Boolean.TRUE.equals(req.permitirRetraducao());
+                String loreNome = gerenciadorContexto.obterNomeContextoAtivo();
                 for (int i = 0; i < arquivos.size(); i++) {
                     Path arquivo = arquivos.get(i);
                     System.out.println("\n--------------------------------------------------------------");
                     System.out.println("Processando arquivo [" + (i + 1) + "/" + arquivos.size() + "]: " + arquivo.getFileName());
                     System.out.println("--------------------------------------------------------------");
                     try {
-                        processarArquivoUseCase.processar(arquivo);
-                        System.out.println("\u001B[32m[OK] Traduzido com sucesso: " + arquivo.getFileName() + "\u001B[0m");
+                        resultados.add(processarArquivoUseCase.processar(arquivo, permitir));
+                        System.out.println("[OK] Traduzido: " + arquivo.getFileName());
+                    } catch (org.traducao.projeto.traducao.domain.exceptions.EntradaJaTraduzidaException ex) {
+                        resultados.add(org.traducao.projeto.traducao.domain.ResultadoTraducaoArquivo.bloqueado(arquivo.getFileName().toString(), loreNome));
+                        registrarTelemetriaFalhaTraducao(arquivo, loreNome, org.traducao.projeto.traducao.domain.StatusArquivoTraducao.BLOQUEADO, ex.getMessage());
+                        System.out.println("[BLOQUEADO] " + arquivo.getFileName() + ": " + ex.getMessage());
+                    } catch (org.traducao.projeto.traducao.domain.exceptions.TraducaoParcialException ex) {
+                        int salvas = ex.getDicionarioParcial() != null ? ex.getDicionarioParcial().size() : 0;
+                        resultados.add(org.traducao.projeto.traducao.domain.ResultadoTraducaoArquivo.parcialAbortado(arquivo.getFileName().toString(), loreNome, salvas));
+                        registrarTelemetriaFalhaTraducao(arquivo, loreNome, org.traducao.projeto.traducao.domain.StatusArquivoTraducao.PARCIAL, ex.getMessage());
+                        System.out.println("[PARCIAL] " + arquivo.getFileName() + " (" + salvas + " salvas antes de abortar)");
                     } catch (Exception ex) {
-                        System.out.println("\u001B[31m[FAIL] Falha no processamento de " + arquivo.getFileName() + ": " + ex.getMessage() + "\u001B[0m");
+                        resultados.add(org.traducao.projeto.traducao.domain.ResultadoTraducaoArquivo.falha(arquivo.getFileName().toString(), loreNome));
+                        registrarTelemetriaFalhaTraducao(arquivo, loreNome, org.traducao.projeto.traducao.domain.StatusArquivoTraducao.FALHOU, ex.getMessage());
+                        System.out.println("[FAIL] " + arquivo.getFileName() + ": " + ex.getMessage());
                     }
                 }
 
-                System.out.println("\n\u001B[32m========================================================================\u001B[0m");
-                System.out.println("\u001B[32m  🎉 [SUCESSO] TRADUÇÃO LOCAL VIA LLM FINALIZADA COM SUCESSO!\u001B[0m");
-                System.out.println("\u001B[32m========================================================================\n\u001B[0m");
-                log.info("[SUCESSO] Tradução via LLM processamento finalizado.");
+                String tabelaTraducao = org.traducao.projeto.traducao.presentation.ui.TabelaTraducaoRenderer.render(resultados);
+                if (!tabelaTraducao.isBlank()) {
+                    System.out.println(tabelaTraducao);
+                }
+
+                org.traducao.projeto.traducao.domain.StatusLoteTraducao statusLote =
+                    org.traducao.projeto.traducao.domain.StatusLoteTraducao.consolidar(resultados);
+                long okCount = resultados.stream().filter(r ->
+                    r.status() == org.traducao.projeto.traducao.domain.StatusArquivoTraducao.CONCLUIDO
+                    || r.status() == org.traducao.projeto.traducao.domain.StatusArquivoTraducao.PARCIAL).count();
+                long falhaCount = resultados.size() - okCount;
+                System.out.println("\n========================================================================");
+                System.out.println("  [" + statusLote.getRotulo().toUpperCase() + "] TRADUCAO LOCAL VIA LLM: "
+                    + okCount + " ok, " + falhaCount + " com falha/bloqueio de " + resultados.size() + " arquivo(s).");
+                System.out.println("========================================================================\n");
+                log.info("[{}] Traducao via LLM finalizada. {} ok, {} falha/bloqueio de {}.",
+                    statusLote.name(), okCount, falhaCount, resultados.size());
 
             } catch (Exception e) {
                 log.error("Erro na tradução em background", e);
@@ -809,6 +842,24 @@ public class ApiController {
             log.warn("Caminho inválido informado: {}", valor);
             return null;
         }
+    }
+
+    /**
+     * Registra na telemetria um arquivo que FALHOU/foi BLOQUEADO na tradução —
+     * sem isso, o dataset perdia justamente os casos mais úteis (falhas). Carrega
+     * o lore e o status final para dar proveniência ao registro.
+     */
+    private void registrarTelemetriaFalhaTraducao(Path arquivo, String lore,
+            org.traducao.projeto.traducao.domain.StatusArquivoTraducao status, String motivo) {
+        String nome = arquivo.getFileName().toString();
+        Path pai = arquivo.getParent();
+        String anime = (pai != null && pai.getParent() != null && pai.getParent().getFileName() != null)
+            ? pai.getParent().getFileName().toString() : "Desconhecido";
+        telemetriaService.registrarTraducao(new org.traducao.projeto.telemetria.LlmTelemetria(
+            nome, null, 0, 0, 0, 0L,
+            java.util.List.of(motivo != null ? motivo : status.getRotulo()),
+            anime, "Temporada Única", java.time.Instant.now().toString(),
+            lore, status.name()));
     }
 
     private boolean temExtensaoSuportada(Path arquivo) {

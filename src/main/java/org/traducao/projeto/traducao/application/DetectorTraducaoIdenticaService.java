@@ -1,20 +1,31 @@
 package org.traducao.projeto.traducao.application;
 
 import org.springframework.stereotype.Service;
+import org.traducao.projeto.traducao.infrastructure.contexto.GerenciadorContexto;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
  * Decide se uma fala pode legitimamente permanecer idêntica ao original (nomes
  * próprios, números, siglas, termos de lore) ou se a igualdade é sinal de que o
- * LLM simplesmente devolveu a fala sem traduzir.
+ * LLM simplesmente devolveu a fala sem traduzir. Além da lista global fixa,
+ * consulta os termos protegidos do lore ATIVO ({@link GerenciadorContexto}),
+ * para que um termo novo anexado ao contexto selecionado seja protegido sem
+ * precisar editar este detector.
  */
 @Service
 public class DetectorTraducaoIdenticaService {
 
     private static final Pattern PADRAO_REMOVE_TAGS_ASS = Pattern.compile("\\{[^}]+}");
+
+    private final GerenciadorContexto gerenciadorContexto;
+
+    public DetectorTraducaoIdenticaService(GerenciadorContexto gerenciadorContexto) {
+        this.gerenciadorContexto = gerenciadorContexto;
+    }
 
     private static final Set<String> PALAVRAS_INGLES_COMUNS = Set.of(
         "hello", "hi", "hey", "goodbye", "bye", "yes", "no", "yeah", "yep", "nope",
@@ -60,7 +71,22 @@ public class DetectorTraducaoIdenticaService {
             return true;
         }
 
-        return TERMOS_IGNORADOS_MULTIPALAVRA.contains(textoLimpo.toLowerCase());
+        String minusculo = textoLimpo.toLowerCase(Locale.ROOT);
+        return TERMOS_IGNORADOS_MULTIPALAVRA.contains(minusculo) || termoDoLoreAtivo(minusculo);
+    }
+
+    /**
+     * true se o termo (já em minúsculas) constar dos termos protegidos do lore
+     * atualmente selecionado — permite proteger nomes/facções do contexto ativo
+     * sem depender só da lista global fixa neste detector.
+     */
+    private boolean termoDoLoreAtivo(String termoMinusculo) {
+        for (String termo : gerenciadorContexto.termosProtegidosAtivos()) {
+            if (termo != null && termo.toLowerCase(Locale.ROOT).equals(termoMinusculo)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean deveManterPalavraUnicaIdentica(String textoLimpo) {
@@ -71,12 +97,12 @@ public class DetectorTraducaoIdenticaService {
             return true;
         }
 
-        String minusculo = textoLimpo.toLowerCase();
+        String minusculo = textoLimpo.toLowerCase(Locale.ROOT);
         if (PALAVRAS_INGLES_COMUNS.contains(minusculo)) {
             return false;
         }
 
-        return TERMOS_DE_LORE.contains(minusculo);
+        return TERMOS_DE_LORE.contains(minusculo) || termoDoLoreAtivo(minusculo);
     }
 
     /**

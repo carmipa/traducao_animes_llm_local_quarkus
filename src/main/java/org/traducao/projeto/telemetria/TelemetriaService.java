@@ -192,7 +192,8 @@ public class TelemetriaService {
         return new LlmTelemetria(
             traducao.nomeEpisodio(), traducao.modeloLlm(), traducao.totalLinhas(),
             traducao.falasTraduzidas(), traducao.falasDoCache(), traducao.tempoTotalMs(),
-            List.copyOf(amostra), traducao.animeNome(), traducao.temporada(), traducao.registradoEm());
+            List.copyOf(amostra), traducao.animeNome(), traducao.temporada(), traducao.registradoEm(),
+            traducao.loreNome(), traducao.statusFinal());
     }
 
     public synchronized void registrarOperacao(OperacaoTelemetria operacao) {

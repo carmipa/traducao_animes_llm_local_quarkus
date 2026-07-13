@@ -51,19 +51,24 @@ public class MistralClientAdapter implements MistralPort {
             // 1. Fonte de verdade: a API estendida da LM Studio (/api/v0/models) informa
             // o campo "state" ("loaded"/"not-loaded"), diferente do endpoint OpenAI-
             // compatible (/v1/models) usado abaixo, que só lista o catálogo baixado sem
-            // indicar o que está de fato carregado em memória. Confiar cegamente no
-            // catálogo (ex.: pegar o primeiro item da lista) já causou o app enviar uma
-            // requisição para um modelo diferente do carregado, e o LM Studio subir uma
-            // SEGUNDA instância via auto-load (JIT) só para atender esse pedido.
-            Optional<String> modeloCarregado = buscarModeloCarregadoViaApiEstendida();
-            if (modeloCarregado.isPresent()) {
-                propriedades.setModel(modeloCarregado.get());
-                return new StatusLlm(true, true,
-                    "Servidor LLM online e modelo \"" + modeloCarregado.get() + "\" carregado em memória.");
+            // indicar o que está de fato carregado em memória.
+            List<String> carregados = buscarModelosCarregadosViaApiEstendida();
+            if (!carregados.isEmpty()) {
+                String escolhido = escolherEntreCarregados(carregados);
+                propriedades.setModel(escolhido);
+                String msg = carregados.size() == 1
+                    ? "Servidor LLM online e modelo \"" + escolhido + "\" carregado em memória."
+                    : "Servidor LLM online; " + carregados.size() + " modelos carregados, usando \"" + escolhido + "\".";
+                return new StatusLlm(true, true, msg);
             }
 
             // 2. API estendida indisponível (servidor não é LM Studio, ou não suporta a
-            // extensão) — cai para o catálogo OpenAI-compatible como melhor esforço.
+            // extensão) — cai para o catálogo OpenAI-compatible (/v1/models), que NÃO
+            // confirma o que está carregado. NUNCA escolher o primeiro do catálogo às
+            // cegas: isso já fez o app pedir um modelo diferente do carregado e o LM
+            // Studio subir uma SEGUNDA instância via auto-load (JIT). Só adota o modelo
+            // CONFIGURADO se ele aparecer no catálogo; caso contrário, reporta que não
+            // dá para confirmar e não inicia.
             ListaModelos resposta = httpClient.get("/models", ListaModelos.class);
             List<ModeloDisponivel> modelos = resposta != null ? resposta.data() : null;
             if (modelos == null || modelos.isEmpty()) {
@@ -72,21 +77,23 @@ public class MistralClientAdapter implements MistralPort {
             }
 
             String modeloConfigurado = propriedades.model();
-            Optional<String> modeloEncontrado = modelos.stream()
+            Optional<String> configuradoNoCatalogo = modelos.stream()
                 .map(ModeloDisponivel::id)
                 .filter(id -> id != null)
-                .filter(id -> id.equalsIgnoreCase(modeloConfigurado)
-                    || id.toLowerCase().contains(modeloConfigurado.toLowerCase())
-                    || modeloConfigurado.toLowerCase().contains(id.toLowerCase()))
+                .filter(id -> combinaComConfigurado(id, modeloConfigurado))
                 .findFirst();
 
-            String modeloAtivo = modeloEncontrado.orElseGet(() -> modelos.get(0).id());
-            log.info("API estendida da LM Studio indisponível; adotando \"{}\" a partir do catálogo /v1/models (melhor esforço, sem garantia de load-state).",
-                modeloAtivo);
-            propriedades.setModel(modeloAtivo);
+            if (configuradoNoCatalogo.isPresent()) {
+                String modelo = configuradoNoCatalogo.get();
+                propriedades.setModel(modelo);
+                log.warn("Load-state não confirmado por este servidor; usando o modelo configurado \"{}\" achado no catálogo /v1/models.", modelo);
+                return new StatusLlm(true, true,
+                    "Servidor LLM online. Modelo configurado \"" + modelo + "\" encontrado no catálogo (o servidor não confirma qual está carregado).");
+            }
 
-            return new StatusLlm(true, true,
-                "Servidor LLM online. Adaptado dinamicamente para usar o modelo ativo em memória: \"" + modeloAtivo + "\".");
+            return new StatusLlm(true, false,
+                "Servidor LLM online, mas não foi possível confirmar qual modelo está carregado e o modelo configurado \""
+                + modeloConfigurado + "\" não está no catálogo. Carregue o modelo no LM Studio e tente novamente.");
         } catch (Exception e) {
             return new StatusLlm(false, false,
                 "Não foi possível conectar ao servidor LLM em " + propriedades.baseUrl() + ": " + e.getMessage());
@@ -95,11 +102,11 @@ public class MistralClientAdapter implements MistralPort {
 
     /**
      * Consulta a API estendida da LM Studio ({@code /api/v0/models}, fora do
-     * prefixo {@code /v1} do base-url configurado) para achar o modelo com
-     * {@code state == "loaded"}. Retorna vazio (sem lançar) se o servidor não
+     * prefixo {@code /v1} do base-url configurado) e devolve os ids dos modelos
+     * com {@code state == "loaded"}. Lista vazia (sem lançar) se o servidor não
      * suportar essa extensão — o chamador cai para o comportamento de catálogo.
      */
-    private Optional<String> buscarModeloCarregadoViaApiEstendida() {
+    private List<String> buscarModelosCarregadosViaApiEstendida() {
         try {
             String raiz = propriedades.baseUrl().endsWith("/v1")
                 ? propriedades.baseUrl().substring(0, propriedades.baseUrl().length() - "/v1".length())
@@ -107,17 +114,43 @@ public class MistralClientAdapter implements MistralPort {
             String json = httpClient.getAbsolute(raiz + "/api/v0/models");
             ListaModelosV0 resposta = objectMapper.readValue(json, ListaModelosV0.class);
             if (resposta == null || resposta.data() == null) {
-                return Optional.empty();
+                return List.of();
             }
             return resposta.data().stream()
                 .filter(m -> "loaded".equalsIgnoreCase(m.state()))
                 .map(ModeloDisponivelV0::id)
                 .filter(id -> id != null)
-                .findFirst();
+                .toList();
         } catch (Exception e) {
             log.debug("Não foi possível consultar /api/v0/models (extensão da LM Studio): {}", e.getMessage());
-            return Optional.empty();
+            return List.of();
         }
+    }
+
+    /**
+     * Entre os modelos efetivamente carregados, prefere o que casa com o
+     * configurado; senão o primeiro. Loga qual será usado quando houver mais de
+     * um carregado, em vez de escolher em silêncio.
+     */
+    private String escolherEntreCarregados(List<String> carregados) {
+        String configurado = propriedades.model();
+        String escolhido = carregados.stream()
+            .filter(id -> combinaComConfigurado(id, configurado))
+            .findFirst()
+            .orElse(carregados.get(0));
+        if (carregados.size() > 1) {
+            log.warn("Mais de um modelo carregado no LM Studio ({}). Usando \"{}\".", carregados, escolhido);
+        }
+        return escolhido;
+    }
+
+    private boolean combinaComConfigurado(String id, String configurado) {
+        if (id == null || configurado == null || configurado.isBlank()) {
+            return false;
+        }
+        String a = id.toLowerCase();
+        String b = configurado.toLowerCase();
+        return a.equals(b) || a.contains(b) || b.contains(a);
     }
 
     @Override
@@ -127,11 +160,18 @@ public class MistralClientAdapter implements MistralPort {
 
     @Override
     public TraducaoLote traduzir(Lote lote, Double temperaturaOverride) {
+        return traduzir(lote, temperaturaOverride, null);
+    }
+
+    @Override
+    public TraducaoLote traduzir(Lote lote, Double temperaturaOverride, String promptSistemaCongelado) {
         String prompt = montarPrompt(lote);
+        String promptSistema = promptSistemaCongelado != null
+            ? promptSistemaCongelado : gerenciadorContexto.obterPromptAtivo();
         ChatRequest request = new ChatRequest(
             propriedades.model(),
             List.of(
-                new Mensagem("system", gerenciadorContexto.obterPromptAtivo()),
+                new Mensagem("system", promptSistema),
                 new Mensagem("user", prompt)
             ),
             temperaturaOverride != null ? temperaturaOverride : propriedades.temperature(),
@@ -167,8 +207,12 @@ public class MistralClientAdapter implements MistralPort {
                 return new TraducaoLote(lote.idLote(), linhasTraduzidas, true, null);
 
             } catch (RespostaLlmVaziaException e) {
-                log.warn(e.getMessage());
-                return new TraducaoLote(lote.idLote(), null, false, e.getMessage());
+                // Resposta vazia costuma ser falha transitória do LLM local
+                // (modelo ainda aquecendo, timeout interno) — participa das
+                // tentativas em vez de encerrar o lote na primeira ocorrência.
+                ultimaFalha = e;
+                log.warn("Resposta vazia do LLM para o lote {} (tentativa {}/{}): {}",
+                    lote.idLote(), tentativa, MAX_TENTATIVAS, e.getMessage());
             } catch (HttpClientException e) {
                 ultimaFalha = e;
                 log.warn("LLM respondeu com erro HTTP {} para o lote {} (tentativa {}/{}): {}",
