@@ -101,6 +101,7 @@ const CONFIG_SECOES = {
 
 let logsEventSource = null;
 let logsReconnectTimer = null;
+let seletorCaminhoEmAndamento = false;
 
 document.addEventListener('DOMContentLoaded', async () => {
     inicializarNavegacao();
@@ -991,13 +992,21 @@ function inicializarControlesConsole() {
     });
 }
 
+/**
+ * PROPÓSITO DE NEGÓCIO: conecta todos os botões "Procurar..." dos formulários
+ * ao seletor nativo centralizado e transfere a escolha para o campo correto.
+ *
+ * INVARIANTES DO DOMÍNIO: apenas um seletor pode ficar aberto em toda a SPA;
+ * cliques concorrentes não podem enfileirar janelas que apareceriam depois.
+ *
+ * COMPORTAMENTO EM CASO DE FALHA: registra o erro no console, restaura o botão
+ * e libera o bloqueio global para que uma nova tentativa possa ser feita.
+ */
 function inicializarBotoesProcurarCaminho() {
     document.body.addEventListener('click', async (e) => {
         const btn = e.target.closest('.btn-procurar');
         if (!btn) return;
-        // Guarda contra listeners duplicados (ex.: duas instâncias do app.js):
-        // se o botão já está desabilitado, um diálogo já foi aberto por este clique.
-        if (btn.disabled) return;
+        if (btn.disabled || seletorCaminhoEmAndamento) return;
 
         const targetId = btn.getAttribute('data-target');
         const tipo = btn.getAttribute('data-type') || 'pasta';
@@ -1007,6 +1016,7 @@ function inicializarBotoesProcurarCaminho() {
         const textoOriginal = btn.innerHTML;
         btn.innerHTML = '⏳ Abrindo...';
         btn.disabled = true;
+        seletorCaminhoEmAndamento = true;
 
         try {
             const endpoint = tipo === 'arquivo' ? '/api/dialogo/selecionar-arquivo' : '/api/dialogo/selecionar-pasta';
@@ -1024,6 +1034,7 @@ function inicializarBotoesProcurarCaminho() {
         } finally {
             btn.innerHTML = textoOriginal;
             btn.disabled = false;
+            seletorCaminhoEmAndamento = false;
         }
     });
 }

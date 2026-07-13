@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.traducao.projeto.apiDadosAnime.domain.model.AnimeMetadata;
+import org.traducao.projeto.apiDadosAnime.infrastructure.adapters.AniListApiClientAdapter;
 import org.traducao.projeto.apiDadosAnime.infrastructure.adapters.JikanApiClientAdapter;
 import org.traducao.projeto.apiDadosAnime.infrastructure.adapters.TmdbApiClientAdapter;
 
@@ -14,6 +15,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 
+/**
+ * PROPÓSITO DE NEGÓCIO: fornece capa e dados oficiais da obra selecionada aos
+ * formulários, reutilizando cache e fontes externas redundantes.
+ * <p>
+ * INVARIANTES DO DOMÍNIO: cache válido tem prioridade; TMDB autenticado é a fonte
+ * preferencial, AniList é o fallback público primário e Jikan o último fallback.
+ * <p>
+ * COMPORTAMENTO EM CASO DE FALHA: fontes indisponíveis resultam em tentativa da
+ * próxima integração; sem resultado em todas elas, devolve {@link Optional#empty()}.
+ */
 @Service
 public class ObterMetadataAnimeUseCase {
 
@@ -21,18 +32,41 @@ public class ObterMetadataAnimeUseCase {
     private static final Path PASTA_CACHE_METADATA = Path.of("cache", "metadata");
 
     private final TmdbApiClientAdapter tmdbAdapter;
+    private final AniListApiClientAdapter aniListAdapter;
     private final JikanApiClientAdapter jikanAdapter;
     private final ObjectMapper mapper;
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: compõe cache e provedores de metadados na ordem de
+     * confiança usada pelos banners do KRONOS.
+     * <p>
+     * INVARIANTES DO DOMÍNIO: o mapper é copiado com saída indentada para manter os
+     * arquivos de cache legíveis; adapters CDI de produção não são nulos.
+     * <p>
+     * COMPORTAMENTO EM CASO DE FALHA: configuração inválida do mapper impede a
+     * criação do use case; adapters nulos são tolerados apenas pelos testes unitários.
+     */
     public ObterMetadataAnimeUseCase(
             TmdbApiClientAdapter tmdbAdapter,
+            AniListApiClientAdapter aniListAdapter,
             JikanApiClientAdapter jikanAdapter,
             ObjectMapper mapper) {
         this.tmdbAdapter = tmdbAdapter;
+        this.aniListAdapter = aniListAdapter;
         this.jikanAdapter = jikanAdapter;
         this.mapper = mapper.copy().enable(SerializationFeature.INDENT_OUTPUT);
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: resolve o nome de uma obra em dados visuais para o
+     * banner, evitando chamadas repetidas por meio do cache local.
+     * <p>
+     * INVARIANTES DO DOMÍNIO: entrada é sanitizada antes de formar chave de cache;
+     * somente metadados encontrados são persistidos.
+     * <p>
+     * COMPORTAMENTO EM CASO DE FALHA: cache ilegível é ignorado; cada fonte vazia
+     * conduz à próxima e a ausência total devolve {@link Optional#empty()}.
+     */
     public Optional<AnimeMetadata> executar(String caminhoOuNome) {
         if (caminhoOuNome == null || caminhoOuNome.isBlank()) {
             return Optional.empty();
@@ -54,11 +88,15 @@ public class ObterMetadataAnimeUseCase {
         }
 
         Optional<AnimeMetadata> obtidoOpt = Optional.empty();
-        if (tmdbAdapter.isConfigurado()) {
+        if (tmdbAdapter != null && tmdbAdapter.isConfigurado()) {
             obtidoOpt = tmdbAdapter.buscarPorNome(nomeSanitizado);
         }
 
-        if (obtidoOpt.isEmpty()) {
+        if (obtidoOpt.isEmpty() && aniListAdapter != null) {
+            obtidoOpt = aniListAdapter.buscarPorNome(nomeSanitizado);
+        }
+
+        if (obtidoOpt.isEmpty() && jikanAdapter != null) {
             obtidoOpt = jikanAdapter.buscarPorNome(nomeSanitizado);
         }
 

@@ -10,6 +10,7 @@ class ObterMetadataAnimeUseCaseTest {
     private final ObterMetadataAnimeUseCase useCase = new ObterMetadataAnimeUseCase(
         null,
         null,
+        null,
         new ObjectMapper()
     );
 

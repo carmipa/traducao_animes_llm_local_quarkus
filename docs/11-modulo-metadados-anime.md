@@ -21,22 +21,25 @@ graph TD
     C -->|Existe| D["Retorna direto — sem chamar API externa"]
     C -->|Não existe| E{"tmdb.api-key<br/>configurada?"}
     E -->|Sim| F["TmdbApiClientAdapter<br/>/search/tv → /search/movie (pt-BR)"]
-    E -->|Não| G["JikanApiClientAdapter<br/>api.jikan.moe (MyAnimeList, sem chave)"]
+    E -->|Não| G["AniListApiClientAdapter<br/>graphql.anilist.co (sem chave)"]
     F -->|Falhou/sem resultado| G
+    G -->|Falhou/sem resultado| I["JikanApiClientAdapter<br/>api.jikan.moe (último fallback)"]
     F --> H["Salva em cache/metadata/&lt;slug&gt;.json"]
     G --> H
+    I --> H
     H --> D
 ```
 
 - **Normalização do nome:** remove tags de release (`[1080p]`, `(BD)`, `S01E01`, `ENG`, `PTBR` etc.) e extrai o segmento de pasta mais provável como nome do anime.
 - **TMDB** é tentado primeiro (melhor cobertura de sinopse em português), só se `tmdb.api-key` estiver configurada — ver [Configuração](14-configuracao.md).
-- **Jikan/MyAnimeList** é o fallback sempre disponível, sem necessidade de chave de API.
+- **AniList** é o fallback público principal, sem chave ou autenticação, e fornece capa, títulos, ano, episódios, nota, sinopse e gêneros.
+- **Jikan/MyAnimeList** permanece como último fallback quando TMDB e AniList não retornam resultado.
 
 ---
 
 ## Onde aparece na UI
 
-Cada painel com um campo de "pasta de entrada" (`analise-entrada`, `traducao-entrada`, `correcao-entrada`, `revisao-entrada`, `cura-entrada-original`) tem um `.anime-meta-banner` associado. Ao digitar/selecionar um caminho, o frontend (`inicializarMetadadosDinamicos()` em `js/app.js`) chama `GET /api/metadata?caminho=...` e renderiza o banner (pôster, título, sinopse, score) acima do formulário. Se a busca falhar, o banner simplesmente fica oculto — nunca bloqueia a operação.
+Dez painéis possuem `.anime-meta-banner`: Análise, Tradução, Correção do Cache, Revisão, Correção de Legendas, Revisão de Lore, Troca Tipo Legenda, Renomear Arquivos, Karaokê Simples e Tradução de Karaokê. Ao digitar/selecionar um caminho ou mudar o select de obra, o frontend (`inicializarMetadadosDinamicos()` em `js/app.js`) chama `GET /api/metadata?caminho=...` e renderiza o banner (pôster, título, sinopse, score) acima do formulário. Se todas as fontes falharem, o banner fica oculto e nunca bloqueia a operação.
 
 ---
 
