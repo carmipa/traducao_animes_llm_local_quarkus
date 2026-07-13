@@ -1,0 +1,62 @@
+package org.traducao.projeto.raspagemRevisao.application;
+
+import org.junit.jupiter.api.Test;
+import org.traducao.projeto.traducao.domain.legenda.DocumentoLegenda;
+import org.traducao.projeto.traducao.domain.legenda.EventoLegenda;
+import org.traducao.projeto.traducao.infrastructure.cache.EntradaCache;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+/**
+ * PROPÓSITO DE NEGÓCIO: prova que as correções da Opção 5 chegam à Opção 6 sem
+ * apagar pendências que o Google não conseguiu resolver.
+ *
+ * <p>INVARIANTES DO DOMÍNIO: índice liga cache e diálogo; vazio é sempre
+ * preservação, nunca comando de exclusão.
+ *
+ * <p>COMPORTAMENTO EM CASO DE FALHA: mudança indevida no texto reprova o teste.
+ */
+class SincronizadorLegendaCacheServiceTest {
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: materializa uma correção válida e mantém a fala cuja
+     * entrada continuou vazia após `SEM_ALTERACAO` do Google.
+     * <p>INVARIANTES DO DOMÍNIO: somente o evento 1 é alterado.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: apagamento do evento 2 reprova o teste.
+     */
+    @Test
+    void aplicaCorrecaoNaoVaziaESeguraPendenciaVazia() {
+        DocumentoLegenda documento = new DocumentoLegenda("[Events]\n", List.of(
+            new EventoLegenda(1, "Dialogue", "Default", "prefixo1,", "Texto antigo"),
+            new EventoLegenda(2, "Dialogue", "Default", "prefixo2,", "Fransson!")), "\n", false);
+        List<EntradaCache> entradas = List.of(
+            new EntradaCache(1, "Default", "Help!", "Ajude!", "en", "pt-br"),
+            new EntradaCache(2, "Default", "Fransson!", "", "en", "pt-br"));
+
+        var resultado = new SincronizadorLegendaCacheService().sincronizar(documento, entradas, true);
+
+        assertEquals(1, resultado.total());
+        assertEquals("Ajude!", resultado.documento().eventos().get(0).texto());
+        assertEquals("Fransson!", resultado.documento().eventos().get(1).texto());
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: impede cache antigo de desfazer uma revisão posterior.
+     * <p>INVARIANTES DO DOMÍNIO: autorização falsa mantém a mesma instância.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: qualquer sincronização reprova o teste.
+     */
+    @Test
+    void naoAplicaCacheQuandoComparacaoTemporalNaoAutoriza() {
+        DocumentoLegenda documento = new DocumentoLegenda("", List.of(
+            new EventoLegenda(1, "Dialogue", "Default", "", "Revisão nova")), "\n", false);
+        EntradaCache antiga = new EntradaCache(1, "Default", "Original", "Cache antigo", "en", "pt-br");
+
+        var resultado = new SincronizadorLegendaCacheService().sincronizar(
+            documento, List.of(antiga), false);
+
+        assertEquals(0, resultado.total());
+        assertEquals("Revisão nova", resultado.documento().eventos().get(0).texto());
+    }
+}

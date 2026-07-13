@@ -53,4 +53,29 @@ class ProtetorTermosLoreServiceTest {
         var protegido = service.mascarar("Protect Phenex!", "", Set.of("Phenex"));
         assertNull(service.restaurar("Proteja a Fênix!", protegido));
     }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: reproduz a regressão real em que o Google transformou
+     * Jona em Jonas e Narrative em Narrativa apesar da lore de Gundam NT.
+     * <p>INVARIANTES DO DOMÍNIO: nome curto de personagem e nome oficial declarado
+     * fora da linha “Manter sempre” também precisam ser mascarados.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: qualquer termo visível no texto enviado
+     * ao Google reprova o teste.
+     */
+    @Test
+    void protegePersonagemENomeOficialDeclaradosEmOutrasLinhasDaLore() {
+        String lore = """
+            - Jona Basta (homem): piloto do Narrative Gundam.
+            - Brick Teclato (homem): assistente de Michele.
+            - "Narrative" e "Narrative Gundam" são nomes oficiais; nunca traduzir.
+            """;
+
+        var protegido = service.mascarar("Jona! Narrative! Tell Brick.", lore, Set.of());
+
+        assertFalse(protegido.textoMascarado().contains("Jona"));
+        assertFalse(protegido.textoMascarado().contains("Narrative"));
+        assertFalse(protegido.textoMascarado().contains("Brick"));
+        assertEquals("Jona! Narrative! Avise Brick.",
+            service.restaurar(protegido.textoMascarado().replace("Tell", "Avise"), protegido));
+    }
 }

@@ -6,7 +6,8 @@ package org.traducao.projeto.traducaoCorrige.domain;
  * anunciem sucesso quando arquivos falharam.
  *
  * <p>INVARIANTES DO DOMÍNIO: contadores nunca são negativos; uma execução com
- * falhas não possui status {@code CONCLUIDO}; cancelamento tem precedência.
+ * falhas ou pendências não possuem status {@code CONCLUIDO}; cancelamento tem
+ * precedência sobre os demais estados.
  *
  * <p>COMPORTAMENTO EM CASO DE FALHA: record imutável; entradas negativas são
  * normalizadas para zero pelo construtor compacto.
@@ -17,6 +18,7 @@ public record ResultadoManutencaoCache(
     int itensDetectados,
     int itensCorrigidos,
     int itensIgnorados,
+    int itensPendentes,
     int falhas,
     boolean cancelado
 ) {
@@ -31,6 +33,7 @@ public record ResultadoManutencaoCache(
         itensDetectados = Math.max(0, itensDetectados);
         itensCorrigidos = Math.max(0, itensCorrigidos);
         itensIgnorados = Math.max(0, itensIgnorados);
+        itensPendentes = Math.max(0, itensPendentes);
         falhas = Math.max(0, falhas);
     }
 
@@ -47,6 +50,8 @@ public record ResultadoManutencaoCache(
         if (cancelado) return "CANCELADO";
         if (falhas > 0) return "CONCLUIDO_COM_FALHAS";
         if (arquivosAnalisados == 0) return "NENHUM_CACHE_ENCONTRADO";
+        if (itensPendentes() > 0) return "CONCLUIDO_COM_PENDENCIAS";
         return "CONCLUIDO";
     }
+
 }

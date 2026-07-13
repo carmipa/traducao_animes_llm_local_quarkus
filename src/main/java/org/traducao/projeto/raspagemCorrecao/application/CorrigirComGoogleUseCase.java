@@ -173,6 +173,7 @@ public class CorrigirComGoogleUseCase {
                     String restaurado = protetorLore.restaurar(resposta.texto(), protegido);
                     if (restaurado == null) {
                         c.itensIgnorados++;
+                        c.itensPendentes++;
                         auditar(arquivo, entrada, prov, contextoId, "NAO_CORRIGIDA", cls.motivo(), antes,
                             antes, "TERMO_LORE_CORROMPIDO");
                         out(AnsiCores.YELLOW + "[PENDENTE " + atual + "/" + totalCandidatos
@@ -197,6 +198,7 @@ public class CorrigirComGoogleUseCase {
                         + AnsiCores.RESET);
                 } else {
                     c.itensIgnorados++;
+                    c.itensPendentes++;
                     auditar(arquivo, entrada, prov, contextoId, "NAO_CORRIGIDA", cls.motivo(), antes,
                         antes, resposta.status().name());
                     out(AnsiCores.YELLOW + "[PENDENTE " + atual + "/" + totalCandidatos
@@ -293,7 +295,8 @@ public class CorrigirComGoogleUseCase {
         ResultadoManutencaoCache r = c.resultado();
         long duracao = System.currentTimeMillis() - inicioMs;
         OperacaoTelemetria op = TelemetriaService.criarOperacao(
-            "Correção Google (cache)", "status=" + r.status() + "; falhas=" + r.falhas(), duracao,
+            "Correção Google (cache)", "status=" + r.status() + "; pendentes="
+                + r.itensPendentes() + "; falhas=" + r.falhas(), duracao,
             r.arquivosAnalisados(), r.itensDetectados(), r.itensCorrigidos());
         String relatorio = """
             CORREÇÃO ONLINE DO CACHE VIA GOOGLE
@@ -304,15 +307,17 @@ public class CorrigirComGoogleUseCase {
             Arquivos alterados: %d
             Entradas pendentes: %d
             Entradas corrigidas: %d
+            Entradas pendentes: %d
             Entradas não corrigidas/ignoradas: %d
             Falhas: %d
             Cancelado: %s
             Observação: execute novamente a Tradução Local para regenerar o ASS/SRT a partir do cache corrigido.
             """.formatted(pasta.toAbsolutePath(), r.status(), r.arquivosAnalisados(), r.arquivosAlterados(),
-            r.itensDetectados(), r.itensCorrigidos(), r.itensIgnorados(), r.falhas(), r.cancelado());
+            r.itensDetectados(), r.itensCorrigidos(), r.itensPendentes(), r.itensIgnorados(),
+            r.falhas(), r.cancelado());
         telemetriaService.finalizarOperacao(op, pasta, "correcao_google_cache", relatorio);
         out("Resultado da correção Google: " + r.status() + " | corrigidas=" + r.itensCorrigidos()
-            + " falhas=" + r.falhas());
+            + " pendentes=" + r.itensPendentes() + " falhas=" + r.falhas());
         return r;
     }
 
@@ -337,12 +342,19 @@ public class CorrigirComGoogleUseCase {
         int itensDetectados;
         int itensCorrigidos;
         int itensIgnorados;
+        int itensPendentes;
         int falhas;
         boolean cancelado;
 
+        /**
+         * PROPÓSITO DE NEGÓCIO: congela os totais da contingência Google no
+         * contrato agregado exibido pela interface.
+         * <p>INVARIANTES DO DOMÍNIO: pendências são independentes de falhas técnicas.
+         * <p>COMPORTAMENTO EM CASO DE FALHA: o record normaliza valores negativos.
+         */
         ResultadoManutencaoCache resultado() {
             return new ResultadoManutencaoCache(arquivosAnalisados, arquivosAlterados, itensDetectados,
-                itensCorrigidos, itensIgnorados, falhas, cancelado);
+                itensCorrigidos, itensIgnorados, itensPendentes, falhas, cancelado);
         }
     }
 }

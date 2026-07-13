@@ -247,9 +247,15 @@ public class LimparCacheUseCase {
         int falhas;
         boolean cancelado;
 
+        /**
+         * PROPÓSITO DE NEGÓCIO: congela os totais da limpeza; entrada já vazia é
+         * estado resolvido para esta operação e não uma pendência.
+         * <p>INVARIANTES DO DOMÍNIO: a limpeza sempre publica zero pendências próprias.
+         * <p>COMPORTAMENTO EM CASO DE FALHA: o record normaliza valores negativos.
+         */
         ResultadoManutencaoCache resultado() {
             return new ResultadoManutencaoCache(arquivosAnalisados, arquivosAlterados, itensDetectados,
-                itensCorrigidos, itensIgnorados, falhas, cancelado);
+                itensCorrigidos, itensIgnorados, 0, falhas, cancelado);
         }
     }
 }

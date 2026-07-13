@@ -180,6 +180,7 @@ public class RevisarCacheUseCase {
                 Optional<String> revisadoOpt = tentarRevisar(original, traduzido, deteccao.motivos());
                 if (revisadoOpt.isEmpty()) {
                     c.itensIgnorados++;
+                    c.itensPendentes++;
                     auditar(arquivo, entrada, prov, contextoId, "DESCARTADA", String.join("; ", deteccao.motivos()),
                         traduzido, traduzido, "LLM indisponível ou resposta inválida");
                     continue;
@@ -195,6 +196,7 @@ public class RevisarCacheUseCase {
                 ResultadoDeteccaoConcordancia pos = detector.analisar(original, revisado);
                 if (pos.suspeito() && pos.motivos().size() >= deteccao.motivos().size()) {
                     c.itensIgnorados++;
+                    c.itensPendentes++;
                     auditar(arquivo, entrada, prov, contextoId, "DESCARTADA_VALIDACAO",
                         String.join("; ", deteccao.motivos()), traduzido, traduzido,
                         "A proposta não reduziu os indícios de concordância");
@@ -321,12 +323,19 @@ public class RevisarCacheUseCase {
         int itensDetectados;
         int itensCorrigidos;
         int itensIgnorados;
+        int itensPendentes;
         int falhas;
         boolean cancelado;
 
+        /**
+         * PROPÓSITO DE NEGÓCIO: congela os totais da revisão LLM do cache para
+         * apresentação, relatório e telemetria.
+         * <p>INVARIANTES DO DOMÍNIO: propostas inválidas permanecem pendentes.
+         * <p>COMPORTAMENTO EM CASO DE FALHA: o record normaliza valores negativos.
+         */
         ResultadoManutencaoCache resultado() {
             return new ResultadoManutencaoCache(arquivosAnalisados, arquivosAlterados, itensDetectados,
-                itensCorrigidos, itensIgnorados, falhas, cancelado);
+                itensCorrigidos, itensIgnorados, itensPendentes, falhas, cancelado);
         }
     }
 }

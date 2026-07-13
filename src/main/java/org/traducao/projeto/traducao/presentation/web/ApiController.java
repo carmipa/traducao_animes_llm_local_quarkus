@@ -649,6 +649,7 @@ public class ApiController {
             + ", arquivos=" + resultado.arquivosAnalisados()
             + ", alterados=" + resultado.arquivosAlterados()
             + ", corrigidos=" + resultado.itensCorrigidos()
+            + ", pendentes=" + resultado.itensPendentes()
             + ", falhas=" + resultado.falhas();
         if ("CONCLUIDO".equals(resultado.status())) {
             System.out.println(AnsiCores.GREEN + "[SUCESSO] " + resumo + AnsiCores.RESET);

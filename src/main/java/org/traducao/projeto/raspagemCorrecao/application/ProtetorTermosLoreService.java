@@ -28,6 +28,12 @@ public class ProtetorTermosLoreService {
 
     private static final Pattern LINHA_MANTER = Pattern.compile(
         "(?im)^\\s*-\\s*Manter sempre[^:]*:\\s*(.+)$");
+    private static final Pattern LINHA_PERSONAGEM = Pattern.compile(
+        "(?im)^\\s*-\\s*([^:\\r\\n]{2,100}?)\\s*\\((?:homem|mulher|masculino|feminino)[^)]*\\)\\s*:");
+    private static final Pattern LINHA_CATALOGO_PERSONAGENS = Pattern.compile(
+        "(?im)^\\s*-\\s*Personagens?\\s*:\\s*(.+)$");
+    private static final Pattern NOMES_OFICIAIS = Pattern.compile(
+        "(?iu)\\\"([^\\\"]{2,80})\\\"(?:\\s+e\\s+\\\"([^\\\"]{2,80})\\\")?\\s+s(?:a|ã)o nomes oficiais");
 
     /**
      * PROPÓSITO DE NEGÓCIO: transporta o texto seguro para tradução e o mapa
@@ -99,14 +105,15 @@ public class ProtetorTermosLoreService {
     }
 
     /**
-     * PROPÓSITO DE NEGÓCIO: converte regras textuais da lore em glossário
-     * operacional sem exigir listas hardcoded por anime.
+     * PROPÓSITO DE NEGÓCIO: converte regras textuais, catálogo de personagens
+     * e declarações de nomes oficiais da lore em glossário operacional sem
+     * exigir listas hardcoded por anime.
      *
      * <p>INVARIANTES DO DOMÍNIO: remove duplicatas sem diferenciar caixa e ordena
      * por tamanho decrescente para evitar mascaramento parcial.
      *
-     * <p>COMPORTAMENTO EM CASO DE FALHA: lore sem regra reconhecida usa somente
-     * os termos explícitos fornecidos pelo contexto.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: linhas desconhecidas são ignoradas e a
+     * proteção continua com os termos que puderam ser extraídos com segurança.
      */
     private List<String> extrairTermos(String lore, Set<String> termosExplicitos) {
         Map<String, String> unicos = new LinkedHashMap<>();
@@ -117,16 +124,98 @@ public class ProtetorTermosLoreService {
         if (lore != null) {
             Matcher linhas = LINHA_MANTER.matcher(lore);
             while (linhas.find()) {
-                for (String bruto : linhas.group(1).split(",")) {
-                    String termo = bruto.strip().replaceFirst("[.;]$", "").strip();
-                    if (!termo.isBlank() && termo.length() <= 80) {
-                        unicos.putIfAbsent(termo.toLowerCase(Locale.ROOT), termo);
-                    }
-                }
+                adicionarLista(unicos, linhas.group(1));
+            }
+
+            Matcher personagens = LINHA_PERSONAGEM.matcher(lore);
+            while (personagens.find()) {
+                adicionarPersonagens(unicos, personagens.group(1));
+            }
+
+            Matcher catalogo = LINHA_CATALOGO_PERSONAGENS.matcher(lore);
+            while (catalogo.find()) {
+                adicionarListaDePersonagens(unicos, catalogo.group(1));
+            }
+
+            Matcher oficiais = NOMES_OFICIAIS.matcher(lore);
+            while (oficiais.find()) {
+                adicionarTermo(unicos, oficiais.group(1));
+                adicionarTermo(unicos, oficiais.group(2));
             }
         }
         List<String> termos = new ArrayList<>(new LinkedHashSet<>(unicos.values()));
         termos.sort(Comparator.comparingInt(String::length).reversed());
         return termos;
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: adiciona uma lista de termos canônicos separada por
+     * vírgulas ao glossário de proteção.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: pontuação terminal não integra o termo e itens
+     * acima de 80 caracteres não são considerados entidades canônicas.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: lista nula ou vazia não altera o mapa.
+     */
+    private void adicionarLista(Map<String, String> unicos, String lista) {
+        if (lista == null || lista.isBlank()) return;
+        for (String bruto : lista.split(",")) {
+            adicionarTermo(unicos, bruto);
+        }
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: protege nomes completos e o nome curto usado nos
+     * diálogos, como “Jona Basta” e “Jona”.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: aliases separados por barra são independentes;
+     * somente primeiro token iniciado por maiúscula vira nome curto.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: descrição sem nome válido é ignorada.
+     */
+    private void adicionarPersonagens(Map<String, String> unicos, String descricao) {
+        if (descricao == null || descricao.isBlank()) return;
+        for (String alias : descricao.split("/")) {
+            String nome = alias.strip();
+            adicionarTermo(unicos, nome);
+            String[] partes = nome.split("\\s+");
+            if (partes.length > 0 && partes[0].length() > 2
+                && Character.isUpperCase(partes[0].codePointAt(0))) {
+                adicionarTermo(unicos, partes[0]);
+            }
+        }
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: interpreta o catálogo compacto “Personagens:” das
+     * lores de revisão e reaproveita seus nomes no fallback Google.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: observações entre parênteses são removidas e
+     * cada item separado por vírgula é tratado como personagem.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: catálogo vazio não altera o glossário.
+     */
+    private void adicionarListaDePersonagens(Map<String, String> unicos, String lista) {
+        if (lista == null || lista.isBlank()) return;
+        for (String bruto : lista.split(",")) {
+            adicionarPersonagens(unicos, bruto.replaceAll("\\s*\\([^)]*\\)\\s*$", ""));
+        }
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: normaliza e inclui uma entidade canônica sem perder
+     * a grafia definida pela lore.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: deduplicação ignora caixa; termos vazios,
+     * excessivamente longos ou pontuação isolada são rejeitados.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: entrada inválida é simplesmente ignorada.
+     */
+    private void adicionarTermo(Map<String, String> unicos, String bruto) {
+        if (bruto == null) return;
+        String termo = bruto.strip().replaceFirst("[.;]$", "").strip();
+        if (!termo.isBlank() && termo.length() <= 80) {
+            unicos.putIfAbsent(termo.toLowerCase(Locale.ROOT), termo);
+        }
     }
 }
