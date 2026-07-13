@@ -19,7 +19,10 @@ import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -30,6 +33,12 @@ public class AnalisarMidiaUseCase {
     private static final List<String> EXTENSOES_VIDEO = List.of(
         ".mkv", ".mp4", ".avi", ".mov", ".flv", ".wmv", ".webm", ".m4v", ".ts", ".m2ts"
     );
+
+    // Classificação por traduzibilidade (o dado vital da análise): legenda de
+    // TEXTO é extraível e traduzível; BITMAP/hardsub exige OCR e não entra no
+    // pipeline de tradução direto. Baseado no tipoCurto de classificarLegenda().
+    private static final Set<String> TIPOS_TEXTO = Set.of("ASS", "SSA", "SRT", "WEBVTT", "MOV_TEXT");
+    private static final Set<String> TIPOS_BITMAP = Set.of("PGS", "VOBSUB", "DVB", "HARDSUB");
 
     private final FfprobeAdapter ffprobeAdapter;
     private final TelemetriaService telemetriaService;
@@ -350,6 +359,9 @@ public class AnalisarMidiaUseCase {
             ));
         }
 
+        // Dado vital para a tradução: dá para extrair texto e traduzir este arquivo?
+        logs.add("  Traduzivel (legenda de texto): " + verdictTraducao(legendasProcessadas));
+
         logs.add("\n" + "=".repeat(80));
         logs.add("Auditoria finalizada com sucesso!");
         logs.add("=".repeat(80) + "\n");
@@ -476,6 +488,10 @@ public class AnalisarMidiaUseCase {
         Path arqTxt = pasta.resolve("consolidado_" + nomeEntrada + "_" + timestamp + ".txt");
         List<String> consolidado = new ArrayList<>();
 
+        // Resumo escaneável no topo: por arquivo, o tipo de legenda e se é
+        // traduzível — o dado vital para decidir o que segue no pipeline.
+        consolidado.addAll(montarResumoLegendasLote(resultados));
+
         for (AuditoriaResultado res : resultados) {
             consolidado.addAll(res.logsAuditoria());
             consolidado.add("\n" + "=".repeat(100) + "\n\n");
@@ -492,6 +508,100 @@ public class AnalisarMidiaUseCase {
             log.error("Erro ao salvar relatório consolidado em {}: {}", arqTxt, e.getMessage());
             return null;
         }
+    }
+
+    /**
+     * Veredicto de traduzibilidade de um arquivo a partir das legendas detectadas:
+     * texto (ASS/SRT/...) é extraível e traduzível; bitmap (PGS/VobSub/...) exige
+     * OCR; sem legenda é RAW/hardsub.
+     */
+    private String verdictTraducao(List<LegendaInfo> legendas) {
+        List<String> tiposTexto = legendas.stream().map(LegendaInfo::tipoCurto)
+            .filter(TIPOS_TEXTO::contains).distinct().collect(Collectors.toList());
+        if (!tiposTexto.isEmpty()) {
+            return "SIM (" + String.join(", ", tiposTexto) + ")";
+        }
+        List<String> tiposBitmap = legendas.stream().map(LegendaInfo::tipoCurto)
+            .filter(TIPOS_BITMAP::contains).distinct().collect(Collectors.toList());
+        if (!tiposBitmap.isEmpty()) {
+            return "NAO - bitmap (" + String.join(", ", tiposBitmap) + "), precisa de OCR";
+        }
+        if (!legendas.isEmpty()) {
+            return "INDETERMINADO (" + legendas.getFirst().tipoCurto() + ")";
+        }
+        return "N/A - sem legenda (RAW ou hardsub)";
+    }
+
+    /**
+     * Resumo escaneável do lote com o dado vital para a tradução: por arquivo, o
+     * tipo de legenda encontrado e se é traduzível, mais contagens agregadas.
+     */
+    private List<String> montarResumoLegendasLote(List<AuditoriaResultado> resultados) {
+        int comTexto = 0, comBitmap = 0, semLegenda = 0, indeterminado = 0;
+        Map<String, Integer> contagemTipo = new LinkedHashMap<>();
+        List<String> linhasArquivos = new ArrayList<>();
+
+        for (AuditoriaResultado res : resultados) {
+            List<LegendaInfo> legs = res.legendas();
+            LegendaInfo texto = legs.stream().filter(l -> TIPOS_TEXTO.contains(l.tipoCurto())).findFirst().orElse(null);
+            LegendaInfo bitmap = legs.stream().filter(l -> TIPOS_BITMAP.contains(l.tipoCurto())).findFirst().orElse(null);
+            long faixasTexto = legs.stream().filter(l -> TIPOS_TEXTO.contains(l.tipoCurto())).count();
+
+            String verdict;
+            String tipo;
+            String idioma;
+            if (texto != null) {
+                verdict = "SIM"; tipo = texto.tipoCurto(); idioma = idiomaCurto(texto.idioma());
+                contagemTipo.merge(tipo, 1, Integer::sum);
+                comTexto++;
+            } else if (bitmap != null) {
+                verdict = "NAO"; tipo = bitmap.tipoCurto(); idioma = idiomaCurto(bitmap.idioma());
+                contagemTipo.merge(tipo, 1, Integer::sum);
+                comBitmap++;
+            } else if (!legs.isEmpty()) {
+                verdict = "?"; tipo = legs.getFirst().tipoCurto(); idioma = idiomaCurto(legs.getFirst().idioma());
+                contagemTipo.merge(tipo, 1, Integer::sum);
+                indeterminado++;
+            } else {
+                verdict = "---"; tipo = "SEM"; idioma = "-";
+                semLegenda++;
+            }
+            String extra = faixasTexto > 1 ? "  (+" + (faixasTexto - 1) + " faixa(s) de texto)" : "";
+            linhasArquivos.add(String.format(" [%-3s] %-9s %-7s %s%s", verdict, tipo, idioma, res.nomeArquivo(), extra));
+        }
+
+        List<String> linhas = new ArrayList<>();
+        linhas.add("=".repeat(80));
+        linhas.add("RESUMO DE LEGENDAS DO LOTE  (dado vital para a traducao)");
+        linhas.add("=".repeat(80));
+        linhas.add("  Arquivos analisados                  : " + resultados.size());
+        linhas.add("  Com legenda de TEXTO (traduzivel)    : " + comTexto);
+        linhas.add("  Com legenda BITMAP (precisa de OCR)  : " + comBitmap);
+        if (indeterminado > 0) {
+            linhas.add("  Tipo indeterminado                   : " + indeterminado);
+        }
+        linhas.add("  Sem legenda (RAW/hardsub)            : " + semLegenda);
+        if (!contagemTipo.isEmpty()) {
+            String detalhe = contagemTipo.entrySet().stream()
+                .map(e -> e.getKey() + "=" + e.getValue())
+                .collect(Collectors.joining("  "));
+            linhas.add("  Contagem por tipo detectado          : " + detalhe);
+        }
+        linhas.add("-".repeat(80));
+        linhas.add("  Legenda:  [SIM]=texto traduzivel   [NAO]=bitmap (OCR)   [---]=sem legenda");
+        linhas.add("  Colunas:  [verdict] TIPO  IDIOMA  ARQUIVO");
+        linhas.add("-".repeat(80));
+        linhas.addAll(linhasArquivos);
+        linhas.add("=".repeat(80));
+        linhas.add("");
+        return linhas;
+    }
+
+    private String idiomaCurto(String idioma) {
+        if (idioma == null || idioma.isBlank() || idioma.equalsIgnoreCase("Desconhecido")) {
+            return "?";
+        }
+        return idioma.length() > 6 ? idioma.substring(0, 6) : idioma;
     }
 
     private String getNomeSemExtensao(String nome) {

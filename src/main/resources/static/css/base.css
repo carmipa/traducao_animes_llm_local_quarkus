@@ -741,14 +741,62 @@ span.console-action-icon.material-symbols-outlined {
     margin-bottom: 4px;
 }
 
+.relatorio-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.relatorio-cabecalho {
+    position: sticky;
+    top: -14px; /* compensa o padding do .console-body para colar no topo */
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background: rgba(139, 92, 246, 0.12);
+    border: 1px solid rgba(139, 92, 246, 0.28);
+    backdrop-filter: blur(6px);
+    color: var(--text-primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.relatorio-titulo {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.relatorio-cabecalho .relatorio-icone {
+    font-size: 18px !important;
+    color: var(--accent-purple);
+}
+
+.relatorio-cabecalho .relatorio-meta {
+    margin-left: auto;
+    font-weight: 500;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
 .relatorio-salvo {
     margin: 0;
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit;
-    color: inherit;
+    padding: 12px 14px;
+    font-family: var(--font-code);
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: var(--text-secondary);
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
     white-space: pre-wrap;
     word-break: break-word;
+    overflow-wrap: anywhere;
+    tab-size: 4;
 }
 
 .system-message {

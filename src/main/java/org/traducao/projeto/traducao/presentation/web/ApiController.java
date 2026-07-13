@@ -11,7 +11,6 @@ import org.traducao.projeto.legendasExtracao.domain.FormatoLegenda;
 import org.traducao.projeto.legendasExtracao.domain.RelatorioExtracao;
 import org.traducao.projeto.legendasExtracao.domain.exceptions.FormatoLegendaInvalidoException;
 import org.traducao.projeto.mapaProjeto.application.GeradorMapaProjetoUseCase;
-import org.traducao.projeto.mapaProjeto.domain.exceptions.MapaProjetoException;
 import org.traducao.projeto.raspagemCorrecao.application.CorrigirComGoogleUseCase;
 import org.traducao.projeto.raspagemRevisao.application.ResultadoRevisaoLegendas;
 import org.traducao.projeto.raspagemRevisao.application.RevisarCacheUseCase;
@@ -24,6 +23,7 @@ import org.traducao.projeto.traducao.application.ProcessarArquivoUseCase;
 import org.traducao.projeto.traducao.domain.StatusLlm;
 import org.traducao.projeto.traducao.domain.exceptions.TradutorException;
 import org.traducao.projeto.traducao.domain.ports.MistralPort;
+import org.traducao.projeto.traducao.infrastructure.config.LlmProperties;
 import org.traducao.projeto.traducao.infrastructure.config.TradutorProperties;
 import org.traducao.projeto.core.util.DuracaoUtil;
 import org.traducao.projeto.traducao.infrastructure.contexto.GerenciadorContexto;
@@ -76,6 +76,7 @@ public class ApiController {
     private final PastasExecucao pastasExecucao;
     private final MistralPort mistralPort;
     private final GerenciadorContexto gerenciadorContexto;
+    private final LlmProperties llmProperties;
 
     public ApiController(
             FilaExecucaoPipeline filaExecucao,
@@ -94,7 +95,8 @@ public class ApiController {
             TradutorProperties propriedades,
             PastasExecucao pastasExecucao,
             MistralPort mistralPort,
-            GerenciadorContexto gerenciadorContexto) {
+            GerenciadorContexto gerenciadorContexto,
+            LlmProperties llmProperties) {
         this.filaExecucao = filaExecucao;
         this.analisarMidiaUseCase = analisarMidiaUseCase;
         this.extrairLegendaUseCase = extrairLegendaUseCase;
@@ -112,13 +114,15 @@ public class ApiController {
         this.pastasExecucao = pastasExecucao;
         this.mistralPort = mistralPort;
         this.gerenciadorContexto = gerenciadorContexto;
+        this.llmProperties = llmProperties;
     }
 
     // DTOs
     public record OperacaoRequest(String entrada, String saida, String contextoId, Long syncOffsetMs) {}
     public record ExtracaoRequest(String entrada, String saida, String formato) {}
     public record RespostaPadrao(String mensagem) {}
-    public record MapaResponse(String conteudo) {}
+    public record MapaResponse(String conteudo, String arvoreGithub, String nomeProjeto) {}
+    public record LlmStatusResponse(boolean online, boolean modeloCarregado, String modelo, String mensagem) {}
     public record ContextoResponse(String id, String nome, boolean padrao) {}
 
     /**
@@ -157,6 +161,26 @@ public class ApiController {
     @GetMapping("/pipeline/status")
     public ResponseEntity<RespostaPadrao> statusPipeline() {
         return ResponseEntity.ok(new RespostaPadrao(filaExecucao.ocupada() ? "ocupada" : "livre"));
+    }
+
+    /**
+     * Status ao vivo do servidor LLM local (LM Studio) para o card do painel
+     * inicial: informa se está online, se há modelo carregado em memória e qual
+     * é ({@link MistralPort#verificarDisponibilidade()} já adota o modelo ativo
+     * em {@link LlmProperties#model()} quando o detecta).
+     */
+    @GetMapping("/llm/status")
+    public ResponseEntity<LlmStatusResponse> statusLlm() {
+        try {
+            StatusLlm status = mistralPort.verificarDisponibilidade();
+            String modelo = status.modeloCarregado() ? llmProperties.model() : null;
+            return ResponseEntity.ok(new LlmStatusResponse(
+                status.servidorOnline(), status.modeloCarregado(), modelo, status.mensagem()));
+        } catch (Exception e) {
+            log.warn("Falha ao consultar o status do LLM: {}", e.getMessage());
+            return ResponseEntity.ok(new LlmStatusResponse(false, false, null,
+                "Falha ao consultar o servidor LLM: " + e.getMessage()));
+        }
     }
 
     /**
@@ -760,15 +784,9 @@ public class ApiController {
     @PostMapping("/mapa")
     public ResponseEntity<MapaResponse> gerarMapa() {
         Path raiz = Path.of(System.getProperty("user.dir"));
-        geradorMapaProjetoUseCase.executar(raiz);
-
-        Path destino = raiz.resolve("mapa_projeto.md");
-        try {
-            String result = Files.exists(destino) ? Files.readString(destino, java.nio.charset.StandardCharsets.UTF_8) : "Arquivo mapa_projeto.md não gerado.";
-            return ResponseEntity.ok(new MapaResponse(result));
-        } catch (IOException e) {
-            throw new MapaProjetoException("Falha ao ler o mapa do projeto gerado em: " + destino, e);
-        }
+        GeradorMapaProjetoUseCase.ResultadoMapa resultado = geradorMapaProjetoUseCase.executar(raiz);
+        return ResponseEntity.ok(new MapaResponse(
+            resultado.relatorio(), resultado.arvoreGithub(), resultado.nomeProjeto()));
     }
 
     private Optional<Path> parseCaminhoSeguro(String valor, String rotulo) {

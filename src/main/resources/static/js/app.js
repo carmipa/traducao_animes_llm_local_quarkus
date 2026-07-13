@@ -14,13 +14,14 @@ import { initCura } from '../cura/cura.js?v=3.0';
 import { initRevisaoLore } from '../revisaoLore/revisaoLore.js?v=3.0';
 import { initTrocaTipoLegenda } from '../trocaTipoLegenda/trocaTipoLegenda.js?v=3.0';
 import { initRemuxer } from '../remuxer/remuxer.js?v=3.0';
-import { initMapa } from '../mapa/mapa.js?v=3.0';
+import { initMapa } from '../mapa/mapa.js?v=5.0';
 import { initTelemetria } from '../telemetria/telemetria.js?v=3.1';
 import { initDocumentacao } from '../documentacao/documentacao.js?v=3.0';
 import { initSobre } from '../sobre/sobre.js?v=3.0';
 import { initRenomearArquivos } from '../renomearArquivos/renomearArquivos.js?v=3.0';
 import { initNovoKaraoke } from '../novoKaraoke/novoKaraoke.js?v=1.0';
 import { initTraducaoKaraoke } from '../traducaoKaraoke/traducaoKaraoke.js?v=1.0';
+import { initInicio } from '../inicio/inicio.js?v=1.0';
 
 // Definições de Títulos e Subtítulos por seção do menu
 const CONFIG_SECOES = {
@@ -204,6 +205,7 @@ function inicializarGruposMenu() {
  * Inicializa cada um dos módulos JavaScript específicos das pastas
  */
 async function inicializarModulos() {
+    initInicio();
     initAnalise();
     initExtracao();
     await initAuditorConteudo();
@@ -462,13 +464,33 @@ function exibirRelatorioSalvo(consoleId, textoRelatorio) {
     const consoleDiv = document.getElementById(consoleId);
     if (!consoleDiv) return;
 
+    const texto = textoRelatorio || '';
     consoleDiv.innerHTML = '';
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'relatorio-wrapper';
+
+    // Cabeçalho fixo deixa claro que o console passou a exibir o relatório
+    // salvo em disco (e não mais o log ao vivo), com contagem de linhas.
+    const cabecalho = document.createElement('div');
+    cabecalho.className = 'relatorio-cabecalho';
+    const totalLinhas = texto ? texto.split('\n').length : 0;
+    const titulo = document.createElement('span');
+    titulo.className = 'relatorio-titulo';
+    titulo.innerHTML = '<span class="material-symbols-outlined relatorio-icone">description</span>Relatório de Análise de Mídia — salvo em disco';
+    const meta = document.createElement('span');
+    meta.className = 'relatorio-meta';
+    meta.textContent = `${totalLinhas} linha${totalLinhas === 1 ? '' : 's'}`;
+    cabecalho.appendChild(titulo);
+    cabecalho.appendChild(meta);
+    wrapper.appendChild(cabecalho);
 
     const pre = document.createElement('pre');
     pre.className = 'relatorio-salvo';
-    pre.textContent = textoRelatorio;
-    consoleDiv.appendChild(pre);
+    pre.textContent = texto;
+    wrapper.appendChild(pre);
 
+    consoleDiv.appendChild(wrapper);
     consoleDiv.scrollTop = 0;
 }
 

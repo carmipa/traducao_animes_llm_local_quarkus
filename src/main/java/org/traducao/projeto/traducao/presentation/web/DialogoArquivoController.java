@@ -107,6 +107,14 @@ public class DialogoArquivoController {
             Process process = pb.start();
 
             try (java.io.OutputStreamWriter writer = new java.io.OutputStreamWriter(process.getOutputStream(), StandardCharsets.UTF_8)) {
+                // O Windows PowerShell escreve o stdout redirecionado usando o
+                // codepage OEM do console (ex.: CP-850/437), NAO UTF-8. Sem forcar
+                // UTF-8 aqui, caminhos com acentos (ex.: "Walkure" com u-trema)
+                // chegam corrompidos e quebram Files.walk depois. UTF8Encoding
+                // com $false = sem BOM, para nao injetar um caractere invisivel
+                // no inicio do caminho lido em UTF-8 no lado Java.
+                writer.write("[Console]::OutputEncoding = New-Object System.Text.UTF8Encoding $false;");
+                writer.write(System.lineSeparator());
                 writer.write(script);
                 writer.flush();
             }
@@ -139,7 +147,20 @@ public class DialogoArquivoController {
             if (erro.length() > 0) {
                 log.warn("Saida de erro do seletor nativo do Windows: {}", erro);
             }
-            return linha != null ? linha.trim() : null;
+            if (linha == null) {
+                return null;
+            }
+            String resultado = linha.trim();
+            // Remove um eventual BOM (U+FEFF = 0xFEFF) inicial e detecta o
+            // caractere de substituição (U+FFFD = 0xFFFD), que sinaliza caminho
+            // corrompido pelo codepage — usá-lo levaria a NoSuchFileException.
+            if (!resultado.isEmpty() && resultado.charAt(0) == 0xFEFF) {
+                resultado = resultado.substring(1).trim();
+            }
+            if (resultado.chars().anyMatch(c -> c == 0xFFFD)) {
+                log.warn("Caminho selecionado contém caracteres não decodificáveis (codepage do console): {}", resultado);
+            }
+            return resultado;
         } catch (Exception e) {
             log.error("Erro ao executar seletor nativo do Windows via PowerShell", e);
             return null;
