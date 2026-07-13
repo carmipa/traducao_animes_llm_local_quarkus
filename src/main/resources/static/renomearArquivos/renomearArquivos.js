@@ -1,6 +1,6 @@
 import { mostrarAlerta, logNoConsole } from '../js/app.js';
 
-const PAINEL_HTML = 'renomearArquivos/renomearArquivos.html?v=3.1';
+const PAINEL_HTML = 'renomearArquivos/renomearArquivos.html?v=3.2';
 
 async function carregarPainelHtml() {
     const painel = document.getElementById('panel-renomear-arquivos');
@@ -32,6 +32,14 @@ export async function initRenomearArquivos() {
     }
 }
 
+/**
+ * PROPÓSITO DE NEGÓCIO: conecta os controles da opção 13 ao backend e mantém
+ * nome/temporada coerentes com a obra selecionada.
+ * INVARIANTES DO DOMÍNIO: somente um envio iniciado pela tela permanece ativo;
+ * pasta, padrão e temporada são validados antes da requisição.
+ * COMPORTAMENTO EM CASO DE FALHA: ausência do formulário encerra sem efeito e
+ * erros HTTP são exibidos no console e no alerta.
+ */
 function vincularEventos() {
     const form = document.getElementById('form-renomear-arquivos');
     if (!form) return;
@@ -41,6 +49,7 @@ function vincularEventos() {
     const btnReverter = document.getElementById('btn-limpanome-reverter');
     const selectContexto = document.getElementById('renomear-arquivos-contexto');
     const inputPadrao = document.getElementById('limpanome-padrao');
+    const inputTemporada = document.getElementById('limpanome-temporada');
     const consoleId = 'console-renomear-arquivos';
 
     // Ao mudar o select, preencher automaticamente o nome padrão
@@ -52,6 +61,9 @@ function vincularEventos() {
                                      .replace(/\s+Revis[aã]o\s+de\s+Lore\s*$/i, '')
                                      .trim();
                 inputPadrao.value = limpo;
+                if (inputTemporada) {
+                    inputTemporada.value = String(inferirTemporada(limpo));
+                }
             }
         });
     }
@@ -87,17 +99,27 @@ function vincularEventos() {
     function validarForm() {
         const entrada = document.getElementById('limpanome-entrada').value.trim();
         const padrao = document.getElementById('limpanome-padrao').value.trim();
+        const temporada = Number.parseInt(document.getElementById('limpanome-temporada')?.value, 10);
         
-        if (!entrada || !padrao) {
-            mostrarAlerta('Preencha os campos obrigatórios (Pasta e Nome Padrão).', 'aviso');
+        if (!entrada || !padrao || !Number.isInteger(temporada) || temporada < 1 || temporada > 99) {
+            mostrarAlerta('Preencha Pasta, Nome Padrão e uma Temporada entre 1 e 99.', 'aviso');
             return false;
         }
         return true;
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: envia uma operação e mantém os botões bloqueados até
+     * o backend devolver a conclusão real do lote.
+     * INVARIANTES DO DOMÍNIO: a temporada enviada é inteira e a resposta HTTP é
+     * consumida uma única vez.
+     * COMPORTAMENTO EM CASO DE FALHA: erro estruturado ou texto simples é exibido
+     * sem ser confundido com falha de rede.
+     */
     async function executarOperacao(url, descricao) {
         const entrada = document.getElementById('limpanome-entrada').value.trim();
         const padrao = document.getElementById('limpanome-padrao').value.trim();
+        const temporada = Number.parseInt(document.getElementById('limpanome-temporada').value, 10);
 
         logNoConsole(consoleId, `Iniciando ${descricao} em: ${entrada}`, 'info');
 
@@ -111,7 +133,8 @@ function vincularEventos() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     caminhoOrigem: entrada,
-                    nomePadrao: padrao
+                    nomePadrao: padrao,
+                    temporada
                 })
             });
 
@@ -122,17 +145,23 @@ function vincularEventos() {
                 if (contentType && contentType.includes("application/json")) {
                     const dados = await resp.json();
                     if (dados.mensagem) {
-                        logNoConsole(consoleId, dados.mensagem, 'sucesso');
-                        mostrarAlerta(dados.mensagem, 'sucesso');
+                        const tipo = dados.status === 'FALHOU' || dados.status === 'CONCLUIDO_COM_FALHAS'
+                            ? 'erro'
+                            : dados.status === 'CONCLUIDO_COM_PENDENCIAS' ? 'aviso' : 'sucesso';
+                        logNoConsole(consoleId, dados.mensagem, tipo);
+                        mostrarAlerta(dados.mensagem, tipo);
                     }
                 }
             } else {
                 let msgErro = `Erro HTTP ${resp.status}`;
-                try {
-                    const errorObj = await resp.json();
-                    msgErro = errorObj.error || msgErro;
-                } catch (e) {
-                    msgErro = await resp.text();
+                const corpo = await resp.text();
+                if (corpo) {
+                    try {
+                        const errorObj = JSON.parse(corpo);
+                        msgErro = errorObj.error || msgErro;
+                    } catch (e) {
+                        msgErro = corpo;
+                    }
                 }
                 logNoConsole(consoleId, `Falha na operação: ${msgErro}`, 'erro');
                 mostrarAlerta(`Erro: ${msgErro}`, 'erro');
@@ -144,4 +173,17 @@ function vincularEventos() {
             botoes.forEach(b => b.disabled = false);
         }
     }
+}
+
+/**
+ * PROPÓSITO DE NEGÓCIO: extrai a temporada do título/contexto para evitar que
+ * Season 4 seja renomeada como S01.
+ * INVARIANTES DO DOMÍNIO: o retorno fica entre 1 e 99.
+ * COMPORTAMENTO EM CASO DE FALHA: título sem marcador ou número inválido usa 1,
+ * que pode ser alterado manualmente antes da operação.
+ */
+function inferirTemporada(nome) {
+    const correspondencia = String(nome || '').match(/\b(?:season|temporada|temp(?:orada)?|s)\s*[-_. ]?(\d{1,2})\b/i);
+    const numero = correspondencia ? Number.parseInt(correspondencia[1], 10) : 1;
+    return Number.isInteger(numero) && numero >= 1 && numero <= 99 ? numero : 1;
 }

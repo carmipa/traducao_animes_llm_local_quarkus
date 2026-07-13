@@ -19,8 +19,12 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="limpanome-padrao">Nome Novo Padrão (Sem Extensão): <span class="help-icon" data-tooltip="O padrão de nomenclatura para o arquivo base. Exemplo: 'Nome do Anime'. O sistema adicionará ' - S01E[Num]' automaticamente, onde [Num] é extraído por Regex do nome antigo.">?</span></label>
+                                <label for="limpanome-padrao">Nome Novo Padrão (Sem Extensão): <span class="help-icon" data-tooltip="O padrão de nomenclatura para o arquivo base. Exemplo: 'Nome do Anime'. Em séries, o sistema adicionará ' - SxxE[Num]' usando a temporada informada e o episódio detectado.">?</span></label>
                                 <input type="text" id="limpanome-padrao" placeholder="Ex: DanMachi Season 4" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="limpanome-temporada">Temporada: <span class="help-icon" data-tooltip="Número usado em SxxEyy. É preenchido automaticamente quando o contexto contém Season, Temporada ou Temp, mas pode ser corrigido manualmente.">?</span></label>
+                                <input type="number" id="limpanome-temporada" min="1" max="99" value="1" required>
                             </div>
                             
                             <div class="correcao-actions">
@@ -28,7 +32,7 @@
                                     <span class="material-symbols-outlined btn-icon">science</span>
                                     <span>Simular (Dry-Run)</span>
                                 </button>
-                                <button type="submit" class="btn btn-primary btn-green" id="btn-limpanome-aplicar" data-tooltip="Aplica a renomeação em disco. Um manifesto .json para reversão será salvo em logs/renomear-arquivos/undo dentro do projeto.">
+                                <button type="submit" class="btn btn-primary btn-green" id="btn-limpanome-aplicar" data-tooltip="Aplica a renomeação em disco. Primeiro prepara um manifesto .json reversível em logs/renomear-arquivos/undo dentro do projeto.">
                                     <span class="material-symbols-outlined btn-icon">cleaning_services</span>
                                     <span>Aplicar Renomeação</span>
                                 </button>
