@@ -2,8 +2,8 @@
  MAPA ESTRUTURAL DO PROJETO - TRACKER ANIMES
 ================================================================================
  Raiz do repositorio      : traducao_animes_llm_local_quarkus
- Pastas mapeadas          : 289
- Arquivos (na arvore)     : 548
+ Pastas mapeadas          : 298
+ Arquivos (na arvore)     : 566
  Arquivos-fonte indexados : 358  (.java: 358 | .py: 0)
  Memoria viva do projeto  : CEREBRO_IA.md (na raiz do repositorio)
 
@@ -63,8 +63,14 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-1162096832399206289/
 │   │   ├── troca_fontes_20260713_191025.json
 │   │   └── troca_fontes_20260713_191025.md
+│   ├── junit-13147981279437253137/
+│   │   ├── troca_fontes_20260713_191103.json
+│   │   └── troca_fontes_20260713_191103.md
 │   ├── junit-1399871810161493448/
 │   │   ├── auditoria_conteudo_20260713_191024.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-14155822005978389924/
+│   │   ├── auditoria_conteudo_20260713_191102.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-14260166133412252573/
 │   │   ├── auditoria_conteudo_20260713_191019.json
@@ -87,8 +93,17 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-16222883160270816297/
 │   │   ├── troca_fontes_20260713_190205.json
 │   │   └── troca_fontes_20260713_190205.md
+│   ├── junit-16679992851844320280/
+│   │   ├── auditoria_conteudo_20260713_191144.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-1668380566220148328/
+│   │   ├── auditoria_conteudo_20260713_191102.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-1709835422015276158/
 │   │   ├── auditoria_conteudo_20260713_190259.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-17386182084472285974/
+│   │   ├── auditoria_conteudo_20260713_191102.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-17695423539153199322/
 │   │   ├── troca_fontes_20260713_183453.json
@@ -105,6 +120,9 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-2042233824232254696/
 │   │   ├── auditoria_conteudo_20260713_184819.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-2937194050174819637/
+│   │   ├── auditoria_conteudo_20260713_191144.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-3184043112435893775/
 │   │   ├── auditoria_conteudo_20260713_191036.json
 │   │   └── telemetria_compartilhada.json
@@ -120,6 +138,9 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-4849595417475205101/
 │   │   ├── auditoria_conteudo_20260713_184814.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-4982517616506747401/
+│   │   ├── auditoria_conteudo_20260713_191144.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-499713789878574832/
 │   │   ├── troca_fontes_20260713_185921.json
 │   │   └── troca_fontes_20260713_185921.md
@@ -131,6 +152,12 @@ traducao_animes_llm_local_quarkus/
 │   │   └── troca_fontes_20260713_190205.md
 │   ├── junit-5461244447677747877/
 │   │   ├── auditoria_conteudo_20260713_191024.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-5854343511165556486/
+│   │   ├── troca_fontes_20260713_191103.json
+│   │   └── troca_fontes_20260713_191103.md
+│   ├── junit-5888296070647702393/
+│   │   ├── auditoria_conteudo_20260713_191820.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-6501039598696197998/
 │   │   ├── troca_fontes_20260713_191025.json
@@ -1563,9 +1590,19 @@ traducao_animes_llm_local_quarkus/
   - ResultadoDeteccaoLore.java
       (sem cabecalho explicativo)
   - ResultadoRevisaoLore.java
-      (sem cabecalho explicativo)
+      PROPÓSITO DE NEGÓCIO: entrega ao controller o desfecho completo de uma
+      revisão de lore para banner, logs e decisões operacionais.
+      <p>INVARIANTES DO DOMÍNIO: status e contadores descrevem a mesma sessão;
+      pendentes incluem respostas ausentes e propostas descartadas.
+      <p>COMPORTAMENTO EM CASO DE FALHA: o record é imutável; falhas totais são
+      comunicadas por exceção antes de sua criação.
   - RevisaoLoreRelatorioJson.java
-      Relatorio completo da revisao de lore em JSON: telemetria, metricas, contexto e log da sessao.
+      PROPÓSITO DE NEGÓCIO: persiste o dataset completo da revisão de lore com
+      contexto, métricas, erros e eventos granulares.
+      <p>INVARIANTES DO DOMÍNIO: todos os blocos pertencem à mesma sessão e o
+      status resume os contadores persistidos.
+      <p>COMPORTAMENTO EM CASO DE FALHA: é imutável; a infraestrutura decide como
+      registrar impossibilidade de escrita.
   - StatusRevisaoLore.java
       PROPÓSITO DE NEGÓCIO: distingue o desfecho real de uma execução de revisão de
       lore, substituindo o antigo "[SUCESSO]" incondicional. Permite ao operador
@@ -1580,6 +1617,13 @@ traducao_animes_llm_local_quarkus/
       
       <p>COMPORTAMENTO EM CASO DE FALHA: é um enum imutável; não dispara exceções.
       O rótulo textual nunca é nulo.
+      PROPÓSITO DE NEGÓCIO: associa cada estado técnico a um rótulo humano.
+      <p>INVARIANTES DO DOMÍNIO: todo status possui rótulo não nulo.
+      <p>COMPORTAMENTO EM CASO DE FALHA: construção ocorre apenas pelas
+      constantes declaradas no enum.
+      PROPÓSITO DE NEGÓCIO: fornece o texto exibido nos banners e relatórios.
+      <p>INVARIANTES DO DOMÍNIO: retorna sempre o rótulo da própria constante.
+      <p>COMPORTAMENTO EM CASO DE FALHA: nunca retorna nulo.
 
 [PASTA] src/main/java/org/traducao/projeto/revisaoLore/domain/exceptions/
   - RevisaoLoreException.java
@@ -1597,9 +1641,12 @@ traducao_animes_llm_local_quarkus/
 
 [PASTA] src/main/java/org/traducao/projeto/revisaoLore/presentation/
   - RevisaoLoreController.java
-      Fila única compartilhada do pipeline: impede que a revisão de lore rode
-      em paralelo com uma tradução/correção e troque o contexto LLM global no
-      meio do outro job (ver FilaExecucaoPipeline).
+      PROPÓSITO DE NEGÓCIO: expõe a Revisão de Lore à interface local, enfileira o
+      trabalho com segurança e apresenta o desfecho real no console.
+      <p>INVARIANTES DO DOMÍNIO: uma revisão sempre usa contexto conhecido e a fila
+      única do pipeline; o banner reflete o status retornado pelo caso de uso.
+      <p>COMPORTAMENTO EM CASO DE FALHA: entrada inválida retorna HTTP 400; falha
+      assíncrona é registrada com banner vermelho e preserva a fila.
 
 [PASTA] src/main/java/org/traducao/projeto/sistema/application/
   - EncerrarAplicacaoUseCase.java
@@ -2517,7 +2564,10 @@ traducao_animes_llm_local_quarkus/
   - DetectorTermosLoreServiceTest.java
       (sem cabecalho explicativo)
   - RevisarLoreUseCaseTest.java
-      (sem cabecalho explicativo)
+      PROPÓSITO DE NEGÓCIO: protege as fronteiras de segurança e os desfechos da
+      opção 7 contra regressões.
+      <p>INVARIANTES DO DOMÍNIO: testes não acessam LLM ou arquivos reais do usuário.
+      <p>COMPORTAMENTO EM CASO DE FALHA: qualquer quebra de contrato reprova a suíte.
 
 [PASTA] src/test/java/org/traducao/projeto/revisaoLore/contexto/
   - ContextosRevisaoLoreCatalogoTest.java

@@ -41,6 +41,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+/**
+ * PROPÓSITO DE NEGÓCIO: revisa terminologia canônica de uma obra comparando
+ * legendas EN/PT-BR, preservando estrutura ASS e produzindo auditoria,
+ * telemetria, backup e status operacional verdadeiro.
+ *
+ * <p>INVARIANTES DO DOMÍNIO: pares precisam estar estruturalmente alinhados;
+ * somente propostas estruturalmente válidas e semanticamente livres dos
+ * indícios originais de lore podem ser gravadas; toda sobrescrita tem backup.
+ *
+ * <p>COMPORTAMENTO EM CASO DE FALHA: falhas de entrada interrompem a operação;
+ * falhas isoladas por arquivo preservam o original, entram no relatório e
+ * resultam em status com pendências.
+ */
 @Service
 public class RevisarLoreUseCase {
 
@@ -109,6 +122,14 @@ public class RevisarLoreUseCase {
         }
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: reúne os componentes que detectam, revisam,
+     * validam, persistem e auditam correções de lore.
+     * <p>INVARIANTES DO DOMÍNIO: leitores, validadores, contexto e persistências
+     * são obrigatórios e permanecem imutáveis durante a execução.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: a injeção interrompe a inicialização
+     * quando alguma dependência obrigatória não está disponível.
+     */
     public RevisarLoreUseCase(
         LeitorLegendaAss leitor,
         EscritorLegendaAss escritor,
@@ -139,6 +160,14 @@ public class RevisarLoreUseCase {
         this.protecaoAss = protecaoAss;
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: executa uma sessão completa de revisão de lore e
+     * devolve o desfecho real com contadores e caminho do dataset detalhado.
+     * <p>INVARIANTES DO DOMÍNIO: contexto válido e pastas existentes são
+     * exigidos; a sessão não compartilha estado mutável com outra execução.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: entrada inválida lança
+     * {@link RevisaoLoreException}; falhas por arquivo viram pendências.
+     */
     public ResultadoRevisaoLore executar(
         Path pastaOriginal,
         Path pastaTraduzida,
@@ -281,7 +310,7 @@ public class RevisarLoreUseCase {
      *
      * <p>COMPORTAMENTO EM CASO DE FALHA: método puro; não lança exceção.
      */
-    private StatusRevisaoLore determinarStatus(
+    static StatusRevisaoLore determinarStatus(
         boolean semArquivos, boolean cancelado, List<String> erros, int falasPendentes) {
         if (semArquivos) {
             return StatusRevisaoLore.SEM_ARQUIVOS;
@@ -306,7 +335,7 @@ public class RevisarLoreUseCase {
      * <p>COMPORTAMENTO EM CASO DE FALHA: lança {@link RevisaoLoreException} e
      * bloqueia a escrita da nova legenda (o arquivo original permanece intacto).
      */
-    private Path criarBackup(Path arquivo, Path pastaBackup) {
+    static Path criarBackup(Path arquivo, Path pastaBackup) {
         Path backup = pastaBackup.resolve(arquivo.getFileName()).normalize();
         if (!backup.startsWith(pastaBackup)) {
             throw new RevisaoLoreException("Caminho de backup invalido para: " + arquivo);
@@ -338,6 +367,14 @@ public class RevisarLoreUseCase {
         }
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: revisa um par EN/PT-BR, preservando falas que não
+     * podem ser corrigidas com segurança e acumulando métricas da sessão.
+     * <p>INVARIANTES DO DOMÍNIO: o par precisa ter estrutura alinhada; somente
+     * candidato validado estrutural e semanticamente altera o documento.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: registra o erro do arquivo, mantém a
+     * legenda anterior e permite que os demais pares continuem.
+     */
     private void processarArquivo(
         SessaoRevisao sessao,
         Path arqOriginal,
@@ -474,6 +511,24 @@ public class RevisarLoreUseCase {
                         continue;
                     }
 
+                    ResultadoDeteccaoLore deteccaoPosterior = detector.auditar(
+                        mascaraEn.texto(), mascarador.mascarar(revisada).texto(), promptSistemaRevisaoLore);
+                    if (!problemaLoreFoiResolvido(deteccao, deteccaoPosterior)) {
+                        falasDescartadas[0]++;
+                        sessao.out(AnsiCores.YELLOW + marcadorFala
+                            + " pendente: correção determinística não eliminou todos os indícios de lore | motivos: "
+                            + formatarMotivos(deteccaoPosterior.motivos()) + AnsiCores.RESET);
+                        registrarAuditoria(
+                            contextoId, nomePromptRevisao, revisarTodasFalas, arqTraduzido, i + 1,
+                            dialogoAtual, totalDialogos, "PENDENTE_REGRA_LORE_INCOMPLETA",
+                            deteccaoPosterior.motivos(), textoEn, textoPt,
+                            correcaoDeterministica.get(), textoPt,
+                            "Correção determinística não eliminou todos os indícios de lore"
+                        );
+                        novosEventos.add(evtTraduzido);
+                        continue;
+                    }
+
                     novosEventos.add(evtTraduzido.comTexto(revisada));
                     houveModificacao = true;
                     corrigidasNoArquivo++;
@@ -528,13 +583,25 @@ public class RevisarLoreUseCase {
                         continue;
                     }
                     if (mesmaFalaVisivel(revisada, textoPt)) {
-                        falasSemAlteracao[0]++;
-                        sessao.out(AnsiCores.DIM + marcadorFala + " conforme apos revisao LLM" + AnsiCores.RESET);
-                        registrarAuditoria(
-                            contextoId, nomePromptRevisao, revisarTodasFalas, arqTraduzido, i + 1,
-                            dialogoAtual, totalDialogos, "CONFORME", deteccao.motivos(),
-                            textoEn, textoPt, revisadaOpt.get(), textoPt, null
-                        );
+                        if (deteccao.suspeito()) {
+                            falasDescartadas[0]++;
+                            sessao.out(AnsiCores.YELLOW + marcadorFala
+                                + " pendente: LLM nao alterou a fala suspeita" + AnsiCores.RESET);
+                            registrarAuditoria(
+                                contextoId, nomePromptRevisao, revisarTodasFalas, arqTraduzido, i + 1,
+                                dialogoAtual, totalDialogos, "PENDENTE_SEM_MELHORIA", deteccao.motivos(),
+                                textoEn, textoPt, revisadaOpt.get(), textoPt,
+                                "Resposta manteve os indícios originais de lore"
+                            );
+                        } else {
+                            falasSemAlteracao[0]++;
+                            sessao.out(AnsiCores.DIM + marcadorFala + " conforme apos revisao LLM" + AnsiCores.RESET);
+                            registrarAuditoria(
+                                contextoId, nomePromptRevisao, revisarTodasFalas, arqTraduzido, i + 1,
+                                dialogoAtual, totalDialogos, "CONFORME", deteccao.motivos(),
+                                textoEn, textoPt, revisadaOpt.get(), textoPt, null
+                            );
+                        }
                         novosEventos.add(evtTraduzido);
                         continue;
                     }
@@ -568,14 +635,34 @@ public class RevisarLoreUseCase {
                     continue;
                 }
 
+                if (deteccao.suspeito()) {
+                    String revisadaMascarada = mascarador.mascarar(revisada).texto();
+                    ResultadoDeteccaoLore deteccaoPosterior = detector.auditar(
+                        mascaraEn.texto(), revisadaMascarada, promptSistemaRevisaoLore);
+                    if (!problemaLoreFoiResolvido(deteccao, deteccaoPosterior)) {
+                        falasDescartadas[0]++;
+                        sessao.out(AnsiCores.YELLOW + marcadorFala
+                            + " pendente: proposta do LLM ainda contém indícios de lore | motivos: "
+                            + formatarMotivos(deteccaoPosterior.motivos()) + AnsiCores.RESET);
+                        registrarAuditoria(
+                            contextoId, nomePromptRevisao, revisarTodasFalas, arqTraduzido, i + 1,
+                            dialogoAtual, totalDialogos, "PENDENTE_LORE_NAO_RESOLVIDA",
+                            deteccaoPosterior.motivos(), textoEn, textoPt, revisadaOpt.get(), textoPt,
+                            "Proposta não eliminou os indícios de lore"
+                        );
+                        novosEventos.add(evtTraduzido);
+                        continue;
+                    }
+                }
+
                 if (deteccao.motivos().isEmpty()) {
                     falasSemAlteracao[0]++;
                     sessao.out(AnsiCores.YELLOW + marcadorFala
-                        + " revisao preventiva descartada: sem indicio de lore; mantendo traducao atual"
+                        + " conforme; proposta preventiva ignorada por não haver indício de lore"
                         + AnsiCores.RESET);
                     registrarAuditoria(
                         contextoId, nomePromptRevisao, revisarTodasFalas, arqTraduzido, i + 1,
-                        dialogoAtual, totalDialogos, "DESCARTADA_PREVENTIVA_SEM_LORE", deteccao.motivos(),
+                        dialogoAtual, totalDialogos, "CONFORME_PROPOSTA_PREVENTIVA_IGNORADA", deteccao.motivos(),
                         textoEn, textoPt, revisadaOpt.get(), textoPt,
                         "Alteracao proposta em fala sem motivo heuristico de lore"
                     );
@@ -623,6 +710,14 @@ public class RevisarLoreUseCase {
         }
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: persiste o dataset detalhado da sessão e registra
+     * seu resumo na telemetria canônica compartilhada.
+     * <p>INVARIANTES DO DOMÍNIO: status e contadores no detalhe canônico são os
+     * mesmos do relatório JSON; sessão sem trabalho não polui o agregado.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: registra aviso, mantém a operação em
+     * memória quando possível e retorna {@code null} para o caminho do JSON.
+     */
     private String persistirRelatorioJson(
         SessaoRevisao sessao,
         String contextoId,
@@ -642,8 +737,15 @@ public class RevisarLoreUseCase {
         int falasPendentes,
         List<String> erros
     ) {
-        String detalhe = pastaTraduzida.toAbsolutePath()
-            + " | promptRevisaoLore=" + gerenciadorPromptRevisaoLore.obterNome(contextoId);
+        String detalhe = montarDetalheTelemetria(
+            pastaTraduzida,
+            gerenciadorPromptRevisaoLore.obterNome(contextoId),
+            status,
+            falasPendentes,
+            falasSemResposta,
+            falasDescartadas,
+            erros.size()
+        );
 
         OperacaoTelemetria operacao = TelemetriaService.criarOperacao(
             "Revisao de Lore (.ass LLM)",
@@ -711,6 +813,32 @@ public class RevisarLoreUseCase {
         int falasCorrigidas
     ) {
         return arquivosAnalisados > 0 || falasAuditadas > 0 || falasSinalizadas > 0 || falasCorrigidas > 0;
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: serializa no resumo canônico os campos mínimos que
+     * permitem descobrir sessões falhas ou incompletas sem abrir o relatório.
+     * <p>INVARIANTES DO DOMÍNIO: status e contadores pertencem à mesma sessão e
+     * usam chaves estáveis para mineração posterior.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: valores são convertidos diretamente;
+     * caminho e prompt nulos são representados textualmente sem exceção.
+     */
+    static String montarDetalheTelemetria(
+        Path pastaTraduzida,
+        String nomePrompt,
+        StatusRevisaoLore status,
+        int falasPendentes,
+        int falasSemResposta,
+        int falasDescartadas,
+        int totalErros
+    ) {
+        return String.valueOf(pastaTraduzida != null ? pastaTraduzida.toAbsolutePath() : null)
+            + " | promptRevisaoLore=" + nomePrompt
+            + " | status=" + (status != null ? status.name() : "DESCONHECIDO")
+            + " | pendentes=" + falasPendentes
+            + " | semResposta=" + falasSemResposta
+            + " | descartadas=" + falasDescartadas
+            + " | erros=" + totalErros;
     }
 
     private void registrarAuditoria(
@@ -818,6 +946,24 @@ public class RevisarLoreUseCase {
     }
 
     /**
+     * PROPÓSITO DE NEGÓCIO: decide se uma proposta eliminou de fato os
+     * indícios de lore que motivaram sua revisão.
+     * <p>INVARIANTES DO DOMÍNIO: uma fala inicialmente suspeita só é resolvida
+     * quando a auditoria posterior está limpa; fala inicialmente limpa não
+     * exige redução de indícios.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: resultados ausentes são conservadores
+     * e nunca autorizam gravar uma proposta para fala suspeita.
+     */
+    static boolean problemaLoreFoiResolvido(
+        ResultadoDeteccaoLore antes,
+        ResultadoDeteccaoLore depois
+    ) {
+        if (antes == null) return false;
+        if (!antes.suspeito()) return true;
+        return depois != null && !depois.suspeito();
+    }
+
+    /**
      * PROPÓSITO DE NEGÓCIO: confirma que a legenda EN e a PT descrevem a MESMA
      * sequência de falas antes de a revisão de lore parear evento por evento.
      * Contagem igual de eventos não basta — um Comment reposicionado ou diálogos
@@ -873,20 +1019,34 @@ public class RevisarLoreUseCase {
         return Optional.empty();
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: identifica eventos ASS que possuem intervalo de
+     * exibição comparável entre original e tradução.
+     * <p>INVARIANTES DO DOMÍNIO: somente Dialogue e Comment possuem tempo.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: tipo ausente ou desconhecido retorna falso.
+     */
     private static boolean temTempoAss(EventoLegenda e) {
         return "Dialogue".equals(e.tipoLinha()) || "Comment".equals(e.tipoLinha());
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: produz descrição didática do tipo de evento para o
+     * diagnóstico de desalinhamento.
+     * <p>INVARIANTES DO DOMÍNIO: tipo vazio representa linha não-evento.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: nunca retorna nulo.
+     */
     private static String rotuloTipo(EventoLegenda e) {
         String t = e.tipoLinha();
         return (t == null || t.isEmpty()) ? "linha-nao-evento" : t;
     }
 
     /**
-     * Descobre as posições dos campos Start e End na linha {@code Format:} da
-     * seção [Events]. O cabeçalho lido termina exatamente nessa linha (ver
-     * {@link LeitorLegendaAss}), então varremos todas as linhas Format e a de
-     * [Events] (única com Start/End) vence. Fallback: 1 e 2, a ordem canônica.
+     * PROPÓSITO DE NEGÓCIO: localiza Start e End no formato ASS para comparar
+     * a mesma fala mesmo quando a ordem das colunas não é canônica.
+     * <p>INVARIANTES DO DOMÍNIO: a linha Format da seção Events é a autoridade;
+     * na ausência dela, usa as posições canônicas 1 e 2.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: cabeçalho ausente conserva o fallback
+     * seguro sem lançar exceção.
      */
     private static int[] posicoesTempoAss(String cabecalho) {
         int start = 1;
@@ -910,7 +1070,13 @@ public class RevisarLoreUseCase {
         return new int[]{start, end};
     }
 
-    /** Lê o campo de índice {@code idx} do prefixo ASS (após "Dialogue: "). */
+    /**
+     * PROPÓSITO DE NEGÓCIO: lê um campo estrutural do prefixo ASS para validar
+     * o pareamento temporal sem tocar no texto traduzido.
+     * <p>INVARIANTES DO DOMÍNIO: preserva campos vazios e não lê além do índice.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: prefixo ausente ou índice inválido
+     * retorna texto vazio, que será tratado como tempo ilegível.
+     */
     private static String campoPrefixo(EventoLegenda e, int idx) {
         String prefixo = e.prefixo();
         if (prefixo == null) {
@@ -922,7 +1088,12 @@ public class RevisarLoreUseCase {
         return (idx >= 0 && idx < campos.length) ? campos[idx].trim() : "";
     }
 
-    /** Converte um timestamp ASS (H:MM:SS.CC) para milissegundos; -1 se ilegível. */
+    /**
+     * PROPÓSITO DE NEGÓCIO: converte timestamp ASS em milissegundos para a
+     * verificação tolerante de alinhamento EN/PT.
+     * <p>INVARIANTES DO DOMÍNIO: interpreta a fração como centésimos.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: valor ausente ou ilegível retorna -1.
+     */
     private static long tempoAssParaMs(String tempo) {
         if (tempo == null) {
             return -1;

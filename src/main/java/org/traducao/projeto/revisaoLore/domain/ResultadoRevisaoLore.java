@@ -2,6 +2,14 @@ package org.traducao.projeto.revisaoLore.domain;
 
 import java.util.List;
 
+/**
+ * PROPÓSITO DE NEGÓCIO: entrega ao controller o desfecho completo de uma
+ * revisão de lore para banner, logs e decisões operacionais.
+ * <p>INVARIANTES DO DOMÍNIO: status e contadores descrevem a mesma sessão;
+ * pendentes incluem respostas ausentes e propostas descartadas.
+ * <p>COMPORTAMENTO EM CASO DE FALHA: o record é imutável; falhas totais são
+ * comunicadas por exceção antes de sua criação.
+ */
 public record ResultadoRevisaoLore(
     StatusRevisaoLore status,
     int arquivosAnalisados,

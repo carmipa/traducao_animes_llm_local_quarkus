@@ -41,6 +41,12 @@ async function acompanharConclusao() {
     }
 }
 
+/**
+ * PROPÓSITO DE NEGÓCIO: liga o formulário da opção 7 ao job assíncrono e
+ * mantém o botão coerente com a fila real.
+ * INVARIANTES DO DOMÍNIO: contexto e duas pastas são obrigatórios antes do POST.
+ * COMPORTAMENTO EM CASO DE FALHA: exibe o erro no console e reabilita o botão.
+ */
 function vincularEventos() {
     const btnIniciar = document.getElementById('btn-iniciar-revisao-lore');
     const inputOriginal = document.getElementById('revisao-lore-entrada-original');

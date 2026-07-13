@@ -24,10 +24,21 @@ public enum StatusRevisaoLore {
 
     private final String rotulo;
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: associa cada estado técnico a um rótulo humano.
+     * <p>INVARIANTES DO DOMÍNIO: todo status possui rótulo não nulo.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: construção ocorre apenas pelas
+     * constantes declaradas no enum.
+     */
     StatusRevisaoLore(String rotulo) {
         this.rotulo = rotulo;
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: fornece o texto exibido nos banners e relatórios.
+     * <p>INVARIANTES DO DOMÍNIO: retorna sempre o rótulo da própria constante.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: nunca retorna nulo.
+     */
     public String rotulo() {
         return rotulo;
     }

@@ -20,6 +20,14 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * PROPÓSITO DE NEGÓCIO: expõe a Revisão de Lore à interface local, enfileira o
+ * trabalho com segurança e apresenta o desfecho real no console.
+ * <p>INVARIANTES DO DOMÍNIO: uma revisão sempre usa contexto conhecido e a fila
+ * única do pipeline; o banner reflete o status retornado pelo caso de uso.
+ * <p>COMPORTAMENTO EM CASO DE FALHA: entrada inválida retorna HTTP 400; falha
+ * assíncrona é registrada com banner vermelho e preserva a fila.
+ */
 @RestController
 @RequestMapping("/api")
 public class RevisaoLoreController {
@@ -34,6 +42,13 @@ public class RevisaoLoreController {
     private final GerenciadorPromptRevisaoLore gerenciadorPromptRevisaoLore;
     private final LogStreamService logStreamService;
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: conecta fila, revisão, catálogo de contextos e
+     * canal de logs da opção 7.
+     * <p>INVARIANTES DO DOMÍNIO: dependências são obrigatórias e imutáveis.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: ausência de dependência impede a
+     * inicialização do controller.
+     */
     public RevisaoLoreController(
         FilaExecucaoPipeline filaExecucao,
         RevisarLoreUseCase revisarLoreUseCase,
@@ -77,6 +92,14 @@ public class RevisaoLoreController {
             .trim();
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: valida a solicitação e enfileira a revisão sem
+     * bloquear a requisição HTTP durante o processamento do LLM.
+     * <p>INVARIANTES DO DOMÍNIO: pastas e contexto precisam ser informados; o
+     * contexto precisa existir antes do enfileiramento.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: validação retorna HTTP 400; exceções da
+     * tarefa são convertidas em banner FALHOU no console.
+     */
     @PostMapping("/revisar-lore")
     public ResponseEntity<Map<String, Object>> iniciarRevisaoLore(@RequestBody RevisaoLoreRequest req) {
         if (req.diretorioOriginal() == null || req.diretorioOriginal().isBlank()) {
