@@ -22,6 +22,7 @@ public record RevisaoLoreRelatorioJson(
     public record PastasOperacao(String originalEn, String traduzidaPtBr) {}
 
     public record MetricasRevisaoLore(
+        StatusRevisaoLore status,
         long duracaoMs,
         String duracaoFormatada,
         int arquivosAnalisados,
@@ -30,6 +31,9 @@ public record RevisaoLoreRelatorioJson(
         int falasSinalizadas,
         int falasCorrigidas,
         int falasSemAlteracao,
+        int falasSemResposta,
+        int falasDescartadas,
+        int falasPendentes,
         int totalErros
     ) {}
 }

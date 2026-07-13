@@ -18,6 +18,29 @@ async function carregarPainelHtml() {
     return painel;
 }
 
+/**
+ * PROPÓSITO DE NEGÓCIO: mantém o botão bloqueado enquanto a revisão de lore
+ * ainda está na fila ou em execução no servidor, evitando duplo disparo do job
+ * (o POST só ENFILEIRA — o trabalho real roda em segundo plano).
+ * INVARIANTES DO DOMÍNIO: só retorna quando a fila do pipeline reporta "livre";
+ * o polling nunca interfere no stream SSE do console (canais independentes).
+ * COMPORTAMENTO EM CASO DE FALHA: se o status da fila ficar indisponível, loga
+ * um aviso e retorna, liberando o botão para nova tentativa.
+ */
+async function acompanharConclusao() {
+    try {
+        for (;;) {
+            const resposta = await fetch('/api/pipeline/status', { cache: 'no-store' });
+            if (!resposta.ok) break;
+            const dados = await resposta.json();
+            if (dados.mensagem === 'livre') break;
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+    } catch (erro) {
+        logNoConsole('console-revisao-lore', `Não foi possível acompanhar o estado da fila: ${erro.message}`, 'aviso');
+    }
+}
+
 function vincularEventos() {
     const btnIniciar = document.getElementById('btn-iniciar-revisao-lore');
     const inputOriginal = document.getElementById('revisao-lore-entrada-original');
@@ -68,6 +91,13 @@ function vincularEventos() {
 
             logNoConsole('console-revisao-lore', data.mensagem || 'Revisão de lore iniciada.', 'sucesso');
             mostrarAlerta('Revisão de lore iniciada! Acompanhe os logs.', 'sucesso');
+
+            // Botão permanece bloqueado até o job REAL terminar na fila; só então
+            // liberamos e sinalizamos o fim (o status real fica no banner do console).
+            await acompanharConclusao();
+            mostrarAlerta('Revisão de lore finalizada. Confira o status e o resumo no console.', 'info');
+            const btnRefresh = document.getElementById('btn-refresh-telemetria');
+            if (btnRefresh) btnRefresh.click();
         } catch (err) {
             logNoConsole('console-revisao-lore', `Erro: ${err.message}`, 'erro');
             mostrarAlerta(err.message, 'erro');

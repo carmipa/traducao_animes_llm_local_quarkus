@@ -15,10 +15,18 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
+/**
+ * PROPÓSITO DE NEGÓCIO: transforma cada Análise de Legenda em telemetria e
+ * dataset JSON pesquisável, incluindo os formatos efetivamente processados.
+ * <p>INVARIANTES DO DOMÍNIO: métricas e relatório persistido descrevem a mesma
+ * execução e os mesmos arquivos.
+ * <p>COMPORTAMENTO EM CASO DE FALHA: falha de persistência é registrada, mas
+ * não invalida o resultado em memória da auditoria.
+ */
 @ApplicationScoped
 public class TelemetriaAuditoriaService {
 
-    public static final String TIPO_OPERACAO = "Auditoria de Conteudo (.ass)";
+    public static final String TIPO_OPERACAO = "Auditoria de Conteudo de Legendas";
 
     private static final Logger log = LoggerFactory.getLogger(TelemetriaAuditoriaService.class);
 
@@ -34,6 +42,14 @@ public class TelemetriaAuditoriaService {
         this.persistencia = persistencia;
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: registra resultado, formatos e anomalias para
+     * acompanhamento operacional e melhoria futura das regras.
+     * <p>INVARIANTES DO DOMÍNIO: o JSON e a operação agregada compartilham os
+     * mesmos contadores e formatos.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: retorna {@code null} se o JSON não
+     * puder ser salvo, mantendo a telemetria em memória quando possível.
+     */
     public String registrar(
         RelatorioAuditoriaConteudo relatorio,
         Path caminhoOriginal,
@@ -46,6 +62,8 @@ public class TelemetriaAuditoriaService {
             .count();
 
         String detalhe = caminhoTraduzido.toAbsolutePath()
+            + " | formatoOriginal=" + relatorio.getFormatoOriginal()
+            + " | formatoTraduzido=" + relatorio.getFormatoTraduzido()
             + " | anomalias=" + totalAnomalias
             + " | criticas=" + criticas;
 
@@ -63,6 +81,8 @@ public class TelemetriaAuditoriaService {
             operacao,
             relatorio.getArquivoOriginal(),
             relatorio.getArquivoTraduzido(),
+            relatorio.getFormatoOriginal(),
+            relatorio.getFormatoTraduzido(),
             relatorio.isLimpo(),
             totalAnomalias,
             duracaoMs,

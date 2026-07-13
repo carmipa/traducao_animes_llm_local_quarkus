@@ -5,14 +5,14 @@
 
     <form id="form-auditor-conteudo" class="standard-form">
         <div class="form-group">
-            <label for="auditor-original">Arquivo Original (.ass): <span class="help-icon" data-tooltip="O arquivo de legenda original (pré-tradução) usado como referência de sincronia, estilos e quebras de linha corretas.">?</span></label>
+            <label for="auditor-original">Arquivo Original (ASS/SSA/SRT): <span class="help-icon" data-tooltip="O arquivo de legenda original usado como referência. O formato detectado será exibido no relatório.">?</span></label>
             <div class="input-with-button">
                 <input type="text" id="auditor-original" autocomplete="off" spellcheck="false" placeholder="Caminho do arquivo original" required>
                 <button type="button" class="btn-procurar" data-target="auditor-original" data-type="arquivo"><span class="material-symbols-outlined btn-inline-icon">folder_open</span>Procurar...</button>
             </div>
         </div>
         <div class="form-group">
-            <label for="auditor-traduzido">Arquivo Traduzido (.ass): <span class="help-icon" data-tooltip="O arquivo gerado pelo LLM para analisar se houve destruição de tags ou vazamento.">?</span></label>
+            <label for="auditor-traduzido">Arquivo Traduzido (ASS/SSA/SRT): <span class="help-icon" data-tooltip="O arquivo gerado pelo LLM. O relatório identifica seu formato e analisa possíveis danos estruturais.">?</span></label>
             <div class="input-with-button">
                 <input type="text" id="auditor-traduzido" autocomplete="off" spellcheck="false" placeholder="Caminho do arquivo traduzido" required>
                 <button type="button" class="btn-procurar" data-target="auditor-traduzido" data-type="arquivo"><span class="material-symbols-outlined btn-inline-icon">folder_open</span>Procurar...</button>
@@ -48,7 +48,7 @@
         </div>
     </div>
 
-    <!-- Faixa de resumo (Original / Traduzido / Regras / Duração) — preenchida via JS -->
+    <!-- Faixa de resumo (arquivo + formato original/traduzido / regras / duração) — preenchida via JS -->
     <div id="auditor-resumo" class="auditor-resumo hidden" aria-live="polite"></div>
 
     <!-- Chips de filtro por severidade com contagem — preenchidos via JS após a auditoria -->

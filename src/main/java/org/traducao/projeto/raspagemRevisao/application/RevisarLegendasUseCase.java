@@ -53,6 +53,8 @@ public class RevisarLegendasUseCase {
 
     private static final Set<String> EXTENSOES = Set.of(".ass", ".ssa");
     private static final long PAUSA_GOOGLE_MS = 400;
+    private static final int LIMIAR_ABSOLUTO_RETRADUCAO_EM_MASSA = 20;
+    private static final int DIVISOR_PROPORCAO_RETRADUCAO_EM_MASSA = 10;
     private static final Pattern CODIGO_EPISODIO = Pattern.compile("(?i)(S\\d{1,2}E\\d{1,3})");
     private static final Pattern SUFIXO_PTBR_TRACK = Pattern.compile("(?i)_PT-?BR(_Track\\d+)?$");
     private static final DateTimeFormatter TS_BACKUP = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss_SSS");
@@ -486,6 +488,39 @@ public class RevisarLegendasUseCase {
                 out("  [CACHE] Evento " + indice + " sincronizado com a correção da Opção 5.");
             }
         }
+        if (!sincronizarCache && !sincronizacao.indicesRecuperadosDoOriginal().isEmpty()) {
+            out(AnsiCores.YELLOW + "  [RECUPERAÇÃO] O ASS continha "
+                + sincronizacao.indicesRecuperadosDoOriginal().size()
+                + " fala(s) que haviam voltado exatamente ao inglês. "
+                + "As traduções persistentes do cache foram restauradas mesmo com cache mais antigo."
+                + AnsiCores.RESET);
+            for (Integer indice : sincronizacao.indicesRecuperadosDoOriginal()) {
+                out("  [CACHE/RECUPERADO] Evento " + indice + " restaurado do banco de tradução.");
+            }
+        }
+
+        DiagnosticoRetraducao diagnosticoRetraducao = diagnosticarRetraducaoEmMassa(
+            documentoPt, originaisPorIndice, contexto);
+        if (diagnosticoRetraducao.deveBloquear()) {
+            if (sincronizadasNesteArquivo > 0) {
+                Path destino = saidaDir.resolve(arquivoPt.getFileName());
+                Path backup = criarBackupSeSobrescrever(arquivoPt, destino, pastaBackup);
+                escritor.escrever(destino, documentoPt);
+                out(AnsiCores.GREEN + "  [RECUPERADO] Traduções disponíveis no cache foram salvas antes do bloqueio."
+                    + AnsiCores.RESET);
+                if (backup != null) out(AnsiCores.CYAN + "  Backup anterior: " + backup + AnsiCores.RESET);
+            }
+            totalAuditadas[0] += diagnosticoRetraducao.falasAuditaveis();
+            totalProblemas[0] += diagnosticoRetraducao.falasNaoTraduzidas();
+            totalPendentes[0] += diagnosticoRetraducao.falasNaoTraduzidas();
+            out(AnsiCores.RED + "  [BLOQUEADO] A entrada ainda possui "
+                + diagnosticoRetraducao.falasNaoTraduzidas() + " de "
+                + diagnosticoRetraducao.falasAuditaveis()
+                + " falas auditáveis iguais ao inglês. A Opção 6 revisa traduções; "
+                + "não fará retradução em massa. Regenere pela Opção 4 ou corrija o cache."
+                + AnsiCores.RESET);
+            return;
+        }
 
         boolean interrompido = false;
         for (EventoLegenda evento : documentoPt.eventos()) {
@@ -809,6 +844,77 @@ public class RevisarLegendasUseCase {
             return false;
         }
     }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: detecta quando uma legenda apresentada à etapa de
+     * revisão é, na realidade, um artefato não traduzido ou parcialmente
+     * restaurado do inglês, evitando usar o revisor como tradutor em massa.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: somente diálogos auditáveis com original EN e
+     * igualdade textual efetiva entram na contagem; nomes protegidos pela lore
+     * não são falsamente classificados como falha; o bloqueio exige ao menos
+     * vinte ocorrências e dez por cento das falas auditáveis.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: documento sem base comparável produz
+     * diagnóstico vazio e não bloqueia o fluxo.
+     */
+    private DiagnosticoRetraducao diagnosticarRetraducaoEmMassa(
+        DocumentoLegenda documento,
+        Map<Integer, String> originaisPorIndice,
+        ContextoRevisao contexto
+    ) {
+        if (documento == null || originaisPorIndice == null || originaisPorIndice.isEmpty()) {
+            return new DiagnosticoRetraducao(0, 0, false);
+        }
+        int auditaveis = 0;
+        int naoTraduzidas = 0;
+        for (EventoLegenda evento : documento.eventos()) {
+            if (!evento.isDialogo() || evento.texto() == null || evento.texto().isBlank()
+                || deveIgnorarAuditoria(evento, evento.texto())) {
+                continue;
+            }
+            String original = originaisPorIndice.get(evento.indice());
+            if (original == null || original.isBlank()) continue;
+            auditaveis++;
+            if (!normalizarTexto(original).equals(normalizarTexto(evento.texto()))) continue;
+            if (protetorLore.contemSomenteTermosCanonicos(
+                original, contexto.lore(), contexto.termosProtegidos())) {
+                continue;
+            }
+            ResultadoDeteccaoConcordancia resultado = auditor.auditar(original, evento.texto());
+            if (resultado.motivos().stream().anyMatch(m -> m.contains("Fala não traduzida"))) {
+                naoTraduzidas++;
+            }
+        }
+        boolean bloquear = excedeLimiarRetraducaoEmMassa(auditaveis, naoTraduzidas);
+        return new DiagnosticoRetraducao(auditaveis, naoTraduzidas, bloquear);
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: aplica o limite operacional que impede a etapa de
+     * revisão de assumir silenciosamente o trabalho da Tradução Local.
+     * <p>INVARIANTES DO DOMÍNIO: exige simultaneamente vinte falas e dez por
+     * cento do material auditável; valores negativos nunca autorizam bloqueio.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: contagens inválidas retornam falso.
+     */
+    static boolean excedeLimiarRetraducaoEmMassa(int falasAuditaveis, int falasNaoTraduzidas) {
+        if (falasAuditaveis <= 0 || falasNaoTraduzidas < 0) return false;
+        return falasNaoTraduzidas >= LIMIAR_ABSOLUTO_RETRADUCAO_EM_MASSA
+            && falasNaoTraduzidas * DIVISOR_PROPORCAO_RETRADUCAO_EM_MASSA >= falasAuditaveis;
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: transporta as métricas usadas para separar revisão
+     * linguística de uma retradução acidental do arquivo inteiro.
+     * <p>INVARIANTES DO DOMÍNIO: contadores representam a mesma fotografia do
+     * documento após a recuperação do cache.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: record é imutável e não altera arquivos.
+     */
+    private record DiagnosticoRetraducao(
+        int falasAuditaveis,
+        int falasNaoTraduzidas,
+        boolean deveBloquear
+    ) {}
 
     /**
      * PROPÓSITO DE NEGÓCIO: preserva a legenda anterior antes de a Opção 6

@@ -2,9 +2,9 @@
  MAPA ESTRUTURAL DO PROJETO - TRACKER ANIMES
 ================================================================================
  Raiz do repositorio      : traducao_animes_llm_local_quarkus
- Pastas mapeadas          : 243
- Arquivos (na arvore)     : 455
- Arquivos-fonte indexados : 349  (.java: 349 | .py: 0)
+ Pastas mapeadas          : 289
+ Arquivos (na arvore)     : 548
+ Arquivos-fonte indexados : 358  (.java: 358 | .py: 0)
  Memoria viva do projeto  : CEREBRO_IA.md (na raiz do repositorio)
 
  Objetivo: mapa de contexto para LLMs navegarem os diretorios e
@@ -23,9 +23,22 @@ traducao_animes_llm_local_quarkus/
 ├── .vscode/
 │   └── settings.json
 ├── backups/
-│   └── correcao-cache/
-│       └── limpeza_20260713_171001_837/
-│           └── [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3.cache.json
+│   ├── correcao-cache/
+│   │   ├── hotfix_opcao6_20260713_185403_591/
+│   │   │   └── [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3.cache.json
+│   │   └── lore_protegida_20260713_183121/
+│   │       └── [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3.cache.json
+│   └── revisao-legendas/
+│       ├── hotfix_opcao6_20260713_185403_591/
+│       │   └── [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3_PT-BR.ass
+│       ├── recuperacao_cache_20260713_185321_383/
+│       │   └── [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3_PT-BR.ass
+│       ├── recuperada_lore_20260713_183121/
+│       │   └── [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3_PT-BR.ass
+│       ├── revisao_20260713_183836_291/
+│       │   └── [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3_PT-BR.ass
+│       └── revisao_20260713_184446_124/
+│           └── [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3_PT-BR.ass
 ├── downloads/
 │   └── plano-mapas-saas.html
 ├── gradle/
@@ -38,12 +51,128 @@ traducao_animes_llm_local_quarkus/
 │   ├── console-web.log
 │   └── telemetria_compartilhada.json
 ├── relatorios/
-│   ├── Gundam Narrative NT/
-│   │   ├── limpeza_cache_20260713_171002.json
-│   │   ├── limpeza_cache_20260713_171002.txt
+│   ├── junit-10789098657161725398/
+│   │   ├── troca_fontes_20260713_183453.json
+│   │   └── troca_fontes_20260713_183453.md
+│   ├── junit-1128200427125634959/
+│   │   ├── troca_fontes_20260713_183412.json
+│   │   └── troca_fontes_20260713_183412.md
+│   ├── junit-11594749605187718340/
+│   │   ├── auditoria_conteudo_20260713_190259.json
 │   │   └── telemetria_compartilhada.json
-│   └── junit-1951375163667524381/
-│       ├── auditoria_conteudo_20260713_172142.json
+│   ├── junit-1162096832399206289/
+│   │   ├── troca_fontes_20260713_191025.json
+│   │   └── troca_fontes_20260713_191025.md
+│   ├── junit-1399871810161493448/
+│   │   ├── auditoria_conteudo_20260713_191024.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-14260166133412252573/
+│   │   ├── auditoria_conteudo_20260713_191019.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-14842168388005987474/
+│   │   ├── auditoria_conteudo_20260713_183452.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-14842335507431862472/
+│   │   ├── auditoria_conteudo_20260713_191024.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-14964911890864884796/
+│   │   ├── auditoria_conteudo_20260713_190158.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-15495103736216966548/
+│   │   ├── troca_fontes_20260713_190300.json
+│   │   └── troca_fontes_20260713_190300.md
+│   ├── junit-15650799447219185326/
+│   │   ├── auditoria_conteudo_20260713_183452.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-16222883160270816297/
+│   │   ├── troca_fontes_20260713_190205.json
+│   │   └── troca_fontes_20260713_190205.md
+│   ├── junit-1709835422015276158/
+│   │   ├── auditoria_conteudo_20260713_190259.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-17695423539153199322/
+│   │   ├── troca_fontes_20260713_183453.json
+│   │   └── troca_fontes_20260713_183453.md
+│   ├── junit-18074591256680139313/
+│   │   ├── auditoria_conteudo_20260713_191056.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-1973705150587832158/
+│   │   ├── troca_fontes_20260713_190300.json
+│   │   └── troca_fontes_20260713_190300.md
+│   ├── junit-1980762378007909540/
+│   │   ├── auditoria_conteudo_20260713_191036.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-2042233824232254696/
+│   │   ├── auditoria_conteudo_20260713_184819.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-3184043112435893775/
+│   │   ├── auditoria_conteudo_20260713_191036.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-3302790595918447012/
+│   │   ├── troca_fontes_20260713_183346.json
+│   │   └── troca_fontes_20260713_183346.md
+│   ├── junit-4400614077006035939/
+│   │   ├── troca_fontes_20260713_184821.json
+│   │   └── troca_fontes_20260713_184821.md
+│   ├── junit-4745415262813171141/
+│   │   ├── troca_fontes_20260713_185921.json
+│   │   └── troca_fontes_20260713_185921.md
+│   ├── junit-4849595417475205101/
+│   │   ├── auditoria_conteudo_20260713_184814.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-499713789878574832/
+│   │   ├── troca_fontes_20260713_185921.json
+│   │   └── troca_fontes_20260713_185921.md
+│   ├── junit-5028299060550078422/
+│   │   ├── auditoria_conteudo_20260713_185920.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-5124750841509179807/
+│   │   ├── troca_fontes_20260713_190205.json
+│   │   └── troca_fontes_20260713_190205.md
+│   ├── junit-5461244447677747877/
+│   │   ├── auditoria_conteudo_20260713_191024.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-6501039598696197998/
+│   │   ├── troca_fontes_20260713_191025.json
+│   │   └── troca_fontes_20260713_191025.md
+│   ├── junit-6879107851720676150/
+│   │   ├── troca_fontes_20260713_183346.json
+│   │   └── troca_fontes_20260713_183346.md
+│   ├── junit-7147881438623351026/
+│   │   ├── auditoria_conteudo_20260713_183446.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-7180719885411323645/
+│   │   ├── auditoria_conteudo_20260713_191037.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-7260187239034368309/
+│   │   ├── auditoria_conteudo_20260713_184819.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-7338170047583057968/
+│   │   ├── auditoria_conteudo_20260713_185920.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-7648015884372910295/
+│   │   ├── auditoria_conteudo_20260713_190204.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-794671504824127589/
+│   │   ├── troca_fontes_20260713_183412.json
+│   │   └── troca_fontes_20260713_183412.md
+│   ├── junit-8390916704791800574/
+│   │   ├── auditoria_conteudo_20260713_190204.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-9267345309690367472/
+│   │   ├── troca_fontes_20260713_184821.json
+│   │   └── troca_fontes_20260713_184821.md
+│   ├── junit-934813647991302338/
+│   │   ├── auditoria_conteudo_20260713_185914.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-9699803367819847090/
+│   │   ├── auditoria_conteudo_20260713_190253.json
+│   │   └── telemetria_compartilhada.json
+│   └── legendas pt/
+│       ├── revisao_concordancia_legendas_20260713_184338.json
+│       ├── revisao_concordancia_legendas_20260713_184338.txt
+│       ├── revisao_legendas_20260713_184524.json
+│       ├── revisao_legendas_20260713_184524.txt
 │       └── telemetria_compartilhada.json
 ├── src/
 │   ├── main/
@@ -216,9 +345,11 @@ traducao_animes_llm_local_quarkus/
 │   │   │               │   ├── application/
 │   │   │               │   │   ├── AuditorProblemasLegendaService.java
 │   │   │               │   │   ├── DetectorConcordanciaService.java
+│   │   │               │   │   ├── LeitorCacheReferenciaService.java
 │   │   │               │   │   ├── ResultadoRevisaoLegendas.java
 │   │   │               │   │   ├── RevisarCacheUseCase.java
-│   │   │               │   │   └── RevisarLegendasUseCase.java
+│   │   │               │   │   ├── RevisarLegendasUseCase.java
+│   │   │               │   │   └── SincronizadorLegendaCacheService.java
 │   │   │               │   ├── domain/
 │   │   │               │   │   ├── exceptions/
 │   │   │               │   │   │   └── RaspagemRevisaoException.java
@@ -281,7 +412,8 @@ traducao_animes_llm_local_quarkus/
 │   │   │               │   │   ├── LogEventoRevisaoLore.java
 │   │   │               │   │   ├── ResultadoDeteccaoLore.java
 │   │   │               │   │   ├── ResultadoRevisaoLore.java
-│   │   │               │   │   └── RevisaoLoreRelatorioJson.java
+│   │   │               │   │   ├── RevisaoLoreRelatorioJson.java
+│   │   │               │   │   └── StatusRevisaoLore.java
 │   │   │               │   ├── infrastructure/
 │   │   │               │   │   ├── RevisaoLoreAuditoriaCache.java
 │   │   │               │   │   └── RevisaoLoreLogPersistencia.java
@@ -651,7 +783,12 @@ traducao_animes_llm_local_quarkus/
 │                       ├── raspagemRevisao/
 │                       │   └── application/
 │                       │       ├── DetectorConcordanciaServiceTest.java
-│                       │       └── RevisarCacheUseCaseTest.java
+│                       │       ├── LeitorCacheReferenciaServiceTest.java
+│                       │       ├── ResultadoRevisaoLegendasTest.java
+│                       │       ├── RevisarCacheUseCaseTest.java
+│                       │       ├── RevisarLegendasContextoTest.java
+│                       │       ├── RevisarLegendasProtecaoMassaTest.java
+│                       │       └── SincronizadorLegendaCacheServiceTest.java
 │                       ├── remuxer/
 │                       │   └── application/
 │                       │       └── MapeadorMidiaServiceTest.java
@@ -687,9 +824,11 @@ traducao_animes_llm_local_quarkus/
 │                       │           ├── ConsoleRedirectorTest.java
 │                       │           └── LogStreamServiceTest.java
 │                       ├── traducaoCorrige/
-│                       │   └── application/
-│                       │       ├── ClassificadorEntradaCacheServiceTest.java
-│                       │       └── LimparCacheUseCaseTest.java
+│                       │   ├── application/
+│                       │   │   ├── ClassificadorEntradaCacheServiceTest.java
+│                       │   │   └── LimparCacheUseCaseTest.java
+│                       │   └── domain/
+│                       │       └── ResultadoManutencaoCacheTest.java
 │                       ├── traducaoKaraoke/
 │                       │   └── application/
 │                       │       ├── ClassificadorLetraKaraokeServiceTest.java
@@ -814,9 +953,19 @@ traducao_animes_llm_local_quarkus/
 
 [PASTA] src/main/java/org/traducao/projeto/auditorConteudoLegendas/application/
   - AuditorConteudoUseCase.java
-      (sem cabecalho explicativo)
+      PROPÓSITO DE NEGÓCIO: compara uma legenda original com sua versão traduzida
+      e produz um relatório didático com formato, integridade e anomalias.
+      <p>INVARIANTES DO DOMÍNIO: somente arquivos regulares ASS, SSA ou SRT entram
+      na auditoria; cada arquivo é lido pelo parser correspondente ao seu formato.
+      <p>COMPORTAMENTO EM CASO DE FALHA: arquivo ausente, formato não suportado ou
+      erro de leitura gera {@link AuditoriaException} sem relatório parcial.
   - TelemetriaAuditoriaService.java
-      (sem cabecalho explicativo)
+      PROPÓSITO DE NEGÓCIO: transforma cada Análise de Legenda em telemetria e
+      dataset JSON pesquisável, incluindo os formatos efetivamente processados.
+      <p>INVARIANTES DO DOMÍNIO: métricas e relatório persistido descrevem a mesma
+      execução e os mesmos arquivos.
+      <p>COMPORTAMENTO EM CASO DE FALHA: falha de persistência é registrada, mas
+      não invalida o resultado em memória da auditoria.
 
 [PASTA] src/main/java/org/traducao/projeto/auditorConteudoLegendas/application/regras/
   - RegraAlucinacaoQuebraLinha.java
@@ -836,13 +985,27 @@ traducao_animes_llm_local_quarkus/
   - AnomaliaConteudo.java
       (sem cabecalho explicativo)
   - AuditoriaConteudoRelatorioJson.java
-      Relatório persistido em JSON da auditoria de conteúdo de legendas.
+      PROPÓSITO DE NEGÓCIO: persiste a auditoria como dataset estruturado para
+      diagnóstico, evolução das regras e reprodução de falhas.
+      <p>INVARIANTES DO DOMÍNIO: nomes, formatos, métricas e anomalias pertencem à
+      mesma execução.
+      <p>COMPORTAMENTO EM CASO DE FALHA: o record é imutável; falhas de gravação
+      são tratadas pela camada de persistência.
   - AuditoriaException.java
       (sem cabecalho explicativo)
   - RegraAuditoriaConteudo.java
       (sem cabecalho explicativo)
   - RelatorioAuditoriaConteudo.java
-      (sem cabecalho explicativo)
+      PROPÓSITO DE NEGÓCIO: representa o resultado exibido e exportado pela
+      Análise de Legenda, incluindo a identificação inequívoca dos artefatos
+      comparados e de seus formatos.
+      
+      <p>INVARIANTES DO DOMÍNIO: arquivo e formato original sempre pertencem ao
+      mesmo artefato; arquivo e formato traduzido seguem a mesma regra; anomalias
+      são acumuladas sem alterar os metadados de entrada.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: esta classe não executa I/O; dados
+      inválidos precisam ser rejeitados pelo caso de uso antes de sua criação.
 
 [PASTA] src/main/java/org/traducao/projeto/auditorConteudoLegendas/infrastructure/
   - AuditoriaConteudoPersistencia.java
@@ -1236,10 +1399,34 @@ traducao_animes_llm_local_quarkus/
       Agrega detecção de resíduo em inglês, falas não traduzidas e erros de
       concordância PT-BR.
   - DetectorConcordanciaService.java
-      Heurísticas para calques de gênero do inglês: concordância nominal,
-      pronomes pessoais/objetos, tratamentos e predicados verbais.
+      PROPÓSITO DE NEGÓCIO: detecta erros objetivos de gênero e concordância que
+      tornam uma legenda em português incoerente com a fala original.
+      
+      <p>INVARIANTES DO DOMÍNIO: somente evidências presentes na própria entrada
+      podem gerar suspeita; primeira e segunda pessoas sem identificação do falante
+      não autorizam inferência de gênero; tags ASS não interferem na análise.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: texto traduzido ausente é tratado como
+      limpo por este detector e permanece sob responsabilidade dos validadores de
+      tradução pendente.
+  - LeitorCacheReferenciaService.java
+      PROPÓSITO DE NEGÓCIO: entrega à Revisão de Legendas as referências EN/PT do
+      cache produzido pela Tradução Local e atualizado pela Correção de Cache.
+      
+      <p>INVARIANTES DO DOMÍNIO: aceita o formato legado e o envelope versionado;
+      a leitura é somente consulta e não remove proveniência nem campos futuros.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: arquivo inexistente devolve lista vazia;
+      JSON inválido ou entrada incompatível lança {@link IOException} ao chamador.
   - ResultadoRevisaoLegendas.java
-      (sem cabecalho explicativo)
+      PROPÓSITO DE NEGÓCIO: comunica ao painel o desfecho real da Opção 6, separando
+      correções aplicadas de problemas que ainda exigem atenção.
+      
+      <p>INVARIANTES DO DOMÍNIO: pendências nunca produzem status de conclusão
+      integral; contadores negativos são normalizados para zero.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: ausência de arquivos gera status
+      {@code SEM_ARQUIVOS}; o record não lança exceções por contagem inválida.
   - RevisarCacheUseCase.java
       PROPÓSITO DE NEGÓCIO: revisa concordância, gênero e resíduos em traduções
       válidas já persistidas, usando a lore vinculada a cada arquivo da pasta cache.
@@ -1250,6 +1437,17 @@ traducao_animes_llm_local_quarkus/
       toda alteração possui backup, escrita atômica e auditoria.
   - RevisarLegendasUseCase.java
       (sem cabecalho explicativo)
+  - SincronizadorLegendaCacheService.java
+      PROPÓSITO DE NEGÓCIO: materializa no ASS/SSA as correções confirmadas pela
+      Opção 5 antes de a Opção 6 iniciar sua auditoria linguística.
+      
+      <p>INVARIANTES DO DOMÍNIO: sincroniza somente por índice existente, somente
+      tradução não vazia e nunca modifica cabeçalho, tempos, estilos ou linhas não
+      dialogadas. Uma fala que regrediu exatamente ao original EN pode ser
+      recuperada mesmo quando o timestamp do cache é anterior ao ASS.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: cache vazio devolve o documento original;
+      sem autorização temporal, somente regressões exatas ao original são reparadas.
 
 [PASTA] src/main/java/org/traducao/projeto/raspagemRevisao/domain/exceptions/
   - RaspagemRevisaoException.java
@@ -1368,6 +1566,20 @@ traducao_animes_llm_local_quarkus/
       (sem cabecalho explicativo)
   - RevisaoLoreRelatorioJson.java
       Relatorio completo da revisao de lore em JSON: telemetria, metricas, contexto e log da sessao.
+  - StatusRevisaoLore.java
+      PROPÓSITO DE NEGÓCIO: distingue o desfecho real de uma execução de revisão de
+      lore, substituindo o antigo "[SUCESSO]" incondicional. Permite ao operador
+      saber, num relance no console/relatório, se o job realmente concluiu, se
+      concluiu deixando pendências, se foi cancelado, se falhou ou se nem havia
+      arquivos para processar.
+      
+      <p>INVARIANTES DO DOMÍNIO: exatamente um status descreve cada execução. Só
+      {@link #FALHOU} pode acompanhar uma exceção propagada; os demais representam
+      retornos normais do use case. {@link #CONCLUIDO} exige zero erros e zero falas
+      pendentes.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: é um enum imutável; não dispara exceções.
+      O rótulo textual nunca é nulo.
 
 [PASTA] src/main/java/org/traducao/projeto/revisaoLore/domain/exceptions/
   - RevisaoLoreException.java
@@ -1508,7 +1720,8 @@ traducao_animes_llm_local_quarkus/
       anunciem sucesso quando arquivos falharam.
       
       <p>INVARIANTES DO DOMÍNIO: contadores nunca são negativos; uma execução com
-      falhas não possui status {@code CONCLUIDO}; cancelamento tem precedência.
+      falhas ou pendências não possuem status {@code CONCLUIDO}; cancelamento tem
+      precedência sobre os demais estados.
       
       <p>COMPORTAMENTO EM CASO DE FALHA: record imutável; entradas negativas são
       normalizadas para zero pelo construtor compacto.
@@ -2133,7 +2346,11 @@ traducao_animes_llm_local_quarkus/
 
 [PASTA] src/test/java/org/traducao/projeto/auditorConteudoLegendas/application/
   - AuditorConteudoUseCaseTest.java
-      (sem cabecalho explicativo)
+      PROPÓSITO DE NEGÓCIO: confirma que uma auditoria ASS limpa expõe formato
+      e gera o dataset JSON esperado.
+      <p>INVARIANTES DO DOMÍNIO: os dois arquivos são ASS válidos e equivalentes.
+      <p>COMPORTAMENTO EM CASO DE FALHA: metadado ausente ou persistência
+      inexistente reprova o teste.
 
 [PASTA] src/test/java/org/traducao/projeto/auditorConteudoLegendas/application/regras/
   - RegraAlucinacaoQuebraLinhaTest.java
@@ -2239,13 +2456,53 @@ traducao_animes_llm_local_quarkus/
 
 [PASTA] src/test/java/org/traducao/projeto/raspagemRevisao/application/
   - DetectorConcordanciaServiceTest.java
-      Cobre as heurísticas de concordância de gênero (calques do inglês): o núcleo
-      algorítmico da revisão de legendas. Serviço de lógica pura — sem I/O nem LLM.
-  - RevisarCacheUseCaseTest.java
-      PROPÓSITO DE NEGÓCIO: comprova que uma raiz cache com várias obras ativa a
-      lore registrada em cada arquivo antes da respectiva revisão LLM.
+      PROPÓSITO DE NEGÓCIO: comprova que a revisão automática encontra divergências
+      objetivas de gênero sem reescrever falas corretas por inferência do falante.
       
-      <p>INVARIANTES DO DOMÍNIO: DanMachi e Gundam não compartilham contexto global;
+      <p>INVARIANTES DO DOMÍNIO: evidência explícita continua detectável; `I/you`
+      e palavras polissêmicas como `cara` não produzem falso positivo.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: qualquer regressão reprova o teste antes
+      que uma proposta indevida alcance o cache operacional.
+  - LeitorCacheReferenciaServiceTest.java
+      PROPÓSITO DE NEGÓCIO: prova que a Opção 6 consome tanto caches históricos
+      quanto o formato versionado atualmente produzido pelas Opções 4 e 5.
+      
+      <p>INVARIANTES DO DOMÍNIO: índice, original e tradução permanecem idênticos
+      ao JSON e a proveniência não interfere na leitura das entradas.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: incompatibilidade de schema reprova o teste.
+  - ResultadoRevisaoLegendasTest.java
+      PROPÓSITO DE NEGÓCIO: garante que o painel da Opção 6 diferencie conclusão
+      integral de uma execução estável que ainda deixou falas sem solução.
+      
+      <p>INVARIANTES DO DOMÍNIO: qualquer pendência impede banner verde.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: status divergente reprova o teste.
+  - RevisarCacheUseCaseTest.java
+      (sem cabecalho explicativo)
+  - RevisarLegendasContextoTest.java
+      PROPÓSITO DE NEGÓCIO: prova que a Opção 6 não revisa uma obra usando a lore
+      selecionada por engano na interface quando o cache conhece sua proveniência.
+      
+      <p>INVARIANTES DO DOMÍNIO: contexto versionado vence fallback manual.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: ativação de DanMachi para cache Gundam
+      reprova o teste antes que uma legenda real seja modificada.
+  - RevisarLegendasProtecaoMassaTest.java
+      PROPÓSITO DE NEGÓCIO: garante que a Revisão de Legendas não seja usada como
+      retradutor acidental de um ASS restaurado parcialmente em inglês.
+      <p>INVARIANTES DO DOMÍNIO: pequenos resíduos continuam revisáveis; regressão
+      ampla é bloqueada antes de chamadas em massa ao LLM ou Google.
+      <p>COMPORTAMENTO EM CASO DE FALHA: mudança indevida do limiar reprova os testes.
+  - SincronizadorLegendaCacheServiceTest.java
+      PROPÓSITO DE NEGÓCIO: prova que as correções da Opção 5 chegam à Opção 6 sem
+      apagar pendências que o Google não conseguiu resolver.
+      
+      <p>INVARIANTES DO DOMÍNIO: índice liga cache e diálogo; vazio é sempre
+      preservação, nunca comando de exclusão.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: mudança indevida no texto reprova o teste.
 
 [PASTA] src/test/java/org/traducao/projeto/remuxer/application/
   - MapeadorMidiaServiceTest.java
@@ -2305,6 +2562,16 @@ traducao_animes_llm_local_quarkus/
       <p>COMPORTAMENTO EM CASO DE FALHA: o resultado acusa falha e o arquivo
       original permanece byte a byte igual.
 
+[PASTA] src/test/java/org/traducao/projeto/traducaoCorrige/domain/
+  - ResultadoManutencaoCacheTest.java
+      PROPÓSITO DE NEGÓCIO: garante que o painel diferencie conclusão integral de
+      uma execução tecnicamente estável que ainda deixou itens sem correção.
+      
+      <p>INVARIANTES DO DOMÍNIO: itens detectados e não corrigidos são pendências,
+      não sucesso completo nem falha técnica.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: status ou contagem divergente reprova o teste.
+
 [PASTA] src/test/java/org/traducao/projeto/traducaoKaraoke/application/
   - ClassificadorLetraKaraokeServiceTest.java
       O caso central do módulo: cantor japonês mistura inglês na letra.
@@ -2360,7 +2627,10 @@ traducao_animes_llm_local_quarkus/
   - AuditoriaFontesServiceTest.java
       Default: Arial (Unicode Seguro)
   - TrocaTipoLegendaUseCaseTest.java
-      (sem cabecalho explicativo)
+      PROPÓSITO DE NEGÓCIO: valida auditoria e substituição de fontes sem acessar
+      backups ou relatórios reais do projeto.
+      <p>INVARIANTES DO DOMÍNIO: todos os artefatos ficam sob diretórios temporários.
+      <p>COMPORTAMENTO EM CASO DE FALHA: qualquer acesso à raiz real reprova os testes.
 
 
 ================================================================================

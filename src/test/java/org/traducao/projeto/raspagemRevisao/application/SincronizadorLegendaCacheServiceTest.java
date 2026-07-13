@@ -59,4 +59,28 @@ class SincronizadorLegendaCacheServiceTest {
         assertEquals(0, resultado.total());
         assertEquals("Revisão nova", resultado.documento().eventos().get(0).texto());
     }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: recupera do banco persistente uma fala que voltou ao
+     * inglês por restauração de backup, mesmo quando o ASS restaurado é mais novo.
+     * <p>INVARIANTES DO DOMÍNIO: a recuperação exige igualdade exata com o
+     * original EN; uma revisão PT-BR diferente continua soberana.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: ausência da recuperação reprova o teste.
+     */
+    @Test
+    void recuperaRegressaoAoOriginalMesmoComCacheMaisAntigo() {
+        DocumentoLegenda documento = new DocumentoLegenda("", List.of(
+            new EventoLegenda(1, "Dialogue", "Default", "", "Help me, Jona!"),
+            new EventoLegenda(2, "Dialogue", "Default", "", "Revisão humana melhor")), "\n", false);
+        List<EntradaCache> entradas = List.of(
+            new EntradaCache(1, "Default", "Help me, Jona!", "Ajude-me, Jona!", "en", "pt-br"),
+            new EntradaCache(2, "Default", "Original", "Tradução antiga", "en", "pt-br"));
+
+        var resultado = new SincronizadorLegendaCacheService().sincronizar(documento, entradas, false);
+
+        assertEquals(1, resultado.total());
+        assertEquals(List.of(1), resultado.indicesRecuperadosDoOriginal());
+        assertEquals("Ajude-me, Jona!", resultado.documento().eventos().get(0).texto());
+        assertEquals("Revisão humana melhor", resultado.documento().eventos().get(1).texto());
+    }
 }

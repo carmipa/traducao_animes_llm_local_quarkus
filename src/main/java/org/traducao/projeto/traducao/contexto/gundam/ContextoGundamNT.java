@@ -4,6 +4,8 @@ import org.springframework.stereotype.Component;
 import org.traducao.projeto.traducao.contexto.ContextoPrompt;
 import org.traducao.projeto.traducao.domain.ports.ProvedorContexto;
 
+import java.util.Set;
+
 @Component
 public class ContextoGundamNT implements ProvedorContexto {
 
@@ -77,5 +79,18 @@ public class ContextoGundamNT implements ProvedorContexto {
     @Override
     public String obterPromptSistema() {
         return PROMPT;
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: reconhece identificadores oficiais que podem
+     * permanecer iguais ao original sem serem tratados como falha de tradução.
+     * <p>INVARIANTES DO DOMÍNIO: a lista não integra o prompt nem altera o hash
+     * da lore/cache; contém somente nomes confirmados no artefato da obra.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: o detector volta a tratar o conteúdo
+     * desconhecido como pendência, sem apagar ou traduzir automaticamente.
+     */
+    @Override
+    public Set<String> termosProtegidos() {
+        return Set.of("Banchi 18", "Metis", "Fransson");
     }
 }

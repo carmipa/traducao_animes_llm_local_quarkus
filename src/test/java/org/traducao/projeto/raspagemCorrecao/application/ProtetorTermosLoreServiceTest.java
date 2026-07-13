@@ -1,6 +1,7 @@
 package org.traducao.projeto.raspagemCorrecao.application;
 
 import org.junit.jupiter.api.Test;
+import org.traducao.projeto.traducao.contexto.gundam.ContextoGundamNT;
 
 import java.util.List;
 import java.util.Set;
@@ -117,5 +118,23 @@ class ProtetorTermosLoreServiceTest {
         assertTrue(service.contemSomenteTermosCanonicos("{\\i1}Jona!{\\i0}", lore, Set.of()));
         assertFalse(service.contemSomenteTermosCanonicos("Jona, pare!", lore, Set.of()));
         assertFalse(service.contemSomenteTermosCanonicos("Fransson!", lore, Set.of()));
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: confirma que designações oficiais sem tradução de
+     * Gundam NT não viram pendência artificial na revisão final.
+     * <p>INVARIANTES DO DOMÍNIO: Banchi 18, Metis e Fransson precisam constar da
+     * lore ativa e nenhuma palavra conversacional comum é aceita por esta regra.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: ausência no glossário reprova o teste.
+     */
+    @Test
+    void reconheceIdentificadoresCanonicosPendentesDeGundamNt() {
+        ContextoGundamNT contexto = new ContextoGundamNT();
+        String lore = contexto.obterPromptSistema();
+
+        assertTrue(service.contemSomenteTermosCanonicos(
+            "Banchi 18, Metis.", lore, contexto.termosProtegidos()));
+        assertTrue(service.contemSomenteTermosCanonicos(
+            "Fransson!", lore, contexto.termosProtegidos()));
     }
 }

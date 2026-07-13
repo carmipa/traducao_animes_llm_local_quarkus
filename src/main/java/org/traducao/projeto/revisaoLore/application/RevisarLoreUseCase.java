@@ -8,6 +8,7 @@ import org.traducao.projeto.revisaoLore.domain.RevisaoLoreRelatorioJson;
 import org.traducao.projeto.revisaoLore.domain.EntradaAuditoriaRevisaoLore;
 import org.traducao.projeto.revisaoLore.domain.ResultadoDeteccaoLore;
 import org.traducao.projeto.revisaoLore.domain.ResultadoRevisaoLore;
+import org.traducao.projeto.revisaoLore.domain.StatusRevisaoLore;
 import org.traducao.projeto.revisaoLore.domain.exceptions.RevisaoLoreException;
 import org.traducao.projeto.revisaoLore.infrastructure.RevisaoLoreAuditoriaCache;
 import org.traducao.projeto.revisaoLore.infrastructure.RevisaoLoreLogPersistencia;
@@ -29,11 +30,14 @@ import org.traducao.projeto.traducao.infrastructure.config.TradutorProperties;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -42,7 +46,14 @@ public class RevisarLoreUseCase {
 
     private static final Logger log = LoggerFactory.getLogger(RevisarLoreUseCase.class);
     private static final DateTimeFormatter UTC_FORMATTER = DateTimeFormatter.ISO_INSTANT;
+    private static final DateTimeFormatter TS_BACKUP = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss_SSS");
     private static final int TAMANHO_TRECHO_LOG = 120;
+    // Tolerância de tempo (ms) ao verificar se EN[i] e PT[i] são a MESMA fala.
+    // Traduções fiéis mantêm o tempo idêntico; fontes externas podem ter jitter
+    // de arredondamento. 500ms tolera jitter sem deixar passar reordenação real
+    // (que desloca os tempos em segundos).
+    private static final long ALINHAMENTO_TOLERANCIA_MS = 500;
+    private static final Pattern PADRAO_TEMPO_ASS = Pattern.compile("(\\d+):(\\d{2}):(\\d{2})[.,](\\d{2})");
     private static final Pattern PADRAO_DESENHO_VETORIAL = Pattern.compile("\\\\p[1-9]\\d*");
     private static final Pattern PADRAO_TAG_ASS = Pattern.compile("\\{[^}]*}");
     private static final Pattern PADRAO_INVISIVEIS = Pattern.compile("[\\u200B\\u200C\\u200D\\uFEFF]");
@@ -161,7 +172,16 @@ public class RevisarLoreUseCase {
         int[] falasSinalizadas = {0};
         int[] falasCorrigidas = {0};
         int[] falasSemAlteracao = {0};
+        int[] falasSemResposta = {0};
+        int[] falasDescartadas = {0};
+        boolean[] cancelado = {false};
+        boolean semArquivos = false;
         List<String> erros = new ArrayList<>();
+
+        // Toda sobrescrita cria backup (como as opções 5/6): uma correção
+        // semanticamente errada nunca destrói a legenda anterior sem cópia.
+        Path pastaBackup = Path.of("backups", "revisao-lore",
+            "revisao_" + LocalDateTime.now().format(TS_BACKUP)).toAbsolutePath().normalize();
 
         try (Stream<Path> stream = Files.walk(pastaOriginal)) {
             List<Path> originais = stream
@@ -171,6 +191,7 @@ public class RevisarLoreUseCase {
 
             sessao.out("Arquivos .ass encontrados na pasta original: " + originais.size());
             if (originais.isEmpty()) {
+                semArquivos = true;
                 String msg = "Nenhum arquivo .ass encontrado na pasta original; revisao de lore sem trabalho real.";
                 erros.add(msg);
                 sessao.out(AnsiCores.YELLOW + "  [Aviso] " + msg + AnsiCores.RESET);
@@ -179,9 +200,10 @@ public class RevisarLoreUseCase {
             for (Path arqOriginal : originais) {
                 processarArquivo(
                     sessao, arqOriginal, pastaTraduzida, contextoId, nomePromptRevisao,
-                    revisarTodasFalas, promptSistemaRevisaoLore,
+                    revisarTodasFalas, promptSistemaRevisaoLore, pastaBackup,
                     arquivosAnalisados, arquivosAlterados, falasAuditadas, falasSinalizadas,
-                    falasCorrigidas, falasSemAlteracao, erros
+                    falasCorrigidas, falasSemAlteracao, falasSemResposta, falasDescartadas,
+                    cancelado, erros
                 );
             }
         } catch (IOException e) {
@@ -190,12 +212,22 @@ public class RevisarLoreUseCase {
 
         long duracaoMs = System.currentTimeMillis() - sessao.inicioMs;
 
+        // Pendentes = falas sinalizadas cujo problema NÃO foi resolvido (LLM sem
+        // resposta ou correção proposta barrada por trava). Ficam como estavam,
+        // ainda merecendo revisão humana — distinto de "conforme" e "corrigida".
+        int falasPendentes = falasSemResposta[0] + falasDescartadas[0];
+        StatusRevisaoLore statusFinal = determinarStatus(semArquivos, cancelado[0], erros, falasPendentes);
+
         sessao.out("Arquivos analisados: " + arquivosAnalisados[0]);
         sessao.out("Arquivos alterados: " + arquivosAlterados[0]);
         sessao.out("Falas auditadas: " + falasAuditadas[0]);
         sessao.out("Falas sinalizadas (heuristica/LLM): " + falasSinalizadas[0]);
         sessao.out("Falas corrigidas: " + falasCorrigidas[0]);
         sessao.out("Falas ja conformes: " + falasSemAlteracao[0]);
+        sessao.out("Falas sem resposta do LLM: " + falasSemResposta[0]);
+        sessao.out("Falas descartadas (travas): " + falasDescartadas[0]);
+        sessao.out("Falas pendentes (sinalizadas sem correcao): " + falasPendentes);
+        sessao.out("Status: " + statusFinal.rotulo());
 
         if (erros.isEmpty()) {
             sessao.out(AnsiCores.GREEN + "\nRevisao de lore concluida com sucesso." + AnsiCores.RESET);
@@ -207,11 +239,12 @@ public class RevisarLoreUseCase {
         }
 
         String caminhoRelatorioJson = persistirRelatorioJson(
-            sessao, contextoId, revisarTodasFalas,
+            sessao, contextoId, revisarTodasFalas, statusFinal,
             pastaOriginal, pastaTraduzida, duracaoMs,
             arquivosAnalisados[0], arquivosAlterados[0],
             falasAuditadas[0], falasSinalizadas[0], falasCorrigidas[0],
-            falasSemAlteracao[0], erros
+            falasSemAlteracao[0], falasSemResposta[0], falasDescartadas[0],
+            falasPendentes, erros
         );
 
         if (caminhoRelatorioJson != null) {
@@ -219,16 +252,74 @@ public class RevisarLoreUseCase {
         }
 
         return new ResultadoRevisaoLore(
+            statusFinal,
             arquivosAnalisados[0],
             arquivosAlterados[0],
             falasAuditadas[0],
             falasSinalizadas[0],
             falasCorrigidas[0],
             falasSemAlteracao[0],
+            falasSemResposta[0],
+            falasDescartadas[0],
+            falasPendentes,
             erros.size(),
             erros,
             caminhoRelatorioJson
         );
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: traduz os contadores de uma execução no status final
+     * exibido ao operador, para que o desfecho não seja mais um "[SUCESSO]"
+     * incondicional.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: retorna exatamente um status para retornos
+     * normais do use case. {@link StatusRevisaoLore#FALHOU} nunca sai daqui — é
+     * responsabilidade do controller ao capturar exceção propagada. Precedência:
+     * sem arquivos &gt; cancelado &gt; pendências (erros ou falas pendentes) &gt;
+     * concluído.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: método puro; não lança exceção.
+     */
+    private StatusRevisaoLore determinarStatus(
+        boolean semArquivos, boolean cancelado, List<String> erros, int falasPendentes) {
+        if (semArquivos) {
+            return StatusRevisaoLore.SEM_ARQUIVOS;
+        }
+        if (cancelado) {
+            return StatusRevisaoLore.CANCELADO;
+        }
+        if (!erros.isEmpty() || falasPendentes > 0) {
+            return StatusRevisaoLore.CONCLUIDO_COM_PENDENCIAS;
+        }
+        return StatusRevisaoLore.CONCLUIDO;
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: preserva a legenda PT-BR anterior antes de a revisão
+     * de lore sobrescrever o arquivo, evitando perda por correção equivocada.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: o backup fica dentro de {@code pastaBackup}
+     * (validado contra path traversal) e a primeira cópia da sessão nunca é
+     * substituída.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: lança {@link RevisaoLoreException} e
+     * bloqueia a escrita da nova legenda (o arquivo original permanece intacto).
+     */
+    private Path criarBackup(Path arquivo, Path pastaBackup) {
+        Path backup = pastaBackup.resolve(arquivo.getFileName()).normalize();
+        if (!backup.startsWith(pastaBackup)) {
+            throw new RevisaoLoreException("Caminho de backup invalido para: " + arquivo);
+        }
+        try {
+            Files.createDirectories(backup.getParent());
+            if (Files.notExists(backup)) {
+                Files.copy(arquivo, backup, StandardCopyOption.COPY_ATTRIBUTES);
+            }
+            return backup;
+        } catch (IOException e) {
+            throw new RevisaoLoreException("Falha ao criar backup da legenda: " + arquivo, e);
+        }
     }
 
     private void validarEntrada(Path pastaOriginal, Path pastaTraduzida, String contextoId) {
@@ -255,12 +346,16 @@ public class RevisarLoreUseCase {
         String nomePromptRevisao,
         boolean revisarTodasFalas,
         String promptSistemaRevisaoLore,
+        Path pastaBackup,
         int[] arquivosAnalisados,
         int[] arquivosAlterados,
         int[] falasAuditadas,
         int[] falasSinalizadas,
         int[] falasCorrigidas,
         int[] falasSemAlteracao,
+        int[] falasSemResposta,
+        int[] falasDescartadas,
+        boolean[] cancelado,
         List<String> erros
     ) {
         String nomeOriginal = arqOriginal.getFileName().toString();
@@ -296,6 +391,20 @@ public class RevisarLoreUseCase {
                 return;
             }
 
+            // Contagem igual NÃO garante que EN[i] e PT[i] sejam a mesma fala: um
+            // Comment reposicionado ou diálogos reordenados alinham por índice mas
+            // trocam o contexto. Verifica tempo/tipo por evento antes de auditar —
+            // sem isso, o LLM corrigiria comparando falas trocadas em silêncio.
+            Optional<String> divergencia = primeiraDivergenciaEstrutural(
+                docOriginal, docTraduzido, ALINHAMENTO_TOLERANCIA_MS);
+            if (divergencia.isPresent()) {
+                String msg = arqTraduzido.getFileName() + ": pares EN/PT desalinhados ("
+                    + divergencia.get() + ") — arquivo pulado para nao corrigir com contexto trocado.";
+                sessao.out(AnsiCores.YELLOW + "  [Pulado] " + msg + AnsiCores.RESET);
+                erros.add(msg);
+                return;
+            }
+
             boolean houveModificacao = false;
             int corrigidasNoArquivo = 0;
             int totalDialogos = contarDialogosAuditaveis(docOriginal, docTraduzido);
@@ -315,6 +424,7 @@ public class RevisarLoreUseCase {
                             + "[STOP] Revisão de lore interrompida pelo usuário — falas restantes mantidas."
                             + AnsiCores.RESET);
                         interrompido = true;
+                        cancelado[0] = true;
                     }
                     novosEventos.add(evtTraduzido);
                     continue;
@@ -359,6 +469,7 @@ public class RevisarLoreUseCase {
                         log.warn("Correcao deterministica de lore descartada (validacao): {}", e.getMessage());
                         sessao.out(AnsiCores.YELLOW + marcadorFala + " correcao deterministica descartada pela validacao: "
                             + e.getMessage() + AnsiCores.RESET);
+                        falasDescartadas[0]++;
                         novosEventos.add(evtTraduzido);
                         continue;
                     }
@@ -388,6 +499,7 @@ public class RevisarLoreUseCase {
                 );
 
                 if (revisadaOpt.isEmpty()) {
+                    falasSemResposta[0]++;
                     sessao.out(AnsiCores.YELLOW + marcadorFala + " LLM sem resposta valida; mantendo traducao atual" + AnsiCores.RESET);
                     registrarAuditoria(
                         contextoId, nomePromptRevisao, revisarTodasFalas, arqTraduzido, i + 1,
@@ -402,6 +514,7 @@ public class RevisarLoreUseCase {
                 try {
                     revisada = mascarador.desmascarar(revisadaOpt.get(), mascaraPt.tags());
                     if (protecaoAss.respostaSuspeita(textoEn, revisada)) {
+                        falasDescartadas[0]++;
                         sessao.out(AnsiCores.YELLOW + marcadorFala
                             + " revisão descartada por resposta suspeita em linha ASS pesada"
                             + AnsiCores.RESET);
@@ -427,6 +540,7 @@ public class RevisarLoreUseCase {
                     }
                 } catch (Exception e) {
                     log.warn("Revisao de lore descartada (falha de tags/alucinacao): {}", e.getMessage());
+                    falasDescartadas[0]++;
                     sessao.out(AnsiCores.YELLOW + marcadorFala + " revisao descartada por falha de tags: "
                         + e.getMessage() + AnsiCores.RESET);
                     registrarAuditoria(
@@ -442,6 +556,7 @@ public class RevisarLoreUseCase {
                     validador.validarFala(revisada);
                 } catch (Exception e) {
                     log.warn("Revisao de lore descartada (validacao): {}", e.getMessage());
+                    falasDescartadas[0]++;
                     sessao.out(AnsiCores.YELLOW + marcadorFala + " revisao descartada pela validacao: "
                         + e.getMessage() + AnsiCores.RESET);
                     registrarAuditoria(
@@ -488,10 +603,14 @@ public class RevisarLoreUseCase {
                     docTraduzido.quebraDeLinha(),
                     docTraduzido.comBom()
                 );
+                Path backup = criarBackup(arqTraduzido, pastaBackup);
                 escritor.escrever(arqTraduzido, revisado);
                 arquivosAlterados[0]++;
                 sessao.out(AnsiCores.GREEN + "  [Revisado] " + arqTraduzido.getFileName()
                     + " (" + corrigidasNoArquivo + " fala(s) corrigida(s))" + AnsiCores.RESET);
+                if (backup != null) {
+                    sessao.out(AnsiCores.CYAN + "  Backup anterior: " + backup + AnsiCores.RESET);
+                }
             } else {
                 sessao.out(AnsiCores.DIM + "  [OK]     " + arqTraduzido.getFileName() + " (lore conforme)" + AnsiCores.RESET);
             }
@@ -508,6 +627,7 @@ public class RevisarLoreUseCase {
         SessaoRevisao sessao,
         String contextoId,
         boolean revisarTodasFalas,
+        StatusRevisaoLore status,
         Path pastaOriginal,
         Path pastaTraduzida,
         long duracaoMs,
@@ -517,6 +637,9 @@ public class RevisarLoreUseCase {
         int falasSinalizadas,
         int falasCorrigidas,
         int falasSemAlteracao,
+        int falasSemResposta,
+        int falasDescartadas,
+        int falasPendentes,
         List<String> erros
     ) {
         String detalhe = pastaTraduzida.toAbsolutePath()
@@ -544,6 +667,7 @@ public class RevisarLoreUseCase {
             ),
             revisarTodasFalas ? "todas_as_falas" : "apenas_sinalizadas",
             new RevisaoLoreRelatorioJson.MetricasRevisaoLore(
+                status,
                 duracaoMs,
                 formatarDuracaoMs(duracaoMs),
                 arquivosAnalisados,
@@ -552,6 +676,9 @@ public class RevisarLoreUseCase {
                 falasSinalizadas,
                 falasCorrigidas,
                 falasSemAlteracao,
+                falasSemResposta,
+                falasDescartadas,
+                falasPendentes,
                 erros.size()
             ),
             List.copyOf(erros),
@@ -688,6 +815,127 @@ public class RevisarLoreUseCase {
             .replace("\\h", " ")
             .replaceAll("\\s+", " ")
             .strip();
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: confirma que a legenda EN e a PT descrevem a MESMA
+     * sequência de falas antes de a revisão de lore parear evento por evento.
+     * Contagem igual de eventos não basta — um Comment reposicionado ou diálogos
+     * reordenados alinham por índice, mas trocam o contexto que o LLM recebe.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: compara tipo (Dialogue/Comment) e os tempos
+     * Start/End por evento, com tolerância {@code tolMs} (traduções fiéis mantêm
+     * o tempo idêntico; jitter de arredondamento é aceito). Estilo é ignorado de
+     * propósito: restyle da PT é legítimo e não indica desalinhamento. Eventos
+     * com tempo ilegível não bloqueiam (evita falso positivo por formato exótico).
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: retorna {@link Optional#empty()} se os
+     * pares estão alinhados; caso contrário, um texto descrevendo a PRIMEIRA
+     * divergência (para o chamador pular o arquivo, nunca reescrevê-lo).
+     */
+    static Optional<String> primeiraDivergenciaEstrutural(
+        DocumentoLegenda en, DocumentoLegenda pt, long tolMs) {
+        int[] posEn = posicoesTempoAss(en.cabecalho());
+        int[] posPt = posicoesTempoAss(pt.cabecalho());
+        int limite = Math.min(en.eventos().size(), pt.eventos().size());
+        for (int i = 0; i < limite; i++) {
+            EventoLegenda a = en.eventos().get(i);
+            EventoLegenda b = pt.eventos().get(i);
+            boolean aTempo = temTempoAss(a);
+            boolean bTempo = temTempoAss(b);
+            if (aTempo != bTempo) {
+                return Optional.of("evento " + (i + 1) + ": estrutura divergente (EN "
+                    + rotuloTipo(a) + " vs PT " + rotuloTipo(b) + ")");
+            }
+            if (!aTempo) {
+                continue;
+            }
+            if (!a.tipoLinha().equals(b.tipoLinha())) {
+                return Optional.of("evento " + (i + 1) + ": tipo divergente (EN "
+                    + a.tipoLinha() + " vs PT " + b.tipoLinha() + ")");
+            }
+            String iniA = campoPrefixo(a, posEn[0]);
+            String fimA = campoPrefixo(a, posEn[1]);
+            String iniB = campoPrefixo(b, posPt[0]);
+            String fimB = campoPrefixo(b, posPt[1]);
+            long msIniA = tempoAssParaMs(iniA);
+            long msFimA = tempoAssParaMs(fimA);
+            long msIniB = tempoAssParaMs(iniB);
+            long msFimB = tempoAssParaMs(fimB);
+            if (msIniA < 0 || msFimA < 0 || msIniB < 0 || msFimB < 0) {
+                continue;
+            }
+            if (Math.abs(msIniA - msIniB) > tolMs || Math.abs(msFimA - msFimB) > tolMs) {
+                return Optional.of("evento " + (i + 1) + ": tempos divergentes (EN "
+                    + iniA + "->" + fimA + " | PT " + iniB + "->" + fimB + ")");
+            }
+        }
+        return Optional.empty();
+    }
+
+    private static boolean temTempoAss(EventoLegenda e) {
+        return "Dialogue".equals(e.tipoLinha()) || "Comment".equals(e.tipoLinha());
+    }
+
+    private static String rotuloTipo(EventoLegenda e) {
+        String t = e.tipoLinha();
+        return (t == null || t.isEmpty()) ? "linha-nao-evento" : t;
+    }
+
+    /**
+     * Descobre as posições dos campos Start e End na linha {@code Format:} da
+     * seção [Events]. O cabeçalho lido termina exatamente nessa linha (ver
+     * {@link LeitorLegendaAss}), então varremos todas as linhas Format e a de
+     * [Events] (única com Start/End) vence. Fallback: 1 e 2, a ordem canônica.
+     */
+    private static int[] posicoesTempoAss(String cabecalho) {
+        int start = 1;
+        int end = 2;
+        if (cabecalho != null) {
+            for (String linha : cabecalho.split("\r\n|\n")) {
+                String t = linha.trim();
+                if (t.regionMatches(true, 0, "Format:", 0, 7)) {
+                    String[] nomes = t.substring(t.indexOf(':') + 1).split(",");
+                    for (int i = 0; i < nomes.length; i++) {
+                        String nome = nomes[i].trim();
+                        if (nome.equalsIgnoreCase("Start")) {
+                            start = i;
+                        } else if (nome.equalsIgnoreCase("End")) {
+                            end = i;
+                        }
+                    }
+                }
+            }
+        }
+        return new int[]{start, end};
+    }
+
+    /** Lê o campo de índice {@code idx} do prefixo ASS (após "Dialogue: "). */
+    private static String campoPrefixo(EventoLegenda e, int idx) {
+        String prefixo = e.prefixo();
+        if (prefixo == null) {
+            return "";
+        }
+        int sep = prefixo.indexOf(": ");
+        String corpo = sep >= 0 ? prefixo.substring(sep + 2) : prefixo;
+        String[] campos = corpo.split(",", -1);
+        return (idx >= 0 && idx < campos.length) ? campos[idx].trim() : "";
+    }
+
+    /** Converte um timestamp ASS (H:MM:SS.CC) para milissegundos; -1 se ilegível. */
+    private static long tempoAssParaMs(String tempo) {
+        if (tempo == null) {
+            return -1;
+        }
+        Matcher m = PADRAO_TEMPO_ASS.matcher(tempo.strip());
+        if (!m.matches()) {
+            return -1;
+        }
+        long horas = Long.parseLong(m.group(1));
+        long minutos = Long.parseLong(m.group(2));
+        long segundos = Long.parseLong(m.group(3));
+        long centesimos = Long.parseLong(m.group(4));
+        return ((((horas * 60 + minutos) * 60 + segundos) * 100) + centesimos) * 10;
     }
 
     static Optional<String> corrigirLoreDeterministica(String originalMascarado, String traducaoMascarada) {

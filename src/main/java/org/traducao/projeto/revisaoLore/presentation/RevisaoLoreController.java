@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.traducao.projeto.revisaoLore.application.GerenciadorPromptRevisaoLore;
 import org.traducao.projeto.revisaoLore.application.RevisarLoreUseCase;
 import org.traducao.projeto.revisaoLore.domain.ResultadoRevisaoLore;
+import org.traducao.projeto.revisaoLore.domain.StatusRevisaoLore;
 import org.traducao.projeto.revisaoLore.domain.exceptions.RevisaoLoreException;
 import org.traducao.projeto.core.execucao.FilaExecucaoPipeline;
 import org.traducao.projeto.core.util.DuracaoUtil;
+import org.traducao.projeto.traducao.presentation.ui.AnsiCores;
 import org.traducao.projeto.traducao.presentation.web.LogStreamService;
 
 import java.nio.file.Path;
@@ -21,6 +23,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 public class RevisaoLoreController {
+
+    private static final String LINHA = "========================================================================";
 
     // Fila única compartilhada do pipeline: impede que a revisão de lore rode
     // em paralelo com uma tradução/correção e troque o contexto LLM global no
@@ -103,20 +107,11 @@ public class RevisaoLoreController {
             try {
                 ResultadoRevisaoLore resultado = revisarLoreUseCase.executar(
                     pastaOriginal, pastaTraduzida, req.contextoId(), revisarTodas);
-                System.out.println("\n\u001B[32m========================================================================\u001B[0m");
-                System.out.println("\u001B[32m  [SUCESSO] REVISAO DE LORE FINALIZADA!\u001B[0m");
-                System.out.println("\u001B[32m========================================================================\u001B[0m");
-                System.out.println("\u001B[36m  • Arquivos analisados  : " + resultado.arquivosAnalisados() + "\u001B[0m");
-                System.out.println("\u001B[36m  • Arquivos alterados   : " + resultado.arquivosAlterados() + "\u001B[0m");
-                System.out.println("\u001B[32m  • Falas corrigidas     : " + resultado.falasCorrigidas() + "\u001B[0m");
-                if (resultado.caminhoRelatorioJson() != null) {
-                    System.out.println("\u001B[36m  • Relatorio JSON       : " + resultado.caminhoRelatorioJson() + "\u001B[0m");
-                }
-                System.out.println("\u001B[32m========================================================================\n\u001B[0m");
+                imprimirBanner(resultado);
             } catch (RevisaoLoreException e) {
-                System.out.println("\u001B[31m[ERRO] Revisao de lore: " + e.getMessage() + "\u001B[0m");
+                imprimirFalha(e.getMessage());
             } catch (Exception e) {
-                System.out.println("\u001B[31m[ERRO] Falha inesperada na revisao de lore: " + e.getMessage() + "\u001B[0m");
+                imprimirFalha("Falha inesperada: " + e.getMessage());
             } finally {
                 System.out.println(DuracaoUtil.linhaRelatorioFinal("Revisão de Lore (LLM)", inicioMs));
             }
@@ -124,5 +119,58 @@ public class RevisaoLoreController {
 
         return ResponseEntity.ok(Map.of(
             "mensagem", "Revisao de lore iniciada no servidor. Acompanhe os logs em tempo real."));
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: fecha o job com um banner cuja cor e título refletem
+     * o desfecho REAL (concluído, com pendências, cancelado, sem arquivos),
+     * substituindo o "[SUCESSO]" incondicional que mentia quando havia problemas.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: sempre imprime os contadores operacionais
+     * (corrigidas, sem-resposta, descartadas, pendentes, falhas) para que o
+     * operador saiba o que ficou por resolver. {@link StatusRevisaoLore#FALHOU}
+     * não chega aqui — é impresso por {@link #imprimirFalha(String)}.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: só escreve em {@code System.out}; não
+     * lança exceção (roda dentro do finally da tarefa da fila).
+     */
+    private void imprimirBanner(ResultadoRevisaoLore r) {
+        String cor = switch (r.status()) {
+            case CONCLUIDO -> AnsiCores.GREEN;
+            case CONCLUIDO_COM_PENDENCIAS, CANCELADO, SEM_ARQUIVOS -> AnsiCores.YELLOW;
+            case FALHOU -> AnsiCores.RED;
+        };
+        System.out.println("\n" + cor + LINHA + AnsiCores.RESET);
+        System.out.println(cor + "  [" + r.status().rotulo().toUpperCase() + "] REVISAO DE LORE" + AnsiCores.RESET);
+        System.out.println(cor + LINHA + AnsiCores.RESET);
+        System.out.println(AnsiCores.CYAN + "  • Arquivos analisados  : " + r.arquivosAnalisados() + AnsiCores.RESET);
+        System.out.println(AnsiCores.CYAN + "  • Arquivos alterados   : " + r.arquivosAlterados() + AnsiCores.RESET);
+        System.out.println(AnsiCores.GREEN + "  • Falas corrigidas     : " + r.falasCorrigidas() + AnsiCores.RESET);
+        System.out.println(AnsiCores.YELLOW + "  • Falas sem resposta   : " + r.falasSemResposta() + AnsiCores.RESET);
+        System.out.println(AnsiCores.YELLOW + "  • Falas descartadas    : " + r.falasDescartadas() + AnsiCores.RESET);
+        System.out.println(AnsiCores.YELLOW + "  • Falas pendentes      : " + r.falasPendentes() + AnsiCores.RESET);
+        System.out.println(AnsiCores.RED + "  • Falhas (arquivos)    : " + r.totalErros() + AnsiCores.RESET);
+        if (r.caminhoRelatorioJson() != null) {
+            System.out.println(AnsiCores.CYAN + "  • Relatorio JSON       : " + r.caminhoRelatorioJson() + AnsiCores.RESET);
+        }
+        System.out.println(cor + LINHA + "\n" + AnsiCores.RESET);
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: sinaliza no console que a revisão de lore FALHOU por
+     * completo (LLM indisponível, pastas inválidas, erro inesperado) — nenhum
+     * arquivo foi processado.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: usado apenas no caminho de exceção; deixa claro
+     * que o status é {@link StatusRevisaoLore#FALHOU}.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: só escreve em {@code System.out}.
+     */
+    private void imprimirFalha(String mensagem) {
+        System.out.println("\n" + AnsiCores.RED + LINHA + AnsiCores.RESET);
+        System.out.println(AnsiCores.RED + "  [" + StatusRevisaoLore.FALHOU.rotulo().toUpperCase()
+            + "] REVISAO DE LORE" + AnsiCores.RESET);
+        System.out.println(AnsiCores.RED + "  " + mensagem + AnsiCores.RESET);
+        System.out.println(AnsiCores.RED + LINHA + "\n" + AnsiCores.RESET);
     }
 }

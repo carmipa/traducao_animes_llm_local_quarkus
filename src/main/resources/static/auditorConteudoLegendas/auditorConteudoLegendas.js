@@ -1,6 +1,6 @@
 import { logNoConsole, mostrarAlerta } from '../js/app.js';
 
-const PAINEL_HTML = 'auditorConteudoLegendas/auditorConteudoLegendas.html?v=3.5';
+const PAINEL_HTML = 'auditorConteudoLegendas/auditorConteudoLegendas.html?v=3.6';
 
 const ORDEM_SEVERIDADE = { CRITICAL: 0, ERROR: 1, WARNING: 2 };
 
@@ -103,6 +103,9 @@ function vincularEventos() {
             const relatorio = await response.json();
             ultimoRelatorio = relatorio;
             renderizarRelatorio(relatorio, lista, statusBadge);
+            logNoConsole(CONSOLE_ID,
+                `Formatos detectados — original: ${relatorio.formatoOriginal || 'desconhecido'} · traduzido: ${relatorio.formatoTraduzido || 'desconhecido'}`,
+                'info');
 
             if (relatorio.limpo) {
                 logNoConsole(CONSOLE_ID, 'Auditoria concluída — nenhuma anomalia detectada.', 'sucesso');
@@ -152,6 +155,11 @@ function ocultarResumoFiltrosELimpo() {
     if (limpo) limpo.classList.add('hidden');
 }
 
+/**
+ * PROPÓSITO DE NEGÓCIO: apresenta os dois arquivos e seus formatos no topo do relatório.
+ * INVARIANTES DO DOMÍNIO: cada formato é exibido junto do arquivo correspondente.
+ * COMPORTAMENTO EM CASO DE FALHA: usa rótulo explícito de formato desconhecido.
+ */
 function renderizarResumo(relatorio) {
     const resumo = document.getElementById('auditor-resumo');
     if (!resumo) return;
@@ -159,11 +167,11 @@ function renderizarResumo(relatorio) {
     resumo.innerHTML = `
         <div class="auditor-resumo-grid">
             <div class="auditor-resumo-item">
-                <span class="auditor-resumo-label">Original</span>
+                <span class="auditor-resumo-label">Original · ${escapeHtml(relatorio.formatoOriginal || 'FORMATO DESCONHECIDO')}</span>
                 <strong class="auditor-resumo-valor" title="${escapeHtml(relatorio.arquivoOriginal || '')}">${escapeHtml(relatorio.arquivoOriginal || '—')}</strong>
             </div>
             <div class="auditor-resumo-item">
-                <span class="auditor-resumo-label">Traduzido</span>
+                <span class="auditor-resumo-label">Traduzido · ${escapeHtml(relatorio.formatoTraduzido || 'FORMATO DESCONHECIDO')}</span>
                 <strong class="auditor-resumo-valor" title="${escapeHtml(relatorio.arquivoTraduzido || '')}">${escapeHtml(relatorio.arquivoTraduzido || '—')}</strong>
             </div>
             <div class="auditor-resumo-item">
@@ -387,12 +395,17 @@ function exportarRelatorio(formato) {
     mostrarAlerta('Relatório Markdown (.md) exportado.', 'sucesso');
 }
 
+/**
+ * PROPÓSITO DE NEGÓCIO: gera a versão portátil do relatório com identificação de formato.
+ * INVARIANTES DO DOMÍNIO: os metadados exportados refletem o mesmo objeto mostrado na tela.
+ * COMPORTAMENTO EM CASO DE FALHA: campos ausentes são representados por travessão.
+ */
 function gerarRelatorioMarkdown(relatorio) {
     const agora = new Date().toLocaleString('pt-BR');
     const linhas = [
         '# Relatório de Auditoria de Conteúdo — KRONOS CORE',
         '',
-        'Relatório didático para revisão humana das legendas `.ass` traduzidas.',
+        'Relatório didático para revisão humana de legendas traduzidas.',
         '',
         '## Contexto da auditoria',
         '',
@@ -400,7 +413,9 @@ function gerarRelatorioMarkdown(relatorio) {
         '| --- | --- |',
         `| **Data** | ${agora} |`,
         `| **Arquivo original** | \`${relatorio.arquivoOriginal || '—'}\` |`,
+        `| **Formato original** | ${relatorio.formatoOriginal || '—'} |`,
         `| **Arquivo traduzido** | \`${relatorio.arquivoTraduzido || '—'}\` |`,
+        `| **Formato traduzido** | ${relatorio.formatoTraduzido || '—'} |`,
         `| **Regras executadas** | ${relatorio.regrasExecutadas ?? '—'} |`,
         `| **Duração** | ${relatorio.duracaoMs ?? 0} ms |`,
         `| **Resultado** | ${relatorio.limpo ? 'Limpo (sem anomalias)' : `${relatorio.anomalias.length} anomalia(s)`} |`
@@ -455,11 +470,16 @@ function contarPorSeveridade(anomalias) {
     return contagem;
 }
 
+/**
+ * PROPÓSITO DE NEGÓCIO: cria um nome seguro de exportação para ASS, SSA ou SRT.
+ * INVARIANTES DO DOMÍNIO: remove apenas a extensão de legenda conhecida.
+ * COMPORTAMENTO EM CASO DE FALHA: caminho vazio resulta no nome seguro "auditoria".
+ */
 function extrairNomeArquivo(caminho) {
     const normalizado = String(caminho).replace(/\\/g, '/');
     const partes = normalizado.split('/');
     const nome = partes[partes.length - 1] || 'auditoria';
-    return nome.replace(/\.ass$/i, '').replace(/[^\w.-]+/g, '_');
+    return nome.replace(/\.(ass|ssa|srt)$/i, '').replace(/[^\w.-]+/g, '_');
 }
 
 function baixarArquivo(conteudo, nomeArquivo, mimeType) {
