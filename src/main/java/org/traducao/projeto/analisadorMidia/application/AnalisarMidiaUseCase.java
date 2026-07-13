@@ -371,7 +371,7 @@ public class AnalisarMidiaUseCase {
         );
     }
 
-    private String[] classificarLegenda(String codecId, String formato) {
+    static String[] classificarLegenda(String codecId, String formato) {
         String codecUpper = (codecId != null ? codecId : "").toUpperCase();
         String formatoUpper = (formato != null ? formato : "").toUpperCase();
 
@@ -515,7 +515,7 @@ public class AnalisarMidiaUseCase {
      * texto (ASS/SRT/...) é extraível e traduzível; bitmap (PGS/VobSub/...) exige
      * OCR; sem legenda é RAW/hardsub.
      */
-    private String verdictTraducao(List<LegendaInfo> legendas) {
+    static String verdictTraducao(List<LegendaInfo> legendas) {
         List<String> tiposTexto = legendas.stream().map(LegendaInfo::tipoCurto)
             .filter(TIPOS_TEXTO::contains).distinct().collect(Collectors.toList());
         if (!tiposTexto.isEmpty()) {

@@ -2,9 +2,9 @@
  MAPA ESTRUTURAL DO PROJETO - TRACKER ANIMES
 ================================================================================
  Raiz do repositorio      : traducao_animes_llm_local_quarkus
- Pastas mapeadas          : 224
- Arquivos (na arvore)     : 414
- Arquivos-fonte indexados : 313  (.java: 313 | .py: 0)
+ Pastas mapeadas          : 225
+ Arquivos (na arvore)     : 415
+ Arquivos-fonte indexados : 314  (.java: 314 | .py: 0)
  Memoria viva do projeto  : CEREBRO_IA.md (na raiz do repositorio)
 
  Objetivo: mapa de contexto para LLMs navegarem os diretorios e
@@ -34,8 +34,8 @@ traducao_animes_llm_local_quarkus/
 │   ├── console-web.log
 │   └── telemetria_compartilhada.json
 ├── relatorios/
-│   └── junit-6910115959496644261/
-│       ├── auditoria_conteudo_20260713_113858.json
+│   └── junit-6060717227371047613/
+│       ├── auditoria_conteudo_20260713_114058.json
 │       └── telemetria_compartilhada.json
 ├── src/
 │   ├── main/
@@ -563,6 +563,8 @@ traducao_animes_llm_local_quarkus/
 │               └── traducao/
 │                   └── projeto/
 │                       ├── analisadorMidia/
+│                       │   ├── application/
+│                       │   │   └── AnalisarMidiaClassificacaoTest.java
 │                       │   └── infrastructure/
 │                       │       └── adapters/
 │                       │           └── FfprobeAdapterTest.java
@@ -1728,6 +1730,12 @@ traducao_animes_llm_local_quarkus/
 [PASTA] src/main/java/org/traducao/projeto/trocaTipoLegenda/presentation/
   - TrocaTipoLegendaController.java
       (sem cabecalho explicativo)
+
+[PASTA] src/test/java/org/traducao/projeto/analisadorMidia/application/
+  - AnalisarMidiaClassificacaoTest.java
+      Cobre o dado VITAL da análise: a classificação do tipo de legenda (codec →
+      tipo) e o veredicto de traduzibilidade (texto = traduzível; bitmap = OCR;
+      nenhuma = RAW/hardsub). Decide se um episódio segue no pipeline de tradução.
 
 [PASTA] src/test/java/org/traducao/projeto/analisadorMidia/infrastructure/adapters/
   - FfprobeAdapterTest.java
