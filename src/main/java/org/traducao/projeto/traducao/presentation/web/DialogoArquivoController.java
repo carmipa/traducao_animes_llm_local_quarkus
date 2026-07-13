@@ -101,9 +101,27 @@ public class DialogoArquivoController {
                "Start-Sleep -Milliseconds 150; ";
     }
 
+    /**
+     * Resolve o executável do PowerShell pelo caminho ABSOLUTO em System32, em vez
+     * de depender do PATH herdado de quem iniciou o servidor. Sem isso, iniciar o
+     * app de um shell cujo PATH não inclui o System32 (ex.: Git Bash) fazia o
+     * {@code ProcessBuilder} falhar com "CreateProcess error=2" e o seletor de
+     * pasta "não abrir". Fallback para o nome simples (via PATH) se o caminho
+     * padrão não existir.
+     */
+    private static String resolverPowershell() {
+        String systemRoot = System.getenv("SystemRoot");
+        if (systemRoot == null || systemRoot.isBlank()) {
+            systemRoot = "C:\\Windows";
+        }
+        java.nio.file.Path candidato = java.nio.file.Path.of(
+            systemRoot, "System32", "WindowsPowerShell", "v1.0", "powershell.exe");
+        return java.nio.file.Files.exists(candidato) ? candidato.toString() : "powershell.exe";
+    }
+
     private String executarScriptPowerShell(String script) {
         try {
-            ProcessBuilder pb = new ProcessBuilder("powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-STA", "-Command", "-");
+            ProcessBuilder pb = new ProcessBuilder(resolverPowershell(), "-NoProfile", "-ExecutionPolicy", "Bypass", "-STA", "-Command", "-");
             Process process = pb.start();
 
             try (java.io.OutputStreamWriter writer = new java.io.OutputStreamWriter(process.getOutputStream(), StandardCharsets.UTF_8)) {
