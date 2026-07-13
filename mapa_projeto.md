@@ -2,7 +2,7 @@
  MAPA ESTRUTURAL DO PROJETO - TRACKER ANIMES
 ================================================================================
  Raiz do repositorio      : traducao_animes_llm_local_quarkus
- Pastas mapeadas          : 219
+ Pastas mapeadas          : 221
  Arquivos (na arvore)     : 413
  Arquivos-fonte indexados : 312  (.java: 312 | .py: 0)
  Memoria viva do projeto  : CEREBRO_IA.md (na raiz do repositorio)
@@ -29,11 +29,13 @@ traducao_animes_llm_local_quarkus/
 │       ├── gradle-wrapper.jar
 │       └── gradle-wrapper.properties
 ├── logs/
+│   ├── renomear-arquivos/
+│   │   └── undo/
 │   ├── console-web.log
 │   └── telemetria_compartilhada.json
 ├── relatorios/
-│   └── junit-10004175714186259925/
-│       ├── auditoria_conteudo_20260713_111833.json
+│   └── junit-17140869617729914164/
+│       ├── auditoria_conteudo_20260713_112540.json
 │       └── telemetria_compartilhada.json
 ├── src/
 │   ├── main/

@@ -38,7 +38,7 @@ const CONFIG_SECOES = {
         subtitulo: "Extração industrial de faixas de legendas embutidas in vídeos (MKV, MP4 e outros)"
     },
     "auditor-conteudo": {
-        titulo: "3. Análise de Conteúdo",
+        titulo: "3. Análise de Legenda",
         subtitulo: "Auditoria de legendas .ass traduzidas: vazamento de efeitos, alucinações de IA e metadados"
     },
     traducao: {

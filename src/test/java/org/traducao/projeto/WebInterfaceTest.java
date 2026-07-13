@@ -150,11 +150,11 @@ class WebInterfaceTest {
         int grupoKaraoke = html.indexOf("data-grupo=\"karaoke\"");
         int grupoFinalizacao = html.indexOf("data-grupo=\"finalizacao\"");
         int itemAuditor = html.indexOf("data-target=\"auditor-conteudo\"");
-        // Decisão oficial 2026-07-07: Análise de Conteúdo é o item 3 do grupo
-        // Preparação (após 1. Análise de Mídia e 2. Extração).
+        // Análise de Legenda (auditoria de conteúdo de legendas) é o item 3 do
+        // grupo Preparação (após 1. Análise de Mídia e 2. Extração).
         org.junit.jupiter.api.Assertions.assertTrue(
             itemAuditor > grupoPreparacao && itemAuditor < grupoTraducao,
-            "Análise de Conteúdo deve ficar no grupo Preparação"
+            "Análise de Legenda deve ficar no grupo Preparação"
         );
         // Decisão 2026-07-08: grupo Karaokê entre Qualidade e Finalização, com
         // o Karaokê Simples (9) e a Correção de Karaoke (10, ex-item 7 da Qualidade).
@@ -164,8 +164,8 @@ class WebInterfaceTest {
             "Ordem dos grupos principais do pipeline ficou inconsistente"
         );
         org.junit.jupiter.api.Assertions.assertTrue(
-            html.contains("<span>3. Análise de Conteúdo</span>"),
-            "Numeração da Análise de Conteúdo deve refletir o item 3 da Preparação"
+            html.contains("<span>3. Análise de Legenda</span>"),
+            "Numeração da Análise de Legenda deve refletir o item 3 da Preparação"
         );
         org.junit.jupiter.api.Assertions.assertTrue(
             html.contains("<span>4. Tradução Local</span>")
