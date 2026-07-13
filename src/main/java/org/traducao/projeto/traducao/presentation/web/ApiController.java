@@ -635,7 +635,7 @@ public class ApiController {
      *
      * <p>INVARIANTES DO DOMÍNIO: somente {@code CONCLUIDO} usa banner verde;
      * qualquer outro status informa que o resultado exige atenção; a orientação
-     * de regenerar ASS/SRT aparece após toda execução que pode alterar o cache.
+     * de avançar à Opção 6 aparece após toda execução que altera o cache.
      *
      * <p>COMPORTAMENTO EM CASO DE FALHA: resultado nulo é tratado como falha e
      * não provoca {@link NullPointerException} no job de background.
@@ -658,7 +658,7 @@ public class ApiController {
         }
         if (resultado.arquivosAlterados() > 0) {
             System.out.println(AnsiCores.CYAN
-                + "[PRÓXIMO PASSO] Execute novamente a Tradução Local para regenerar o ASS/SRT com o cache corrigido."
+                + "[PRÓXIMO PASSO] Avance para a Opção 6. Ela sincronizará este cache mais novo no ASS antes da revisão."
                 + AnsiCores.RESET);
         }
     }

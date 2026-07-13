@@ -25,13 +25,17 @@ import org.traducao.projeto.traducaoCorrige.domain.EntradaAuditoriaCorrecaoCache
 import org.traducao.projeto.traducaoCorrige.domain.ResultadoManutencaoCache;
 import org.traducao.projeto.traducaoCorrige.infrastructure.CorrecaoCacheAuditoria;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * PROPÓSITO DE NEGÓCIO: comprova que uma raiz cache com várias obras ativa a
@@ -48,6 +52,14 @@ class RevisarCacheUseCaseTest {
     @TempDir
     Path temp;
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: comprova que cada obra usa sua própria lore e que
+     * o operador acompanha original, tradução e correção evento por evento.
+     * <p>INVARIANTES DO DOMÍNIO: progresso, índice e textos aparecem no console;
+     * DanMachi e Gundam permanecem isolados por proveniência.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: ausência de mensagem dinâmica ou troca
+     * de contexto falha explicitamente o teste.
+     */
     @Test
     void usaContextoDaProvenienciaParaCadaArquivo() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
@@ -71,13 +83,28 @@ class RevisarCacheUseCaseTest {
         escrever(mapper, danmachi, "danmachi", "She is tired.", "ele está cansado.");
         escrever(mapper, gundam, "gundam", "He is tired.", "ela está cansada.");
 
-        ResultadoManutencaoCache resultado = useCase.executar(cache, null);
+        ByteArrayOutputStream console = new ByteArrayOutputStream();
+        PrintStream saidaAnterior = System.out;
+        ResultadoManutencaoCache resultado;
+        try {
+            System.setOut(new PrintStream(console, true, StandardCharsets.UTF_8));
+            resultado = useCase.executar(cache, null);
+        } finally {
+            System.setOut(saidaAnterior);
+        }
 
         assertEquals(List.of("danmachi", "gundam"), mistral.contextosUsados);
         assertEquals("ela está cansada.", mapper.readTree(danmachi.toFile()).path("entradas").get(0).path("traduzido").asText());
         assertEquals("ele está cansado.", mapper.readTree(gundam.toFile()).path("entradas").get(0).path("traduzido").asText());
         assertEquals(2, resultado.itensCorrigidos());
         assertEquals("CONCLUIDO", resultado.status());
+        String mensagens = console.toString(StandardCharsets.UTF_8);
+        assertTrue(mensagens.contains("[REVISANDO 1/1] Evento 1"), mensagens);
+        assertTrue(mensagens.contains("Original: She is tired."), mensagens);
+        assertTrue(mensagens.contains("Tradução atual: ele está cansado."), mensagens);
+        assertTrue(mensagens.contains("[CORRIGIDA 1/1] Evento 1"), mensagens);
+        assertTrue(mensagens.contains("Depois: ela está cansada."), mensagens);
+        assertTrue(mensagens.contains("pendentes=0"), mensagens);
     }
 
     private static void escrever(ObjectMapper mapper, Path arquivo, String contexto, String original, String traduzido)

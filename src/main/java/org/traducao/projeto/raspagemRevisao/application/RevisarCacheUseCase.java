@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -159,11 +160,8 @@ public class RevisarCacheUseCase {
             String contextoId = contextoService.ativar(doc, contextoFallback);
             ProvenienciaCache prov = doc.proveniencia();
             int alteradas = 0;
+            List<CandidatoRevisao> candidatos = new ArrayList<>();
             for (JsonNode no : doc.entradas()) {
-                if (Thread.currentThread().isInterrupted()) {
-                    c.cancelado = true;
-                    break;
-                }
                 if (!(no instanceof ObjectNode entrada)) {
                     c.itensIgnorados++;
                     continue;
@@ -176,20 +174,50 @@ public class RevisarCacheUseCase {
                 ResultadoDeteccaoConcordancia deteccao = detector.analisar(original, traduzido);
                 if (!deteccao.suspeito()) continue;
 
-                c.itensDetectados++;
-                Optional<String> revisadoOpt = tentarRevisar(original, traduzido, deteccao.motivos());
-                if (revisadoOpt.isEmpty()) {
+                candidatos.add(new CandidatoRevisao(entrada, original, traduzido, deteccao));
+            }
+
+            c.itensDetectados += candidatos.size();
+            out("[ARQUIVO] " + arquivo.getFileName() + " — " + candidatos.size()
+                + " fala(s) suspeita(s) para revisão.");
+            for (int posicao = 0; posicao < candidatos.size(); posicao++) {
+                if (Thread.currentThread().isInterrupted()) {
+                    c.cancelado = true;
+                    break;
+                }
+                CandidatoRevisao candidato = candidatos.get(posicao);
+                ObjectNode entrada = candidato.entrada();
+                String original = candidato.original();
+                String traduzido = candidato.traduzido();
+                ResultadoDeteccaoConcordancia deteccao = candidato.deteccao();
+                int atual = posicao + 1;
+                int total = candidatos.size();
+                int indice = entrada.path("indice").asInt(-1);
+                String progresso = atual + "/" + total;
+                String motivos = String.join("; ", deteccao.motivos());
+
+                out(AnsiCores.CYAN + "[REVISANDO " + progresso + "] Evento " + indice
+                    + " | Motivo: " + motivos + AnsiCores.RESET);
+                out("  Original: " + resumirFala(original));
+                out("  Tradução atual: " + resumirFala(traduzido));
+
+                TentativaRevisao tentativa = tentarRevisar(original, traduzido, deteccao.motivos());
+                if (tentativa.revisado().isEmpty()) {
                     c.itensIgnorados++;
                     c.itensPendentes++;
-                    auditar(arquivo, entrada, prov, contextoId, "DESCARTADA", String.join("; ", deteccao.motivos()),
-                        traduzido, traduzido, "LLM indisponível ou resposta inválida");
+                    out(AnsiCores.YELLOW + "[PENDENTE " + progresso + "] Evento " + indice
+                        + " | " + tentativa.detalhe() + AnsiCores.RESET);
+                    auditar(arquivo, entrada, prov, contextoId, "DESCARTADA", motivos,
+                        traduzido, traduzido, tentativa.detalhe());
                     continue;
                 }
 
-                String revisado = revisadoOpt.get();
+                String revisado = tentativa.revisado().get();
                 if (revisado.equals(traduzido)) {
                     c.itensIgnorados++;
-                    auditar(arquivo, entrada, prov, contextoId, "CONFORME", String.join("; ", deteccao.motivos()),
+                    out(AnsiCores.CYAN + "[CONFORME " + progresso + "] Evento " + indice
+                        + " | O LLM manteve a tradução atual." + AnsiCores.RESET);
+                    auditar(arquivo, entrada, prov, contextoId, "CONFORME", motivos,
                         traduzido, traduzido, "LLM manteve a tradução");
                     continue;
                 }
@@ -197,8 +225,12 @@ public class RevisarCacheUseCase {
                 if (pos.suspeito() && pos.motivos().size() >= deteccao.motivos().size()) {
                     c.itensIgnorados++;
                     c.itensPendentes++;
+                    out(AnsiCores.YELLOW + "[PENDENTE " + progresso + "] Evento " + indice
+                        + " | A proposta não reduziu os indícios: "
+                        + String.join("; ", pos.motivos()) + AnsiCores.RESET);
+                    out("  Proposta descartada: " + resumirFala(revisado));
                     auditar(arquivo, entrada, prov, contextoId, "DESCARTADA_VALIDACAO",
-                        String.join("; ", deteccao.motivos()), traduzido, traduzido,
+                        motivos, traduzido, traduzido,
                         "A proposta não reduziu os indícios de concordância");
                     continue;
                 }
@@ -206,7 +238,10 @@ public class RevisarCacheUseCase {
                 entrada.put("traduzido", revisado);
                 alteradas++;
                 c.itensCorrigidos++;
-                auditar(arquivo, entrada, prov, contextoId, "CORRIGIDA", String.join("; ", deteccao.motivos()),
+                out(AnsiCores.GREEN + "[CORRIGIDA " + progresso + "] Evento " + indice + AnsiCores.RESET);
+                out("  Antes: " + resumirFala(traduzido));
+                out("  Depois: " + resumirFala(revisado));
+                auditar(arquivo, entrada, prov, contextoId, "CORRIGIDA", motivos,
                     traduzido, revisado, null);
             }
             if (alteradas > 0) {
@@ -218,6 +253,8 @@ public class RevisarCacheUseCase {
         } catch (Exception e) {
             c.falhas++;
             log.error("Falha na revisão LLM do cache {}: {}", arquivo, e.getMessage());
+            out(AnsiCores.RED + "[FALHA] " + arquivo.getFileName() + " | "
+                + mensagemFalha(e) + AnsiCores.RESET);
             auditoria.registrar(new EntradaAuditoriaCorrecaoCache(
                 Instant.now().toString(), "revisao_llm", arquivo.toAbsolutePath().toString(), -1, null,
                 contextoFallback, null, null, "FALHA_ARQUIVO", e.getMessage(), null, null, null, e.toString()));
@@ -235,23 +272,60 @@ public class RevisarCacheUseCase {
      * <p>COMPORTAMENTO EM CASO DE FALHA: devolve {@link Optional#empty()} para
      * resposta ausente, tags incompatíveis, alucinação ou linha ASS suspeita.
      */
-    private Optional<String> tentarRevisar(String original, String traduzido, List<String> motivos) {
+    private TentativaRevisao tentarRevisar(String original, String traduzido, List<String> motivos) {
         MascaradorTags.Mascarado mascOriginal = mascaradorTags.mascarar(original);
         MascaradorTags.Mascarado mascTraduzido = mascaradorTags.mascarar(traduzido);
         boolean temResiduo = motivos.stream().anyMatch(m -> m.contains("Resíduo gringo"));
         Optional<String> resposta = temResiduo
             ? mistralPort.corrigirTraducao(mascOriginal.texto(), mascTraduzido.texto(), String.join(", ", motivos))
             : mistralPort.revisarConcordancia(mascOriginal.texto(), mascTraduzido.texto(), motivos);
-        if (resposta.isEmpty()) return Optional.empty();
+        if (resposta.isEmpty()) {
+            return TentativaRevisao.pendente("O LLM não retornou uma proposta válida.");
+        }
         try {
             String desmascarado = mascaradorTags.desmascarar(resposta.get(), mascTraduzido.tags());
             validador.validarFala(desmascarado);
-            if (protecaoAss.respostaSuspeita(original, desmascarado)) return Optional.empty();
-            return Optional.of(desmascarado);
+            if (protecaoAss.respostaSuspeita(original, desmascarado)) {
+                return TentativaRevisao.pendente(
+                    "A proposta alterou a estrutura ou os marcadores da legenda ASS.");
+            }
+            return TentativaRevisao.sucesso(desmascarado);
         } catch (AlucinacaoDetectadaException e) {
             log.warn("Revisão de cache descartada por validação: {}", e.getMessage());
-            return Optional.empty();
+            return TentativaRevisao.pendente("Validação rejeitou a proposta: " + mensagemFalha(e));
         }
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: reduz uma fala a uma linha curta e legível para o
+     * console operacional acompanhar a revisão sem perder o conteúdo essencial.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: não altera o valor persistido; quebras ASS são
+     * exibidas como separadores e textos longos são limitados a 220 caracteres.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: texto ausente é exibido explicitamente
+     * como {@code <vazio>}.
+     */
+    private String resumirFala(String texto) {
+        if (texto == null || texto.isBlank()) return "<vazio>";
+        String limpo = texto.replace("\\N", " / ").replace("\\n", " / ")
+            .replaceAll("\\s+", " ").strip();
+        return limpo.length() <= 220 ? limpo : limpo.substring(0, 217) + "...";
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: transforma exceções técnicas em explicações úteis
+     * para quem acompanha a manutenção pelo console web.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: nunca devolve texto vazio nem expõe stack trace
+     * no painel; os detalhes completos continuam no log técnico.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: usa o nome da exceção quando não existe
+     * uma mensagem descritiva.
+     */
+    private String mensagemFalha(Exception e) {
+        return e.getMessage() == null || e.getMessage().isBlank()
+            ? e.getClass().getSimpleName() : e.getMessage();
     }
 
     /**
@@ -302,12 +376,14 @@ public class RevisarCacheUseCase {
             Falas descartadas/conformes: %d
             Falhas: %d
             Cancelado: %s
-            Observação: execute novamente a Tradução Local para regenerar o ASS/SRT a partir do cache corrigido.
+            Falas pendentes: %d
+            Observação: avance para a Opção 6; ela sincroniza o cache mais novo no ASS antes da revisão.
             """.formatted(pasta.toAbsolutePath(), r.status(), r.arquivosAnalisados(), r.arquivosAlterados(),
-            r.itensDetectados(), r.itensCorrigidos(), r.itensIgnorados(), r.falhas(), r.cancelado());
+            r.itensDetectados(), r.itensCorrigidos(), r.itensIgnorados(), r.falhas(), r.cancelado(),
+            r.itensPendentes());
         telemetriaService.finalizarOperacao(op, pasta, "revisao_gramatical_cache", relatorio);
         out("Resultado da revisão LLM: " + r.status() + " | corrigidas=" + r.itensCorrigidos()
-            + " falhas=" + r.falhas());
+            + " pendentes=" + r.itensPendentes() + " falhas=" + r.falhas());
         return r;
     }
 
@@ -336,6 +412,35 @@ public class RevisarCacheUseCase {
         ResultadoManutencaoCache resultado() {
             return new ResultadoManutencaoCache(arquivosAnalisados, arquivosAlterados, itensDetectados,
                 itensCorrigidos, itensIgnorados, itensPendentes, falhas, cancelado);
+        }
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: mantém juntos os dados de uma fala já classificada
+     * para apresentar progresso total antes de chamar o LLM.
+     * <p>INVARIANTES DO DOMÍNIO: representa somente entrada válida e suspeita.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: record imutável sem efeitos colaterais.
+     */
+    private record CandidatoRevisao(
+        ObjectNode entrada,
+        String original,
+        String traduzido,
+        ResultadoDeteccaoConcordancia deteccao
+    ) {}
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: transporta uma proposta aceita ou a razão didática
+     * pela qual uma fala permaneceu pendente.
+     * <p>INVARIANTES DO DOMÍNIO: sucesso contém texto; pendência contém detalhe.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: fábricas normalizam o estado retornado.
+     */
+    private record TentativaRevisao(Optional<String> revisado, String detalhe) {
+        static TentativaRevisao sucesso(String texto) {
+            return new TentativaRevisao(Optional.of(texto), null);
+        }
+
+        static TentativaRevisao pendente(String detalhe) {
+            return new TentativaRevisao(Optional.empty(), detalhe);
         }
     }
 }
