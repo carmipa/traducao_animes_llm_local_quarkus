@@ -14,8 +14,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Heuristica leve para priorizar falas com possivel erro de lore/terminologia
- * antes de chamar o LLM (nomes em ingles remanescentes, grafias suspeitas, etc.).
+ * PROPÓSITO DE NEGÓCIO: prioriza falas com possível erro terminológico antes
+ * de chamar o LLM, respeitando a lore específica da obra selecionada.
+ * <p>INVARIANTES DO DOMÍNIO: nomes canônicos, equivalências PT-BR autorizadas
+ * e termos oficiais preservados não podem virar falsos resíduos em inglês.
+ * <p>COMPORTAMENTO EM CASO DE FALHA: entradas insuficientes retornam resultado
+ * limpo; suspeitas são somente sinalizadas e nunca modificam a legenda.
  */
 @Service
 public class DetectorTermosLoreService {
@@ -51,7 +55,11 @@ public class DetectorTermosLoreService {
         "even", "passing", "beginning", "fall", "leave", "these", "if", "let", "yeah",
         "youre", "im", "dont", "cant", "wont", "ill", "ive", "thats", "whats", "base",
         "someone", "anyone", "something", "anything", "forever", "indeed", "maybe", "please",
-        "thanks", "thank", "hello", "goodbye", "always", "never", "every"
+        "thanks", "thank", "hello", "goodbye", "always", "never", "every", "second", "father",
+        "laugh", "heaven", "chairman", "minister", "princess", "commander", "ensign", "adm"
+    );
+    private static final Set<String> COGNATOS_VALIDOS_PT = Set.of(
+        "chance", "cosmos", "crime", "ideal", "item", "monitor", "normal", "real", "superior"
     );
 
     public ResultadoDeteccaoLore auditar(String originalIngles, String traducaoPt) {
@@ -59,14 +67,13 @@ public class DetectorTermosLoreService {
     }
 
     /**
-     * Variante contextualizada pela obra: as regras específicas de franquia
-     * (termos soltos como "zeon"/"shin" e traduções literais como
-     * "freedom"→"liberdade") só disparam se o termo canônico aparecer no texto
-     * de lore da obra ativa. Sem isso, "We fight for freedom" do 86 era
-     * sinalizado pela regra do Gundam SEED, mesmo "liberdade" sendo a tradução
-     * correta ali. Como o texto de lore é o MESMO que instrui o LLM, adicionar
-     * um termo ao contexto arma a heurística e o prompt de uma vez só.
-     * {@code loreObraAtiva} nulo/vazio mantém o comportamento global.
+     * PROPÓSITO DE NEGÓCIO: audita a fala usando somente as regras pertinentes
+     * à lore da obra ativa, reduzindo falsos positivos entre franquias.
+     * <p>INVARIANTES DO DOMÍNIO: termos canônicos preservados e traduções PT-BR
+     * explicitamente aceitas não são tratados como resíduos; sem lore mantém o
+     * comportamento global compatível com chamadas antigas.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: entradas vazias produzem resultado
+     * limpo e nenhuma alteração é autorizada diretamente por este detector.
      */
     public ResultadoDeteccaoLore auditar(String originalIngles, String traducaoPt, String loreObraAtiva) {
         if (originalIngles == null || originalIngles.isBlank()
@@ -83,7 +90,7 @@ public class DetectorTermosLoreService {
 
         detectarTraducoesLiteraisSuspeitas(en, pt, motivos, loreLower);
         detectarTermosTraduziveisEmIngles(en, pt, motivos);
-        detectarNomesInglesRemanescentes(en, pt, motivos);
+        detectarNomesInglesRemanescentes(en, pt, motivos, loreLower);
         detectarNomesPropriosDivergentes(en, pt, motivos, loreLower);
         detectarTermosMaiusculosSuspeitos(pt, motivos);
 
@@ -98,7 +105,16 @@ public class DetectorTermosLoreService {
         return loreLower == null || contemExpressaoInteira(loreLower, termo);
     }
 
-    private void detectarNomesInglesRemanescentes(String en, String pt, List<String> motivos) {
+    /**
+     * PROPÓSITO DE NEGÓCIO: identifica palavras inglesas copiadas na tradução
+     * sem confundi-las com termos oficiais ou cognatos válidos em português.
+     * <p>INVARIANTES DO DOMÍNIO: nomes próprios são tratados em etapa própria e
+     * palavras declaradas pela lore ativa permanecem protegidas.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: não produz motivo quando não existe
+     * candidato inequívoco; nunca altera o texto recebido.
+     */
+    private void detectarNomesInglesRemanescentes(
+        String en, String pt, List<String> motivos, String loreLower) {
         Matcher matcher = PALAVRA_LATINA.matcher(en);
         Set<String> candidatos = new LinkedHashSet<>();
         Set<String> tokensNomeProprio = tokensDeNomesProprios(en);
@@ -109,6 +125,7 @@ public class DetectorTermosLoreService {
             }
             if (palavra.length() >= 4
                 && !PALAVRAS_IGNORADAS.contains(palavra)
+                && !COGNATOS_VALIDOS_PT.contains(palavra)
                 && !tokensNomeProprio.contains(palavra)) {
                 candidatos.add(palavra);
             }
@@ -116,10 +133,19 @@ public class DetectorTermosLoreService {
 
         String ptLower = pt.toLowerCase(Locale.ROOT);
         for (String candidato : candidatos) {
-            if (contemPalavraInteira(ptLower, candidato)) {
+            if (contemPalavraInteira(ptLower, candidato) && !loreMencionaExclusivamente(loreLower, candidato)) {
                 motivos.add("Possivel nome/termo em ingles remanescente na traducao: \"" + candidato + "\"");
             }
         }
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: reconhece um termo que a obra manda preservar.
+     * <p>INVARIANTES DO DOMÍNIO: exige correspondência integral na lore ativa.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: lore ausente retorna falso.
+     */
+    private boolean loreMencionaExclusivamente(String loreLower, String termo) {
+        return loreLower != null && contemExpressaoInteira(loreLower, termo);
     }
 
     private void detectarTermosTraduziveisEmIngles(String en, String pt, List<String> motivos) {
@@ -276,9 +302,38 @@ public class DetectorTermosLoreService {
             || original.matches("[A-Z0-9.-]{2,}");
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: reconhece nomes e títulos cuja forma PT-BR está
+     * explicitamente autorizada pelo catálogo de equivalências.
+     * <p>INVARIANTES DO DOMÍNIO: nomes compostos só são aceitos quando cada
+     * parte permanece canônica ou possui uma variante traduzida cadastrada.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: parte não comprovada retorna falso e
+     * mantém a fala sinalizada para análise segura.
+     */
     private boolean traducaoAceitaParaTermo(String nome, String pt) {
+        String ptLower = pt.toLowerCase(Locale.ROOT);
         List<String> aceitas = TERMOS_TRADUZIVEIS_ACEITOS.get(nome.toLowerCase(Locale.ROOT));
-        return aceitas != null && contemAlgumaExpressao(pt.toLowerCase(Locale.ROOT), aceitas);
+        if (aceitas != null && contemAlgumaExpressao(ptLower, aceitas)) {
+            return true;
+        }
+
+        String[] partes = nome.split("\\s+");
+        if (partes.length < 2) {
+            return false;
+        }
+        for (String parte : partes) {
+            String normalizada = normalizarTokenNome(parte);
+            if (normalizada.isBlank()) {
+                continue;
+            }
+            List<String> variantes = TERMOS_TRADUZIVEIS_ACEITOS.get(normalizada);
+            boolean presenteOriginal = contemExpressaoInteira(ptLower, normalizada);
+            boolean presenteTraduzida = variantes != null && contemAlgumaExpressao(ptLower, variantes);
+            if (!presenteOriginal && !presenteTraduzida) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private String normalizarTokenNome(String token) {
@@ -352,6 +407,13 @@ public class DetectorTermosLoreService {
         return Map.copyOf(termos);
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: cataloga equivalências PT-BR legítimas de títulos,
+     * organizações e conceitos que não precisam permanecer em inglês.
+     * <p>INVARIANTES DO DOMÍNIO: chaves ficam em inglês minúsculo e variantes
+     * incluem grafias com e sem diacríticos quando necessário.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: o mapa final é imutável.
+     */
     private static Map<String, List<String>> criarTermosTraduziveisAceitos() {
         Map<String, List<String>> termos = new LinkedHashMap<>();
         termos.put("earth federation", List.of(
@@ -362,6 +424,14 @@ public class DetectorTermosLoreService {
         ));
         termos.put("federation", List.of("federacao", "federação"));
         termos.put("principality of zeon", List.of("principado de zeon"));
+        termos.put("republic of zeon", List.of("republica de zeon", "república de zeon"));
+        termos.put("universal century", List.of("seculo universal", "século universal"));
+        termos.put("laplace declaration", List.of("declaracao de laplace", "declaração de laplace"));
+        termos.put("earth", List.of("terra"));
+        termos.put("minister", List.of("ministro", "ministra"));
+        termos.put("princess", List.of("princesa"));
+        termos.put("commander", List.of("comandante"));
+        termos.put("ensign", List.of("alferes"));
         return Map.copyOf(termos);
     }
 }

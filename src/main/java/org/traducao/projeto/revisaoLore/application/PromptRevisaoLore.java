@@ -3,10 +3,17 @@ package org.traducao.projeto.revisaoLore.application;
 import java.util.List;
 
 /**
- * Monta os prompts de sistema e usuario para revisao de terminologia/lore
- * (nomes proprios, locais, faccoes, mechas) com base na lore da obra ativa.
+ * PROPÓSITO DE NEGÓCIO: monta os prompts de revisão terminológica e mantém a
+ * lore da obra separável das instruções operacionais.
+ * <p>INVARIANTES DO DOMÍNIO: a fonte canônica recebida integra o prompt sem
+ * alteração e pode ser recuperada pelos delimitadores estáveis da classe.
+ * <p>COMPORTAMENTO EM CASO DE FALHA: lore ausente usa marcador explícito e a
+ * extração de prompt inválido devolve texto vazio.
  */
 public final class PromptRevisaoLore {
+
+    private static final String INICIO_LORE = "Use a lore abaixo como fonte canonica de grafia e padrao:\n";
+    private static final String FIM_LORE = "\n\nRegras:";
 
     private PromptRevisaoLore() {
     }
@@ -49,6 +56,27 @@ public final class PromptRevisaoLore {
 
             Responda APENAS com uma unica linha: a fala revisada em portugues do Brasil.
             """.formatted(lore);
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: recupera somente a fonte canônica anexada ao prompt
+     * para que as travas não confundam instruções genéricas com termos da obra.
+     * <p>INVARIANTES DO DOMÍNIO: usa os delimitadores produzidos por
+     * {@link #montarPromptSistema(String)} e não inclui as regras operacionais.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: prompt ausente ou fora do formato
+     * conhecido devolve texto vazio, fazendo a validação posterior bloquear.
+     */
+    public static String extrairLoreCanonica(String promptSistema) {
+        if (promptSistema == null || promptSistema.isBlank()) {
+            return "";
+        }
+        int inicio = promptSistema.indexOf(INICIO_LORE);
+        if (inicio < 0) {
+            return "";
+        }
+        inicio += INICIO_LORE.length();
+        int fim = promptSistema.indexOf(FIM_LORE, inicio);
+        return fim >= inicio ? promptSistema.substring(inicio, fim).strip() : "";
     }
 
     public static String montarPromptUsuario(

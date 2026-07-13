@@ -10,6 +10,48 @@ class DetectorTermosLoreServiceTest {
 
     private final DetectorTermosLoreService detector = new DetectorTermosLoreService();
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: preserva tecnologias oficiais declaradas pela lore.
+     * <p>INVARIANTES DO DOMÍNIO: psycho-frame não é resíduo inglês nesta obra.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: falso positivo reprova o teste.
+     */
+    @Test
+    void naoSinalizaTermoInglesPreservadoPelaLore() {
+        ResultadoDeteccaoLore resultado = detector.auditar(
+            "The psycho-frame is responding.",
+            "O psycho-frame está respondendo.",
+            "Termos oficiais: psycho-frame, Newtype."
+        );
+
+        assertFalse(resultado.suspeito());
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: aceita títulos e conceitos oficialmente localizados.
+     * <p>INVARIANTES DO DOMÍNIO: Terra, Século Universal e Princesa são PT-BR.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: falso positivo reprova o teste.
+     */
+    @Test
+    void aceitaEquivalenciasLocalizadasDeTermosCapitalizados() {
+        assertFalse(detector.auditar("Earth is in the Universal Century.",
+            "A Terra está no Século Universal.").suspeito());
+        ResultadoDeteccaoLore titulos = detector.auditar(
+            "Princess Mineva issued the Laplace Declaration.",
+            "A princesa Mineva emitiu a Declaração de Laplace.");
+        assertFalse(titulos.suspeito(), () -> titulos.motivos().toString());
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: evita enviar cognatos PT-BR legítimos ao LLM.
+     * <p>INVARIANTES DO DOMÍNIO: cosmos e crime existem nos dois idiomas.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: falso positivo reprova o teste.
+     */
+    @Test
+    void naoSinalizaCognatosValidosEmPortugues() {
+        assertFalse(detector.auditar("Fly through the cosmos.", "Voe pelo cosmos.").suspeito());
+        assertFalse(detector.auditar("It is a crime.", "Isso é um crime.").suspeito());
+    }
+
     @Test
     void detectaNarrativeTraduzidoLiteralmenteEmNomeCanonico() {
         ResultadoDeteccaoLore resultado = detector.auditar(

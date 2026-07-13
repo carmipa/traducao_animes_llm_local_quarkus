@@ -185,6 +185,7 @@ public class RevisarLoreUseCase {
 
         String nomePromptRevisao = gerenciadorPromptRevisaoLore.obterNome(contextoId);
         String promptSistemaRevisaoLore = gerenciadorPromptRevisaoLore.obterPromptSistema(contextoId);
+        String loreCanonica = PromptRevisaoLore.extrairLoreCanonica(promptSistemaRevisaoLore);
 
         sessao.out(AnsiCores.CYAN + "\n=== Revisao de Lore (nomes, locais e terminologia) ===" + AnsiCores.RESET);
         sessao.out("Inicio UTC: " + UTC_FORMATTER.format(Instant.now()));
@@ -229,7 +230,7 @@ public class RevisarLoreUseCase {
             for (Path arqOriginal : originais) {
                 processarArquivo(
                     sessao, arqOriginal, pastaTraduzida, contextoId, nomePromptRevisao,
-                    revisarTodasFalas, promptSistemaRevisaoLore, pastaBackup,
+                    revisarTodasFalas, promptSistemaRevisaoLore, loreCanonica, pastaBackup,
                     arquivosAnalisados, arquivosAlterados, falasAuditadas, falasSinalizadas,
                     falasCorrigidas, falasSemAlteracao, falasSemResposta, falasDescartadas,
                     cancelado, erros
@@ -258,10 +259,16 @@ public class RevisarLoreUseCase {
         sessao.out("Falas pendentes (sinalizadas sem correcao): " + falasPendentes);
         sessao.out("Status: " + statusFinal.rotulo());
 
-        if (erros.isEmpty()) {
+        if (statusFinal == StatusRevisaoLore.CONCLUIDO) {
             sessao.out(AnsiCores.GREEN + "\nRevisao de lore concluida com sucesso." + AnsiCores.RESET);
+        } else if (statusFinal == StatusRevisaoLore.CONCLUIDO_COM_PENDENCIAS) {
+            sessao.out(AnsiCores.YELLOW + "\nRevisao de lore concluida com " + falasPendentes
+                + " fala(s) pendente(s) e " + erros.size() + " aviso(s)/erro(s)." + AnsiCores.RESET);
         } else {
-            sessao.out(AnsiCores.YELLOW + "\nRevisao de lore concluida com " + erros.size() + " aviso(s)/erro(s)." + AnsiCores.RESET);
+            sessao.out(AnsiCores.YELLOW + "\nRevisao de lore finalizada com status: "
+                + statusFinal.rotulo() + "." + AnsiCores.RESET);
+        }
+        if (!erros.isEmpty()) {
             for (String erro : erros) {
                 sessao.out(AnsiCores.YELLOW + "  - " + erro + AnsiCores.RESET);
             }
@@ -383,6 +390,7 @@ public class RevisarLoreUseCase {
         String nomePromptRevisao,
         boolean revisarTodasFalas,
         String promptSistemaRevisaoLore,
+        String loreCanonica,
         Path pastaBackup,
         int[] arquivosAnalisados,
         int[] arquivosAlterados,
@@ -488,7 +496,7 @@ public class RevisarLoreUseCase {
                 // O prompt de lore da obra ativa contextualiza a heurística: regras
                 // de outra franquia (ex.: "freedom"→"liberdade" do SEED) não disparam.
                 ResultadoDeteccaoLore deteccao = detector.auditar(
-                    mascaraEn.texto(), mascaraPt.texto(), promptSistemaRevisaoLore);
+                    mascaraEn.texto(), mascaraPt.texto(), loreCanonica);
                 if (!revisarTodasFalas && !deteccao.suspeito()) {
                     falasSemAlteracao[0]++;
                     sessao.out(AnsiCores.DIM + marcadorFala + " limpo pela heuristica" + AnsiCores.RESET);
@@ -512,7 +520,7 @@ public class RevisarLoreUseCase {
                     }
 
                     ResultadoDeteccaoLore deteccaoPosterior = detector.auditar(
-                        mascaraEn.texto(), mascarador.mascarar(revisada).texto(), promptSistemaRevisaoLore);
+                        mascaraEn.texto(), mascarador.mascarar(revisada).texto(), loreCanonica);
                     if (!problemaLoreFoiResolvido(deteccao, deteccaoPosterior)) {
                         falasDescartadas[0]++;
                         sessao.out(AnsiCores.YELLOW + marcadorFala
@@ -635,10 +643,26 @@ public class RevisarLoreUseCase {
                     continue;
                 }
 
+                Optional<String> violacaoEscopo = ValidadorCandidatoLoreService.validar(
+                    mascaraEn.texto(), mascaraPt.texto(), mascarador.mascarar(revisada).texto(), loreCanonica);
+                if (violacaoEscopo.isPresent()) {
+                    falasDescartadas[0]++;
+                    sessao.out(AnsiCores.YELLOW + marcadorFala
+                        + " pendente: proposta fora do escopo seguro de lore — "
+                        + violacaoEscopo.get() + AnsiCores.RESET);
+                    registrarAuditoria(
+                        contextoId, nomePromptRevisao, revisarTodasFalas, arqTraduzido, i + 1,
+                        dialogoAtual, totalDialogos, "PENDENTE_ESCOPO_LORE", deteccao.motivos(),
+                        textoEn, textoPt, revisadaOpt.get(), textoPt, violacaoEscopo.get()
+                    );
+                    novosEventos.add(evtTraduzido);
+                    continue;
+                }
+
                 if (deteccao.suspeito()) {
                     String revisadaMascarada = mascarador.mascarar(revisada).texto();
                     ResultadoDeteccaoLore deteccaoPosterior = detector.auditar(
-                        mascaraEn.texto(), revisadaMascarada, promptSistemaRevisaoLore);
+                        mascaraEn.texto(), revisadaMascarada, loreCanonica);
                     if (!problemaLoreFoiResolvido(deteccao, deteccaoPosterior)) {
                         falasDescartadas[0]++;
                         sessao.out(AnsiCores.YELLOW + marcadorFala
