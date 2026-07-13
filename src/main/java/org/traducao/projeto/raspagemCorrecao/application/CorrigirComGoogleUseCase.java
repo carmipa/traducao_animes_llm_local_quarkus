@@ -44,6 +44,7 @@ public class CorrigirComGoogleUseCase {
     private final CacheManutencaoService cacheService;
     private final ClassificadorEntradaCacheService classificador;
     private final ContextoManutencaoCacheService contextoService;
+    private final ProtetorTermosLoreService protetorLore;
     private final GoogleTranslateScraper googleScraper;
     private final CorrecaoCacheAuditoria auditoria;
     private final TelemetriaService telemetriaService;
@@ -57,6 +58,7 @@ public class CorrigirComGoogleUseCase {
         CacheManutencaoService cacheService,
         ClassificadorEntradaCacheService classificador,
         ContextoManutencaoCacheService contextoService,
+        ProtetorTermosLoreService protetorLore,
         GoogleTranslateScraper googleScraper,
         CorrecaoCacheAuditoria auditoria,
         TelemetriaService telemetriaService
@@ -64,6 +66,7 @@ public class CorrigirComGoogleUseCase {
         this.cacheService = cacheService;
         this.classificador = classificador;
         this.contextoService = contextoService;
+        this.protetorLore = protetorLore;
         this.googleScraper = googleScraper;
         this.auditoria = auditoria;
         this.telemetriaService = telemetriaService;
@@ -139,6 +142,7 @@ public class CorrigirComGoogleUseCase {
             String contextoId = contextoService.ativar(doc, contextoFallback);
             ProvenienciaCache prov = doc.proveniencia();
             int alteradas = 0;
+            Path backup = null;
             for (JsonNode no : doc.entradas()) {
                 if (Thread.currentThread().isInterrupted()) {
                     c.cancelado = true;
@@ -154,14 +158,29 @@ public class CorrigirComGoogleUseCase {
                 String original = ClassificadorEntradaCacheService.texto(entrada, "original");
                 String antes = ClassificadorEntradaCacheService.texto(entrada, "traduzido");
 
-                ResultadoRaspagem resposta = googleScraper.traduzir(original);
+                ProtetorTermosLoreService.TextoProtegido protegido = protetorLore.mascarar(
+                    original, contextoService.loreAtiva(), contextoService.termosProtegidosAtivos());
+                ResultadoRaspagem resposta = googleScraper.traduzir(protegido.textoMascarado());
                 if (resposta.status() == StatusRaspagem.SUCESSO) {
-                    entrada.put("traduzido", resposta.texto());
+                    String restaurado = protetorLore.restaurar(resposta.texto(), protegido);
+                    if (restaurado == null) {
+                        c.itensIgnorados++;
+                        auditar(arquivo, entrada, prov, contextoId, "NAO_CORRIGIDA", cls.motivo(), antes,
+                            antes, "TERMO_LORE_CORROMPIDO");
+                        continue;
+                    }
+                    entrada.put("traduzido", restaurado);
                     entrada.put("idiomaTraduzido", "pt-br");
+                    // Cada resposta válida vira checkpoint antes de ser anunciada
+                    // na auditoria. Uma interrupção perde no máximo a chamada em curso.
+                    backup = cacheService.salvarAtomico(doc, sessao);
+                    if (alteradas == 0) {
+                        c.arquivosAlterados++;
+                    }
                     alteradas++;
                     c.itensCorrigidos++;
                     auditar(arquivo, entrada, prov, contextoId, "CORRIGIDA", cls.motivo(), antes,
-                        resposta.texto(), resposta.status().name());
+                        restaurado, resposta.status().name());
                 } else {
                     c.itensIgnorados++;
                     auditar(arquivo, entrada, prov, contextoId, "NAO_CORRIGIDA", cls.motivo(), antes,
@@ -176,8 +195,6 @@ public class CorrigirComGoogleUseCase {
                 }
             }
             if (alteradas > 0) {
-                Path backup = cacheService.salvarAtomico(doc, sessao);
-                c.arquivosAlterados++;
                 out(AnsiCores.GREEN + "[OK] " + arquivo.getFileName() + ": " + alteradas
                     + " entrada(s) corrigidas; backup em " + backup + AnsiCores.RESET);
             }

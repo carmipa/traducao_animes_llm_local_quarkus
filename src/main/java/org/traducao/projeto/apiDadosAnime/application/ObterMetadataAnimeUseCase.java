@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * PROPÓSITO DE NEGÓCIO: fornece capa e dados oficiais da obra selecionada aos
@@ -30,11 +33,15 @@ public class ObterMetadataAnimeUseCase {
 
     private static final Logger log = LoggerFactory.getLogger(ObterMetadataAnimeUseCase.class);
     private static final Path PASTA_CACHE_METADATA = Path.of("cache", "metadata");
+    private static final long TTL_AUSENCIA_MS = 5 * 60 * 1000L;
 
     private final TmdbApiClientAdapter tmdbAdapter;
     private final AniListApiClientAdapter aniListAdapter;
     private final JikanApiClientAdapter jikanAdapter;
     private final ObjectMapper mapper;
+    private final ConcurrentHashMap<String, CompletableFuture<Optional<AnimeMetadata>>> buscasEmAndamento =
+        new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Long> ausenciasRecentes = new ConcurrentHashMap<>();
 
     /**
      * PROPÓSITO DE NEGÓCIO: compõe cache e provedores de metadados na ordem de
@@ -87,6 +94,56 @@ public class ObterMetadataAnimeUseCase {
             }
         }
 
+        Long ausenciaAte = ausenciasRecentes.get(nomeSanitizado);
+        long agora = System.currentTimeMillis();
+        if (ausenciaAte != null && ausenciaAte > agora) {
+            return Optional.empty();
+        }
+        if (ausenciaAte != null) {
+            ausenciasRecentes.remove(nomeSanitizado, ausenciaAte);
+        }
+
+        CompletableFuture<Optional<AnimeMetadata>> novaBusca = new CompletableFuture<>();
+        CompletableFuture<Optional<AnimeMetadata>> buscaExistente =
+            buscasEmAndamento.putIfAbsent(nomeSanitizado, novaBusca);
+        if (buscaExistente != null) {
+            try {
+                return buscaExistente.join();
+            } catch (CompletionException e) {
+                log.warn("Busca concorrente de metadata falhou para {}: {}", nomeSanitizado, e.getMessage());
+                return Optional.empty();
+            }
+        }
+
+        try {
+            Optional<AnimeMetadata> resultado = buscarRemoto(nomeSanitizado, arquivoCache);
+            if (resultado.isEmpty()) {
+                ausenciasRecentes.put(nomeSanitizado, agora + TTL_AUSENCIA_MS);
+            } else {
+                ausenciasRecentes.remove(nomeSanitizado);
+            }
+            novaBusca.complete(resultado);
+            return resultado;
+        } catch (RuntimeException e) {
+            novaBusca.completeExceptionally(e);
+            log.warn("Falha inesperada ao obter metadata para {}: {}", nomeSanitizado, e.getMessage());
+            return Optional.empty();
+        } finally {
+            buscasEmAndamento.remove(nomeSanitizado, novaBusca);
+        }
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: executa uma única cadeia de provedores para todos os
+     * consumidores concorrentes que pediram a mesma obra.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: TMDB, AniList e Jikan mantêm a ordem de
+     * preferência; somente resultado presente é persistido.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: ausência em todas as fontes devolve
+     * {@link Optional#empty()} e ativa o cache negativo temporário do chamador.
+     */
+    private Optional<AnimeMetadata> buscarRemoto(String nomeSanitizado, Path arquivoCache) {
         Optional<AnimeMetadata> obtidoOpt = Optional.empty();
         if (tmdbAdapter != null && tmdbAdapter.isConfigurado()) {
             obtidoOpt = tmdbAdapter.buscarPorNome(nomeSanitizado);

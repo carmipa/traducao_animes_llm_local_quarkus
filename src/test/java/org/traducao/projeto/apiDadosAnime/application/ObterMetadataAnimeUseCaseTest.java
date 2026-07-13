@@ -2,8 +2,18 @@ package org.traducao.projeto.apiDadosAnime.application;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.traducao.projeto.apiDadosAnime.domain.model.AnimeMetadata;
+import org.traducao.projeto.apiDadosAnime.infrastructure.adapters.AniListApiClientAdapter;
+import org.traducao.projeto.traducao.infrastructure.config.LlmProperties;
+
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ObterMetadataAnimeUseCaseTest {
 
@@ -52,5 +62,72 @@ class ObterMetadataAnimeUseCaseTest {
             "Mobile Suit Gundam The 08th MS Team",
             useCase.extrairNomeTermoBusca("C:\\animes\\[Joseki] Mobile Suit Gundam The 08th MS Team COMPLETE (1996)(BD AV1 1080p)\\Mobile.Suit.Gundam.The.08th.MS.Team.S01E02_Track3_PT-BR.ass")
         );
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: garante que dois formulários pedindo simultaneamente
+     * a mesma capa compartilhem uma única consulta externa.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: ambos recebem o mesmo resultado vazio e o adapter
+     * é chamado exatamente uma vez.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: timeout curto reprova o teste em vez de
+     * deixá-lo bloqueado.
+     */
+    @Test
+    void consolidaBuscasConcorrentesDaMesmaObra() throws Exception {
+        AniListContador adapter = new AniListContador();
+        ObterMetadataAnimeUseCase concorrente = new ObterMetadataAnimeUseCase(
+            null, adapter, null, new ObjectMapper());
+        String termo = "Obra Inexistente Concorrente 987654321";
+
+        CompletableFuture<Optional<AnimeMetadata>> primeira = CompletableFuture.supplyAsync(
+            () -> concorrente.executar(termo));
+        assertTrue(adapter.iniciada.await(2, TimeUnit.SECONDS));
+        CompletableFuture<Optional<AnimeMetadata>> segunda = CompletableFuture.supplyAsync(
+            () -> concorrente.executar(termo));
+        adapter.liberar.countDown();
+
+        assertTrue(primeira.get(2, TimeUnit.SECONDS).isEmpty());
+        assertTrue(segunda.get(2, TimeUnit.SECONDS).isEmpty());
+        assertEquals(1, adapter.chamadas.get());
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: simula deterministicamente uma fonte lenta e sem
+     * resultado para exercitar a consolidação concorrente.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: nenhuma rede real é acessada; os latches controlam
+     * quando consumidores concorrentes encontram a busca em andamento.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: interrupção restaura o sinal da thread e
+     * devolve vazio.
+     */
+    private static final class AniListContador extends AniListApiClientAdapter {
+        private final AtomicInteger chamadas = new AtomicInteger();
+        private final CountDownLatch iniciada = new CountDownLatch(1);
+        private final CountDownLatch liberar = new CountDownLatch(1);
+
+        AniListContador() {
+            super(new LlmProperties(), new ObjectMapper());
+        }
+
+        /**
+         * PROPÓSITO DE NEGÓCIO: bloqueia a fonte falsa até a segunda requisição
+         * entrar no caso de uso.
+         * <p>INVARIANTES DO DOMÍNIO: contador cresce uma vez por chamada real.
+         * <p>COMPORTAMENTO EM CASO DE FALHA: interrupção devolve ausência segura.
+         */
+        @Override
+        public Optional<AnimeMetadata> buscarPorNome(String termoBusca) {
+            chamadas.incrementAndGet();
+            iniciada.countDown();
+            try {
+                liberar.await(2, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            return Optional.empty();
+        }
     }
 }

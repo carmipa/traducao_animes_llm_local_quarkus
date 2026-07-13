@@ -28,7 +28,8 @@ class TelemetriaDatasetServiceTest {
             30_000L, 11, 11, 11, "2026-07-09T10:05:00Z");
         return new TelemetriaResumo(
             10, 1, 900, 444L, 100, List.of(), List.of(traducao), List.of(operacao),
-            new RevisaoLoreTelemetriaResumo(0, 0, 0, 0, null), 5, 2, 0.0, 10, 0L, 0L, 3);
+            new RevisaoLoreTelemetriaResumo(0, 0, 0, 0, null), 5, 2, 0.0, 10, 0L, 0L, 3,
+            7, 4, 3);
     }
 
     @Test

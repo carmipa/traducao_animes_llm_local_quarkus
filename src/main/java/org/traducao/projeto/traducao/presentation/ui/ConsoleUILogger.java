@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
  * acesso a {@code pb} e sincronizado porque mensagens podem chegar
  * durante a tradução de um episódio.
  * <p>
- * O console e efêmero (a barra de progresso sobrescreve linhas antigas), por
- * isso toda mensagem também é espelhada no logger SLF4J, que persiste em
- * arquivo (ver {@code logging.file.name}) e sobrevive para análise posterior.
+ * No modo web, {@code System.out} já é espelhado pelo ConsoleRedirector para
+ * SSE e {@code logs/console-web.log}. As mensagens visuais não são repetidas no
+ * SLF4J, evitando que a mesma linha apareça duas vezes no terminal e no painel.
  */
 @Component
 public class ConsoleUILogger {
@@ -50,9 +50,14 @@ public class ConsoleUILogger {
     }
 
     /**
-     * Imprime um separador bem visível indicando o início da tradução de um novo
-     * episódio, para diferenciar claramente esse marco das mensagens linha-a-linha
-     * (lote a lote) que vêm a seguir no mesmo console efêmero.
+     * PROPÓSITO DE NEGÓCIO: imprime um marco visual entre episódios para que o
+     * acompanhamento da tradução não misture lotes de arquivos diferentes.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: uma única emissão em {@code System.out} alimenta
+     * terminal, SSE e log web, sem duplicação via SLF4J.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: fecha a barra anterior com segurança e
+     * continua emitindo o cabeçalho textual.
      */
     public synchronized void tituloEpisodio(String nomeEpisodio, int indiceAtual, int totalEpisodios) {
         fecharBarraComSeguranca();
@@ -64,10 +69,18 @@ public class ConsoleUILogger {
         System.out.println(AnsiCores.BOLD + AnsiCores.YELLOW + ">>> " + cabecalho + ANSI_RESET);
         System.out.println(ANSI_CYAN + linha + ANSI_RESET);
 
-        log.info(linha);
-        log.info(">>> {}", cabecalho);
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: publica uma mensagem operacional colorida no canal
+     * acompanhado pelo Paulo durante traduções e correções.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: cada mensagem é emitida exatamente uma vez;
+     * avisos incrementam o contador visual; falha cosmética da barra não afeta o job.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: desativa a barra incompatível e escreve
+     * diretamente no console, sem propagar exceção para o pipeline.
+     */
     public synchronized void log(String mensagem) {
         // INFO fica sem cor (herda o foreground padrão do terminal): cor é
         // reservada para o que precisa de atenção (sucesso/aviso/erro) e para
@@ -75,17 +88,12 @@ public class ConsoleUILogger {
         String cor = null;
 
         if (mensagem.contains("[ FAIL ]") || mensagem.contains("Erro") || mensagem.contains("Falha")) {
-            log.warn(mensagem);
             cor = ANSI_RED;
         } else if (mensagem.contains("[ OK ]") || mensagem.contains("Sucesso") || mensagem.contains("Concluido") || mensagem.contains("concluido")) {
-            log.info(mensagem);
             cor = ANSI_GREEN;
         } else if (mensagem.contains("[ WARN ]")) {
-            log.warn(mensagem);
             cor = ANSI_YELLOW;
             totalAvisos++;
-        } else {
-            log.info(mensagem);
         }
 
         // Aplica a cor na string final para o console visual do usuário

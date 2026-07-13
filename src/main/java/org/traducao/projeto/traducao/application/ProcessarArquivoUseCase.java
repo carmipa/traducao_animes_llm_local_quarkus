@@ -226,18 +226,25 @@ public class ProcessarArquivoUseCase {
         Map<String, String> traducoesNovas;
         try {
             traducoesNovas = traduzirPendentes(textosPendentes, arquivoEntrada.getFileName().toString(), avisos, promptCongelado);
-            uiLogger.registrarFalasNovas(traducoesNovas.size());
         } catch (TraducaoParcialException e) {
             Map<String, String> traducoesParciais = e.getDicionarioParcial();
             if (traducoesParciais != null && !traducoesParciais.isEmpty()) {
                 log.info("Salvando {} traducoes parciais no cache antes de abortar o episodio", traducoesParciais.size());
                 Map<String, String> combinadasParciais = new HashMap<>(cacheReaproveitavel);
                 combinadasParciais.putAll(traducoesParciais);
+                Map<String, String> parciaisValidadas = new HashMap<>();
+                for (Map.Entry<String, String> parcial : combinadasParciais.entrySet()) {
+                    String motivo = motivoFalhaFinal(parcial.getKey(), parcial.getValue());
+                    parciaisValidadas.put(parcial.getKey(), motivo == null ? parcial.getValue() : "");
+                    if (motivo != null) {
+                        telemetriaService.registrarFallbackMantido();
+                    }
+                }
 
                 List<EntradaCache> entradasCacheParcial = new ArrayList<>();
                 for (EventoLegenda evento : documento.eventos()) {
                     if (isTraduzivel(evento, frequenciaTextoLimpo)) {
-                        String txtFinal = combinadasParciais.get(evento.texto());
+                        String txtFinal = parciaisValidadas.get(evento.texto());
                         if (txtFinal != null) {
                             entradasCacheParcial.add(new EntradaCache(
                                 evento.indice(), evento.estilo(), evento.texto(), txtFinal,
@@ -255,6 +262,29 @@ public class ProcessarArquivoUseCase {
         Map<String, String> traducoesCombinadas = new HashMap<>(cacheReaproveitavel);
         traducoesCombinadas.putAll(traducoesNovas);
 
+        Map<String, String> traducoesValidadas = new HashMap<>();
+        LinkedHashSet<String> falhasDistintas = new LinkedHashSet<>();
+        for (Map.Entry<String, String> traducao : traducoesCombinadas.entrySet()) {
+            String original = traducao.getKey();
+            String traduzido = traducao.getValue();
+            String motivoFalha = motivoFalhaFinal(original, traduzido);
+            if (motivoFalha == null) {
+                traducoesValidadas.put(original, traduzido);
+                continue;
+            }
+
+            // Uma falha conhecida nunca volta ao banco como se fosse tradução.
+            // O original continua visível somente no artefato PARCIAL para que a
+            // sincronia da legenda seja preservada durante a revisão.
+            traducoesValidadas.put(original, "");
+            falhasDistintas.add(original);
+            telemetriaService.registrarFallbackMantido();
+            String aviso = "Fala pendente após tentativas do LLM: " + motivoFalha + ". Original: " + original;
+            log.warn(aviso);
+            uiLogger.log("[ WARN ] " + aviso);
+            avisos.add(aviso);
+        }
+
         List<EventoLegenda> eventosFinais = new ArrayList<>(documento.eventos().size());
         List<EntradaCache> entradasCache = new ArrayList<>();
         for (EventoLegenda evento : documento.eventos()) {
@@ -262,33 +292,26 @@ public class ProcessarArquivoUseCase {
                 eventosFinais.add(evento);
                 continue;
             }
-            String textoFinal = traducoesCombinadas.get(evento.texto());
-            if (textoFinal == null) {
+            if (!traducoesValidadas.containsKey(evento.texto())) {
                 throw new ArquivoLegendaException(
                     "Falha interna: nenhuma tradução encontrada para a fala do evento " + evento.indice()
                         + " em " + arquivoEntrada);
             }
-            try {
-                validador.validarFala(textoFinal);
-            } catch (AlucinacaoDetectadaException e) {
-                // Não derruba milhares de falas já traduzidas por causa de 1 suspeita
-                // nesta revalidação final: mantém o texto e sinaliza para revisão manual.
-                telemetriaService.registrarAlucinacaoPrevenida();
-                log.warn("Fala suspeita mantida na revalidação final do evento {}: {}. Texto: \"{}\"",
-                    evento.indice(), e.getMessage(), textoFinal);
-                uiLogger.log("[ WARN ] Fala suspeita mantida (revise manualmente no cache): " + textoFinal);
-                avisos.add("Evento " + evento.indice() + " suspeito na revalidação final: " + e.getMessage());
-            }
+            String textoValidado = traducoesValidadas.get(evento.texto());
+            String textoFinal = textoValidado == null || textoValidado.isBlank()
+                ? evento.texto() : textoValidado;
             eventosFinais.add(evento.comTexto(textoFinal));
             entradasCache.add(new EntradaCache(
-                evento.indice(), evento.estilo(), evento.texto(), textoFinal,
+                evento.indice(), evento.estilo(), evento.texto(), textoValidado,
                 propriedades.idiomaOriginal(), propriedades.idiomaTraduzido()));
         }
 
         DocumentoLegenda documentoFinal = new DocumentoLegenda(
             documento.cabecalho(), eventosFinais, documento.quebraDeLinha(), documento.comBom());
 
-        Path arquivoSaida = resolverArquivoSaida(arquivoEntrada);
+        Path arquivoSaidaFinal = resolverArquivoSaida(arquivoEntrada);
+        Path arquivoSaida = falhasDistintas.isEmpty()
+            ? arquivoSaidaFinal : resolverArquivoParcial(arquivoSaidaFinal);
         if (ehSrt) {
             escritorSrt.escrever(arquivoSaida, documentoFinal);
         } else {
@@ -299,13 +322,20 @@ public class ProcessarArquivoUseCase {
         long tempoTotalMs = System.currentTimeMillis() - inicioMs;
         String animeNome = animeAPartirDoArquivo(arquivoEntrada);
         String loreNome = gerenciadorContexto.obterNomeContextoAtivo();
-        StatusArquivoTraducao status = avisos.isEmpty()
+        int traducoesNovasValidas = (int) traducoesNovas.entrySet().stream()
+            .filter(e -> {
+                String validada = traducoesValidadas.get(e.getKey());
+                return validada != null && !validada.isBlank();
+            })
+            .count();
+        uiLogger.registrarFalasNovas(traducoesNovasValidas);
+        StatusArquivoTraducao status = avisos.isEmpty() && falhasDistintas.isEmpty()
             ? StatusArquivoTraducao.CONCLUIDO : StatusArquivoTraducao.PARCIAL;
         telemetriaService.registrarTraducao(new LlmTelemetria(
             arquivoEntrada.getFileName().toString(),
             llmPropriedades.model(),
             eventosTraduziveis.size(),
-            traducoesNovas.size(),
+            traducoesNovasValidas,
             cacheReaproveitavel.size(),
             tempoTotalMs,
             List.copyOf(avisos),
@@ -316,10 +346,16 @@ public class ProcessarArquivoUseCase {
             status.name()
         ));
 
-        log.info("Arquivo traduzido salvo em {} (cache em {})", arquivoSaida, arquivoCache);
-        return ResultadoTraducaoArquivo.concluido(
+        if (status == StatusArquivoTraducao.PARCIAL) {
+            log.warn("Tradução parcial salva em {}: {} fala(s) distinta(s) continuam pendentes; saída final {} não foi sobrescrita.",
+                arquivoSaida, falhasDistintas.size(), arquivoSaidaFinal);
+        } else {
+            log.info("Arquivo traduzido salvo em {} (cache em {})", arquivoSaida, arquivoCache);
+        }
+        return new ResultadoTraducaoArquivo(
             arquivoSaida, arquivoEntrada.getFileName().toString(), loreNome,
-            eventosTraduziveis.size(), cacheReaproveitavel.size(), traducoesNovas.size(), avisos.size());
+            eventosTraduziveis.size(), cacheReaproveitavel.size(), traducoesNovasValidas,
+            avisos.size(), status);
     }
 
     private Map<String, String> traduzirPendentes(
@@ -525,6 +561,32 @@ public class ProcessarArquivoUseCase {
         return texto == null ? "" : texto.replaceAll("\\s+", " ").trim();
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: decide se o resultado final pode entrar no banco
+     * bilíngue como uma tradução reaproveitável ou deve permanecer pendente.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: fallback idêntico só é aceito para nome, sigla,
+     * número ou termo protegido pela lore; vazio e resíduo gringo nunca são
+     * contabilizados como tradução concluída.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: devolve uma justificativa legível; uma
+     * tradução válida devolve {@code null}.
+     */
+    private String motivoFalhaFinal(String original, String traduzido) {
+        if (traduzido == null || traduzido.isBlank()) {
+            return "resposta vazia";
+        }
+        if (detectorIdentica.pareceNaoTraduzida(original, traduzido)) {
+            return "modelo devolveu o texto original sem tradução";
+        }
+        try {
+            validador.validarFala(traduzido);
+            return null;
+        } catch (AlucinacaoDetectadaException e) {
+            return e.getMessage();
+        }
+    }
+
     private static boolean ehSrt(Path arquivo) {
         return arquivo.getFileName().toString().toLowerCase().endsWith(".srt");
     }
@@ -543,6 +605,23 @@ public class ProcessarArquivoUseCase {
         String base = nome.substring(0, nome.length() - extensao.length());
         String baseSemSufixoIngles = base.replaceFirst("(?i)_ENG$", "");
         return pastasExecucao.diretorioSaida().resolve(baseSemSufixoIngles + "_PT-BR" + extensao);
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: diferencia visualmente uma legenda ainda incompleta
+     * do artefato PT-BR final usado no remux.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: preserva pasta e extensão e acrescenta o sufixo
+     * {@code .parcial} antes da extensão.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: caminho sem extensão reconhecida ainda
+     * recebe o sufixo calculado a partir da convenção ASS/SRT do módulo.
+     */
+    private Path resolverArquivoParcial(Path arquivoFinal) {
+        String nome = arquivoFinal.getFileName().toString();
+        String extensao = extensaoLegenda(nome);
+        String base = nome.substring(0, nome.length() - extensao.length());
+        return arquivoFinal.resolveSibling(base + ".parcial" + extensao);
     }
 
     private Path resolverArquivoCache(Path entrada) {

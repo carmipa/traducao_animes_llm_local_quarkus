@@ -72,6 +72,26 @@ class CacheManutencaoServiceTest {
     }
 
     @Test
+    void checkpointsNaoSobrescrevemBackupDoInicioDaSessao() throws Exception {
+        Path raiz = temp.resolve("cache-checkpoint");
+        Path arquivo = raiz.resolve("ep.cache.json");
+        Path backups = temp.resolve("backup-checkpoint");
+        Files.createDirectories(raiz);
+        Files.writeString(arquivo, "[{\"original\":\"Hello\",\"traduzido\":\"\"}]");
+
+        var sessao = new CacheManutencaoService.Sessao(
+            raiz.toAbsolutePath(), backups.toAbsolutePath(), "google");
+        var doc = service.carregar(arquivo);
+        ((ObjectNode) doc.entradas().get(0)).put("traduzido", "Olá");
+        Path backup = service.salvarAtomico(doc, sessao);
+        ((ObjectNode) doc.entradas().get(0)).put("traduzido", "Olá!");
+        service.salvarAtomico(doc, sessao);
+
+        assertEquals("", mapper.readTree(backup.toFile()).get(0).path("traduzido").asText());
+        assertEquals("Olá!", mapper.readTree(arquivo.toFile()).get(0).path("traduzido").asText());
+    }
+
+    @Test
     void estruturaInvalidaEhRejeitadaSemAlterarOriginal() throws Exception {
         Path arquivo = temp.resolve("invalido.cache.json");
         String original = "{\"semEntradas\":true}";

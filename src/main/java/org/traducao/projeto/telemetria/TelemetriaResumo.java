@@ -22,5 +22,8 @@ public record TelemetriaResumo(
     int jvmThreadsAtivas,
     long jvmHeapUsadoBytes,
     long jvmHeapMaxBytes,
-    int arquivosSanitizados
+    int arquivosSanitizados,
+    int respostasTraducaoRejeitadas,
+    int falhasTraducaoRecuperadas,
+    int fallbacksTraducaoMantidos
 ) {}

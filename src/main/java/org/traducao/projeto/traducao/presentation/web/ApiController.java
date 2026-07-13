@@ -470,8 +470,15 @@ public class ApiController {
                     System.out.println("Processando arquivo [" + (i + 1) + "/" + arquivos.size() + "]: " + arquivo.getFileName());
                     System.out.println("--------------------------------------------------------------");
                     try {
-                        resultados.add(processarArquivoUseCase.processar(arquivo, permitir));
-                        System.out.println("[OK] Traduzido: " + arquivo.getFileName());
+                        var resultado = processarArquivoUseCase.processar(arquivo, permitir);
+                        resultados.add(resultado);
+                        if (resultado.status() == org.traducao.projeto.traducao.domain.StatusArquivoTraducao.CONCLUIDO) {
+                            System.out.println("[OK] Traduzido: " + arquivo.getFileName());
+                        } else {
+                            System.out.println("[PARCIAL] " + arquivo.getFileName()
+                                + ": saída parcial em " + resultado.arquivoSaida()
+                                + "; corrija o cache e execute novamente.");
+                        }
                     } catch (org.traducao.projeto.traducao.domain.exceptions.EntradaJaTraduzidaException ex) {
                         resultados.add(org.traducao.projeto.traducao.domain.ResultadoTraducaoArquivo.bloqueado(arquivo.getFileName().toString(), loreNome));
                         registrarTelemetriaFalhaTraducao(arquivo, loreNome, org.traducao.projeto.traducao.domain.StatusArquivoTraducao.BLOQUEADO, ex.getMessage());
@@ -499,15 +506,17 @@ public class ApiController {
                 org.traducao.projeto.traducao.domain.StatusLoteTraducao statusLote =
                     org.traducao.projeto.traducao.domain.StatusLoteTraducao.consolidar(resultados);
                 long okCount = resultados.stream().filter(r ->
-                    r.status() == org.traducao.projeto.traducao.domain.StatusArquivoTraducao.CONCLUIDO
-                    || r.status() == org.traducao.projeto.traducao.domain.StatusArquivoTraducao.PARCIAL).count();
-                long falhaCount = resultados.size() - okCount;
+                    r.status() == org.traducao.projeto.traducao.domain.StatusArquivoTraducao.CONCLUIDO).count();
+                long parcialCount = resultados.stream().filter(r ->
+                    r.status() == org.traducao.projeto.traducao.domain.StatusArquivoTraducao.PARCIAL).count();
+                long falhaCount = resultados.size() - okCount - parcialCount;
                 System.out.println("\n========================================================================");
                 System.out.println("  [" + statusLote.getRotulo().toUpperCase() + "] TRADUCAO LOCAL VIA LLM: "
-                    + okCount + " ok, " + falhaCount + " com falha/bloqueio de " + resultados.size() + " arquivo(s).");
+                    + okCount + " concluído(s), " + parcialCount + " parcial(is), " + falhaCount
+                    + " com falha/bloqueio de " + resultados.size() + " arquivo(s).");
                 System.out.println("========================================================================\n");
-                log.info("[{}] Traducao via LLM finalizada. {} ok, {} falha/bloqueio de {}.",
-                    statusLote.name(), okCount, falhaCount, resultados.size());
+                log.info("[{}] Traducao via LLM finalizada. {} concluido(s), {} parcial(is), {} falha/bloqueio de {}.",
+                    statusLote.name(), okCount, parcialCount, falhaCount, resultados.size());
 
             } catch (Exception e) {
                 log.error("Erro na tradução em background", e);

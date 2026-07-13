@@ -12,6 +12,7 @@ import org.traducao.projeto.traducao.domain.exceptions.TradutorException;
 import org.traducao.projeto.traducao.domain.ports.MistralPort;
 import org.traducao.projeto.traducao.presentation.ui.ConsoleUILogger;
 import org.traducao.projeto.traducao.domain.exceptions.TraducaoParcialException;
+import org.traducao.projeto.telemetria.TelemetriaService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +38,28 @@ public class ProcessarEpisodioUseCase {
     private final MistralPort mistralPort;
     private final ValidadorTraducaoService validador;
     private final ConsoleUILogger uiLogger;
+    private final TelemetriaService telemetriaService;
 
-    public ProcessarEpisodioUseCase(MistralPort mistralPort, ValidadorTraducaoService validador, ConsoleUILogger uiLogger) {
+    /**
+     * PROPÓSITO DE NEGÓCIO: compõe tradução, validação, acompanhamento visual e
+     * telemetria sem confundir resposta rejeitada com tradução recuperada.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: toda saída do modelo passa pelo validador antes
+     * de ser devolvida ao processamento do arquivo.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: dependência ausente impede a criação do
+     * caso de uso pelo contêiner.
+     */
+    public ProcessarEpisodioUseCase(
+        MistralPort mistralPort,
+        ValidadorTraducaoService validador,
+        ConsoleUILogger uiLogger,
+        TelemetriaService telemetriaService
+    ) {
         this.mistralPort = mistralPort;
         this.validador = validador;
         this.uiLogger = uiLogger;
+        this.telemetriaService = telemetriaService;
     }
 
     public List<TraducaoLote> processarEpisodio(List<Lote> lotes) throws InterruptedException, ExecutionException {
@@ -145,11 +163,15 @@ public class ProcessarEpisodioUseCase {
     }
 
     /**
-     * Última instância para uma única fala: tenta mais algumas vezes e, se o
-     * LLM continuar devolvendo lixo, mantém o texto original sem tradução em
-     * vez de derrubar o episódio inteiro por causa de uma fala só. A fala fica
-     * sinalizada no log/console para revisão manual (o cache JSON aceita
-     * correções manuais, ver {@link ProcessarArquivoUseCase}).
+     * PROPÓSITO DE NEGÓCIO: recupera uma fala isolada com novas amostragens antes
+     * de declará-la pendente, preservando o restante do episódio.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: cada resposta rejeitada e cada recuperação são
+     * contabilizadas separadamente; o fallback original não representa sucesso.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: após esgotar as tentativas, devolve o
+     * original como marcador transitório; {@link ProcessarArquivoUseCase} o
+     * converte em tradução vazia no cache e saída explicitamente parcial.
      */
     private List<String> traduzirLinhaUnicaComFallback(Lote lote, String promptSistemaCongelado) {
         if (lote.linhasOriginais().isEmpty()) {
@@ -157,13 +179,20 @@ public class ProcessarEpisodioUseCase {
         }
 
         RuntimeException ultimaFalha = null;
+        boolean houveRespostaRejeitada = false;
         for (int tentativa = 1; tentativa <= 1 + MAX_TENTATIVAS_LINHA_UNICA; tentativa++) {
             try {
                 Double temperatura = TEMPERATURA_POR_TENTATIVA[
                     Math.min(tentativa - 1, TEMPERATURA_POR_TENTATIVA.length - 1)];
-                return traduzirERevalidarBruto(lote, temperatura, promptSistemaCongelado);
+                List<String> traducao = traduzirERevalidarBruto(lote, temperatura, promptSistemaCongelado);
+                if (houveRespostaRejeitada) {
+                    telemetriaService.registrarFalhaTraducaoRecuperada();
+                }
+                return traducao;
             } catch (DivergenciaLinhasException | AlucinacaoDetectadaException e) {
                 ultimaFalha = e;
+                houveRespostaRejeitada = true;
+                telemetriaService.registrarRespostaTraducaoRejeitada();
             }
         }
 

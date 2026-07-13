@@ -27,6 +27,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * PROPÓSITO DE NEGÓCIO: prova a regressão central do menu — uma entrada vazia
@@ -53,7 +54,8 @@ class CorrigirComGoogleUseCaseTest {
         CacheManutencaoService cacheService = new CacheServiceTeste(mapper, temp.resolve("backups"));
         CorrigirComGoogleUseCase useCase = new CorrigirComGoogleUseCase(
             cacheService, classificador, new ContextoManutencaoCacheService(contexto),
-            new GoogleStub(mapper), new AuditoriaStub(mapper), new TelemetriaStub());
+            new ProtetorTermosLoreService(), new GoogleStub(mapper),
+            new AuditoriaStub(mapper), new TelemetriaStub());
 
         Path cache = temp.resolve("cache");
         Path arquivo = cache.resolve("ep.cache.json");
@@ -72,9 +74,49 @@ class CorrigirComGoogleUseCaseTest {
         assertEquals("CONCLUIDO", resultado.status());
     }
 
+    @Test
+    void interrupcaoPreservaCheckpointJaConfirmadoNoDisco() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        GerenciadorContexto contexto = new GerenciadorContexto(List.of(new ContextoTeste()));
+        ClassificadorEntradaCacheService classificador = new ClassificadorEntradaCacheService(
+            new DetectorTraducaoIdenticaService(contexto), new ValidadorTraducaoService(),
+            new TradutorProperties(), new DetectorEfeitoKaraokeService(), new ProtecaoLegendaAssService());
+        CacheManutencaoService cacheService = new CacheServiceTeste(mapper, temp.resolve("backups-interrupcao"));
+        CorrigirComGoogleUseCase useCase = new CorrigirComGoogleUseCase(
+            cacheService, classificador, new ContextoManutencaoCacheService(contexto),
+            new ProtetorTermosLoreService(), new GoogleInterrompendoStub(mapper),
+            new AuditoriaStub(mapper), new TelemetriaStub());
+        Path cache = temp.resolve("cache-interrupcao");
+        Path arquivo = cache.resolve("ep.cache.json");
+        Files.createDirectories(cache);
+        Files.writeString(arquivo, """
+            {"proveniencia":{"schemaVersion":1,"contextoId":"danmachi","contextoHash":"abc","modeloLlm":"gemma","idiomaOrigem":"en","idiomaDestino":"pt-br"},
+             "entradas":[{"indice":1,"estilo":"Default","original":"Help!","traduzido":""},
+                         {"indice":2,"estilo":"Default","original":"Run!","traduzido":""}]}
+            """);
+
+        try {
+            ResultadoManutencaoCache resultado = useCase.executar(cache, null);
+            var salvo = mapper.readTree(arquivo.toFile());
+            assertTrue(resultado.cancelado());
+            assertEquals("Ajude!", salvo.path("entradas").get(0).path("traduzido").asText());
+            assertEquals("", salvo.path("entradas").get(1).path("traduzido").asText());
+        } finally {
+            Thread.interrupted();
+        }
+    }
+
     private static final class GoogleStub extends GoogleTranslateScraper {
         GoogleStub(ObjectMapper mapper) { super(mapper); }
         @Override public ResultadoRaspagem traduzir(String textoOriginal) { return ResultadoRaspagem.sucesso("Ajude!"); }
+    }
+
+    private static final class GoogleInterrompendoStub extends GoogleTranslateScraper {
+        GoogleInterrompendoStub(ObjectMapper mapper) { super(mapper); }
+        @Override public ResultadoRaspagem traduzir(String textoOriginal) {
+            Thread.currentThread().interrupt();
+            return ResultadoRaspagem.sucesso("Ajude!");
+        }
     }
 
     private static final class CacheServiceTeste extends CacheManutencaoService {

@@ -57,4 +57,30 @@ public class ContextoManutencaoCacheService {
         gerenciadorContexto.definirContextoAtivo(contextoId);
         return contextoId;
     }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: entrega à manutenção online a lore que corresponde
+     * ao cache cuja proveniência acabou de ser ativada.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: a lore pertence ao mesmo contexto retornado por
+     * {@link #ativar(CacheManutencaoService.DocumentoEditavel, String)}.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: contexto sem lore devolve o fallback
+     * textual do gerenciador, nunca {@code null} por contrato operacional.
+     */
+    public String loreAtiva() {
+        return gerenciadorContexto.obterLoreAtiva();
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: expõe os termos formalmente protegidos pelo provedor
+     * ativo para mascaramento durante a tradução online.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: o conjunto pertence ao contexto ativo.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: ausência de termos produz conjunto vazio.
+     */
+    public java.util.Set<String> termosProtegidosAtivos() {
+        return gerenciadorContexto.termosProtegidosAtivos();
+    }
 }

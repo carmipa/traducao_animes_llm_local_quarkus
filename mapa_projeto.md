@@ -3,8 +3,8 @@
 ================================================================================
  Raiz do repositorio      : traducao_animes_llm_local_quarkus
  Pastas mapeadas          : 243
- Arquivos (na arvore)     : 457
- Arquivos-fonte indexados : 347  (.java: 347 | .py: 0)
+ Arquivos (na arvore)     : 455
+ Arquivos-fonte indexados : 349  (.java: 349 | .py: 0)
  Memoria viva do projeto  : CEREBRO_IA.md (na raiz do repositorio)
 
  Objetivo: mapa de contexto para LLMs navegarem os diretorios e
@@ -22,6 +22,10 @@ traducao_animes_llm_local_quarkus/
 │       └── gradle-ci.yml
 ├── .vscode/
 │   └── settings.json
+├── backups/
+│   └── correcao-cache/
+│       └── limpeza_20260713_171001_837/
+│           └── [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3.cache.json
 ├── downloads/
 │   └── plano-mapas-saas.html
 ├── gradle/
@@ -34,20 +38,12 @@ traducao_animes_llm_local_quarkus/
 │   ├── console-web.log
 │   └── telemetria_compartilhada.json
 ├── relatorios/
-│   ├── junit-13402307570477410047/
-│   │   ├── auditoria_conteudo_20260713_165526.json
+│   ├── Gundam Narrative NT/
+│   │   ├── limpeza_cache_20260713_171002.json
+│   │   ├── limpeza_cache_20260713_171002.txt
 │   │   └── telemetria_compartilhada.json
-│   ├── junit-16720836899289524256/
-│   │   ├── auditoria_conteudo_20260713_165157.json
-│   │   └── telemetria_compartilhada.json
-│   ├── junit-1969105398596805114/
-│   │   ├── auditoria_conteudo_20260713_165701.json
-│   │   └── telemetria_compartilhada.json
-│   ├── junit-9294522055024582474/
-│   │   ├── auditoria_conteudo_20260713_163957.json
-│   │   └── telemetria_compartilhada.json
-│   └── junit-9361332529415025650/
-│       ├── auditoria_conteudo_20260713_164907.json
+│   └── junit-1951375163667524381/
+│       ├── auditoria_conteudo_20260713_172142.json
 │       └── telemetria_compartilhada.json
 ├── src/
 │   ├── main/
@@ -206,7 +202,8 @@ traducao_animes_llm_local_quarkus/
 │   │   │               │       └── NovoKaraokeRequest.java
 │   │   │               ├── raspagemCorrecao/
 │   │   │               │   ├── application/
-│   │   │               │   │   └── CorrigirComGoogleUseCase.java
+│   │   │               │   │   ├── CorrigirComGoogleUseCase.java
+│   │   │               │   │   └── ProtetorTermosLoreService.java
 │   │   │               │   ├── domain/
 │   │   │               │   │   └── exceptions/
 │   │   │               │   │       └── RaspagemCorrecaoException.java
@@ -647,7 +644,8 @@ traducao_animes_llm_local_quarkus/
 │                       │       └── ConversorKaraokeUseCaseTest.java
 │                       ├── raspagemCorrecao/
 │                       │   ├── application/
-│                       │   │   └── CorrigirComGoogleUseCaseTest.java
+│                       │   │   ├── CorrigirComGoogleUseCaseTest.java
+│                       │   │   └── ProtetorTermosLoreServiceTest.java
 │                       │   └── infrastructure/
 │                       │       └── GoogleTranslateScraperTest.java
 │                       ├── raspagemRevisao/
@@ -1182,6 +1180,15 @@ traducao_animes_llm_local_quarkus/
       
       <p>COMPORTAMENTO EM CASO DE FALHA: falhas de rede permanecem pendentes no
       cache, são auditadas e não impedem salvar correções válidas já obtidas.
+  - ProtetorTermosLoreService.java
+      PROPÓSITO DE NEGÓCIO: impede que a contingência Google traduza literalmente
+      nomes e terminologia que a lore manda manter na forma oficial.
+      
+      <p>INVARIANTES DO DOMÍNIO: termos maiores são mascarados antes dos menores;
+      a grafia encontrada no original é restaurada; marcadores nunca podem sobrar.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: restauração incompleta devolve
+      {@code null}, fazendo o chamador manter a entrada pendente.
 
 [PASTA] src/main/java/org/traducao/projeto/raspagemCorrecao/
   - CorretorRaspagemCLI.java
@@ -1992,9 +1999,9 @@ traducao_animes_llm_local_quarkus/
       acesso a {@code pb} e sincronizado porque mensagens podem chegar
       durante a tradução de um episódio.
       <p>
-      O console e efêmero (a barra de progresso sobrescreve linhas antigas), por
-      isso toda mensagem também é espelhada no logger SLF4J, que persiste em
-      arquivo (ver {@code logging.file.name}) e sobrevive para análise posterior.
+      No modo web, {@code System.out} já é espelhado pelo ConsoleRedirector para
+      SSE e {@code logs/console-web.log}. As mensagens visuais não são repetidas no
+      SLF4J, evitando que a mesma linha apareça duas vezes no terminal e no painel.
   - PastasExecucao.java
       Pastas efetivas da execução atual. Preenchidas pelo {@code TradutorCLI} a
       partir do diálogo Swing ou das propriedades/linha de comando.
@@ -2112,11 +2119,6 @@ traducao_animes_llm_local_quarkus/
       PROPÓSITO DE NEGÓCIO: garante que o contexto Gundam Narrative mantenha o
       alias usado pelas APIs de capa tanto na tradução quanto na revisão de lore.
       <p>
-      INVARIANTES DO DOMÍNIO: parênteses são apenas delimitadores; a palavra
-      {@code Narrative} nunca pode ser descartada do termo de busca.
-      <p>
-      COMPORTAMENTO EM CASO DE FALHA: qualquer regressão reprova a suíte com a
-      diferença entre o termo esperado e o termo sanitizado.
 
 [PASTA] src/test/java/org/traducao/projeto/apiDadosAnime/infrastructure/adapters/
   - AniListApiClientAdapterTest.java
@@ -2218,6 +2220,15 @@ traducao_animes_llm_local_quarkus/
       
       <p>COMPORTAMENTO EM CASO DE FALHA: qualquer ausência de tradução aplicada ou
       alteração do envelope falha o teste.
+  - ProtetorTermosLoreServiceTest.java
+      PROPÓSITO DE NEGÓCIO: prova que a contingência online preserva terminologia
+      oficial declarada na lore em vez de produzir traduções literais destrutivas.
+      
+      <p>INVARIANTES DO DOMÍNIO: termos explícitos e regra “Manter sempre” são
+      protegidos; marcador perdido invalida a resposta.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: qualquer termo alterado ou marcador aceito
+      indevidamente reprova o teste.
 
 [PASTA] src/test/java/org/traducao/projeto/raspagemCorrecao/infrastructure/
   - GoogleTranslateScraperTest.java

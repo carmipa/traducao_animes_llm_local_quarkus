@@ -217,7 +217,11 @@ public class CacheManutencaoService {
             throw new IOException("Caminho de backup inválido para: " + arquivo);
         }
         Files.createDirectories(backup.getParent());
-        Files.copy(arquivo, backup, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
+        // Checkpoints sucessivos da mesma sessão nunca podem sobrescrever a
+        // fotografia anterior à manutenção: ela é a unidade real de rollback.
+        if (Files.notExists(backup)) {
+            Files.copy(arquivo, backup, StandardCopyOption.COPY_ATTRIBUTES);
+        }
 
         Path pasta = arquivo.getParent();
         Path temporario = Files.createTempFile(pasta, arquivo.getFileName().toString(), ".tmp");

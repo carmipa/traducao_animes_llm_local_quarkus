@@ -201,6 +201,9 @@ public class TelemetriaDatasetService {
         agregado.put("tempoMedioPorLinhaMs", resumo.tempoMedioPorLinhaMs());
         agregado.put("totalFalasReaproveitadasDoCache", resumo.totalCacheHits());
         agregado.put("alucinacoesLlmPrevenidas", resumo.alucinacoesPrevenidas());
+        agregado.put("respostasTraducaoRejeitadas", resumo.respostasTraducaoRejeitadas());
+        agregado.put("falhasTraducaoRecuperadas", resumo.falhasTraducaoRecuperadas());
+        agregado.put("fallbacksTraducaoMantidos", resumo.fallbacksTraducaoMantidos());
         agregado.put("arquivosRenomeados", resumo.arquivosSanitizados());
         agregado.put("totalOperacoesRegistradas", resumo.operacoes() != null ? resumo.operacoes().size() : 0);
 
@@ -390,6 +393,9 @@ public class TelemetriaDatasetService {
         | `tempoMedioPorLinhaMs` | Average translation latency per dialogue line |
         | `totalFalasReaproveitadasDoCache` | Dialogue lines resolved from persistent cache without another LLM call |
         | `alucinacoesLlmPrevenidas` | LLM responses rejected by anti-hallucination guards |
+        | `respostasTraducaoRejeitadas` | Invalid model attempts rejected before persistence |
+        | `falhasTraducaoRecuperadas` | Lines recovered by a later validated retry |
+        | `fallbacksTraducaoMantidos` | Distinct lines still pending after retry exhaustion |
         | `arquivosRenomeados` | Files normalized by the rename module |
         | `totalOperacoesRegistradas` | Recorded pipeline operations across modules |
 
@@ -476,6 +482,9 @@ public class TelemetriaDatasetService {
         | `tempoMedioPorLinhaMs` | Latência média de tradução por fala |
         | `totalFalasReaproveitadasDoCache` | Falas resolvidas pelo cache persistente sem nova chamada ao LLM |
         | `alucinacoesLlmPrevenidas` | Respostas de LLM rejeitadas pelas guardas anti-alucinação |
+        | `respostasTraducaoRejeitadas` | Tentativas inválidas rejeitadas antes da persistência |
+        | `falhasTraducaoRecuperadas` | Falas recuperadas por tentativa posterior validada |
+        | `fallbacksTraducaoMantidos` | Falas distintas ainda pendentes após esgotar tentativas |
         | `arquivosRenomeados` | Arquivos padronizados pelo módulo de renomeação |
         | `totalOperacoesRegistradas` | Operações de pipeline registradas entre os módulos |
 

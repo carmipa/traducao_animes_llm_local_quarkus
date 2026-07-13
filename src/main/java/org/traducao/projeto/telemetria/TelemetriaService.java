@@ -72,6 +72,9 @@ public class TelemetriaService {
     private final Map<String, LlmTelemetria> bancoLlm = new LinkedHashMap<>();
     private final List<OperacaoTelemetria> bancoOperacoes = new ArrayList<>();
     private final AtomicInteger alucinacoesPrevenidas = new AtomicInteger(0);
+    private final AtomicInteger respostasTraducaoRejeitadas = new AtomicInteger(0);
+    private final AtomicInteger falhasTraducaoRecuperadas = new AtomicInteger(0);
+    private final AtomicInteger fallbacksTraducaoMantidos = new AtomicInteger(0);
     private final AtomicInteger arquivosSanitizados = new AtomicInteger(0);
 
     // Estruturas para Server-Sent Events (SSE)
@@ -89,9 +92,49 @@ public class TelemetriaService {
 
     public void registrarAlucinacaoPrevenida() {
         alucinacoesPrevenidas.incrementAndGet();
-        log.info("Alucinação de tradução interceptada e corrigida. Total acumulado: {}", alucinacoesPrevenidas.get());
+        log.info("Resposta suspeita de tradução interceptada. Total legado acumulado: {}", alucinacoesPrevenidas.get());
         persistirCanonico();
         broadcast();
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: contabiliza uma resposta do modelo rejeitada pela
+     * validação antes de ela contaminar legenda ou cache.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: rejeição não implica correção nem sucesso.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: apenas incrementa contador em memória;
+     * a conclusão do episódio persiste o agregado canônico.
+     */
+    public void registrarRespostaTraducaoRejeitada() {
+        respostasTraducaoRejeitadas.incrementAndGet();
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: registra quando uma nova tentativa produz tradução
+     * válida depois de pelo menos uma resposta rejeitada.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: só deve ser chamado após validação bem-sucedida.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: incremento lock-free; persistência ocorre
+     * junto da telemetria final do episódio.
+     */
+    public void registrarFalhaTraducaoRecuperada() {
+        falhasTraducaoRecuperadas.incrementAndGet();
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: registra uma fala que esgotou as tentativas e ficou
+     * pendente, sem anunciar falsamente que foi corrigida.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: cada texto distinto pendente é contado uma vez
+     * pela consolidação final do arquivo.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: incremento lock-free; o cache preserva
+     * a pendência como tradução vazia.
+     */
+    public void registrarFallbackMantido() {
+        fallbacksTraducaoMantidos.incrementAndGet();
     }
     
     public void registrarArquivoSanitizado() {
@@ -329,6 +372,9 @@ public class TelemetriaService {
             rootNode.set("traducoesLlm", objectMapper.valueToTree(new ArrayList<>(this.bancoLlm.values())));
             rootNode.set("operacoes", objectMapper.valueToTree(this.bancoOperacoes));
             rootNode.put("alucinacoesPrevenidas", this.alucinacoesPrevenidas.get());
+            rootNode.put("respostasTraducaoRejeitadas", this.respostasTraducaoRejeitadas.get());
+            rootNode.put("falhasTraducaoRecuperadas", this.falhasTraducaoRecuperadas.get());
+            rootNode.put("fallbacksTraducaoMantidos", this.fallbacksTraducaoMantidos.get());
             rootNode.put("arquivosSanitizados", this.arquivosSanitizados.get());
 
             // Grava em arquivo temporário e move atomicamente para evitar que uma
@@ -415,7 +461,10 @@ public class TelemetriaService {
             jvmThreads,
             heapUsed,
             heapMax,
-            arquivosSanitizados.get()
+            arquivosSanitizados.get(),
+            respostasTraducaoRejeitadas.get(),
+            falhasTraducaoRecuperadas.get(),
+            fallbacksTraducaoMantidos.get()
         );
     }
 
@@ -632,6 +681,10 @@ public class TelemetriaService {
             if (sanitizadosNode != null && sanitizadosNode.isInt()) {
                 arquivosSanitizados.set(sanitizadosNode.asInt());
             }
+
+            respostasTraducaoRejeitadas.set(root.path("respostasTraducaoRejeitadas").asInt(0));
+            falhasTraducaoRecuperadas.set(root.path("falhasTraducaoRecuperadas").asInt(0));
+            fallbacksTraducaoMantidos.set(root.path("fallbacksTraducaoMantidos").asInt(0));
 
             log.info("Carregadas entradas anteriores: {} mídias, {} traduções, {} operações do arquivo {}.",
                 bancoMidia.size(), bancoLlm.size(), bancoOperacoes.size(), caminho);
