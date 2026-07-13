@@ -66,24 +66,9 @@ public class FfmpegAdapter implements ExtratorVideoPort {
 
     @Override
     public List<FaixaLegenda> identificarFaixas(Path videoPath) {
+        String jsonString = executarIdentificacao(videoPath);
         List<FaixaLegenda> faixas = new ArrayList<>();
-        List<String> cmd = List.of(
-            ffprobePath,
-            "-v", "quiet",
-            "-print_format", "json",
-            "-show_streams",
-            videoPath.toAbsolutePath().toString()
-        );
-
         try {
-            ProcessoExternoUtil.Resultado resultado = ProcessoExternoUtil.executar(cmd, TIMEOUT_IDENTIFICACAO);
-
-            if (resultado.codigoSaida() != 0) {
-                String stderr = new String(resultado.stderr(), StandardCharsets.UTF_8);
-                throw new ExtratorException("ffprobe falhou com código " + resultado.codigoSaida() + ". Erro: " + stderr);
-            }
-
-            String jsonString = new String(resultado.stdout(), StandardCharsets.UTF_8);
             JsonNode root = objectMapper.readTree(jsonString);
             JsonNode streamsNode = root.path("streams");
 
@@ -93,7 +78,7 @@ public class FfmpegAdapter implements ExtratorVideoPort {
                         int id = stream.path("index").asInt();
                         String codec = stream.path("codec_name").asText("");
                         String codecId = stream.path("codec_long_name").asText(codec);
-                        
+
                         JsonNode tags = stream.path("tags");
                         String idioma = tags.path("language").asText("und");
                         String nome = tags.path("title").asText("Sem Titulo");
@@ -109,15 +94,40 @@ public class FfmpegAdapter implements ExtratorVideoPort {
                     }
                 }
             }
+        } catch (IOException e) {
+            throw new ExtratorException("Falha ao interpretar o JSON do ffprobe para: " + videoPath, e);
+        }
 
+        return faixas;
+    }
+
+    /**
+     * Executa {@code ffprobe -show_streams} e devolve o JSON. Isolado num método
+     * {@code protected} para os testes substituírem o processo externo.
+     */
+    protected String executarIdentificacao(Path videoPath) {
+        List<String> cmd = List.of(
+            ffprobePath,
+            "-v", "quiet",
+            "-print_format", "json",
+            "-show_streams",
+            videoPath.toAbsolutePath().toString()
+        );
+
+        try {
+            ProcessoExternoUtil.Resultado resultado = ProcessoExternoUtil.executar(cmd, TIMEOUT_IDENTIFICACAO);
+
+            if (resultado.codigoSaida() != 0) {
+                String stderr = new String(resultado.stderr(), StandardCharsets.UTF_8);
+                throw new ExtratorException("ffprobe falhou com código " + resultado.codigoSaida() + ". Erro: " + stderr);
+            }
+            return new String(resultado.stdout(), StandardCharsets.UTF_8);
         } catch (IOException | InterruptedException e) {
             if (e instanceof InterruptedException) Thread.currentThread().interrupt();
             throw new ExtratorException("Falha ao invocar ffprobe para identificar: " + videoPath, e);
         } catch (TimeoutException e) {
             throw new ExtratorException("Tempo limite excedido ao identificar faixas com ffprobe: " + videoPath, e);
         }
-
-        return faixas;
     }
 
     @Override

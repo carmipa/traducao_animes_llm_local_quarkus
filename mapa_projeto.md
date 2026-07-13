@@ -2,9 +2,9 @@
  MAPA ESTRUTURAL DO PROJETO - TRACKER ANIMES
 ================================================================================
  Raiz do repositorio      : traducao_animes_llm_local_quarkus
- Pastas mapeadas          : 225
- Arquivos (na arvore)     : 415
- Arquivos-fonte indexados : 314  (.java: 314 | .py: 0)
+ Pastas mapeadas          : 228
+ Arquivos (na arvore)     : 417
+ Arquivos-fonte indexados : 316  (.java: 316 | .py: 0)
  Memoria viva do projeto  : CEREBRO_IA.md (na raiz do repositorio)
 
  Objetivo: mapa de contexto para LLMs navegarem os diretorios e
@@ -34,8 +34,8 @@ traducao_animes_llm_local_quarkus/
 │   ├── console-web.log
 │   └── telemetria_compartilhada.json
 ├── relatorios/
-│   └── junit-6060717227371047613/
-│       ├── auditoria_conteudo_20260713_114058.json
+│   └── junit-4832848609591537337/
+│       ├── auditoria_conteudo_20260713_114719.json
 │       └── telemetria_compartilhada.json
 ├── src/
 │   ├── main/
@@ -590,6 +590,11 @@ traducao_animes_llm_local_quarkus/
 │                       ├── correcaoLegendas/
 │                       │   └── application/
 │                       │       └── CorrigirLegendasUseCaseTest.java
+│                       ├── legendasExtracao/
+│                       │   └── infrastructure/
+│                       │       └── adapters/
+│                       │           ├── FfmpegAdapterTest.java
+│                       │           └── MkvToolNixAdapterTest.java
 │                       ├── mapaProjeto/
 │                       │   └── application/
 │                       │       └── GeradorMapaProjetoUseCaseTest.java
@@ -1792,6 +1797,16 @@ traducao_animes_llm_local_quarkus/
 [PASTA] src/test/java/org/traducao/projeto/correcaoLegendas/application/
   - CorrigirLegendasUseCaseTest.java
       (sem cabecalho explicativo)
+
+[PASTA] src/test/java/org/traducao/projeto/legendasExtracao/infrastructure/adapters/
+  - FfmpegAdapterTest.java
+      Cobre a identificação de faixas de legenda em contêineres não-MKV (mp4/mov/…)
+      a partir do JSON do {@code ffprobe -show_streams}, sem ffprobe real: substitui
+      o seam de processo externo ({@code executarIdentificacao}).
+  - MkvToolNixAdapterTest.java
+      Cobre a identificação de faixas de legenda a partir do JSON do
+      {@code mkvmerge --identify}, sem MKVToolNix real: substitui o seam de processo
+      externo ({@code executarIdentificacao}) por saída canônica.
 
 [PASTA] src/test/java/org/traducao/projeto/mapaProjeto/application/
   - GeradorMapaProjetoUseCaseTest.java

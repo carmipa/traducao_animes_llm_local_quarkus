@@ -80,22 +80,9 @@ public class MkvToolNixAdapter implements ExtratorVideoPort {
 
     @Override
     public List<FaixaLegenda> identificarFaixas(Path mkvPath) {
+        String jsonOutput = executarIdentificacao(mkvPath);
         List<FaixaLegenda> faixas = new ArrayList<>();
-        List<String> cmd = List.of(
-            mkvmergePath,
-            "--identification-format", "json",
-            "--identify",
-            mkvPath.toString()
-        );
-
         try {
-            ProcessoExternoUtil.Resultado resultado = ProcessoExternoUtil.executar(cmd, TIMEOUT_IDENTIFICACAO, true);
-            String jsonOutput = new String(resultado.stdout());
-
-            if (resultado.codigoSaida() != 0) {
-                throw new ExtratorException("mkvmerge --identify falhou com exitCode " + resultado.codigoSaida());
-            }
-
             JsonNode root = objectMapper.readTree(jsonOutput);
             JsonNode tracksNode = root.path("tracks");
             if (tracksNode.isArray()) {
@@ -114,15 +101,37 @@ public class MkvToolNixAdapter implements ExtratorVideoPort {
                     }
                 }
             }
+        } catch (IOException e) {
+            throw new ExtratorException("Falha ao interpretar o JSON do mkvmerge para: " + mkvPath, e);
+        }
 
+        return faixas;
+    }
+
+    /**
+     * Executa {@code mkvmerge --identify} e devolve o JSON. Isolado num método
+     * {@code protected} para os testes substituírem o processo externo.
+     */
+    protected String executarIdentificacao(Path mkvPath) {
+        List<String> cmd = List.of(
+            mkvmergePath,
+            "--identification-format", "json",
+            "--identify",
+            mkvPath.toString()
+        );
+
+        try {
+            ProcessoExternoUtil.Resultado resultado = ProcessoExternoUtil.executar(cmd, TIMEOUT_IDENTIFICACAO, true);
+            if (resultado.codigoSaida() != 0) {
+                throw new ExtratorException("mkvmerge --identify falhou com exitCode " + resultado.codigoSaida());
+            }
+            return new String(resultado.stdout());
         } catch (IOException | InterruptedException e) {
             if (e instanceof InterruptedException) Thread.currentThread().interrupt();
             throw new ExtratorException("Falha ao invocar mkvmerge para identificar: " + mkvPath, e);
         } catch (TimeoutException e) {
             throw new ExtratorException("Tempo limite excedido ao identificar faixas com mkvmerge: " + mkvPath, e);
         }
-
-        return faixas;
     }
 
     @Override
