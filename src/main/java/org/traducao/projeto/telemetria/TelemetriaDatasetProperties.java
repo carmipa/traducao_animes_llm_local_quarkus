@@ -3,10 +3,14 @@ package org.traducao.projeto.telemetria;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Configuração do repositório dedicado do dataset público de telemetria
- * (seção {@code telemetria-dataset} do application.yml). O nome segue a
- * convenção da comunidade para datasets de telemetria:
- * {@code [NomeDoSistema]-telemetry-dataset}.
+ * PROPÓSITO DE NEGÓCIO: configura a publicação do dataset público e a coleta
+ * sanitizada do hardware local que contextualiza os benchmarks.
+ *
+ * <p>INVARIANTES DO DOMÍNIO: hardware publicado é sempre detectado na máquina
+ * atual; não existe override manual de CPU, GPU ou RAM capaz de misturar hosts.
+ *
+ * <p>COMPORTAMENTO EM CASO DE FALHA: propriedades ausentes usam padrões seguros;
+ * a detecção pode cair para dados limitados da JVM, sem inventar componentes.
  */
 @ConfigurationProperties(prefix = "telemetria-dataset")
 public class TelemetriaDatasetProperties {
@@ -35,15 +39,22 @@ public class TelemetriaDatasetProperties {
     public Hardware getHardware() { return hardware; }
     public void setHardware(Hardware hardware) { this.hardware = hardware != null ? hardware : new Hardware(); }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: controla apenas se a fotografia sanitizada do
+     * hardware local deve ser publicada e detectada automaticamente.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: não armazena nomes ou capacidades físicas; esses
+     * valores pertencem exclusivamente à detecção da máquina atual.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: valores ausentes mantêm os padrões
+     * seguros de publicação e detecção habilitadas.
+     */
     public static class Hardware {
         /** Inclui o bloco ambienteExecucao no JSON público do dataset. */
         private boolean publicarAmbienteExecucao = true;
 
         /** Usa detecção local por SO quando disponível. */
         private boolean permitirDeteccaoAutomatica = true;
-
-        /** Nome público da GPU quando o driver reporta outro identificador. */
-        private String gpuPublica = "";
 
         public boolean publicarAmbienteExecucao() { return publicarAmbienteExecucao; }
         public boolean isPublicarAmbienteExecucao() { return publicarAmbienteExecucao; }
@@ -56,9 +67,5 @@ public class TelemetriaDatasetProperties {
         public void setPermitirDeteccaoAutomatica(boolean permitirDeteccaoAutomatica) {
             this.permitirDeteccaoAutomatica = permitirDeteccaoAutomatica;
         }
-
-        public String gpuPublica() { return gpuPublica; }
-        public String getGpuPublica() { return gpuPublica; }
-        public void setGpuPublica(String gpuPublica) { this.gpuPublica = gpuPublica; }
     }
 }

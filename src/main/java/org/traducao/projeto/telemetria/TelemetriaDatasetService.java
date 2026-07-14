@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Publica a telemetria acumulada como DATASET PÚBLICO num repositório Git
+ * PROPÓSITO DE NEGÓCIO: publica a telemetria acumulada como dataset público num repositório Git
  * DEDICADO ({@code kronos-anime-translation-telemetry-dataset}, seguindo a
  * convenção {@code [NomeDoSistema]-telemetry-dataset} para dados de pesquisa/ML).
  * <p>
@@ -30,10 +30,14 @@ import java.util.Locale;
  * a estrutura {@code metrics/}. Cada publicação = 1 commit + push, e o
  * histórico Git é o versionamento natural dos snapshots.
  * <p>
- * Sanitização deliberada — o dataset é feito para consumo externo, então
+ * <p>INVARIANTES DO DOMÍNIO: a sanitização deliberada mantém
  * carrega apenas MÉTRICAS: nada de textos de legenda (os avisos viram
  * contagem), nada de caminhos de máquina (o campo {@code detalhe} das
- * operações é descartado e nomes de episódio perdem qualquer diretório).
+ * operações é descartado e nomes de episódio perdem qualquer diretório); o
+ * ambiente de hardware pertence integralmente à máquina publicadora.
+ *
+ * <p>COMPORTAMENTO EM CASO DE FALHA: erros de geração, Git ou rede interrompem a
+ * publicação com {@link IOException}, preservando o snapshot anterior.
  */
 @ApplicationScoped
 public class TelemetriaDatasetService {
@@ -174,21 +178,36 @@ public class TelemetriaDatasetService {
     }
 
     /**
-     * Monta o snapshot sanitizado: métricas por episódio e por operação, sem
+     * PROPÓSITO DE NEGÓCIO: monta o snapshot sanitizado por episódio e operação.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: não inclui
      * textos de fala (avisos viram {@code quantidadeAvisos}) e sem caminhos de
      * máquina ({@code detalhe} descartado; episódio reduzido ao nome do arquivo).
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: ambiente ausente é simplesmente omitido;
+     * métricas obrigatórias continuam sendo serializadas no formato atual.
      */
     static ObjectNode montarDatasetSanitizado(TelemetriaResumo resumo, ObjectMapper mapper) {
         return montarDatasetSanitizado(resumo, mapper, null);
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: serializa métricas e a fotografia automática do host
+     * no schema público vigente do dataset.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: formato 2 não contém override manual de hardware,
+     * textos de legenda ou caminhos locais.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: ambiente nulo é omitido e o restante do
+     * snapshot permanece válido.
+     */
     static ObjectNode montarDatasetSanitizado(
             TelemetriaResumo resumo,
             ObjectMapper mapper,
             AmbienteExecucaoDataset ambienteExecucao) {
         ObjectNode root = mapper.createObjectNode();
         root.put("dataset", "kronos-anime-translation-telemetry-dataset");
-        root.put("versaoFormato", 1);
+        root.put("versaoFormato", 2);
         root.put("geradoEm", Instant.now().toString());
         root.put("descricao", "Métricas operacionais de tradução de legendas de anime com LLM 100% local "
             + "(LM Studio). Sem textos de legenda e sem caminhos de máquina — apenas métricas.");
@@ -239,6 +258,16 @@ public class TelemetriaDatasetService {
         return root;
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: adiciona ao JSON a fotografia coerente do computador
+     * responsável pela geração do snapshot.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: GPU principal pertence à lista detectada e campos
+     * ausentes não são inventados nem herdados de configuração.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: ambiente nulo não cria o bloco; lista de
+     * GPUs vazia é publicada como array vazio.
+     */
     private static void adicionarAmbienteExecucao(ObjectNode root, AmbienteExecucaoDataset ambiente) {
         if (ambiente == null) {
             return;
@@ -248,14 +277,14 @@ public class TelemetriaDatasetService {
         putIfPresent(node, "modeloMaquina", ambiente.modeloMaquina());
         putIfPresent(node, "cpu", ambiente.cpu());
         putIfPresent(node, "gpuPrincipal", ambiente.gpuPrincipal());
-        putIfPresent(node, "gpuDetectadaSistema", ambiente.gpuDetectadaSistema());
+        ArrayNode gpus = node.putArray("gpusDetectadas");
+        ambiente.gpusDetectadas().forEach(gpus::add);
         if (ambiente.ramTotalGb() != null) {
             node.put("ramTotalGb", ambiente.ramTotalGb());
         }
         putIfPresent(node, "sistemaOperacional", ambiente.sistemaOperacional());
         putIfPresent(node, "arquitetura", ambiente.arquitetura());
         node.put("hardwareColetadoAutomaticamente", ambiente.hardwareColetadoAutomaticamente());
-        node.put("gpuPublicaConfigurada", ambiente.gpuPublicaConfigurada());
     }
 
     private static void putIfPresent(ObjectNode node, String campo, String valor) {
@@ -375,12 +404,11 @@ public class TelemetriaDatasetService {
         |-------|---------|
         | `fabricante` / `modeloMaquina` | Generic manufacturer and machine model reported by the OS |
         | `cpu` | Public CPU name |
-        | `gpuPrincipal` | GPU name published for benchmark comparison |
-        | `gpuDetectadaSistema` | GPU name reported by the OS/driver when it differs from the configured public name |
+        | `gpuPrincipal` | Dedicated GPU selected automatically from the current machine |
+        | `gpusDetectadas` | All GPUs reported by the current operating system/driver |
         | `ramTotalGb` | Rounded total physical RAM in GB |
         | `sistemaOperacional` / `arquitetura` | Runtime platform, without username, hostname, paths, IPs or device IDs |
         | `hardwareColetadoAutomaticamente` | Whether the values were collected automatically from the local system |
-        | `gpuPublicaConfigurada` | Whether a public GPU override was configured |
 
         #### `resumo`
 
@@ -464,12 +492,11 @@ public class TelemetriaDatasetService {
         |-------|-------------|
         | `fabricante` / `modeloMaquina` | Fabricante e modelo genérico reportados pelo sistema operacional |
         | `cpu` | Nome público do processador |
-        | `gpuPrincipal` | GPU publicada para comparação de benchmark |
-        | `gpuDetectadaSistema` | GPU detectada pelo sistema/driver quando difere do nome público configurado |
+        | `gpuPrincipal` | GPU dedicada selecionada automaticamente na máquina atual |
+        | `gpusDetectadas` | Todas as GPUs reportadas pelo sistema operacional/driver atual |
         | `ramTotalGb` | RAM física total arredondada em GB |
         | `sistemaOperacional` / `arquitetura` | Plataforma de execução, sem usuário, hostname, caminhos, IPs ou IDs de dispositivo |
         | `hardwareColetadoAutomaticamente` | Indica se os valores foram coletados automaticamente do sistema local |
-        | `gpuPublicaConfigurada` | Indica se houve override público da GPU |
 
         #### `resumo`
 

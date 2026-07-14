@@ -43,12 +43,22 @@ class TelemetriaDatasetServiceTest {
         assertFalse(json.contains("C:\\") || json.contains("C:/"), "nenhum caminho de máquina no dataset");
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: valida identificação, versão e métricas essenciais do
+     * dataset consumido externamente.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: o schema atual é a versão 2 e mantém episódios
+     * sanitizados, contagens de avisos e modelo da inferência.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: mudança incompatível no contrato reprova
+     * o teste antes da publicação.
+     */
     @Test
     void datasetPreservaMetricasEIdentificacaoPublica() {
         ObjectNode dataset = TelemetriaDatasetService.montarDatasetSanitizado(resumoDeTeste(), mapper);
 
         assertEquals("kronos-anime-translation-telemetry-dataset", dataset.get("dataset").asText());
-        assertEquals(1, dataset.get("versaoFormato").asInt());
+        assertEquals(2, dataset.get("versaoFormato").asInt());
         assertEquals(900, dataset.get("resumo").get("totalLinhasTraduzidas").asInt());
         assertEquals(5, dataset.get("resumo").get("alucinacoesLlmPrevenidas").asInt());
 
@@ -62,18 +72,27 @@ class TelemetriaDatasetServiceTest {
         assertEquals(11, operacao.get("itensCorrigidos").asInt());
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: garante que o dataset publique uma fotografia única
+     * do host atual, incluindo todas as GPUs sem aliases manuais.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: GPU principal pertence à lista detectada e não
+     * existem campos legados de override capazes de misturar computadores.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: qualquer campo inconsistente falha o
+     * contrato do formato antes da publicação.
+     */
     @Test
     void datasetIncluiAmbienteExecucaoSanitizadoQuandoDisponivel() {
         AmbienteExecucaoDataset ambiente = new AmbienteExecucaoDataset(
             "Avell",
             "560",
             "Intel Core i9-14900HX",
-            "NVIDIA RTX 5600",
             "NVIDIA GeForce RTX 5060 Laptop GPU",
-            40,
+            List.of("Intel UHD Graphics", "NVIDIA GeForce RTX 5060 Laptop GPU"),
+            32,
             "Windows 11",
             "amd64",
-            true,
             true
         );
 
@@ -82,13 +101,49 @@ class TelemetriaDatasetServiceTest {
         String json = ambienteJson.toString();
 
         assertEquals("Avell", ambienteJson.get("fabricante").asText());
-        assertEquals("NVIDIA RTX 5600", ambienteJson.get("gpuPrincipal").asText());
-        assertEquals("NVIDIA GeForce RTX 5060 Laptop GPU", ambienteJson.get("gpuDetectadaSistema").asText());
-        assertEquals(40, ambienteJson.get("ramTotalGb").asInt());
+        assertEquals("NVIDIA GeForce RTX 5060 Laptop GPU", ambienteJson.get("gpuPrincipal").asText());
+        assertEquals(2, ambienteJson.get("gpusDetectadas").size());
+        assertEquals(32, ambienteJson.get("ramTotalGb").asInt());
         assertTrue(ambienteJson.get("hardwareColetadoAutomaticamente").asBoolean());
-        assertTrue(ambienteJson.get("gpuPublicaConfigurada").asBoolean());
+        assertFalse(ambienteJson.has("gpuPublicaConfigurada"));
+        assertFalse(ambienteJson.has("gpuDetectadaSistema"));
         assertFalse(json.contains("PNP") || json.contains("PCI\\") || json.contains("SERIAL"));
         assertFalse(json.contains("C:\\") || json.contains("Users"));
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: garante que o notebook publique a GPU dedicada usada
+     * para inferência como principal, sem confundi-la com o vídeo integrado Intel.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: a GPU escolhida pertence à lista detectada e
+     * NVIDIA/RTX tem precedência sobre Intel UHD/Iris.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: seleção diferente da dedicada reprova o
+     * teste e bloqueia a publicação do formato inconsistente.
+     */
+    @Test
+    void selecionaGpuDedicadaNoNotebookHibrido() {
+        List<String> gpus = List.of("Intel UHD Graphics", "NVIDIA GeForce RTX 5060 Laptop GPU");
+
+        assertEquals("NVIDIA GeForce RTX 5060 Laptop GPU",
+            AmbienteExecucaoDatasetService.selecionarGpuPrincipal(gpus));
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: garante que o desktop publique a Radeon RX detectada
+     * como GPU principal sem depender de configuração compartilhada.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: quando existe uma única GPU válida, ela é
+     * preservada literalmente como principal.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: lista vazia retorna nulo; placa presente
+     * que não for selecionada reprova o teste.
+     */
+    @Test
+    void selecionaRadeonDetectadaNoDesktop() {
+        assertEquals("AMD Radeon RX 7800 XT",
+            AmbienteExecucaoDatasetService.selecionarGpuPrincipal(List.of("AMD Radeon RX 7800 XT")));
+        assertNull(AmbienteExecucaoDatasetService.selecionarGpuPrincipal(List.of()));
     }
 
     @Test

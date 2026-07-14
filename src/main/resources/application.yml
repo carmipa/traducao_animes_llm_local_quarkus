@@ -58,4 +58,3 @@ telemetria-dataset:
   hardware:
     publicar-ambiente-execucao: true
     permitir-deteccao-automatica: true
-    gpu-publica: NVIDIA RTX 5600
