@@ -33,6 +33,16 @@ public class TelemetriaAuditoriaService {
     private final TelemetriaService telemetriaService;
     private final AuditoriaConteudoPersistencia persistencia;
 
+    /**
+     * Persistência canônica: em produção grava o relatório em {@code relatorios/} e
+     * registra a telemetria canônica. No perfil de teste (%test) fica {@code false}:
+     * o JSON vai só para a pasta de entrada (tipicamente um {@code @TempDir}) e a
+     * telemetria canônica NÃO é escrita, evitando contaminar o repositório.
+     */
+    @org.eclipse.microprofile.config.inject.ConfigProperty(
+        name = "kronos.auditoria.persistencia-canonica", defaultValue = "true")
+    boolean persistenciaCanonica;
+
     @Inject
     public TelemetriaAuditoriaService(
         TelemetriaService telemetriaService,
@@ -81,6 +91,7 @@ public class TelemetriaAuditoriaService {
         AuditoriaConteudoRelatorioJson json = new AuditoriaConteudoRelatorioJson(
             "auditoria_conteudo",
             operacao,
+            relatorio.getModo(),
             relatorio.getArquivoOriginal(),
             relatorio.getArquivoTraduzido(),
             relatorio.getFormatoOriginal(),
@@ -91,17 +102,26 @@ public class TelemetriaAuditoriaService {
             List.copyOf(relatorio.getAnomalias())
         );
 
-        Path pastaRelatorios = resolverPastaRelatorios(caminhoPrincipal);
+        Path pastaEntrada = resolverPastaRelatorios(caminhoPrincipal);
+        // Produção: relatorios/<pasta>. Teste: a própria pasta de entrada (@TempDir),
+        // sem tocar em relatorios/ nem na telemetria canônica.
+        Path pastaDestino = persistenciaCanonica
+            ? TelemetriaService.resolverPastaRelatorios(pastaEntrada)
+            : pastaEntrada;
         String caminhoJson = null;
 
         try {
-            Path arquivo = persistencia.salvarRelatorioJson(pastaRelatorios, json);
+            Path arquivo = persistencia.salvarRelatorioJson(pastaDestino, json);
             caminhoJson = arquivo.toString();
-            telemetriaService.registrarOperacao(operacao);
-            telemetriaService.salvar(TelemetriaService.resolverPastaRelatorios(pastaRelatorios));
+            if (persistenciaCanonica) {
+                telemetriaService.registrarOperacao(operacao);
+                telemetriaService.salvar(pastaDestino);
+            }
         } catch (IOException e) {
             log.warn("Falha ao salvar relatorio JSON da auditoria de conteudo: {}", e.getMessage());
-            telemetriaService.registrarOperacao(operacao);
+            if (persistenciaCanonica) {
+                telemetriaService.registrarOperacao(operacao);
+            }
         }
 
         String arquivoAuditado = nomeArquivoAuditado(relatorio);

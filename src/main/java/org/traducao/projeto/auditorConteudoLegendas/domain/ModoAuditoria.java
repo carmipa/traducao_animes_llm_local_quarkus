@@ -38,4 +38,23 @@ public enum ModoAuditoria {
     public boolean isArquivoUnico() {
         return this == ORIGINAL || this == TRADUZIDO;
     }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: distingue "modo ausente" (retrocompatível, vira AMBAS)
+     * de "modo preenchido porém inválido" (deve ser rejeitado com HTTP 400).
+     * <p>INVARIANTES DO DOMÍNIO: nulo/em branco é reconhecido (ausente); um valor
+     * preenchido só é reconhecido se casar com um dos modos, ignorando caixa.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: valor desconhecido devolve {@code false}.
+     */
+    public static boolean reconhece(String valor) {
+        if (valor == null || valor.isBlank()) {
+            return true;
+        }
+        try {
+            ModoAuditoria.valueOf(valor.trim().toUpperCase());
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
 }

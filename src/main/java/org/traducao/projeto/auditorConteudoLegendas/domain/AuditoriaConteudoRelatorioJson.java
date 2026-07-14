@@ -15,6 +15,7 @@ import java.util.List;
 public record AuditoriaConteudoRelatorioJson(
     String tipo,
     OperacaoTelemetria operacao,
+    String modo,
     String arquivoOriginal,
     String arquivoTraduzido,
     String formatoOriginal,

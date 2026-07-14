@@ -45,7 +45,8 @@ class AuditorConteudoUseCaseTest {
         assertTrue(relatorio.isLimpo());
         assertEquals("ASS", relatorio.getFormatoOriginal());
         assertEquals("ASS", relatorio.getFormatoTraduzido());
-        assertEquals(5, relatorio.getRegrasExecutadas());
+        // AMBAS: 6 regras estruturais em cada lado (12) + 6 regras comparativas = 18.
+        assertEquals(18, relatorio.getRegrasExecutadas());
         assertTrue(relatorio.getDuracaoMs() >= 0);
         assertNotNull(relatorio.getCaminhoRelatorioJson());
         assertTrue(Files.exists(Path.of(relatorio.getCaminhoRelatorioJson())));
