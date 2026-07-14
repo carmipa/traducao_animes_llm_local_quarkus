@@ -24,6 +24,24 @@ public class MascaradorTags {
 
     public record Mascarado(String texto, List<String> tags) {}
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: confirma que uma tradução recuperada do cache ainda
+     * preserva todas as tags ASS/SSA e quebras de linha estruturais do original.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: quantidade, conteúdo e ordem das tags devem ser
+     * idênticos; somente o texto visível pode mudar durante a tradução.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: devolve {@code false} para argumentos
+     * nulos ou qualquer divergência estrutural, fazendo o chamador invalidar e
+     * retraduzir a entrada em vez de publicar formatação corrompida.
+     */
+    public boolean preservaEstruturaOriginal(String original, String traduzido) {
+        if (original == null || traduzido == null) {
+            return false;
+        }
+        return mascarar(original).tags().equals(mascarar(traduzido).tags());
+    }
+
     public Mascarado mascarar(String textoOriginal) {
         List<String> tags = new ArrayList<>();
         Matcher matcher = PADRAO_TAG.matcher(textoOriginal);

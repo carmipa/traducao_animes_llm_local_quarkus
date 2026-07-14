@@ -261,7 +261,8 @@ public class ProcessarArquivoUseCase {
                     }
                 }
                 if (!entradasCacheParcial.isEmpty()) {
-                    cacheService.salvar(arquivoCache, proveniencia, entradasCacheParcial);
+                    salvarCacheDaExecucao(
+                        arquivoCache, proveniencia, entradasCacheParcial, permitirRetraducao);
                 }
             }
             throw e;
@@ -329,7 +330,7 @@ public class ProcessarArquivoUseCase {
         } else {
             escritor.escrever(arquivoSaida, documentoFinal);
         }
-        cacheService.salvar(arquivoCache, proveniencia, entradasCache);
+        salvarCacheDaExecucao(arquivoCache, proveniencia, entradasCache, permitirRetraducao);
 
         long tempoTotalMs = System.currentTimeMillis() - inicioMs;
         String animeNome = animeAPartirDoArquivo(arquivoEntrada);
@@ -562,6 +563,10 @@ public class ProcessarArquivoUseCase {
         if (traduzido == null || traduzido.isBlank()) {
             return false;
         }
+        if (!mascarador.preservaEstruturaOriginal(original, traduzido)) {
+            log.warn("Cache ignorado porque as tags divergem do original: {}", traduzido);
+            return false;
+        }
         if (normalizarParaComparacao(original).equals(normalizarParaComparacao(traduzido))) {
             return detectorIdentica.deveManterIdentico(original);
         }
@@ -593,6 +598,9 @@ public class ProcessarArquivoUseCase {
         if (traduzido == null || traduzido.isBlank()) {
             return "resposta vazia";
         }
+        if (!mascarador.preservaEstruturaOriginal(original, traduzido)) {
+            return "tags ASS/SSA ou quebras de linha divergentes do original";
+        }
         if (detectorIdentica.pareceNaoTraduzida(original, traduzido)) {
             return "modelo devolveu o texto original sem tradução";
         }
@@ -602,6 +610,37 @@ public class ProcessarArquivoUseCase {
         } catch (AlucinacaoDetectadaException e) {
             return e.getMessage();
         }
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: promove a nova geração validada do cache da obra
+     * selecionada sem perder a versão que sustentava a legenda anterior.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: a liberação explícita exige backup do cache
+     * existente antes da substituição; sem liberação permanece a gravação
+     * atômica normal; caches de outros episódios ou obras não são acessados.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: falha no backup ou na gravação lança
+     * {@link ArquivoLegendaException}; o destino anterior permanece recuperável
+     * e a legenda final não prossegue como se o cache tivesse sido atualizado.
+     */
+    private void salvarCacheDaExecucao(
+            Path arquivoCache,
+            ProvenienciaCache proveniencia,
+            List<EntradaCache> entradas,
+            boolean preservarAnterior) {
+        if (preservarAnterior && Files.exists(arquivoCache)) {
+            Path raizBackup = Path.of("backups", "traducao-cache").toAbsolutePath().normalize();
+            try {
+                Path backup = copiarParaBackupExclusivo(arquivoCache, raizBackup);
+                log.info("Backup do cache anterior criado em {}", backup);
+                uiLogger.log("[ BACKUP CACHE ] Geração anterior preservada em: " + backup);
+            } catch (IOException e) {
+                throw new ArquivoLegendaException(
+                    "Falha ao criar backup obrigatório antes de atualizar o cache: " + arquivoCache, e);
+            }
+        }
+        cacheService.salvar(arquivoCache, proveniencia, entradas);
     }
 
     private static boolean ehSrt(Path arquivo) {
