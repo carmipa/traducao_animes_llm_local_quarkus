@@ -21,6 +21,8 @@ public class MascaradorTags {
 
     private static final Pattern PADRAO_TAG = Pattern.compile("\\{[^{}]*}|\\\\[Nnh]");
     private static final Pattern PADRAO_PLACEHOLDER = Pattern.compile("\\[\\[TAG(\\d+)]]");
+    private static final Pattern PADRAO_MODO_DESENHO = Pattern.compile(
+        "\\{[^}]*\\\\p[1-9]\\d*[^}]*}", Pattern.CASE_INSENSITIVE);
 
     public record Mascarado(String texto, List<String> tags) {}
 
@@ -57,11 +59,22 @@ public class MascaradorTags {
         return new Mascarado(resultado.toString(), tags);
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: decide se um evento ASS contém texto humano que
+     * pode ser enviado à tradução/revisão, excluindo desenhos e typesetting puro.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: {@code \\p1} dentro de qualquer bloco de tags
+     * ativa desenho vetorial; letras dos comandos {@code m/l/b} não contam como
+     * idioma natural.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: texto nulo, vazio ou apenas estrutural
+     * devolve {@code false} e permanece intocado no arquivo.
+     */
     public boolean contemTextoTraduzivel(String textoOriginal) {
         if (textoOriginal == null || textoOriginal.isBlank()) return false;
         
         // Ignora linhas que ativam desenhos vetoriais (ex: {\p1}m 0 0 l ...)
-        if (textoOriginal.matches(".*\\{\\\\p[1-9]+}.*")) {
+        if (PADRAO_MODO_DESENHO.matcher(textoOriginal).find()) {
             return false;
         }
         

@@ -46,4 +46,17 @@ class MascaradorTagsTest {
         assertFalse(mascarador.preservaEstruturaOriginal(
             original, "{\\i1}Espere!\\NAgora!{\\i0}"));
     }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: impede que desenhos vetoriais ASS sejam enviados
+     * ao revisor linguístico como se fossem falas em inglês.
+     * <p>INVARIANTES DO DOMÍNIO: modo de desenho {@code \\p1} não contém texto
+     * traduzível, mesmo quando seus comandos usam letras ASCII.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: classificação verdadeira reprova o teste.
+     */
+    @Test
+    void ignoraDesenhoVetorialAss() {
+        assertFalse(mascarador.contemTextoTraduzivel(
+            "{\\blur2\\p1\\c&H161414&}m 0 0 l 1440 0 1440 1080 0 1080"));
+    }
 }

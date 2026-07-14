@@ -18,8 +18,12 @@ import org.traducao.projeto.traducao.infrastructure.http.JsonHttpClient;
 import org.traducao.projeto.traducao.infrastructure.http.JsonHttpClient.HttpClientException;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Component
@@ -32,6 +36,10 @@ public class MistralClientAdapter implements MistralPort {
     private static final long PAUSA_ENTRE_TENTATIVAS_MS = 2_000;
     private static final double TEMPERATURA_REVISAO = 0.15;
     private static final double TEMPERATURA_CORRECAO_TRADUCAO = 0.3;
+    private static final Pattern BLOCO_RACIOCINIO = Pattern.compile("(?is)<think>.*?</think>");
+    private static final Pattern MARCADOR_TAG = Pattern.compile("\\[\\[TAG\\d+]]");
+    private static final Pattern PREFIXO_RESPOSTA = Pattern.compile(
+        "(?i)^(?:tradu[cç][aã]o(?: corrigida)?|resposta|pt-br|texto corrigido)\\s*:\\s*");
 
     private final JsonHttpClient httpClient;
     private final LlmProperties propriedades;
@@ -255,6 +263,14 @@ public class MistralClientAdapter implements MistralPort {
         return new TraducaoLote(lote.idLote(), null, false, mensagemFinal);
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: solicita uma revisão pontual de concordância PT-BR
+     * usando a lore ativa e preservando os marcadores estruturais da tradução.
+     * <p>INVARIANTES DO DOMÍNIO: a resposta final contém uma única fala e todos
+     * os marcadores presentes na tradução mascarada.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: devolve vazio após tentativas sem conteúdo
+     * utilizável ou erro HTTP, mantendo a fala atual intacta.
+     */
     @Override
     public Optional<String> revisarConcordancia(
         String originalInglesMascarado,
@@ -274,9 +290,16 @@ public class MistralClientAdapter implements MistralPort {
             propriedades.maxTokens()
         );
 
-        return postarLinhaUnica(request);
+        return postarLinhaUnica(request, traducaoPtMascarada);
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: retraduz uma fala residual ou incompleta sem perder
+     * tags ASS já existentes na tradução atual.
+     * <p>INVARIANTES DO DOMÍNIO: marcadores esperados precisam sobreviver à resposta.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: devolve vazio e delega a decisão de
+     * pendência ao caso de uso chamador.
+     */
     @Override
     public Optional<String> corrigirTraducao(
         String originalInglesMascarado,
@@ -295,9 +318,15 @@ public class MistralClientAdapter implements MistralPort {
             propriedades.maxTokens()
         );
 
-        return postarLinhaUnica(request);
+        return postarLinhaUnica(request, traducaoPtMascarada);
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: revisa aderência à lore com o prompt especializado
+     * fornecido pelo módulo responsável pela obra.
+     * <p>INVARIANTES DO DOMÍNIO: preserva tags da tradução e usa somente a linha final.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: devolve vazio sem alterar a legenda.
+     */
     @Override
     public Optional<String> revisarLore(
         String promptSistemaRevisaoLore,
@@ -318,25 +347,45 @@ public class MistralClientAdapter implements MistralPort {
             propriedades.maxTokens()
         );
 
-        return postarLinhaUnica(request);
+        return postarLinhaUnica(request, traducaoPtMascarada);
     }
 
-    private Optional<String> postarLinhaUnica(ChatRequest request) {
+    /**
+     * PROPÓSITO DE NEGÓCIO: executa chamadas curtas de revisão e extrai uma fala
+     * final compatível com os marcadores da tradução corrente.
+     * <p>INVARIANTES DO DOMÍNIO: erro permanente não é repetido; erro transitório
+     * respeita o limite; resposta sem tags obrigatórias nunca é publicada.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: registra causa técnica e devolve vazio
+     * depois de esgotar as tentativas.
+     */
+    private Optional<String> postarLinhaUnica(ChatRequest request, String traducaoMascarada) {
+        List<String> marcadoresEsperados = extrairMarcadores(traducaoMascarada);
         for (int tentativa = 1; tentativa <= MAX_TENTATIVAS_REVISAO; tentativa++) {
             try {
                 RespostaLlm resposta = httpClient.post("/chat/completions", request, RespostaLlm.class);
 
                 if (resposta == null || resposta.choices() == null || resposta.choices().isEmpty()) {
+                    log.warn("Resposta LLM sem choices (tentativa {}/{}; modelo={}).",
+                        tentativa, MAX_TENTATIVAS_REVISAO, request.model());
                     continue;
                 }
 
                 Mensagem mensagem = resposta.choices().getFirst().message();
                 String texto = mensagem != null ? mensagem.content() : null;
                 if (texto == null || texto.isBlank()) {
+                    log.warn("Resposta LLM com message.content vazio (tentativa {}/{}; modelo={}).",
+                        tentativa, MAX_TENTATIVAS_REVISAO, request.model());
                     continue;
                 }
 
-                return Optional.of(normalizarLinhaUnica(texto));
+                String normalizado = normalizarLinhaUnica(texto, marcadoresEsperados);
+                if (!normalizado.isBlank()) {
+                    return Optional.of(normalizado);
+                }
+                log.warn("Resposta LLM recebida, mas sem linha final utilizável (tentativa {}/{}; "
+                        + "modelo={}; marcadores esperados={}; resposta={}).",
+                    tentativa, MAX_TENTATIVAS_REVISAO, request.model(), marcadoresEsperados,
+                    resumirRespostaLog(texto));
             } catch (HttpClientException e) {
                 log.warn("Falha na chamada LLM (tentativa {}/{}): HTTP {} - {}",
                     tentativa, MAX_TENTATIVAS_REVISAO, e.statusCode(), e.getMessage());
@@ -419,16 +468,85 @@ public class MistralClientAdapter implements MistralPort {
             """.formatted(originalIngles, traducaoPt, listaProblemas);
     }
 
-    private String normalizarLinhaUnica(String texto) {
+    /**
+     * PROPÓSITO DE NEGÓCIO: extrai a tradução final de respostas de revisão que
+     * podem conter raciocínio, cerca Markdown ou um rótulo antes da fala.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: quando a fala possui marcadores {@code [[TAGn]]},
+     * somente uma linha que preserve todos eles pode ser escolhida; explicações
+     * nunca são concatenadas ao texto da legenda.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: devolve texto vazio quando nenhuma linha
+     * utilizável preserva os marcadores esperados, permitindo nova tentativa sem
+     * publicar conteúdo estruturalmente incompleto.
+     */
+    static String normalizarLinhaUnica(String texto, List<String> marcadoresEsperados) {
+        if (texto == null || texto.isBlank()) {
+            return "";
+        }
         String normalizado = texto.replace("\r\n", "\n").replace('\r', '\n').strip();
+        normalizado = BLOCO_RACIOCINIO.matcher(normalizado).replaceAll("").strip();
         if (normalizado.startsWith("```") && normalizado.endsWith("```")) {
-            normalizado = removerCercaMarkdown(normalizado).strip();
+            normalizado = removerCercaMarkdownEstatico(normalizado).strip();
         }
-        int quebra = normalizado.indexOf('\n');
-        if (quebra >= 0) {
-            normalizado = normalizado.substring(0, quebra).stripTrailing();
+
+        List<String> candidatas = normalizado.lines()
+            .map(String::strip)
+            .filter(linha -> !linha.isBlank())
+            .filter(linha -> !linha.equalsIgnoreCase("<think>") && !linha.equalsIgnoreCase("</think>"))
+            .map(linha -> PREFIXO_RESPOSTA.matcher(linha).replaceFirst("").strip())
+            .filter(linha -> !linha.isBlank())
+            .toList();
+        if (candidatas.isEmpty()) {
+            return "";
         }
-        return normalizado;
+
+        List<String> esperados = marcadoresEsperados == null
+            ? List.of() : marcadoresEsperados.stream().distinct().toList();
+        for (int i = candidatas.size() - 1; i >= 0; i--) {
+            String candidata = candidatas.get(i);
+            if (esperados.stream().allMatch(candidata::contains)) {
+                return candidata;
+            }
+        }
+        return esperados.isEmpty() ? candidatas.getLast() : "";
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: identifica os marcadores estruturais presentes na
+     * tradução atual mascarada para orientar a seleção segura da linha respondida.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: a lista preserva ordem e elimina duplicações,
+     * preservando a ordem estrutural usada para restaurar o ASS.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: tradução ausente devolve lista vazia e
+     * mantém o comportamento de resposta sem tags.
+     */
+    private List<String> extrairMarcadores(String textoMascarado) {
+        if (textoMascarado == null || textoMascarado.isBlank()) {
+            return List.of();
+        }
+        Set<String> marcadores = new LinkedHashSet<>();
+        Matcher matcher = MARCADOR_TAG.matcher(textoMascarado);
+        while (matcher.find()) {
+            marcadores.add(matcher.group());
+        }
+        return List.copyOf(marcadores);
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: registra uma amostra segura da resposta recusada para
+     * distinguir formato inesperado de indisponibilidade do servidor local.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: não modifica a resposta usada pelo pipeline e
+     * limita o log a 500 caracteres, preservando marcadores úteis ao diagnóstico.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: conteúdo ausente é exibido como vazio.
+     */
+    private String resumirRespostaLog(String texto) {
+        if (texto == null || texto.isBlank()) return "<vazio>";
+        String limpo = texto.replace("\r", "").replace("\n", " ↵ ").strip();
+        return limpo.length() <= 500 ? limpo : limpo.substring(0, 497) + "...";
     }
 
     private String montarPrompt(Lote lote) {
@@ -492,7 +610,22 @@ public class MistralClientAdapter implements MistralPort {
         return semNumeracao;
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: remove cercas Markdown de respostas de tradução em lote.
+     * <p>INVARIANTES DO DOMÍNIO: apenas o invólucro é removido; conteúdo permanece.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: formato incompleto é devolvido sem corte.
+     */
     private String removerCercaMarkdown(String texto) {
+        return removerCercaMarkdownEstatico(texto);
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: disponibiliza a mesma remoção de cerca ao normalizador
+     * estático testável das respostas de revisão.
+     * <p>INVARIANTES DO DOMÍNIO: exige abertura, quebra inicial e fechamento válidos.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: devolve o texto original.
+     */
+    private static String removerCercaMarkdownEstatico(String texto) {
         int primeiraQuebra = texto.indexOf('\n');
         int ultimaCerca = texto.lastIndexOf("```");
         if (primeiraQuebra < 0 || ultimaCerca <= primeiraQuebra) {
