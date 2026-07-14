@@ -25371,3 +25371,7 @@ Auditoria finalizada com sucesso!
 2026-07-14 09:38:24.222 [console] ========================================================================
 2026-07-14 09:38:24.224 [console] Relatórios persistidos em: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-8947674011627112228
 2026-07-14 09:38:24.227 [correcao] [CORRIGINDO 6/2] Evento 1165 — Rita!
+2026-07-14 09:40:53.448 [console] ==============================================================
+2026-07-14 09:40:53.449 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:40:53.449 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:40:53.450 [console] ==============================================================
