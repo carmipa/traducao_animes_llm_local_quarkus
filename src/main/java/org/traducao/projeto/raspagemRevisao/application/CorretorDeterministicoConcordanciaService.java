@@ -23,8 +23,12 @@ public class CorretorDeterministicoConcordanciaService {
 
     private static final int FLAGS = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS;
     private static final Pattern GRACAS_AO_DEUS = Pattern.compile("\\bgraças ao deus\\b", FLAGS);
-    private static final Pattern FILHO_DA_PUTA = Pattern.compile("\\bfilho da puta\\b", FLAGS);
-    private static final Pattern EQUIVOCO_SON_OF_A = Pattern.compile("\\bson of a (?:hitch|gun)\\b", FLAGS);
+    private static final Pattern FILHO_DA_MAE = Pattern.compile("\\bfilho da mãe\\b", FLAGS);
+    private static final Pattern PORRA_ISOLADA = Pattern.compile("^\\s*porra!\\s*$", FLAGS);
+    private static final Pattern INSULTO_FORTE_EN = Pattern.compile(
+        "\\bson of a (?:bitch|hitch)\\b|\\bson of a\\s*\\.\\.\\.", FLAGS);
+    private static final Pattern INSULTO_INTERROMPIDO_EN = Pattern.compile(
+        "\\b(?:you\\s+)?son of a\\s*\\.\\.\\.", FLAGS);
     private static final Pattern ARTIGO_MOBILE_SUIT = Pattern.compile(
         "(?<![\\p{L}\\p{N}])a(?=\\s+mobile\\s+(?:suit|armor)\\b)", FLAGS);
     private static final Pattern POSSESSIVO_FEM_COM_PARENTE_MASC = Pattern.compile(
@@ -67,8 +71,12 @@ public class CorretorDeterministicoConcordanciaService {
                     corrigida = substituirPreservandoInicial(corrigida, regra.incorretaPt(), regra.corretaPt());
                 }
             }
-            if (EQUIVOCO_SON_OF_A.matcher(originalIngles).find()) {
-                corrigida = substituirPreservandoInicial(corrigida, FILHO_DA_PUTA, "filho da mãe");
+            if (INSULTO_FORTE_EN.matcher(originalIngles).find()) {
+                corrigida = substituirPreservandoInicial(corrigida, FILHO_DA_MAE, "filho da puta");
+            }
+            if (INSULTO_INTERROMPIDO_EN.matcher(originalIngles).find()
+                && PORRA_ISOLADA.matcher(corrigida).matches()) {
+                corrigida = "Seu filho da puta!";
             }
         }
         corrigida = ajustarPossessivosDeParentesco(corrigida);

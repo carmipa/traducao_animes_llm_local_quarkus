@@ -113,7 +113,9 @@ public class DetectorConcordanciaService {
     private static final Pattern IRMA_PT = Pattern.compile("\\b(irmã|irma)\\b", FLAGS);
     private static final Pattern PROFANIDADE_FORTE_PT = Pattern.compile("\\bfilh[oa] da puta\\b", FLAGS);
     private static final Pattern PROFANIDADE_FORTE_EN = Pattern.compile(
-        "\\b(son of a bitch|motherfucker|fuck(?:er|ing)?|bitch|whore|bastard)\\b", FLAGS);
+        "\\b(son of a (?:bitch|hitch)|motherfucker|fuck(?:er|ing)?|bitch|whore|bastard)\\b"
+            + "|\\bson of a\\s*\\.\\.\\.", FLAGS);
+    private static final Pattern EUFEMISMO_FILHO_DA_MAE = Pattern.compile("\\bfilho da mãe\\b", FLAGS);
     private static final Pattern GRACAS_AO_DEUS = Pattern.compile("\\bgraças ao deus\\b", FLAGS);
 
     // "a" sozinho fica fora do segundo grupo: é a preposição invariante em gênero
@@ -415,10 +417,10 @@ public class DetectorConcordanciaService {
     }
 
     /**
-     * PROPÓSITO DE NEGÓCIO: impede que uma revisão neutra transforme a fala em
-     * insulto explícito que não existe no original.
-     * <p>INVARIANTES DO DOMÍNIO: palavrão equivalente presente no inglês permite
-     * a adaptação; somente introdução unilateral é sinalizada.
+     * PROPÓSITO DE NEGÓCIO: mantém a intensidade do insulto compatível com o
+     * original e com a preferência de tradução realista definida por Paulo.
+     * <p>INVARIANTES DO DOMÍNIO: palavrão equivalente ou insulto interrompido no
+     * inglês permite forma forte; fala neutra não recebe agressividade inventada.
      * <p>COMPORTAMENTO EM CASO DE FALHA: linguagem não cadastrada não é julgada
      * por esta regra conservadora.
      */
@@ -426,6 +428,10 @@ public class DetectorConcordanciaService {
         if (PROFANIDADE_FORTE_PT.matcher(texto).find()
             && !PROFANIDADE_FORTE_EN.matcher(original).find()) {
             motivos.add("Tradução introduziu palavrão forte ausente no original");
+        }
+        if (PROFANIDADE_FORTE_EN.matcher(original).find()
+            && EUFEMISMO_FILHO_DA_MAE.matcher(texto).find()) {
+            motivos.add("Insulto forte do original foi suavizado contra a preferência de tradução");
         }
     }
 
