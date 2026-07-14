@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+# PROPÓSITO DE NEGÓCIO: impedir que credenciais sejam publicadas junto com os
+# caches, logs e telemetria necessários para retomar o KRONOS em outra máquina.
+#
+# INVARIANTES DO DOMÍNIO: somente o conteúdo efetivamente preparado para o
+# commit é analisado; arquivos binários e este próprio guardião são ignorados;
+# nenhum valor potencialmente secreto é impresso no terminal.
+#
+# COMPORTAMENTO EM CASO DE FALHA: ao detectar um padrão de chave/token, encerra
+# com código 1 e bloqueia o commit; falhas de leitura também bloqueiam por
+# segurança. Código 0 permite que o Git continue o commit.
+
+set -eu
+
+secret_pattern="(AIza[0-9A-Za-z_-]{20,}|sk-[0-9A-Za-z_-]{16,}|gh[pousr]_[0-9A-Za-z]{20,}|github_pat_[0-9A-Za-z_]{20,}|AKIA[0-9A-Z]{16}|(api[_-]?key|access[_-]?token|auth[_-]?token|client[_-]?secret|password|passwd)[[:space:]]*[=:][[:space:]]*[\"']?[0-9A-Za-z_./+=-]{12,})"
+
+git diff --cached --name-only --diff-filter=ACMR | while IFS= read -r path; do
+    [ "$path" = ".githooks/pre-commit" ] && continue
+    if git show ":$path" 2>/dev/null | LC_ALL=C grep -Eiq "$secret_pattern"; then
+        printf '%s\n' "[BLOQUEADO] Possível chave de API ou credencial detectada em: $path" >&2
+        printf '%s\n' "Remova o segredo do conteúdo preparado antes de tentar novamente." >&2
+        exit 1
+    fi
+done
+
+exit 0

@@ -1,0 +1,20 @@
+{
+  "tipo" : "auditoria_conteudo",
+  "operacao" : {
+    "tipo" : "Auditoria de Conteudo de Legendas",
+    "detalhe" : "C:\\Users\\Paulo\\AppData\\Local\\Temp\\junit-7180719885411323645\\ep01_pt.ass | formatoOriginal=ASS | formatoTraduzido=ASS | anomalias=0 | criticas=0",
+    "tempoTotalMs" : 4,
+    "arquivosProcessados" : 1,
+    "itensDetectados" : 0,
+    "itensCorrigidos" : 0,
+    "registradoEm" : "2026-07-13T22:10:37.002145100Z"
+  },
+  "arquivoOriginal" : "ep01_eng.ass",
+  "arquivoTraduzido" : "ep01_pt.ass",
+  "formatoOriginal" : "ASS",
+  "formatoTraduzido" : "ASS",
+  "limpo" : true,
+  "totalAnomalias" : 0,
+  "duracaoMs" : 4,
+  "anomalias" : [ ]
+}

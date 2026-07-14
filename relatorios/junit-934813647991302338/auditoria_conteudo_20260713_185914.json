@@ -1,0 +1,18 @@
+{
+  "tipo" : "auditoria_conteudo",
+  "operacao" : {
+    "tipo" : "Auditoria de Conteudo (.ass)",
+    "detalhe" : "C:\\Users\\Paulo\\AppData\\Local\\Temp\\junit-934813647991302338\\ep_pt.ass | anomalias=0 | criticas=0",
+    "tempoTotalMs" : 6,
+    "arquivosProcessados" : 1,
+    "itensDetectados" : 0,
+    "itensCorrigidos" : 0,
+    "registradoEm" : "2026-07-13T21:59:14.787449200Z"
+  },
+  "arquivoOriginal" : "ep_eng.ass",
+  "arquivoTraduzido" : "ep_pt.ass",
+  "limpo" : true,
+  "totalAnomalias" : 0,
+  "duracaoMs" : 6,
+  "anomalias" : [ ]
+}

@@ -1,0 +1,2 @@
+# Hooks precisam permanecer em LF para executar no Git for Windows e no Linux.
+.githooks/* text eol=lf

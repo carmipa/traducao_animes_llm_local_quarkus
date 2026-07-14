@@ -1,0 +1,20 @@
+{
+  "tipo" : "auditoria_conteudo",
+  "operacao" : {
+    "tipo" : "Auditoria de Conteudo de Legendas",
+    "detalhe" : "C:\\Users\\Paulo\\AppData\\Local\\Temp\\junit-16679992851844320280\\ep04_pt.srt | formatoOriginal=SRT | formatoTraduzido=SRT | anomalias=0 | criticas=0",
+    "tempoTotalMs" : 10,
+    "arquivosProcessados" : 1,
+    "itensDetectados" : 0,
+    "itensCorrigidos" : 0,
+    "registradoEm" : "2026-07-13T22:11:44.005715600Z"
+  },
+  "arquivoOriginal" : "ep04_eng.srt",
+  "arquivoTraduzido" : "ep04_pt.srt",
+  "formatoOriginal" : "SRT",
+  "formatoTraduzido" : "SRT",
+  "limpo" : true,
+  "totalAnomalias" : 0,
+  "duracaoMs" : 10,
+  "anomalias" : [ ]
+}

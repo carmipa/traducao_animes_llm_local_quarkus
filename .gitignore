@@ -42,12 +42,25 @@ application-local.yml
 .certs/
 
 # KRONOS CORE Operational Data
-/cache/
-/relatorios/
-/logs/
-*.log
+# Cache, logs e relatorios sao deliberadamente versionados para permitir
+# retomada e diagnostico do pipeline em outro computador. Backups redundantes
+# continuam locais.
 /backups/
 /telemetria/
+
+# Segredos e credenciais nunca podem entrar no repositorio, inclusive quando
+# estiverem dentro das pastas operacionais versionadas.
+**/.env
+**/.env.*
+**/*api-key*
+**/*api_key*
+**/*apikey*
+**/*credential*
+**/*credentials*
+**/*secret*
+**/*token*
+**/*password*
+**/*passwd*
 
 # Playwright MCP (screenshots/snapshots de sessões de teste)
 /.playwright-mcp/
