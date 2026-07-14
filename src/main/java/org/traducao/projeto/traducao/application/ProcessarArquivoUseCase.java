@@ -171,6 +171,17 @@ public class ProcessarArquivoUseCase {
 
         Path arquivoCache = resolverArquivoCache(arquivoEntrada);
         ProvenienciaCache proveniencia = provenienciaAtual();
+        if (permitirRetraducao && Files.exists(arquivoCache)) {
+            Path raizBackupCache = Path.of("backups", "traducao-cache").toAbsolutePath().normalize();
+            try {
+                Path backupCache = arquivarCacheParaRetraducao(arquivoCache, raizBackupCache);
+                log.warn("Retradução liberada: cache anterior removido do uso e preservado em {}", backupCache);
+                uiLogger.log("[ CACHE REINICIADO ] Geração anterior preservada em: " + backupCache);
+            } catch (IOException e) {
+                throw new ArquivoLegendaException(
+                    "Falha ao preservar e reiniciar o cache antes da retradução: " + arquivoCache, e);
+            }
+        }
         // Congela o prompt de sistema no início do arquivo: se o contexto global
         // mudar (troca de lore) enquanto este episódio traduz, o prompt já capturado
         // continua valendo até o fim — a mesma origem carimbada na proveniência.
@@ -735,6 +746,24 @@ public class ProcessarArquivoUseCase {
         Path pastaBackup = Files.createTempDirectory(raizBackup, "sobrescrita_");
         Path backup = pastaBackup.resolve(arquivoFinal.getFileName()).normalize();
         return Files.copy(arquivoFinal, backup, StandardCopyOption.COPY_ATTRIBUTES);
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: inicia uma retradução integral do episódio sem
+     * depender de heurísticas para decidir se o cache antigo ainda é confiável.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: somente o arquivo de cache resolvido para o
+     * episódio atual é retirado de uso; uma cópia fiel deve existir no diretório
+     * de backup antes da remoção; caches de outras obras nunca são tocados.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: propaga {@link IOException}; se a cópia
+     * ou a remoção falhar, o processamento é abortado e não começa uma geração
+     * nova fingindo que o cache anterior foi reiniciado.
+     */
+    static Path arquivarCacheParaRetraducao(Path arquivoCache, Path raizBackup) throws IOException {
+        Path backup = copiarParaBackupExclusivo(arquivoCache, raizBackup);
+        Files.delete(arquivoCache);
+        return backup;
     }
 
     private Path resolverArquivoCache(Path entrada) {
