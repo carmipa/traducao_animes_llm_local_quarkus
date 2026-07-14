@@ -78,6 +78,20 @@
     color: var(--accent-yellow);
 }
 
+/* O KRONOS usa as próprias bandeiras e não exibe a barra/seletor do widget. */
+#google_translate_element,
+.goog-te-banner-frame.skiptranslate,
+.goog-te-gadget,
+.goog-te-balloon-frame,
+#goog-gt-tt {
+    display: none !important;
+}
+
+html,
+body {
+    top: 0 !important;
+}
+
 @media (max-width: 700px) {
     .seletor-idioma-wrapper {
         margin-inline: 8px;

@@ -1,19 +1,22 @@
 const CHAVE_IDIOMA = 'kronos.idioma.interface';
-const CHAVE_CACHE_PREFIXO = 'kronos.i18n.automatico.v1.';
 const IDIOMAS = Object.freeze(['pt-BR', 'en-US', 'es-ES']);
-const ATRIBUTOS = Object.freeze(['placeholder', 'title', 'aria-label', 'data-tooltip', 'alt']);
-const originaisTexto = new WeakMap();
-const originaisAtributos = new WeakMap();
-const sessoes = new Map();
+const CODIGOS_GOOGLE = Object.freeze({ 'pt-BR': 'pt', 'en-US': 'en', 'es-ES': 'es' });
+const SELETORES_PROTEGIDOS = Object.freeze([
+    'script', 'style', 'code', 'pre', 'input', 'select', 'option', 'textarea', 'table',
+    '[contenteditable]', '[translate="no"]', '[data-i18n-ignore]',
+    '.notranslate', '.material-symbols-outlined', '.console-body', '.auditor-evento-texto',
+    '.auditor-anomalias-lista', '.markdown-body', '.mapa-code', '.mapa-tree',
+    '.anime-meta-banner', '.telemetria-log', '#panel-telemetria', '#toast-container',
+    '[id*="resultado"]', '[id*="relatorio"]', '[id*="historico"]', '[id*="preview"]',
+    '[class*="resultado"]', '[class*="relatorio"]'
+]);
 
 let idiomaAtual = 'pt-BR';
-let observador = null;
-let filaTraducao = Promise.resolve();
-let geracaoTraducao = 0;
+let observadorProtecao = null;
 
 /**
  * PROPÓSITO DE NEGÓCIO: converte a preferência regional do navegador para um
- * dos idiomas oferecidos pelas bandeiras do KRONOS.
+ * dos três idiomas oferecidos pelo KRONOS.
  * INVARIANTES DO DOMÍNIO: português resolve para pt-BR, espanhol para es-ES e
  * qualquer outro idioma usa en-US como fallback internacional.
  * COMPORTAMENTO EM CASO DE FALHA: entrada nula ou ilegível retorna en-US.
@@ -39,116 +42,24 @@ export function resolverIdiomaInicial(preferencia, idiomasNavegador = []) {
 }
 
 /**
- * PROPÓSITO DE NEGÓCIO: informa se o navegador pode traduzir a interface
- * localmente, sem catálogo manual e sem enviar os textos a um servidor.
- * INVARIANTES DO DOMÍNIO: exige contexto seguro e a Translator API nativa.
- * COMPORTAMENTO EM CASO DE FALHA: qualquer ausência de recurso retorna falso.
+ * PROPÓSITO DE NEGÓCIO: informa se a página pode carregar o Google Translate
+ * para internacionalizar a interface sem catálogos manuais.
+ * INVARIANTES DO DOMÍNIO: português não depende da rede; tradução externa
+ * exige DOM disponível e navegador não explicitamente offline.
+ * COMPORTAMENTO EM CASO DE FALHA: ambiente sem DOM ou offline retorna falso.
  */
 export function navegadorSuportaTraducao() {
-    return Boolean(globalThis.isSecureContext && 'Translator' in globalThis);
+    return typeof document !== 'undefined'
+        && typeof navigator !== 'undefined'
+        && navigator.onLine !== false;
 }
 
 /**
- * PROPÓSITO DE NEGÓCIO: impede que legendas, caminhos, código, logs e dados de
- * telemetria sejam traduzidos como se fossem controles da interface.
- * INVARIANTES DO DOMÍNIO: elementos com translate=no ou data-i18n-ignore
- * protegem toda a sua subárvore; ícones Material Symbols nunca são alterados.
- * COMPORTAMENTO EM CASO DE FALHA: nó sem ancestral é aceito para posterior
- * validação textual conservadora.
- */
-function deveIgnorar(no) {
-    const elemento = no?.nodeType === Node.ELEMENT_NODE ? no : no?.parentElement;
-    return Boolean(elemento?.closest(
-        'script, style, code, pre, textarea, [translate="no"], [data-i18n-ignore], '
-        + '.material-symbols-outlined, .console-body, .auditor-evento-texto, '
-        + '.auditor-anomalias-lista, .markdown-body, .mapa-code, .mapa-tree, '
-        + '.anime-meta-banner, .telemetria-log'
-    ));
-}
-
-/**
- * PROPÓSITO DE NEGÓCIO: filtra o conteúdo textual que pode ser enviado ao
- * tradutor local, evitando símbolos, URLs, caminhos e identificadores técnicos.
- * INVARIANTES DO DOMÍNIO: somente texto humano com letras e até 2.000 caracteres
- * entra na fila; valores de campos nunca são lidos.
- * COMPORTAMENTO EM CASO DE FALHA: texto ausente ou ambíguo retorna falso.
- */
-function textoEhTraduzivel(texto) {
-    const valor = String(texto || '').trim();
-    if (valor.length < 2 || valor.length > 2000 || !/\p{L}/u.test(valor)) return false;
-    if (/^(https?:|file:|[A-Za-z]:\\|\\\\|\/api\/)/i.test(valor)) return false;
-    if (/^[\w.-]+\.(ass|ssa|srt|mkv|json|md|txt|java|js|css)$/i.test(valor)) return false;
-    return true;
-}
-
-/**
- * PROPÓSITO DE NEGÓCIO: conserva o espaçamento de layout do HTML ao substituir
- * somente o conteúdo humano pela tradução automática.
- * INVARIANTES DO DOMÍNIO: prefixo e sufixo em branco permanecem byte a byte.
- * COMPORTAMENTO EM CASO DE FALHA: valor não textual é convertido com segurança.
- */
-function aplicarEspacamento(original, traducao) {
-    const partes = String(original).match(/^(\s*)([\s\S]*?)(\s*)$/);
-    return `${partes?.[1] || ''}${traducao}${partes?.[3] || ''}`;
-}
-
-/**
- * PROPÓSITO DE NEGÓCIO: lê o cache local de traduções da UI para que reabrir a
- * aplicação não repita centenas de inferências no navegador.
- * INVARIANTES DO DOMÍNIO: o cache é separado por idioma e contém somente pares
- * de rótulos da interface, nunca textos de legenda ou logs.
- * COMPORTAMENTO EM CASO DE FALHA: JSON inválido ou localStorage indisponível
- * produz um mapa vazio e autorrecuperável.
- */
-function carregarCache(idioma) {
-    try {
-        const salvo = JSON.parse(localStorage.getItem(CHAVE_CACHE_PREFIXO + idioma) || '{}');
-        return salvo && typeof salvo === 'object' ? new Map(Object.entries(salvo)) : new Map();
-    } catch (ignored) {
-        return new Map();
-    }
-}
-
-/**
- * PROPÓSITO DE NEGÓCIO: persiste as traduções produzidas pelo próprio navegador
- * para acelerar navegações futuras e reduzir consumo de CPU.
- * INVARIANTES DO DOMÍNIO: grava somente strings da interface no idioma alvo.
- * COMPORTAMENTO EM CASO DE FALHA: quota ou bloqueio do armazenamento é ignorado
- * sem interromper a troca de idioma da sessão atual.
- */
-function salvarCache(idioma, cache) {
-    try {
-        localStorage.setItem(CHAVE_CACHE_PREFIXO + idioma, JSON.stringify(Object.fromEntries(cache)));
-    } catch (ignored) {
-        // A tradução continua válida em memória nesta sessão.
-    }
-}
-
-/**
- * PROPÓSITO DE NEGÓCIO: transforma falhas técnicas do navegador em orientação
- * curta e compreensível para quem troca o idioma da interface.
- * INVARIANTES DO DOMÍNIO: mensagens internas em inglês não são expostas quando
- * correspondem a restrições conhecidas de ativação ou compatibilidade.
- * COMPORTAMENTO EM CASO DE FALHA: erro desconhecido recebe uma mensagem neutra
- * em português e a causa original permanece disponível no console do navegador.
- */
-function mensagemAmigavelErro(erro) {
-    const mensagem = String(erro?.message || '');
-    if (/user gesture|user activation|ativação do usuário/i.test(mensagem)) {
-        return 'O navegador exige um clique direto na bandeira para baixar o tradutor local.';
-    }
-    if (/not supported|unavailable|indisponível/i.test(mensagem)) {
-        return 'A tradução automática local não está disponível neste navegador.';
-    }
-    return 'Não foi possível traduzir a interface. Ela foi restaurada para português.';
-}
-
-/**
- * PROPÓSITO DE NEGÓCIO: apresenta progresso e falhas da tradução automática no
- * próprio seletor, sem depender do backend ou do sistema global de toasts.
- * INVARIANTES DO DOMÍNIO: mensagens são curtas, não bloqueiam a navegação e o
- * estado vazio remove o texto anterior.
- * COMPORTAMENTO EM CASO DE FALHA: seletor ausente é tolerado.
+ * PROPÓSITO DE NEGÓCIO: mostra ao operador o carregamento ou a indisponibilidade
+ * do tradutor sem usar o sistema global de notificações do pipeline.
+ * INVARIANTES DO DOMÍNIO: a mensagem nunca bloqueia a navegação e permanece
+ * fora do conteúdo enviado ao Google.
+ * COMPORTAMENTO EM CASO DE FALHA: seletor ainda não renderizado é tolerado.
  */
 function atualizarStatus(mensagem = '', erro = false) {
     const status = document.getElementById('idioma-status');
@@ -159,179 +70,110 @@ function atualizarStatus(mensagem = '', erro = false) {
 }
 
 /**
- * PROPÓSITO DE NEGÓCIO: inicia o tradutor local no mesmo gesto do clique para
- * permitir que o navegador baixe o pacote de idioma quando necessário.
- * INVARIANTES DO DOMÍNIO: existe no máximo uma promessa de sessão por idioma e
- * todo processamento permanece no dispositivo do operador.
- * COMPORTAMENTO EM CASO DE FALHA: remove a sessão rejeitada para permitir nova
- * tentativa e propaga o erro ao fluxo que restaura a interface em português.
+ * PROPÓSITO DE NEGÓCIO: identifica domínios DNS onde também é necessário gravar
+ * o cookie de tradução com atributo domain para compartilhamento consistente.
+ * INVARIANTES DO DOMÍNIO: localhost, IPv4 e IPv6 usam somente cookie host-only.
+ * COMPORTAMENTO EM CASO DE FALHA: hostname ausente retorna falso.
  */
-function criarSessaoLocal(idioma) {
-    const alvo = idioma === 'es-ES' ? 'es' : 'en';
-    if (sessoes.has(alvo)) return sessoes.get(alvo);
-    if (!navegadorSuportaTraducao()) {
-        throw new Error('Tradução automática indisponível. Use Chrome 138 ou superior.');
-    }
-    const criada = globalThis.Translator.create({
-        sourceLanguage: 'pt',
-        targetLanguage: alvo,
-        monitor(monitor) {
-            monitor.addEventListener('downloadprogress', evento => {
-                const progresso = Math.round((evento.loaded || 0) * 100);
-                atualizarStatus(`Baixando tradutor local… ${progresso}%`);
-            });
-        }
-    });
-    const promessa = Promise.resolve(criada).catch(erro => {
-        sessoes.delete(alvo);
-        throw erro;
-    });
-    sessoes.set(alvo, promessa);
-    return promessa;
+function dominioAceitaCookieCompartilhado(hostname) {
+    const host = String(hostname || '').trim();
+    return Boolean(host && host !== 'localhost' && !/^\d{1,3}(\.\d{1,3}){3}$/.test(host) && !host.includes(':'));
 }
 
 /**
- * PROPÓSITO DE NEGÓCIO: obtém uma sessão de tradução pt→idioma gerenciada pelo
- * navegador e acompanha o download inicial do modelo local.
- * INVARIANTES DO DOMÍNIO: no máximo uma sessão é criada por idioma alvo.
- * COMPORTAMENTO EM CASO DE FALHA: API indisponível ou par não suportado lança
- * erro didático para o seletor manter a página em português.
+ * PROPÓSITO DE NEGÓCIO: grava ou remove uma variante do cookie `googtrans` que
+ * orienta o widget sobre o par português→idioma escolhido.
+ * INVARIANTES DO DOMÍNIO: cookie fica restrito ao caminho raiz e não contém
+ * dados de legenda, credenciais ou identificadores pessoais.
+ * COMPORTAMENTO EM CASO DE FALHA: navegadores que bloqueiam cookies continuam
+ * em português e o carregador apresentará a indisponibilidade.
  */
-async function obterSessao(idioma) {
-    const alvo = idioma === 'es-ES' ? 'es' : 'en';
-    if (sessoes.has(alvo)) return sessoes.get(alvo);
-    if (!navegadorSuportaTraducao()) {
-        throw new Error('Tradução automática indisponível. Use Chrome 138 ou superior.');
+function escreverCookieGoogle(valor, dominio = '') {
+    const atributoDominio = dominio ? `; domain=${dominio}` : '';
+    if (valor) {
+        document.cookie = `googtrans=${valor}; path=/; max-age=31536000; SameSite=Lax${atributoDominio}`;
+        return;
     }
-    const disponibilidade = await globalThis.Translator.availability({
-        sourceLanguage: 'pt', targetLanguage: alvo
-    });
-    if (disponibilidade === 'unavailable') {
-        throw new Error('O navegador não oferece o pacote de idioma solicitado.');
-    }
-    if (disponibilidade === 'downloadable' || disponibilidade === 'downloading') {
-        throw new Error('Clique na bandeira para autorizar o download do tradutor local.');
-    }
-    return criarSessaoLocal(idioma);
+    document.cookie = `googtrans=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax${atributoDominio}`;
 }
 
 /**
- * PROPÓSITO DE NEGÓCIO: coleta rótulos, descrições e atributos traduzíveis de
- * uma área da SPA e registra seus valores canônicos em português.
- * INVARIANTES DO DOMÍNIO: cada alvo mantém referência ao original e elementos
- * operacionais protegidos nunca entram no conjunto.
- * COMPORTAMENTO EM CASO DE FALHA: raiz inexistente devolve lista vazia.
+ * PROPÓSITO DE NEGÓCIO: sincroniza o idioma selecionado com o cookie consumido
+ * pelo Google Translate no carregamento seguinte da SPA.
+ * INVARIANTES DO DOMÍNIO: pt-BR remove todas as variantes; inglês e espanhol
+ * sempre partem de português.
+ * COMPORTAMENTO EM CASO DE FALHA: erro de cookie não interrompe a interface.
  */
-function coletarAlvos(raiz) {
-    if (!raiz) return [];
-    const alvos = [];
-    const processarElemento = elemento => {
-        if (!(elemento instanceof Element) || deveIgnorar(elemento)) return;
-        let mapa = originaisAtributos.get(elemento);
-        if (!mapa) {
-            mapa = new Map();
-            originaisAtributos.set(elemento, mapa);
-        }
-        ATRIBUTOS.forEach(atributo => {
-            if (!elemento.hasAttribute(atributo)) return;
-            if (!mapa.has(atributo)) mapa.set(atributo, elemento.getAttribute(atributo));
-            const original = mapa.get(atributo);
-            if (textoEhTraduzivel(original)) {
-                alvos.push({ original, aplicar: valor => elemento.setAttribute(atributo, valor) });
-            }
-        });
-    };
-    if (raiz instanceof Element) processarElemento(raiz);
-    if (raiz.nodeType === Node.TEXT_NODE) {
-        if (!deveIgnorar(raiz) && textoEhTraduzivel(raiz.nodeValue)) {
-            if (!originaisTexto.has(raiz)) originaisTexto.set(raiz, raiz.nodeValue);
-            alvos.push({ original: originaisTexto.get(raiz), aplicar: valor => { raiz.nodeValue = valor; } });
-        }
-        return alvos;
-    }
-    const walker = document.createTreeWalker(raiz, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
-    let no = walker.nextNode();
-    while (no) {
-        if (no.nodeType === Node.ELEMENT_NODE) processarElemento(no);
-        if (no.nodeType === Node.TEXT_NODE && !deveIgnorar(no) && textoEhTraduzivel(no.nodeValue)) {
-            const noTexto = no;
-            if (!originaisTexto.has(noTexto)) originaisTexto.set(noTexto, noTexto.nodeValue);
-            alvos.push({
-                original: originaisTexto.get(noTexto),
-                aplicar: valor => { noTexto.nodeValue = valor; }
-            });
-        }
-        no = walker.nextNode();
-    }
-    return alvos;
-}
-
-/**
- * PROPÓSITO DE NEGÓCIO: restaura imediatamente a fonte pt-BR antes de trocar
- * para outro idioma ou quando o operador escolhe a bandeira do Brasil.
- * INVARIANTES DO DOMÍNIO: somente nós previamente capturados são restaurados.
- * COMPORTAMENTO EM CASO DE FALHA: nós removidos do DOM não afetam os demais.
- */
-function restaurarPortugues(raiz = document) {
-    coletarAlvos(raiz).forEach(alvo => alvo.aplicar(alvo.original));
-}
-
-/**
- * PROPÓSITO DE NEGÓCIO: traduz uma subárvore completa por inferência local do
- * navegador, reutilizando resultados idênticos e o cache persistente.
- * INVARIANTES DO DOMÍNIO: aplicações pertencentes a uma troca antiga são
- * descartadas e nenhum texto sem tradução válida é apagado.
- * COMPORTAMENTO EM CASO DE FALHA: mantém o português, informa a causa e não
- * bloqueia as funções operacionais do KRONOS.
- */
-async function traduzirSubarvore(raiz, idioma, geracao) {
-    if (idioma === 'pt-BR' || geracao !== geracaoTraducao) return;
-    const alvos = coletarAlvos(raiz);
-    if (!alvos.length) return;
-    const porTexto = new Map();
-    alvos.forEach(alvo => {
-        const chave = String(alvo.original).trim().replace(/\s+/g, ' ');
-        if (!porTexto.has(chave)) porTexto.set(chave, []);
-        porTexto.get(chave).push(alvo);
-    });
+function aplicarCookieIdioma(idioma) {
     try {
-        const sessao = await obterSessao(idioma);
-        const cache = carregarCache(idioma);
-        let concluidos = 0;
-        const total = porTexto.size;
-        for (const [texto, destinos] of porTexto) {
-            if (geracao !== geracaoTraducao || idiomaAtual !== idioma) return;
-            let traducao = cache.get(texto);
-            if (!traducao) {
-                traducao = await sessao.translate(texto);
-                if (traducao?.trim()) cache.set(texto, traducao.trim());
-            }
-            if (traducao?.trim()) {
-                destinos.forEach(destino => destino.aplicar(aplicarEspacamento(destino.original, traducao.trim())));
-            }
-            concluidos++;
-            if (concluidos === 1 || concluidos === total || concluidos % 20 === 0) {
-                atualizarStatus(`Traduzindo interface… ${concluidos}/${total}`);
-            }
-        }
-        salvarCache(idioma, cache);
-        atualizarStatus('');
+        const codigo = CODIGOS_GOOGLE[idioma] || 'pt';
+        const valor = codigo === 'pt' ? '' : `/pt/${codigo}`;
+        escreverCookieGoogle(valor);
+        const host = globalThis.location?.hostname || '';
+        if (dominioAceitaCookieCompartilhado(host)) escreverCookieGoogle(valor, host);
     } catch (erro) {
-        if (geracao !== geracaoTraducao) return;
-        idiomaAtual = 'pt-BR';
-        document.documentElement.lang = idiomaAtual;
-        restaurarPortugues(document);
-        atualizarBandeiras();
-        console.warn('Falha na tradução automática local da interface:', erro);
-        atualizarStatus(mensagemAmigavelErro(erro), true);
+        console.warn('Não foi possível atualizar o cookie de idioma:', erro);
     }
 }
 
 /**
- * PROPÓSITO DE NEGÓCIO: mantém seleção visual e atributos de acessibilidade das
- * bandeiras coerentes com o idioma efetivamente apresentado.
+ * PROPÓSITO DE NEGÓCIO: preserva toda área operacional que não pode ser enviada
+ * ou alterada pelo tradutor externo.
+ * INVARIANTES DO DOMÍNIO: o elemento e toda sua subárvore recebem os contratos
+ * `translate=no` e `notranslate` reconhecidos pelo navegador e pelo Google.
+ * COMPORTAMENTO EM CASO DE FALHA: valor que não é Element é ignorado.
+ */
+function protegerElemento(elemento) {
+    if (!(elemento instanceof Element)) return;
+    elemento.setAttribute('translate', 'no');
+    elemento.classList.add('notranslate');
+}
+
+/**
+ * PROPÓSITO DE NEGÓCIO: aplica a política de privacidade a conteúdos estáticos
+ * e módulos carregados dinamicamente antes que o widget os processe.
+ * INVARIANTES DO DOMÍNIO: scripts, código, legendas, consoles, telemetria,
+ * caminhos e metadados de anime permanecem fora da tradução.
+ * COMPORTAMENTO EM CASO DE FALHA: raiz vazia ou removida não afeta a SPA.
+ */
+function protegerSubarvore(raiz) {
+    if (!raiz) return;
+    if (raiz instanceof Element && raiz.matches(SELETORES_PROTEGIDOS.join(','))) {
+        protegerElemento(raiz);
+    }
+    if (typeof raiz.querySelectorAll !== 'function') return;
+    raiz.querySelectorAll(SELETORES_PROTEGIDOS.join(',')).forEach(protegerElemento);
+}
+
+/**
+ * PROPÓSITO DE NEGÓCIO: protege imediatamente novos painéis, logs e resultados
+ * inseridos por fetch após a inicialização da página.
+ * INVARIANTES DO DOMÍNIO: somente nós adicionados são examinados; textos já
+ * protegidos nunca perdem a marcação.
+ * COMPORTAMENTO EM CASO DE FALHA: mutações sem nós adicionados são ignoradas.
+ */
+function processarMutacoes(mutacoes) {
+    mutacoes.forEach(mutacao => mutacao.addedNodes.forEach(protegerSubarvore));
+}
+
+/**
+ * PROPÓSITO DE NEGÓCIO: mantém a proteção de privacidade ativa durante toda a
+ * navegação da SPA, inclusive em módulos HTML injetados sob demanda.
+ * INVARIANTES DO DOMÍNIO: existe no máximo um observador global.
+ * COMPORTAMENTO EM CASO DE FALHA: navegador sem MutationObserver conserva a
+ * proteção inicial do documento.
+ */
+function observarConteudoDinamico() {
+    if (observadorProtecao || typeof MutationObserver === 'undefined') return;
+    observadorProtecao = new MutationObserver(processarMutacoes);
+    observadorProtecao.observe(document.body, { childList: true, subtree: true });
+}
+
+/**
+ * PROPÓSITO DE NEGÓCIO: reflete visualmente qual bandeira corresponde ao idioma
+ * solicitado ou efetivamente restaurado.
  * INVARIANTES DO DOMÍNIO: exatamente uma bandeira fica pressionada.
- * COMPORTAMENTO EM CASO DE FALHA: seletor não carregado é ignorado.
+ * COMPORTAMENTO EM CASO DE FALHA: seletor ausente é tolerado.
  */
 function atualizarBandeiras() {
     document.querySelectorAll('[data-idioma]').forEach(botao => {
@@ -342,95 +184,157 @@ function atualizarBandeiras() {
 }
 
 /**
- * PROPÓSITO DE NEGÓCIO: aplica a escolha da bandeira, persiste a preferência e
- * agenda a tradução automática sem travar a navegação da SPA.
- * INVARIANTES DO DOMÍNIO: pt-BR sempre restaura o conteúdo canônico e toda nova
- * troca invalida traduções assíncronas anteriores.
- * COMPORTAMENTO EM CASO DE FALHA: idioma desconhecido usa o fallback en-US.
+ * PROPÓSITO DE NEGÓCIO: inicializa o widget oficial depois que as áreas privadas
+ * já foram marcadas como não traduzíveis.
+ * INVARIANTES DO DOMÍNIO: somente português, inglês e espanhol são oferecidos e
+ * o seletor nativo do Google permanece oculto.
+ * COMPORTAMENTO EM CASO DE FALHA: ausência da biblioteca restaura pt-BR e
+ * apresenta orientação sem quebrar o restante da aplicação.
  */
-export function definirIdioma(idioma, persistir = true) {
+function inicializarWidgetGoogle() {
+    try {
+        const Tradutor = globalThis.google?.translate?.TranslateElement;
+        if (!Tradutor) throw new Error('Biblioteca Google Translate não carregada.');
+        new Tradutor({ pageLanguage: 'pt', includedLanguages: 'pt,en,es', autoDisplay: false }, 'google_translate_element');
+        atualizarStatus('');
+    } catch (erro) {
+        console.warn('Falha ao inicializar Google Translate:', erro);
+        idiomaAtual = 'pt-BR';
+        aplicarCookieIdioma(idiomaAtual);
+        atualizarBandeiras();
+        atualizarStatus('Google Translate indisponível. A interface permaneceu em português.', true);
+    }
+}
+
+/**
+ * PROPÓSITO DE NEGÓCIO: informa falha de rede ou bloqueio do script externo sem
+ * confundir o operador com erros internos do navegador.
+ * INVARIANTES DO DOMÍNIO: falha sempre restaura a seleção visual para pt-BR.
+ * COMPORTAMENTO EM CASO DE FALHA: a interface operacional continua disponível.
+ */
+function tratarFalhaScriptGoogle() {
+    idiomaAtual = 'pt-BR';
+    aplicarCookieIdioma(idiomaAtual);
+    atualizarBandeiras();
+    atualizarStatus('Não foi possível carregar o Google Translate. Verifique a internet ou o bloqueador.', true);
+}
+
+/**
+ * PROPÓSITO DE NEGÓCIO: carrega sob demanda o widget externo apenas quando o
+ * operador precisa de inglês ou espanhol.
+ * INVARIANTES DO DOMÍNIO: um único script e um único container são criados.
+ * COMPORTAMENTO EM CASO DE FALHA: rede indisponível aciona fallback em português.
+ */
+function carregarGoogleTranslate() {
+    if (idiomaAtual === 'pt-BR') return;
+    if (!navegadorSuportaTraducao()) {
+        tratarFalhaScriptGoogle();
+        return;
+    }
+    atualizarStatus('Carregando Google Translate…');
+    globalThis.googleTranslateElementInit = inicializarWidgetGoogle;
+    if (globalThis.google?.translate?.TranslateElement) {
+        inicializarWidgetGoogle();
+        return;
+    }
+    if (document.getElementById('google-translate-script')) return;
+    const script = document.createElement('script');
+    script.id = 'google-translate-script';
+    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    script.async = true;
+    script.onerror = tratarFalhaScriptGoogle;
+    document.head.appendChild(script);
+}
+
+/**
+ * PROPÓSITO DE NEGÓCIO: persiste a bandeira escolhida, sincroniza o cookie do
+ * Google e opcionalmente recarrega a SPA para aplicar a tradução integral.
+ * INVARIANTES DO DOMÍNIO: idioma sempre pertence ao conjunto suportado; pt-BR
+ * limpa o cookie de tradução.
+ * COMPORTAMENTO EM CASO DE FALHA: localStorage bloqueado não impede o cookie e
+ * idioma desconhecido usa o fallback internacional en-US.
+ */
+export function definirIdioma(idioma, persistir = true, recarregar = true) {
     idiomaAtual = IDIOMAS.includes(idioma) ? idioma : normalizarIdioma(idioma);
-    geracaoTraducao++;
-    const geracao = geracaoTraducao;
-    restaurarPortugues(document);
+    aplicarCookieIdioma(idiomaAtual);
     document.documentElement.lang = idiomaAtual;
     if (persistir) {
-        try { localStorage.setItem(CHAVE_IDIOMA, idiomaAtual); } catch (ignored) { /* sessão continua */ }
+        try { localStorage.setItem(CHAVE_IDIOMA, idiomaAtual); } catch (ignored) { /* cookie continua válido */ }
     }
     atualizarBandeiras();
-    atualizarStatus('');
-    if (idiomaAtual !== 'pt-BR') {
-        filaTraducao = filaTraducao.then(() => traduzirSubarvore(document, idiomaAtual, geracao));
-    }
     document.dispatchEvent(new CustomEvent('kronos:idioma-alterado', { detail: { idioma: idiomaAtual } }));
+    if (recarregar) globalThis.location.reload();
     return idiomaAtual;
 }
 
 /**
- * PROPÓSITO DE NEGÓCIO: liga os botões 🇧🇷, 🇺🇸 e 🇪🇸 à troca de idioma sem
- * duplicar listeners quando módulos da SPA são reinicializados.
- * INVARIANTES DO DOMÍNIO: cada botão válido recebe um único listener.
- * COMPORTAMENTO EM CASO DE FALHA: botão sem data-idioma é ignorado.
+ * PROPÓSITO DE NEGÓCIO: trata o clique acessível em uma bandeira e inicia a
+ * troca completa de idioma da interface.
+ * INVARIANTES DO DOMÍNIO: somente botões com data-idioma acionam recarga.
+ * COMPORTAMENTO EM CASO DE FALHA: evento sem botão válido é ignorado.
+ */
+function tratarCliqueBandeira(evento) {
+    const botao = evento.currentTarget;
+    if (!botao?.dataset?.idioma) return;
+    atualizarStatus('Aplicando idioma…');
+    definirIdioma(botao.dataset.idioma, true, true);
+}
+
+/**
+ * PROPÓSITO DE NEGÓCIO: liga as bandeiras à troca de idioma sem listeners
+ * duplicados quando a SPA reinicializa módulos.
+ * INVARIANTES DO DOMÍNIO: cada botão válido recebe exatamente um listener.
+ * COMPORTAMENTO EM CASO DE FALHA: seletor incompleto mantém a página funcional.
  */
 function vincularBandeiras() {
     document.querySelectorAll('[data-idioma]').forEach(botao => {
         if (botao.dataset.vinculado === 'true') return;
         botao.dataset.vinculado = 'true';
-        botao.addEventListener('click', () => {
-            const idioma = botao.dataset.idioma;
-            if (idioma !== 'pt-BR' && navegadorSuportaTraducao()) {
-                try {
-                    criarSessaoLocal(idioma);
-                } catch (ignored) {
-                    // definirIdioma apresentará a falha sem bloquear o restante da interface.
-                }
-            }
-            definirIdioma(idioma, true);
-        });
+        botao.addEventListener('click', tratarCliqueBandeira);
     });
 }
 
 /**
- * PROPÓSITO DE NEGÓCIO: traduz automaticamente painéis injetados por fetch e
- * novos controles criados por JavaScript após a seleção de outro idioma.
- * INVARIANTES DO DOMÍNIO: existe um único observador global e cada lote respeita
- * a geração e o idioma vigentes.
- * COMPORTAMENTO EM CASO DE FALHA: navegador sem MutationObserver mantém a
- * tradução inicial e a troca manual disponíveis.
+ * PROPÓSITO DE NEGÓCIO: remove somente caches obsoletos criados pelo motor local
+ * abandonado, evitando que preferências antigas reativem o fluxo quebrado.
+ * INVARIANTES DO DOMÍNIO: a preferência de idioma e dados do KRONOS não são
+ * apagados; somente chaves `kronos.i18n.automatico.v1.*` são removidas.
+ * COMPORTAMENTO EM CASO DE FALHA: armazenamento indisponível é ignorado.
  */
-function observarModulosDinamicos() {
-    if (observador || typeof MutationObserver === 'undefined') return;
-    observador = new MutationObserver(mutacoes => {
-        if (idiomaAtual === 'pt-BR') return;
-        const idioma = idiomaAtual;
-        const geracao = geracaoTraducao;
-        mutacoes.forEach(mutacao => mutacao.addedNodes.forEach(no => {
-            filaTraducao = filaTraducao.then(() => traduzirSubarvore(no, idioma, geracao));
-        }));
-    });
-    observador.observe(document.body, { childList: true, subtree: true });
+function removerCachesMotorLocal() {
+    try {
+        Object.keys(localStorage)
+            .filter(chave => chave.startsWith('kronos.i18n.automatico.v1.'))
+            .forEach(chave => localStorage.removeItem(chave));
+    } catch (ignored) {
+        // O mecanismo por cookie não depende desse armazenamento técnico.
+    }
 }
 
 /**
- * PROPÓSITO DE NEGÓCIO: inicializa detecção regional, preferência persistida,
- * bandeiras e tradução automática local antes dos demais módulos da interface.
- * INVARIANTES DO DOMÍNIO: nenhuma classe Java, arquivo de tradução ou chamada
- * externa é necessária; pt-BR permanece como fonte canônica.
- * COMPORTAMENTO EM CASO DE FALHA: localStorage indisponível usa navigator e a
- * ausência da Translator API mantém a interface funcional em português.
+ * PROPÓSITO DE NEGÓCIO: inicializa detecção regional, privacidade, bandeiras e
+ * tradução Google sem classes Java nem arquivos manuais por idioma.
+ * INVARIANTES DO DOMÍNIO: áreas operacionais são protegidas antes do script
+ * externo; pt-BR não carrega dependências de terceiros.
+ * COMPORTAMENTO EM CASO DE FALHA: preferência indisponível usa o navegador e
+ * falha externa mantém a interface original em português.
  */
 export function inicializarI18n() {
     let preferencia = null;
     try { preferencia = localStorage.getItem(CHAVE_IDIOMA); } catch (ignored) { preferencia = null; }
     const navegadores = navigator.languages?.length ? navigator.languages : [navigator.language];
+    removerCachesMotorLocal();
+    protegerSubarvore(document);
+    observarConteudoDinamico();
     vincularBandeiras();
-    observarModulosDinamicos();
-    return definirIdioma(resolverIdiomaInicial(preferencia, navegadores), false);
+    definirIdioma(resolverIdiomaInicial(preferencia, navegadores), false, false);
+    carregarGoogleTranslate();
+    return idiomaAtual;
 }
 
 /**
  * PROPÓSITO DE NEGÓCIO: fornece o locale ativo para módulos que formatam datas
- * e números, sem expor detalhes internos da tradução automática.
+ * e números sem depender dos detalhes internos do widget.
  * INVARIANTES DO DOMÍNIO: retorno sempre pertence ao conjunto das bandeiras.
  * COMPORTAMENTO EM CASO DE FALHA: antes da inicialização retorna pt-BR.
  */

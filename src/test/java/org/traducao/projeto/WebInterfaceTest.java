@@ -39,7 +39,7 @@ class WebInterfaceTest {
 
     /**
      * PROPÓSITO DE NEGÓCIO: garante que a distribuição web entrega o tradutor
-     * automático local e as três bandeiras sem depender de classes Java.
+     * Google client-side e as três bandeiras sem depender de classes Java.
      * INVARIANTES DO DOMÍNIO: Brasil, Estados Unidos e Espanha permanecem
      * acessíveis no HTML e o módulo i18n é servido como JavaScript.
      * COMPORTAMENTO EM CASO DE FALHA: recurso ausente ou seletor removido
@@ -63,8 +63,12 @@ class WebInterfaceTest {
             .then()
             .statusCode(200)
             .contentType(containsString("javascript"))
-            .body(containsString("Translator.availability"))
-              .body(containsString("navigator.languages"));
+            .body(containsString("translate.google.com/translate_a/element.js"))
+            .body(containsString("googtrans"))
+            .body(containsString("navigator.languages"))
+            .body(containsString("notranslate"))
+            .body(containsString("#panel-telemetria"))
+            .body(containsString("[id*=\"resultado\"]"));
 
         given().when().get("/i18n/flags/br.svg").then().statusCode(200);
         given().when().get("/i18n/flags/us.svg").then().statusCode(200);
