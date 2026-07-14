@@ -2,8 +2,8 @@
  MAPA ESTRUTURAL DO PROJETO - TRACKER ANIMES
 ================================================================================
  Raiz do repositorio      : traducao_animes_llm_local_quarkus
- Pastas mapeadas          : 438
- Arquivos (na arvore)     : 884
+ Pastas mapeadas          : 448
+ Arquivos (na arvore)     : 904
  Arquivos-fonte indexados : 375  (.java: 375 | .py: 0)
  Memoria viva do projeto  : CEREBRO_IA.md (na raiz do repositorio)
 
@@ -154,6 +154,9 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-11376122803273901032/
 │   │   ├── auditoria_conteudo_20260713_194727.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-11392139430532946108/
+│   │   ├── auditoria_conteudo_20260714_080250.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-11472742220370984035/
 │   │   ├── auditoria_conteudo_20260714_065139.json
 │   │   └── telemetria_compartilhada.json
@@ -174,6 +177,9 @@ traducao_animes_llm_local_quarkus/
 │   │   └── troca_fontes_20260714_063944.md
 │   ├── junit-1261949600736740632/
 │   │   ├── auditoria_conteudo_20260714_074234.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-12677138848048379424/
+│   │   ├── auditoria_conteudo_20260714_080250.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-1270496819426824480/
 │   │   ├── auditoria_conteudo_20260714_074228.json
@@ -199,12 +205,21 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-13375308382607049833/
 │   │   ├── troca_fontes_20260713_203233.json
 │   │   └── troca_fontes_20260713_203233.md
+│   ├── junit-13567051080975770149/
+│   │   ├── auditoria_conteudo_20260714_080250.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-13586690677783100666/
+│   │   ├── auditoria_conteudo_20260714_080420.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-13599943294549649678/
 │   │   ├── auditoria_conteudo_20260713_193505.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-13838431544006715173/
 │   │   ├── troca_fontes_20260714_063956.json
 │   │   └── troca_fontes_20260714_063956.md
+│   ├── junit-13930929361416062894/
+│   │   ├── auditoria_conteudo_20260714_080250.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-1399871810161493448/
 │   │   ├── auditoria_conteudo_20260713_191024.json
 │   │   └── telemetria_compartilhada.json
@@ -225,6 +240,9 @@ traducao_animes_llm_local_quarkus/
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-14545151147677666267/
 │   │   ├── auditoria_conteudo_20260714_065330.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-14570792063174172108/
+│   │   ├── auditoria_conteudo_20260714_080250.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-14641184375152775591/
 │   │   ├── auditoria_conteudo_20260713_191825.json
@@ -283,6 +301,9 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-16096969881976257698/
 │   │   ├── troca_fontes_20260713_223008.json
 │   │   └── troca_fontes_20260713_223008.md
+│   ├── junit-16097068381267719394/
+│   │   ├── auditoria_conteudo_20260714_080250.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-16148709875161282146/
 │   │   ├── auditoria_conteudo_20260714_065139.json
 │   │   └── telemetria_compartilhada.json
@@ -348,6 +369,9 @@ traducao_animes_llm_local_quarkus/
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-17772477277470091695/
 │   │   ├── auditoria_conteudo_20260714_064611.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-17789439661901216037/
+│   │   ├── auditoria_conteudo_20260714_080250.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-18074591256680139313/
 │   │   ├── auditoria_conteudo_20260713_191056.json
@@ -442,6 +466,9 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-4849595417475205101/
 │   │   ├── auditoria_conteudo_20260713_184814.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-4956319910525637954/
+│   │   ├── auditoria_conteudo_20260714_080249.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-497699827519627901/
 │   │   ├── auditoria_conteudo_20260713_203225.json
 │   │   └── telemetria_compartilhada.json
@@ -472,6 +499,9 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-5773223045814514426/
 │   │   ├── troca_fontes_20260713_191827.json
 │   │   └── troca_fontes_20260713_191827.md
+│   ├── junit-5814302621063202330/
+│   │   ├── auditoria_conteudo_20260714_080420.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-5854343511165556486/
 │   │   ├── troca_fontes_20260713_191103.json
 │   │   └── troca_fontes_20260713_191103.md
@@ -1490,15 +1520,20 @@ traducao_animes_llm_local_quarkus/
       <p>COMPORTAMENTO EM CASO DE FALHA: texto nulo é ignorado; a regra nunca lança.
   - RegraSobreposicaoTempo.java
       PROPÓSITO DE NEGÓCIO: detecta diálogos que se sobrepõem no tempo — uma fala que
-      começa antes de a anterior terminar. Legendas de diálogo sobrepostas piscam ou
-      se empilham na tela, dano perceptível que independe de arquivo de referência.
+      começa antes de a anterior terminar — apontando só sobreposições que realmente
+      colidem na tela. Karaokê, placas, efeitos, estilos diferentes e camadas
+      diferentes se sobrepõem por design e são ignorados para evitar milhares de
+      falsos positivos.
       
-      <p>INVARIANTES DO DOMÍNIO: só eventos {@code Dialogue} com tempo legível entram;
-      a verificação é feita sobre a lista ordenada por início, comparando cada evento
-      com o de maior fim já visto (cobre eventos fora de ordem no arquivo).
+      <p>INVARIANTES DO DOMÍNIO: só entram eventos {@code Dialogue} de "diálogo comum"
+      (sem tags de karaokê, sem estilo de música, sem tags de posicionamento/efeito e
+      sem campo Effect preenchido); a colisão só é reportada entre eventos do MESMO
+      estilo e da MESMA camada (Layer), pois eles compartilham a mesma posição visual.
       
-      <p>COMPORTAMENTO EM CASO DE FALHA: eventos sem tempo interpretável são
-      ignorados; documento com menos de dois diálogos legíveis não gera anomalia.
+      <p>COMPORTAMENTO EM CASO DE FALHA: eventos sem tempo interpretável ou de duração
+      inválida são ignorados (a duração inválida é tratada pela
+      {@code RegraTimestampInvalido}); a régua de karaokê/música é a mesma do resto do
+      pipeline ({@link DetectorEfeitoKaraokeService}).
   - RegraTagOverrideNaoFechada.java
       PROPÓSITO DE NEGÓCIO: detecta blocos de override ASS ({@code {\...}}) abertos e
       nunca fechados numa única legenda. Uma chave desbalanceada faz o player exibir

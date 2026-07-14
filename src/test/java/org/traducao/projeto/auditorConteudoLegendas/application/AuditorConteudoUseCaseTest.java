@@ -189,4 +189,43 @@ class AuditorConteudoUseCaseTest {
         assertEquals(6, relatorio.getRegrasExecutadas());
         assertNotNull(relatorio.getCaminhoRelatorioJson());
     }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: garante que sobreposições intencionais (karaokê, placas
+     * e camadas diferentes) não geram falsos positivos — a origem dos milhares de
+     * alertas relatados.
+     * <p>INVARIANTES DO DOMÍNIO: karaokê/música/placa/efeito e estilos ou camadas
+     * distintos ficam fora da regra de sobreposição.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: qualquer alerta de sobreposição reprova.
+     */
+    @Test
+    void auditarArquivoUnicoIgnoraSobreposicaoIntencional(@TempDir Path tempDir) throws IOException {
+        Path arquivo = tempDir.resolve("solo_karaoke.ass");
+        AssAuditoriaFixtures.escreverArquivoSobreposicaoIntencional(arquivo);
+
+        RelatorioAuditoriaConteudo relatorio = useCase.auditar(ModoAuditoria.TRADUZIDO, null, arquivo);
+
+        assertTrue(relatorio.getAnomalias().stream()
+            .noneMatch(a -> a.regra().contains("Sobreposição")));
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: garante que sobreposições reais entre diálogos comuns de
+     * mesmo estilo e camada continuam sendo detectadas.
+     * <p>INVARIANTES DO DOMÍNIO: dois diálogos Default/Layer 0 com tempos cruzados
+     * geram exatamente um alerta de sobreposição.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: ausência do alerta reprova o teste.
+     */
+    @Test
+    void auditarArquivoUnicoDetectaSobreposicaoReal(@TempDir Path tempDir) throws IOException {
+        Path arquivo = tempDir.resolve("solo_colisao.ass");
+        AssAuditoriaFixtures.escreverArquivoSobreposicaoReal(arquivo);
+
+        RelatorioAuditoriaConteudo relatorio = useCase.auditar(ModoAuditoria.ORIGINAL, arquivo, null);
+
+        long sobreposicoes = relatorio.getAnomalias().stream()
+            .filter(a -> a.regra().contains("Sobreposição"))
+            .count();
+        assertEquals(1, sobreposicoes);
+    }
 }

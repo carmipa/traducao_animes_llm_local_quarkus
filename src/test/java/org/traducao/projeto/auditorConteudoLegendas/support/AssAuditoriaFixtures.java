@@ -56,6 +56,32 @@ public final class AssAuditoriaFixtures {
         Files.writeString(arquivo, cabecalho + linha, StandardCharsets.UTF_8);
     }
 
+    /**
+     * Sobreposições 100% intencionais: karaokê (OP + \k), placa (\pos) e uma fala
+     * em outra camada. A regra de sobreposição não deve reportar nenhuma delas.
+     */
+    public static void escreverArquivoSobreposicaoIntencional(Path arquivo) throws IOException {
+        String cabecalho = cabecalhoComEstilos("1920", "1080", "Default", "Sign", "OP");
+        StringBuilder sb = new StringBuilder(cabecalho);
+        sb.append("Dialogue: 0,0:00:01.00,0:00:05.00,OP,,0,0,0,,{\\k50}la {\\k50}la\n");
+        sb.append("Dialogue: 0,0:00:02.00,0:00:06.00,OP,,0,0,0,,{\\k50}na {\\k50}na\n");
+        sb.append("Dialogue: 0,0:00:03.00,0:00:07.00,Sign,,0,0,0,,{\\pos(960,50)}Tokyo\n");
+        sb.append("Dialogue: 5,0:00:03.50,0:00:08.00,Default,,0,0,0,,Fala em outra camada\n");
+        Files.writeString(arquivo, sb.toString(), StandardCharsets.UTF_8);
+    }
+
+    /**
+     * Sobreposição real: dois diálogos comuns de mesmo estilo e mesma camada com
+     * tempos que se cruzam. Deve gerar exatamente um alerta de sobreposição.
+     */
+    public static void escreverArquivoSobreposicaoReal(Path arquivo) throws IOException {
+        String cabecalho = cabecalhoComEstilos("1920", "1080", "Default");
+        StringBuilder sb = new StringBuilder(cabecalho);
+        sb.append("Dialogue: 0,0:00:01.00,0:00:05.00,Default,,0,0,0,,Primeira fala comum\n");
+        sb.append("Dialogue: 0,0:00:03.00,0:00:07.00,Default,,0,0,0,,Segunda fala comum sobreposta\n");
+        Files.writeString(arquivo, sb.toString(), StandardCharsets.UTF_8);
+    }
+
     private static String cabecalhoComEstilos(String playResX, String playResY, String... estilos) {
         StringBuilder sb = new StringBuilder();
         sb.append("[Script Info]\n");

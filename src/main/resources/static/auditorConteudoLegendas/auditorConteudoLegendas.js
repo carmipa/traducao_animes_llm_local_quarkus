@@ -1,6 +1,6 @@
 import { logNoConsole, mostrarAlerta } from '../js/app.js';
 
-const PAINEL_HTML = 'auditorConteudoLegendas/auditorConteudoLegendas.html?v=3.8';
+const PAINEL_HTML = 'auditorConteudoLegendas/auditorConteudoLegendas.html?v=3.9';
 
 const ORDEM_SEVERIDADE = { CRITICAL: 0, ERROR: 1, WARNING: 2 };
 
@@ -12,6 +12,13 @@ const DESCRICAO_MODO = {
 };
 
 const ROTULO_MODO = { AMBAS: 'Comparativo', ORIGINAL: 'Só Original (EN)', TRADUZIDO: 'Só Traduzida (PT-BR)' };
+
+// Texto do estado "Arquivo limpo" conforme o alvo auditado em cada modo.
+const MENSAGEM_LIMPO = {
+    AMBAS: 'Nenhuma anomalia detectada. O traduzido passou em todas as regras de auditoria.',
+    ORIGINAL: 'Nenhuma anomalia detectada. O arquivo original passou em todas as regras de auditoria.',
+    TRADUZIDO: 'Nenhuma anomalia detectada. O arquivo traduzido passou em todas as regras de auditoria.'
+};
 
 // Modo selecionado nas abas; padrão comparativo (comportamento histórico).
 let modoAtual = 'AMBAS';
@@ -339,6 +346,10 @@ function renderizarRelatorio(relatorio, lista, statusBadge) {
     if (relatorio.limpo) {
         statusBadge.textContent = 'Limpo';
         statusBadge.className = 'status-badge pulse-green';
+        const msgLimpo = document.getElementById('auditor-alerta-limpo-msg');
+        if (msgLimpo) {
+            msgLimpo.textContent = MENSAGEM_LIMPO[relatorio.modo] || MENSAGEM_LIMPO.AMBAS;
+        }
         if (alertaLimpo) alertaLimpo.classList.remove('hidden');
         lista.innerHTML = '<div class="auditor-lista-vazia">Nenhuma anomalia para listar.</div>';
         return;
