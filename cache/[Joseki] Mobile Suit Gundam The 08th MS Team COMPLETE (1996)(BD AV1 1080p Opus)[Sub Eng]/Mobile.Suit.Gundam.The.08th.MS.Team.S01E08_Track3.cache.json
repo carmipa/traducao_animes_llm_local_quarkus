@@ -25,7 +25,7 @@
     "indice" : 2,
     "estilo" : "Dialogue",
     "original" : "{\\i1}You are suspected of being a spy!{\\i}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Você é suspeito(a) de ser um espião!{\\i}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -305,7 +305,7 @@
     "indice" : 42,
     "estilo" : "Dialogue",
     "original" : "Three cyclopes are coming our way!",
-    "traduzido" : "",
+    "traduzido" : "Três ciclopes estão vindo em nossa direção!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -655,7 +655,7 @@
     "indice" : 92,
     "estilo" : "Dialogue",
     "original" : "Arth!",
-    "traduzido" : "",
+    "traduzido" : "Arte!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -669,7 +669,7 @@
     "indice" : 94,
     "estilo" : "Dialogue",
     "original" : "We were just hoping you'd\\Nshare some food with us.",
-    "traduzido" : "",
+    "traduzido" : "Estávamos apenas torcendo para que você\\N compartilhasse algum alimento conosco.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -984,7 +984,7 @@
     "indice" : 139,
     "estilo" : "Dialogue",
     "original" : "All right, as your team leader,\\NI order you!",
-    "traduzido" : "",
+    "traduzido" : "Tudo bem, como líder da equipe,\\N eu ordeno!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1243,7 +1243,7 @@
     "indice" : 176,
     "estilo" : "Dialogue",
     "original" : "...are so deep inside the village\\Nwe can't fight them there.",
-    "traduzido" : "",
+    "traduzido" : "...estamos tão dentro do vilarejo\\Nque não podemos lutar aqui.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1866,7 +1866,7 @@
     "indice" : 265,
     "estilo" : "Dialogue",
     "original" : "Beam weaponry...?!",
-    "traduzido" : "",
+    "traduzido" : "\"Armas de feixe...?!\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2118,7 +2118,7 @@
     "indice" : 301,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}All I want is to take those wings on your back...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Tudo o que eu quero é levar aquelas asas nas suas costas...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2146,7 +2146,7 @@
     "indice" : 305,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}...pull them close to me.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}...me aproxima deles.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2272,7 +2272,7 @@
     "indice" : 323,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}All I want is to take those wings on your back...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Tudo o que eu quero é levar aquelas asas nas suas costas...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2300,7 +2300,7 @@
     "indice" : 327,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}...pull them close to me.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}...me aproxima deles.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2314,7 +2314,7 @@
     "indice" : 329,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}All that time that's passed me by.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Todo esse tempo que passou por mim.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2426,7 +2426,7 @@
     "indice" : 345,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}The ones who caused me pain...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Os responsáveis pela minha dor...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2552,7 +2552,7 @@
     "indice" : 363,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}Stay together. When that day comes...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Fiquem juntos. Quando esse dia chegar...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {

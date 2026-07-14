@@ -88,7 +88,7 @@
     "indice" : 14,
     "estilo" : "Dialogue",
     "original" : "Okay!",
-    "traduzido" : "",
+    "traduzido" : "\"Tudo bem!\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -109,7 +109,7 @@
     "indice" : 17,
     "estilo" : "Dialogue",
     "original" : "{\\i1}It was UC00...\\N00 whatever it was.,",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Era U.C. 00...\\N00 seja lá o que for.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -123,7 +123,7 @@
     "indice" : 19,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Giant weapons had become\\Nlifeless hunks of metal.{\\i}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Armas gigantescas se tornaram\\Nmontes de metal sem vida.{\\i}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -179,7 +179,7 @@
     "indice" : 27,
     "estilo" : "Dialogue",
     "original" : "Jeez... How long are you\\Ngonna pine for her?",
-    "traduzido" : "",
+    "traduzido" : "Jeez... Quando você\\N vai superar ela?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -368,7 +368,7 @@
     "indice" : 54,
     "estilo" : "Dialogue",
     "original" : "{\\fad(0,1731)}What? No way...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(0,1731)}O que é isso?! Não pode ser...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -494,7 +494,7 @@
     "indice" : 72,
     "estilo" : "Dialogue",
     "original" : "Graves...",
-    "traduzido" : "",
+    "traduzido" : "Silêncio...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1677,7 +1677,7 @@
     "indice" : 241,
     "estilo" : "Dialogue",
     "original" : "They're our names now!\\NWe won't give them back!",
-    "traduzido" : "",
+    "traduzido" : "Agora são nossos nomes!\\NNão vamos devolvê-los!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2034,21 +2034,21 @@
     "indice" : 542,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur0.8\\bord0\\c&H000000&}All I want is to take those wings on your back...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur0.8\\bord0\\c&H000000&}Tudo o que eu quero é levar aquelas asas nas suas costas...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 544,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur0.8\\bord0\\c&H000000&}Those wounded angel wings, and gently...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur0.8\\bord0\\c&H000000&}Aquelas asas de anjo feridas, e tão docemente...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 546,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur0.8\\bord0\\c&H000000&}...pull them close to me.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur0.8\\bord0\\c&H000000&}...puxe-os para perto de mim.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2083,7 +2083,7 @@
     "indice" : 556,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur0.8\\bord0\\c&H000000&}...those winds can never erase the dream that shines. Oh, no!",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur0.8\\bord0\\c&H000000&}...esses ventos jamais apagarão o sonho que brilha. Ah, não!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2111,21 +2111,21 @@
     "indice" : 564,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur0.8\\bord0\\c&H000000&}All I want is to take those wings on your back...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur0.8\\bord0\\c&H000000&}Tudo o que eu quero é levar aquelas asas nas suas costas...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 566,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur0.8\\bord0\\c&H000000&}Those wounded angel wings, and gently...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur0.8\\bord0\\c&H000000&}Aquelas asas de anjo feridas, e tão docemente...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 568,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur0.8\\bord0\\c&H000000&}...pull them close to me.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur0.8\\bord0\\c&H000000&}...puxe-os para perto de mim.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   } ]

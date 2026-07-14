@@ -144,7 +144,7 @@
     "indice" : 19,
     "estilo" : "Dialogue",
     "original" : "{\\i1}We'll have no choice but to execute him.",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Não teremos escolha a não ser executá-lo.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -543,7 +543,7 @@
     "indice" : 76,
     "estilo" : "Dialogue",
     "original" : "{\\i1}2... 1... 0!{\\i0}",
-    "traduzido" : "",
+    "traduzido" : "Shiro: {\\i1}2... 1... 0!{\\i0}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1089,7 +1089,7 @@
     "indice" : 154,
     "estilo" : "Dialogue",
     "original" : "First of all, I doubt the ensign\\Nwill turn that female pilot over to us.",
-    "traduzido" : "",
+    "traduzido" : "Primeiramente, duvido que o tenente\\N entregue aquela piloto feminina para nós.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1369,7 +1369,7 @@
     "indice" : 194,
     "estilo" : "Dialogue",
     "original" : "Right.",
-    "traduzido" : "",
+    "traduzido" : "\"Certo.\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1782,14 +1782,14 @@
     "indice" : 262,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}...pull them close to me.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}...puxe-os para perto de mim.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 263,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}...pull them close to me.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}...puxe-os para perto de mim.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1936,14 +1936,14 @@
     "indice" : 306,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}...pull them close to me.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}...puxe-os para perto de mim.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 307,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}...pull them close to me.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}...puxe-os para perto de mim.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {

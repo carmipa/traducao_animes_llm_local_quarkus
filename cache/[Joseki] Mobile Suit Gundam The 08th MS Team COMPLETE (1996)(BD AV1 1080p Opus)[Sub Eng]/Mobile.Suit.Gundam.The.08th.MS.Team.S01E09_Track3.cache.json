@@ -88,7 +88,7 @@
     "indice" : 11,
     "estilo" : "Dialogue",
     "original" : "Yes. According to the intelligence\\Nwe've managed to gather.",
-    "traduzido" : "",
+    "traduzido" : "De acordo com as informações\\N que conseguimos reunir.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -172,7 +172,7 @@
     "indice" : 23,
     "estilo" : "Dialogue",
     "original" : "Don't worry. I have an\\Ninsurance policy on this one.",
-    "traduzido" : "",
+    "traduzido" : "Não se preocupe. Tenho um \\Nseguro para este aqui.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -361,7 +361,7 @@
     "indice" : 50,
     "estilo" : "Dialogue",
     "original" : "The truth is, I...",
-    "traduzido" : "",
+    "traduzido" : "Minha verdade é que eu...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -445,7 +445,7 @@
     "indice" : 62,
     "estilo" : "Dialogue",
     "original" : "The commander isn't a spy!\\NHe isn't crafty enough!",
-    "traduzido" : "",
+    "traduzido" : "O comandante não é um espião!\\N Ele não é astuto o suficiente!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -641,7 +641,7 @@
     "indice" : 90,
     "estilo" : "Dialogue",
     "original" : "All gun turrets, cease fire!",
-    "traduzido" : "",
+    "traduzido" : "Todos os canhões da torre, cessar fogo!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -781,7 +781,7 @@
     "indice" : 110,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Great location for inspiring\\Nwords of love, dontcha think?",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Ótimo lugar para inspirar\\Npalavras de amor, não acha?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -886,7 +886,7 @@
     "indice" : 125,
     "estilo" : "Dialogue",
     "original" : "Can you still use this?\\NMichel's in big trouble.",
-    "traduzido" : "",
+    "traduzido" : "Pode ainda usar isso? \\N Michel está em sérios apuros.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -907,7 +907,7 @@
     "indice" : 128,
     "estilo" : "Dialogue",
     "original" : "I'll be your spotter!\\NGet your beam rifle up!",
-    "traduzido" : "",
+    "traduzido" : "Vou ser seu observador!\\N Levante sua arma de feixe!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -928,7 +928,7 @@
     "indice" : 131,
     "estilo" : "Dialogue",
     "original" : "Stop!",
-    "traduzido" : "",
+    "traduzido" : "Parar!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1026,7 +1026,7 @@
     "indice" : 145,
     "estilo" : "Dialogue",
     "original" : "Forget it. It was my mistake to force\\Na crippled Gaw onto this mission.",
-    "traduzido" : "",
+    "traduzido" : "Desculpa. Foi meu erro forçar o Gaw \\Nencurralado nesta missão.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1047,7 +1047,7 @@
     "indice" : 148,
     "estilo" : "Dialogue",
     "original" : "You've done well.\\NOkay, let's get out of here.",
-    "traduzido" : "",
+    "traduzido" : "Bom trabalho.\\NTudo bem, vamos embora daqui.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1593,7 +1593,7 @@
     "indice" : 226,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Battle wreckage two klicks ahead!\\NMultiple metallic objects detected!",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Há restos de batalha dois quilômetros à frente!\\NObjetos metálicos múltiplos detectados!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1691,7 +1691,7 @@
     "indice" : 240,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Once the smoke clears, we settle things.",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Assim que a fumaça passar, resolvemos isso.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1915,7 +1915,7 @@
     "indice" : 272,
     "estilo" : "Dialogue",
     "original" : "{\\i1}No, the mobile suit's leg, sir.",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Não, é a perna do mobile suit, senhor.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2195,7 +2195,7 @@
     "indice" : 312,
     "estilo" : "Dialogue",
     "original" : "{\\i1}If he can take on three Gundams\\Nsingle-handedly, he can only be one thing...",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Se ele pode enfrentar três Gundams\\Nsozinho, só pode ser uma coisa...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2209,7 +2209,7 @@
     "indice" : 314,
     "estilo" : "Dialogue",
     "original" : "{\\i1}One by one, he takes out\\NFederation soldiers, until finally...!",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Um a um, ele elimina\\Nsoldados da Federação, até que finalmente...!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2314,7 +2314,7 @@
     "indice" : 329,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}Newborn in a corner of the endless blue sky...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Um recém-nascido em um canto do céu infinito azul...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2468,7 +2468,7 @@
     "indice" : 351,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}All that time that's passed me by.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Todo esse tempo que passou por mim.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2496,7 +2496,7 @@
     "indice" : 355,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}When I look back, I see so many things...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Quando olho para trás, vejo tantas coisas...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2573,7 +2573,7 @@
     "indice" : 366,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}The ones who caused me pain...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}Os responsáveis pelo meu sofrimento...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
