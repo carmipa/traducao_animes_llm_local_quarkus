@@ -24,12 +24,22 @@
     border-radius: 8px;
     background: transparent;
     cursor: pointer;
-    font-size: 22px;
     line-height: 1;
     filter: grayscale(0.55);
     opacity: 0.68;
     transition: transform 140ms ease, opacity 140ms ease, filter 140ms ease,
         border-color 140ms ease, background 140ms ease;
+}
+
+.seletor-idioma-botao img {
+    display: block;
+    width: 26px;
+    height: 18px;
+    border-radius: 3px;
+    object-fit: cover;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.16);
+    pointer-events: none;
+    user-select: none;
 }
 
 .seletor-idioma-botao:hover,

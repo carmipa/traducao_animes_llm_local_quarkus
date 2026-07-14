@@ -53,7 +53,10 @@ class WebInterfaceTest {
             .statusCode(200)
             .body(containsString("data-idioma=\"pt-BR\""))
             .body(containsString("data-idioma=\"en-US\""))
-            .body(containsString("data-idioma=\"es-ES\""));
+            .body(containsString("data-idioma=\"es-ES\""))
+            .body(containsString("src=\"i18n/flags/br.svg\""))
+            .body(containsString("src=\"i18n/flags/us.svg\""))
+            .body(containsString("src=\"i18n/flags/es.svg\""));
 
         given()
             .when().get("/i18n/i18n.js")
@@ -61,8 +64,12 @@ class WebInterfaceTest {
             .statusCode(200)
             .contentType(containsString("javascript"))
             .body(containsString("Translator.availability"))
-            .body(containsString("navigator.languages"));
-    }
+              .body(containsString("navigator.languages"));
+
+        given().when().get("/i18n/flags/br.svg").then().statusCode(200);
+        given().when().get("/i18n/flags/us.svg").then().statusCode(200);
+        given().when().get("/i18n/flags/es.svg").then().statusCode(200);
+      }
 
     @Test
     void logoDisponivel() {

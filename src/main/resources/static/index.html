@@ -37,7 +37,7 @@
     <link rel="stylesheet" href="mapa/mapa.css?v=6.0">
     <link rel="stylesheet" href="documentacao/documentacao.css?v=4.0">
     <link rel="stylesheet" href="sobre/sobre.css?v=4.0">
-    <link rel="stylesheet" href="i18n/i18n.css?v=1.0">
+    <link rel="stylesheet" href="i18n/i18n.css?v=1.1">
 </head>
 
 <body>
@@ -58,11 +58,17 @@
             <div class="seletor-idioma-wrapper" translate="no">
                 <div class="seletor-idioma" role="group" aria-label="Idioma da interface">
                     <button type="button" class="seletor-idioma-botao" data-idioma="pt-BR"
-                        aria-label="Português (Brasil)" title="Português (Brasil)" aria-pressed="false">🇧🇷</button>
+                        aria-label="Português (Brasil)" title="Português (Brasil)" aria-pressed="false">
+                        <img src="i18n/flags/br.svg" width="26" height="18" alt="" aria-hidden="true" draggable="false">
+                    </button>
                     <button type="button" class="seletor-idioma-botao" data-idioma="en-US"
-                        aria-label="English (United States)" title="English (United States)" aria-pressed="false">🇺🇸</button>
+                        aria-label="English (United States)" title="English (United States)" aria-pressed="false">
+                        <img src="i18n/flags/us.svg" width="26" height="18" alt="" aria-hidden="true" draggable="false">
+                    </button>
                     <button type="button" class="seletor-idioma-botao" data-idioma="es-ES"
-                        aria-label="Español (España)" title="Español (España)" aria-pressed="false">🇪🇸</button>
+                        aria-label="Español (España)" title="Español (España)" aria-pressed="false">
+                        <img src="i18n/flags/es.svg" width="26" height="18" alt="" aria-hidden="true" draggable="false">
+                    </button>
                 </div>
                 <div id="idioma-status" class="idioma-status" role="status" aria-live="polite"></div>
             </div>
