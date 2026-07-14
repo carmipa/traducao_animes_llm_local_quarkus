@@ -16,6 +16,53 @@
     font-size: 20px !important;
 }
 
+/* Abas de modo de análise (Ambas / Só Original / Só Traduzida) */
+#panel-auditor-conteudo .auditor-modo-tabs{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 4px 0 6px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+#panel-auditor-conteudo .auditor-modo-tab{
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 16px;
+    border-radius: 10px;
+    font-family: var(--font-main);
+    font-size: 0.82rem;
+    font-weight: 600;
+    border: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+#panel-auditor-conteudo .auditor-modo-tab .material-symbols-outlined{
+    font-size: 18px !important;
+    line-height: 1;
+}
+
+#panel-auditor-conteudo .auditor-modo-tab:hover{
+    color: var(--text-primary);
+    border-color: rgba(167, 139, 250, 0.4);
+}
+
+#panel-auditor-conteudo .auditor-modo-tab.ativo{
+    color: var(--accent-purple);
+    background: rgba(167, 139, 250, 0.12);
+    border-color: rgba(167, 139, 250, 0.5);
+    box-shadow: 0 0 14px rgba(167, 139, 250, 0.14);
+}
+
+#panel-auditor-conteudo .auditor-modo-desc{
+    margin-top: 0;
+}
+
 /* Análise de Conteúdo — relatório e exportação */
 #panel-auditor-conteudo .auditor-relatorio-card{
     display: flex;

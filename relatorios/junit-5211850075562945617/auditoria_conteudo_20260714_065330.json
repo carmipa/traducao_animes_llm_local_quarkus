@@ -1,0 +1,41 @@
+{
+  "tipo" : "auditoria_conteudo",
+  "operacao" : {
+    "tipo" : "Auditoria de Conteudo de Legendas",
+    "detalhe" : "C:\\Users\\Paulo\\AppData\\Local\\Temp\\junit-5211850075562945617\\ep02_pt.ass | modo=AMBAS | formatoOriginal=ASS | formatoTraduzido=ASS | anomalias=1 | criticas=1",
+    "tempoTotalMs" : 5,
+    "arquivosProcessados" : 1,
+    "itensDetectados" : 1,
+    "itensCorrigidos" : 0,
+    "registradoEm" : "2026-07-14T09:53:30.428256Z"
+  },
+  "arquivoOriginal" : "ep02_eng.ass",
+  "arquivoTraduzido" : "ep02_pt.ass",
+  "formatoOriginal" : "ASS",
+  "formatoTraduzido" : "ASS",
+  "limpo" : false,
+  "totalAnomalias" : 1,
+  "duracaoMs" : 5,
+  "anomalias" : [ {
+    "severidade" : "CRITICAL",
+    "regra" : "Alucinação de Quebra de Linha (\\N)",
+    "descricao" : "A tradução inseriu 4 quebras de linha onde o original tinha 0. Isso destrói o posicionamento (\\pos).",
+    "eventoOriginal" : {
+      "indice" : 0,
+      "tipoLinha" : "Dialogue",
+      "estilo" : "Default",
+      "prefixo" : "Dialogue: 0,0:00:01.00,0:00:03.00,Default,,0,0,0,,",
+      "texto" : "This is a single line.",
+      "dialogo" : true
+    },
+    "eventoTraduzido" : {
+      "indice" : 0,
+      "tipoLinha" : "Dialogue",
+      "estilo" : "Default",
+      "prefixo" : "Dialogue: 0,0:00:01.00,0:00:03.00,Default,,0,0,0,,",
+      "texto" : "Esta\\Ne\\Numa\\Nunica\\Nlinha.",
+      "dialogo" : true
+    },
+    "sugestaoCorrecao" : "Remover quebras de linha ou reverter para a linha original se for karaokê."
+  } ]
+}

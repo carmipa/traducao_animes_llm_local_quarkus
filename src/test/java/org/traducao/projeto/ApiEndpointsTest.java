@@ -279,6 +279,34 @@ class ApiEndpointsTest {
     }
 
     @Test
+    void auditoriaConteudoModoOriginalAuditaArquivoUnico(@org.junit.jupiter.api.io.TempDir Path tempDir) throws Exception {
+        Path original = tempDir.resolve("solo_eng.ass");
+        AssAuditoriaFixtures.escreverArquivoUnicoLimpo(original);
+
+        given()
+            .contentType("application/json")
+            .body("{\"modo\":\"ORIGINAL\",\"caminhoOriginal\":\""
+                + original.toString().replace("\\", "\\\\") + "\"}")
+            .when().post("/api/auditoria-conteudo")
+            .then()
+            .statusCode(200)
+            .body("modo", is("ORIGINAL"))
+            .body("formatoOriginal", is("ASS"))
+            .body("limpo", is(true))
+            .body("caminhoRelatorioJson", notNullValue());
+    }
+
+    @Test
+    void auditoriaConteudoModoOriginalSemCaminhoRetornaBadRequest() {
+        given()
+            .contentType("application/json")
+            .body("{\"modo\":\"ORIGINAL\",\"caminhoOriginal\":\"\"}")
+            .when().post("/api/auditoria-conteudo")
+            .then()
+            .statusCode(400);
+    }
+
+    @Test
     void auditoriaConteudoArquivoInexistenteRetornaBadRequest(@org.junit.jupiter.api.io.TempDir Path tempDir) throws Exception {
         Path traduzido = tempDir.resolve("ep_pt.ass");
         AssAuditoriaFixtures.escreverParLimpo(tempDir.resolve("ref.ass"), traduzido);

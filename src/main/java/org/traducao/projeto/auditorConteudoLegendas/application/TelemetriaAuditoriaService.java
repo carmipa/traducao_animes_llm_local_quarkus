@@ -43,17 +43,18 @@ public class TelemetriaAuditoriaService {
     }
 
     /**
-     * PROPÓSITO DE NEGÓCIO: registra resultado, formatos e anomalias para
+     * PROPÓSITO DE NEGÓCIO: registra resultado, modo, formatos e anomalias para
      * acompanhamento operacional e melhoria futura das regras.
      * <p>INVARIANTES DO DOMÍNIO: o JSON e a operação agregada compartilham os
-     * mesmos contadores e formatos.
+     * mesmos contadores e formatos; {@code caminhoPrincipal} é o arquivo que
+     * define a pasta de relatórios (traduzido no modo comparativo, o próprio
+     * arquivo nos modos de arquivo único).
      * <p>COMPORTAMENTO EM CASO DE FALHA: retorna {@code null} se o JSON não
      * puder ser salvo, mantendo a telemetria em memória quando possível.
      */
     public String registrar(
         RelatorioAuditoriaConteudo relatorio,
-        Path caminhoOriginal,
-        Path caminhoTraduzido,
+        Path caminhoPrincipal,
         long duracaoMs
     ) {
         int totalAnomalias = relatorio.getAnomalias().size();
@@ -61,9 +62,10 @@ public class TelemetriaAuditoriaService {
             .filter(a -> a.severidade() == AnomaliaConteudo.TipoSeveridade.CRITICAL)
             .count();
 
-        String detalhe = caminhoTraduzido.toAbsolutePath()
-            + " | formatoOriginal=" + relatorio.getFormatoOriginal()
-            + " | formatoTraduzido=" + relatorio.getFormatoTraduzido()
+        String detalhe = caminhoPrincipal.toAbsolutePath()
+            + " | modo=" + relatorio.getModo()
+            + " | formatoOriginal=" + (relatorio.getFormatoOriginal() == null ? "—" : relatorio.getFormatoOriginal())
+            + " | formatoTraduzido=" + (relatorio.getFormatoTraduzido() == null ? "—" : relatorio.getFormatoTraduzido())
             + " | anomalias=" + totalAnomalias
             + " | criticas=" + criticas;
 
@@ -89,7 +91,7 @@ public class TelemetriaAuditoriaService {
             List.copyOf(relatorio.getAnomalias())
         );
 
-        Path pastaRelatorios = resolverPastaRelatorios(caminhoTraduzido);
+        Path pastaRelatorios = resolverPastaRelatorios(caminhoPrincipal);
         String caminhoJson = null;
 
         try {
@@ -102,14 +104,15 @@ public class TelemetriaAuditoriaService {
             telemetriaService.registrarOperacao(operacao);
         }
 
+        String arquivoAuditado = nomeArquivoAuditado(relatorio);
         if (relatorio.isLimpo()) {
-            log.info("Auditoria de conteudo limpa: {} ({} ms)", relatorio.getArquivoTraduzido(), duracaoMs);
-            System.out.println("[Auditoria Conteudo] Arquivo limpo: " + relatorio.getArquivoTraduzido());
+            log.info("Auditoria de conteudo limpa: {} ({} ms)", arquivoAuditado, duracaoMs);
+            System.out.println("[Auditoria Conteudo] Arquivo limpo: " + arquivoAuditado);
         } else {
             log.warn("Auditoria de conteudo detectou {} anomalia(s) em {} ({} ms)",
-                totalAnomalias, relatorio.getArquivoTraduzido(), duracaoMs);
+                totalAnomalias, arquivoAuditado, duracaoMs);
             System.out.println("[Auditoria Conteudo] " + totalAnomalias + " anomalia(s) em "
-                + relatorio.getArquivoTraduzido());
+                + arquivoAuditado);
             for (AnomaliaConteudo anomalia : relatorio.getAnomalias()) {
                 System.out.println("  [" + anomalia.severidade() + "] " + anomalia.regra()
                     + " — " + anomalia.descricao());
@@ -123,8 +126,26 @@ public class TelemetriaAuditoriaService {
         return caminhoJson;
     }
 
-    static Path resolverPastaRelatorios(Path caminhoTraduzido) {
-        Path pai = caminhoTraduzido.getParent();
+    static Path resolverPastaRelatorios(Path caminhoPrincipal) {
+        Path pai = caminhoPrincipal.getParent();
         return pai != null ? pai : Path.of("auditoria_conteudo");
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: escolhe o nome de arquivo que representa a auditoria
+     * nas mensagens de log, independente do modo.
+     * <p>INVARIANTES DO DOMÍNIO: no comparativo e no modo traduzido usa o
+     * traduzido; no modo original usa o original.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: se ambos forem nulos devolve rótulo
+     * genérico "(arquivo)".
+     */
+    private static String nomeArquivoAuditado(RelatorioAuditoriaConteudo relatorio) {
+        if (relatorio.getArquivoTraduzido() != null) {
+            return relatorio.getArquivoTraduzido();
+        }
+        if (relatorio.getArquivoOriginal() != null) {
+            return relatorio.getArquivoOriginal();
+        }
+        return "(arquivo)";
     }
 }

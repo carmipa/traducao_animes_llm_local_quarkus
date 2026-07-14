@@ -41,6 +41,21 @@ public final class AssAuditoriaFixtures {
         Files.writeString(traduzido, cabTrad + linha, StandardCharsets.UTF_8);
     }
 
+    public static void escreverArquivoUnicoComAnomalias(Path arquivo) throws IOException {
+        String cabecalho = cabecalhoComEstilos("1920", "1080", "Default");
+        // Timestamp invalido: fim antes do inicio.
+        String linha1 = "Dialogue: 0,0:00:05.00,0:00:03.00,Default,,0,0,0,,Fala com tempo invertido\n";
+        // Bloco de override aberto e nunca fechado.
+        String linha2 = "Dialogue: 0,0:00:06.00,0:00:08.00,Default,,0,0,0,,{\\i1 texto sem fechar\n";
+        Files.writeString(arquivo, cabecalho + linha1 + linha2, StandardCharsets.UTF_8);
+    }
+
+    public static void escreverArquivoUnicoLimpo(Path arquivo) throws IOException {
+        String cabecalho = cabecalhoComEstilos("1920", "1080", "Default");
+        String linha = "Dialogue: 0,0:00:01.00,0:00:03.00,Default,,0,0,0,,Fala perfeitamente valida\n";
+        Files.writeString(arquivo, cabecalho + linha, StandardCharsets.UTF_8);
+    }
+
     private static String cabecalhoComEstilos(String playResX, String playResY, String... estilos) {
         StringBuilder sb = new StringBuilder();
         sb.append("[Script Info]\n");

@@ -9,6 +9,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.traducao.projeto.auditorConteudoLegendas.application.AuditorConteudoUseCase;
 import org.traducao.projeto.auditorConteudoLegendas.domain.AuditoriaException;
+import org.traducao.projeto.auditorConteudoLegendas.domain.ModoAuditoria;
 import org.traducao.projeto.auditorConteudoLegendas.domain.RelatorioAuditoriaConteudo;
 import org.traducao.projeto.traducao.presentation.web.LogStreamService;
 
@@ -23,24 +24,49 @@ public class AuditorConteudoController {
     @Inject
     LogStreamService logStreamService;
 
-    public record AuditoriaRequest(String caminhoOriginal, String caminhoTraduzido) {}
+    public record AuditoriaRequest(String modo, String caminhoOriginal, String caminhoTraduzido) {}
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: expõe a Análise de Conteúdo nos três escopos das abas
+     * do painel (só original, só traduzido, ambos) sobre o mesmo endpoint.
+     * <p>INVARIANTES DO DOMÍNIO: o modo determina quais caminhos são obrigatórios;
+     * modo ausente equivale a AMBAS (retrocompatível).
+     * <p>COMPORTAMENTO EM CASO DE FALHA: caminho exigido em branco → 400 didático;
+     * {@link AuditoriaException} → 400 com a mensagem de domínio; erro inesperado
+     * → 500.
+     */
     @POST
     public Response auditar(AuditoriaRequest request) {
-        if (request == null
-            || request.caminhoOriginal() == null || request.caminhoOriginal().isBlank()
-            || request.caminhoTraduzido() == null || request.caminhoTraduzido().isBlank()) {
+        if (request == null) {
             return Response.status(Response.Status.BAD_REQUEST)
-                .entity("Caminhos original e traduzido sao obrigatorios.")
+                .entity("Requisicao de auditoria ausente.")
                 .build();
         }
 
+        ModoAuditoria modo = ModoAuditoria.porNome(request.modo());
+        boolean temOriginal = request.caminhoOriginal() != null && !request.caminhoOriginal().isBlank();
+        boolean temTraduzido = request.caminhoTraduzido() != null && !request.caminhoTraduzido().isBlank();
+
+        String erroValidacao = switch (modo) {
+            case AMBAS -> (temOriginal && temTraduzido) ? null
+                : "Caminhos original e traduzido sao obrigatorios.";
+            case ORIGINAL -> temOriginal ? null
+                : "Caminho do arquivo original e obrigatorio.";
+            case TRADUZIDO -> temTraduzido ? null
+                : "Caminho do arquivo traduzido e obrigatorio.";
+        };
+        if (erroValidacao != null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(erroValidacao).build();
+        }
+
         try {
-            java.nio.file.Path original = java.nio.file.Path.of(request.caminhoOriginal().trim());
-            java.nio.file.Path traduzido = java.nio.file.Path.of(request.caminhoTraduzido().trim());
+            java.nio.file.Path original = temOriginal
+                ? java.nio.file.Path.of(request.caminhoOriginal().trim()) : null;
+            java.nio.file.Path traduzido = temTraduzido
+                ? java.nio.file.Path.of(request.caminhoTraduzido().trim()) : null;
             logStreamService.definirCanalAtual("auditor-conteudo");
             long inicioMs = System.currentTimeMillis();
-            RelatorioAuditoriaConteudo relatorio = auditorConteudoUseCase.auditar(original, traduzido);
+            RelatorioAuditoriaConteudo relatorio = auditorConteudoUseCase.auditar(modo, original, traduzido);
             System.out.println(org.traducao.projeto.core.util.DuracaoUtil.linhaRelatorioFinal(
                 "Análise de Conteúdo de Legendas", inicioMs));
             return Response.ok(relatorio).build();

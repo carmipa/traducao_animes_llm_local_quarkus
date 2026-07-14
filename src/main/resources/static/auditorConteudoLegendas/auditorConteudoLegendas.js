@@ -1,8 +1,20 @@
 import { logNoConsole, mostrarAlerta } from '../js/app.js';
 
-const PAINEL_HTML = 'auditorConteudoLegendas/auditorConteudoLegendas.html?v=3.6';
+const PAINEL_HTML = 'auditorConteudoLegendas/auditorConteudoLegendas.html?v=3.7';
 
 const ORDEM_SEVERIDADE = { CRITICAL: 0, ERROR: 1, WARNING: 2 };
+
+// Texto de apoio de cada aba de modo (comparativa vs arquivo único)
+const DESCRICAO_MODO = {
+    AMBAS: 'Compara o arquivo original com o traduzido e roda as regras de par (quebras, estilos, karaokê, efeitos, metadados).',
+    ORIGINAL: 'Audita apenas o arquivo original (EN) com as regras estruturais e de tempo: tags {} não fechadas, timestamps inválidos, eventos vazios, quebras \\N excessivas, sobreposição de tempo e efeitos com texto longo.',
+    TRADUZIDO: 'Audita apenas o arquivo traduzido (PT-BR) com as regras estruturais e de tempo: tags {} não fechadas, timestamps inválidos, eventos vazios, quebras \\N excessivas, sobreposição de tempo e efeitos com texto longo.'
+};
+
+const ROTULO_MODO = { AMBAS: 'Comparativo', ORIGINAL: 'Só Original (EN)', TRADUZIDO: 'Só Traduzida (PT-BR)' };
+
+// Modo selecionado nas abas; padrão comparativo (comportamento histórico).
+let modoAtual = 'AMBAS';
 
 // Configuração visual única por severidade (ícone, rótulo e sufixo de classe CSS)
 const CONFIG_SEVERIDADE = {
@@ -64,6 +76,8 @@ function vincularEventos() {
         });
     }
 
+    vincularAbasModo();
+
     if (!formAuditor || !lista || !statusBadge) return;
 
     formAuditor.addEventListener('submit', async (e) => {
@@ -72,8 +86,16 @@ function vincularEventos() {
         const original = document.getElementById('auditor-original').value.trim();
         const traduzido = document.getElementById('auditor-traduzido').value.trim();
 
-        if (!original || !traduzido) {
+        if (modoAtual === 'AMBAS' && (!original || !traduzido)) {
             mostrarAlerta('Forneça os caminhos dos arquivos original e traduzido.', 'aviso');
+            return;
+        }
+        if (modoAtual === 'ORIGINAL' && !original) {
+            mostrarAlerta('Forneça o caminho do arquivo original (EN).', 'aviso');
+            return;
+        }
+        if (modoAtual === 'TRADUZIDO' && !traduzido) {
+            mostrarAlerta('Forneça o caminho do arquivo traduzido (PT-BR).', 'aviso');
             return;
         }
 
@@ -83,16 +105,18 @@ function vincularEventos() {
         statusBadge.textContent = 'Auditando...';
         statusBadge.className = 'status-badge pulse-purple';
         lista.innerHTML = '<div class="auditor-lista-vazia">Analisando arquivos...</div>';
-        logNoConsole(CONSOLE_ID, 'Iniciando auditoria de conteúdo...', 'info');
+        logNoConsole(CONSOLE_ID, `Iniciando auditoria de conteúdo (${ROTULO_MODO[modoAtual]})...`, 'info');
+
+        // Só envia o(s) caminho(s) relevante(s) ao modo selecionado.
+        const corpo = { modo: modoAtual };
+        if (modoAtual !== 'TRADUZIDO') corpo.caminhoOriginal = original;
+        if (modoAtual !== 'ORIGINAL') corpo.caminhoTraduzido = traduzido;
 
         try {
             const response = await fetch('/api/auditoria-conteudo', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    caminhoOriginal: original,
-                    caminhoTraduzido: traduzido
-                })
+                body: JSON.stringify(corpo)
             });
 
             if (!response.ok) {
@@ -103,9 +127,7 @@ function vincularEventos() {
             const relatorio = await response.json();
             ultimoRelatorio = relatorio;
             renderizarRelatorio(relatorio, lista, statusBadge);
-            logNoConsole(CONSOLE_ID,
-                `Formatos detectados — original: ${relatorio.formatoOriginal || 'desconhecido'} · traduzido: ${relatorio.formatoTraduzido || 'desconhecido'}`,
-                'info');
+            logNoConsole(CONSOLE_ID, formatosDetectadosLog(relatorio), 'info');
 
             if (relatorio.limpo) {
                 logNoConsole(CONSOLE_ID, 'Auditoria concluída — nenhuma anomalia detectada.', 'sucesso');
@@ -125,6 +147,65 @@ function vincularEventos() {
             console.error(err);
         }
     });
+}
+
+/**
+ * PROPÓSITO DE NEGÓCIO: liga as abas de modo (Ambas / Só Original / Só Traduzida)
+ * alternando a análise entre comparativa e de arquivo único.
+ * INVARIANTES DO DOMÍNIO: só um modo fica ativo; os campos de arquivo não usados
+ * pelo modo ficam ocultos para não confundir o usuário.
+ * COMPORTAMENTO EM CASO DE FALHA: ausência das abas no DOM é ignorada sem erro.
+ */
+function vincularAbasModo() {
+    const tabs = document.querySelectorAll('.auditor-modo-tab');
+    if (!tabs.length) return;
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            modoAtual = tab.dataset.modo || 'AMBAS';
+            tabs.forEach(t => {
+                const ativo = t === tab;
+                t.classList.toggle('ativo', ativo);
+                t.setAttribute('aria-selected', String(ativo));
+            });
+            aplicarVisibilidadeCampos();
+        });
+    });
+    aplicarVisibilidadeCampos();
+}
+
+/**
+ * PROPÓSITO DE NEGÓCIO: mostra apenas os campos de arquivo pertinentes ao modo e
+ * atualiza o texto de apoio.
+ * INVARIANTES DO DOMÍNIO: AMBAS mostra os dois campos; ORIGINAL só o original;
+ * TRADUZIDO só o traduzido.
+ * COMPORTAMENTO EM CASO DE FALHA: campos ausentes são ignorados.
+ */
+function aplicarVisibilidadeCampos() {
+    const campoOriginal = document.querySelector('.auditor-campo-original');
+    const campoTraduzido = document.querySelector('.auditor-campo-traduzido');
+    const desc = document.getElementById('auditor-modo-desc');
+
+    if (campoOriginal) campoOriginal.classList.toggle('hidden', modoAtual === 'TRADUZIDO');
+    if (campoTraduzido) campoTraduzido.classList.toggle('hidden', modoAtual === 'ORIGINAL');
+    if (desc) desc.textContent = DESCRICAO_MODO[modoAtual] || DESCRICAO_MODO.AMBAS;
+}
+
+/**
+ * PROPÓSITO DE NEGÓCIO: monta a linha de log de formatos conforme o modo,
+ * omitindo o lado que não foi auditado.
+ * INVARIANTES DO DOMÍNIO: no arquivo único apenas um formato é relevante.
+ * COMPORTAMENTO EM CASO DE FALHA: formato ausente vira "desconhecido".
+ */
+function formatosDetectadosLog(relatorio) {
+    const modo = relatorio.modo || 'AMBAS';
+    if (modo === 'ORIGINAL') {
+        return `Formato detectado — original: ${relatorio.formatoOriginal || 'desconhecido'}`;
+    }
+    if (modo === 'TRADUZIDO') {
+        return `Formato detectado — traduzido: ${relatorio.formatoTraduzido || 'desconhecido'}`;
+    }
+    return `Formatos detectados — original: ${relatorio.formatoOriginal || 'desconhecido'} · traduzido: ${relatorio.formatoTraduzido || 'desconhecido'}`;
 }
 
 function resetarRelatorioVisual(lista, statusBadge) {
@@ -156,34 +237,55 @@ function ocultarResumoFiltrosELimpo() {
 }
 
 /**
- * PROPÓSITO DE NEGÓCIO: apresenta os dois arquivos e seus formatos no topo do relatório.
- * INVARIANTES DO DOMÍNIO: cada formato é exibido junto do arquivo correspondente.
+ * PROPÓSITO DE NEGÓCIO: apresenta o(s) arquivo(s) auditado(s), o modo e as
+ * métricas no topo do relatório.
+ * INVARIANTES DO DOMÍNIO: no modo de arquivo único só o lado auditado aparece;
+ * cada formato é exibido junto do arquivo correspondente.
  * COMPORTAMENTO EM CASO DE FALHA: usa rótulo explícito de formato desconhecido.
  */
 function renderizarResumo(relatorio) {
     const resumo = document.getElementById('auditor-resumo');
     if (!resumo) return;
 
-    resumo.innerHTML = `
-        <div class="auditor-resumo-grid">
+    const modo = relatorio.modo || 'AMBAS';
+    const itens = [];
+
+    itens.push(`
+        <div class="auditor-resumo-item">
+            <span class="auditor-resumo-label">Modo</span>
+            <strong class="auditor-resumo-valor">${escapeHtml(ROTULO_MODO[modo] || modo)}</strong>
+        </div>
+    `);
+
+    if (modo !== 'TRADUZIDO') {
+        itens.push(`
             <div class="auditor-resumo-item">
                 <span class="auditor-resumo-label">Original · ${escapeHtml(relatorio.formatoOriginal || 'FORMATO DESCONHECIDO')}</span>
                 <strong class="auditor-resumo-valor" title="${escapeHtml(relatorio.arquivoOriginal || '')}">${escapeHtml(relatorio.arquivoOriginal || '—')}</strong>
             </div>
+        `);
+    }
+    if (modo !== 'ORIGINAL') {
+        itens.push(`
             <div class="auditor-resumo-item">
                 <span class="auditor-resumo-label">Traduzido · ${escapeHtml(relatorio.formatoTraduzido || 'FORMATO DESCONHECIDO')}</span>
                 <strong class="auditor-resumo-valor" title="${escapeHtml(relatorio.arquivoTraduzido || '')}">${escapeHtml(relatorio.arquivoTraduzido || '—')}</strong>
             </div>
-            <div class="auditor-resumo-item">
-                <span class="auditor-resumo-label">Regras</span>
-                <strong class="auditor-resumo-valor">${relatorio.regrasExecutadas ?? '—'}</strong>
-            </div>
-            <div class="auditor-resumo-item">
-                <span class="auditor-resumo-label">Duração</span>
-                <strong class="auditor-resumo-valor">${relatorio.duracaoMs ?? 0} ms</strong>
-            </div>
+        `);
+    }
+
+    itens.push(`
+        <div class="auditor-resumo-item">
+            <span class="auditor-resumo-label">Regras</span>
+            <strong class="auditor-resumo-valor">${relatorio.regrasExecutadas ?? '—'}</strong>
         </div>
-    `;
+        <div class="auditor-resumo-item">
+            <span class="auditor-resumo-label">Duração</span>
+            <strong class="auditor-resumo-valor">${relatorio.duracaoMs ?? 0} ms</strong>
+        </div>
+    `);
+
+    resumo.innerHTML = `<div class="auditor-resumo-grid">${itens.join('')}</div>`;
     resumo.classList.remove('hidden');
 }
 
@@ -382,7 +484,7 @@ function exportarRelatorio(formato) {
         return;
     }
 
-    const nomeBase = extrairNomeArquivo(ultimoRelatorio.arquivoTraduzido || 'auditoria');
+    const nomeBase = extrairNomeArquivo(ultimoRelatorio.arquivoTraduzido || ultimoRelatorio.arquivoOriginal || 'auditoria');
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
 
     if (formato === 'json') {
@@ -402,24 +504,34 @@ function exportarRelatorio(formato) {
  */
 function gerarRelatorioMarkdown(relatorio) {
     const agora = new Date().toLocaleString('pt-BR');
+    const modo = relatorio.modo || 'AMBAS';
     const linhas = [
         '# Relatório de Auditoria de Conteúdo — KRONOS CORE',
         '',
-        'Relatório didático para revisão humana de legendas traduzidas.',
+        'Relatório didático para revisão humana de legendas.',
         '',
         '## Contexto da auditoria',
         '',
         '| Campo | Valor |',
         '| --- | --- |',
         `| **Data** | ${agora} |`,
-        `| **Arquivo original** | \`${relatorio.arquivoOriginal || '—'}\` |`,
-        `| **Formato original** | ${relatorio.formatoOriginal || '—'} |`,
-        `| **Arquivo traduzido** | \`${relatorio.arquivoTraduzido || '—'}\` |`,
-        `| **Formato traduzido** | ${relatorio.formatoTraduzido || '—'} |`,
+        `| **Modo** | ${ROTULO_MODO[modo] || modo} |`
+    ];
+
+    if (modo !== 'TRADUZIDO') {
+        linhas.push(`| **Arquivo original** | \`${relatorio.arquivoOriginal || '—'}\` |`);
+        linhas.push(`| **Formato original** | ${relatorio.formatoOriginal || '—'} |`);
+    }
+    if (modo !== 'ORIGINAL') {
+        linhas.push(`| **Arquivo traduzido** | \`${relatorio.arquivoTraduzido || '—'}\` |`);
+        linhas.push(`| **Formato traduzido** | ${relatorio.formatoTraduzido || '—'} |`);
+    }
+
+    linhas.push(
         `| **Regras executadas** | ${relatorio.regrasExecutadas ?? '—'} |`,
         `| **Duração** | ${relatorio.duracaoMs ?? 0} ms |`,
         `| **Resultado** | ${relatorio.limpo ? 'Limpo (sem anomalias)' : `${relatorio.anomalias.length} anomalia(s)`} |`
-    ];
+    );
 
     if (relatorio.caminhoRelatorioJson) {
         linhas.push(`| **JSON em disco** | \`${relatorio.caminhoRelatorioJson}\` |`);

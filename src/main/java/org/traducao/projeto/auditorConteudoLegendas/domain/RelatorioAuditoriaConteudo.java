@@ -22,18 +22,19 @@ public class RelatorioAuditoriaConteudo {
     private final String arquivoTraduzido;
     private final String formatoOriginal;
     private final String formatoTraduzido;
+    private final ModoAuditoria modo;
     private final List<AnomaliaConteudo> anomalias = new ArrayList<>();
     private long duracaoMs;
     private String caminhoRelatorioJson;
     private int regrasExecutadas;
 
     /**
-     * PROPÓSITO DE NEGÓCIO: cria a fotografia inicial da comparação que será
-     * apresentada ao usuário e usada como dataset de telemetria.
-     * <p>INVARIANTES DO DOMÍNIO: nomes e formatos já foram validados e não
-     * mudam durante a auditoria.
-     * <p>COMPORTAMENTO EM CASO DE FALHA: não normaliza nem tenta adivinhar
-     * valores ausentes; a validação pertence ao caso de uso.
+     * PROPÓSITO DE NEGÓCIO: mantém a assinatura histórica da comparação
+     * original ↔ traduzido, fixando o modo em {@link ModoAuditoria#AMBAS}.
+     * <p>INVARIANTES DO DOMÍNIO: preserva o contrato usado pelos testes e
+     * chamadas que auditam os dois arquivos.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: não normaliza valores; delega ao
+     * construtor completo.
      */
     public RelatorioAuditoriaConteudo(
         String arquivoOriginal,
@@ -41,10 +42,30 @@ public class RelatorioAuditoriaConteudo {
         String formatoOriginal,
         String formatoTraduzido
     ) {
+        this(arquivoOriginal, arquivoTraduzido, formatoOriginal, formatoTraduzido, ModoAuditoria.AMBAS);
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: cria a fotografia inicial da análise (comparativa ou
+     * de arquivo único) que será apresentada ao usuário e usada como dataset de
+     * telemetria.
+     * <p>INVARIANTES DO DOMÍNIO: no modo de arquivo único apenas o lado auditado
+     * traz nome e formato; o outro lado é {@code null} por definição.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: não normaliza nem tenta adivinhar
+     * valores ausentes; a validação pertence ao caso de uso.
+     */
+    public RelatorioAuditoriaConteudo(
+        String arquivoOriginal,
+        String arquivoTraduzido,
+        String formatoOriginal,
+        String formatoTraduzido,
+        ModoAuditoria modo
+    ) {
         this.arquivoOriginal = arquivoOriginal;
         this.arquivoTraduzido = arquivoTraduzido;
         this.formatoOriginal = formatoOriginal;
         this.formatoTraduzido = formatoTraduzido;
+        this.modo = modo;
     }
 
     public void adicionarAnomalia(AnomaliaConteudo anomalia) {
@@ -79,6 +100,18 @@ public class RelatorioAuditoriaConteudo {
      */
     public String getFormatoTraduzido() {
         return formatoTraduzido;
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: informa o escopo escolhido (só original, só traduzido
+     * ou ambos) para que tela, exportação e telemetria descrevam a mesma análise.
+     * <p>INVARIANTES DO DOMÍNIO: o valor é definido na criação e nunca muda.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: nunca é nulo — o construtor histórico
+     * assume {@link ModoAuditoria#AMBAS}.
+     */
+    @JsonProperty("modo")
+    public String getModo() {
+        return modo.name();
     }
 
     @JsonProperty("limpo")

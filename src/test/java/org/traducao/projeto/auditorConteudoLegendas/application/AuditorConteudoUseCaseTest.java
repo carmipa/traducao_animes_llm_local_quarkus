@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.traducao.projeto.auditorConteudoLegendas.application.TelemetriaAuditoriaService;
 import org.traducao.projeto.auditorConteudoLegendas.domain.AuditoriaException;
+import org.traducao.projeto.auditorConteudoLegendas.domain.ModoAuditoria;
 import org.traducao.projeto.auditorConteudoLegendas.domain.RelatorioAuditoriaConteudo;
 import org.traducao.projeto.auditorConteudoLegendas.support.AssAuditoriaFixtures;
 
@@ -16,6 +17,7 @@ import java.nio.file.Path;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -119,5 +121,72 @@ class AuditorConteudoUseCaseTest {
             () -> useCase.auditar(original, traduzido));
 
         assertTrue(ex.getMessage().contains("ASS, SSA ou SRT"));
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: garante que a aba "Só Original" audita um único
+     * arquivo com as regras estruturais/temporais e expõe apenas o lado original.
+     * <p>INVARIANTES DO DOMÍNIO: o modo é ORIGINAL, o traduzido fica nulo e as
+     * seis regras de arquivo único são executadas.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: ausência de anomalias, modo incorreto ou
+     * lado traduzido preenchido reprova o teste.
+     */
+    @Test
+    void auditarArquivoUnicoOriginalDetectaAnomaliasEstruturais(@TempDir Path tempDir) throws IOException {
+        Path arquivo = tempDir.resolve("solo_eng.ass");
+        AssAuditoriaFixtures.escreverArquivoUnicoComAnomalias(arquivo);
+
+        RelatorioAuditoriaConteudo relatorio = useCase.auditar(ModoAuditoria.ORIGINAL, arquivo, null);
+
+        assertFalse(relatorio.isLimpo());
+        assertEquals("ORIGINAL", relatorio.getModo());
+        assertEquals("ASS", relatorio.getFormatoOriginal());
+        assertNull(relatorio.getFormatoTraduzido());
+        assertNull(relatorio.getArquivoTraduzido());
+        assertEquals(6, relatorio.getRegrasExecutadas());
+        assertTrue(relatorio.getAnomalias().stream()
+            .allMatch(a -> a.eventoOriginal() != null && a.eventoTraduzido() == null));
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: garante que a aba "Só Traduzida" reposiciona as
+     * anomalias para o lado traduzido, para que a tela rotule a linha como PT-BR.
+     * <p>INVARIANTES DO DOMÍNIO: o modo é TRADUZIDO e cada anomalia traz o evento
+     * no slot traduzido, nunca no original.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: anomalia no slot original ou modo
+     * incorreto reprova o teste.
+     */
+    @Test
+    void auditarArquivoUnicoTraduzidoReposicionaAnomaliasNoLadoTraduzido(@TempDir Path tempDir) throws IOException {
+        Path arquivo = tempDir.resolve("solo_pt.ass");
+        AssAuditoriaFixtures.escreverArquivoUnicoComAnomalias(arquivo);
+
+        RelatorioAuditoriaConteudo relatorio = useCase.auditar(ModoAuditoria.TRADUZIDO, null, arquivo);
+
+        assertFalse(relatorio.isLimpo());
+        assertEquals("TRADUZIDO", relatorio.getModo());
+        assertEquals("ASS", relatorio.getFormatoTraduzido());
+        assertNull(relatorio.getFormatoOriginal());
+        assertNull(relatorio.getArquivoOriginal());
+        assertTrue(relatorio.getAnomalias().stream()
+            .allMatch(a -> a.eventoTraduzido() != null && a.eventoOriginal() == null));
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: confirma que um arquivo único íntegro passa em todas as
+     * regras de arquivo único sem gerar anomalias.
+     * <p>INVARIANTES DO DOMÍNIO: as seis regras rodam e o relatório fica limpo.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: qualquer anomalia falsa reprova o teste.
+     */
+    @Test
+    void auditarArquivoUnicoLimpoNaoGeraAnomalias(@TempDir Path tempDir) throws IOException {
+        Path arquivo = tempDir.resolve("solo_limpo.ass");
+        AssAuditoriaFixtures.escreverArquivoUnicoLimpo(arquivo);
+
+        RelatorioAuditoriaConteudo relatorio = useCase.auditar(ModoAuditoria.ORIGINAL, arquivo, null);
+
+        assertTrue(relatorio.isLimpo());
+        assertEquals(6, relatorio.getRegrasExecutadas());
+        assertNotNull(relatorio.getCaminhoRelatorioJson());
     }
 }

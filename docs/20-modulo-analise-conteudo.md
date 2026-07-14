@@ -6,7 +6,19 @@
 
 ## Para que serve
 
-Painel **"3. Análise de Conteúdo"** da SPA (grupo **Preparação**). Audita legendas `.ass` **antes e depois da tradução**, procurando anomalias que nenhuma etapa individual enxerga sozinha: efeitos de karaokê destruídos por LLM, tags vazadas para o texto visível, quebras de linha alucinadas e metadados inconsistentes. Existe porque **blindagem por nome de estilo não é confiável entre releases** — cada fansub estrutura legendas de um jeito, então o fluxo seguro é extrair → **auditar o que veio** → traduzir.
+Painel **"3. Análise de Conteúdo"** da SPA (grupo **Preparação**). Audita legendas `.ass`/`.srt` **antes e depois da tradução**, procurando anomalias que nenhuma etapa individual enxerga sozinha: efeitos de karaokê destruídos por LLM, tags vazadas para o texto visível, quebras de linha alucinadas e metadados inconsistentes. Existe porque **blindagem por nome de estilo não é confiável entre releases** — cada fansub estrutura legendas de um jeito, então o fluxo seguro é extrair → **auditar o que veio** → traduzir.
+
+### Três modos (abas internas)
+
+O card de entrada tem uma barra de abas que escolhe o **escopo** da análise:
+
+| Aba | Modo | Arquivos | Regras aplicadas |
+|-----|------|----------|------------------|
+| **Ambas (comparar)** | `AMBAS` | original + traduzido | 5 regras **comparativas** (par original ↔ traduzido) |
+| **Só Original (EN)** | `ORIGINAL` | só o original | 6 regras de **arquivo único** (estruturais + tempo) |
+| **Só Traduzida (PT-BR)** | `TRADUZIDO` | só o traduzido | 6 regras de **arquivo único** (estruturais + tempo) |
+
+As regras de arquivo único não dependem de referência: tags `{}` não fechadas, timestamp inválido (fim ≤ início), evento de diálogo vazio, quebras `\N` excessivas, sobreposição de tempo entre diálogos e efeito visual com texto longo (possível vazamento). No modo `TRADUZIDO` a anomalia é rotulada no lado traduzido; no `ORIGINAL`, no lado original.
 
 ![Painel de Análise de Conteúdo](../src/main/resources/static/img/screenshots/analise-conteudo.png)
 
@@ -55,7 +67,9 @@ flowchart LR
 
 | Endpoint | Payload | Retorno |
 |----------|---------|---------|
-| `POST /api/auditoria-conteudo` | `{caminhoOriginal, caminhoTraduzido}` | `RelatorioAuditoriaConteudo` (JSON, síncrono) |
+| `POST /api/auditoria-conteudo` | `{modo?, caminhoOriginal?, caminhoTraduzido?}` | `RelatorioAuditoriaConteudo` (JSON, síncrono) |
+
+`modo` aceita `AMBAS` (default se ausente — retrocompatível), `ORIGINAL` ou `TRADUZIDO`. O modo determina quais caminhos são obrigatórios: `AMBAS` exige os dois; `ORIGINAL` exige `caminhoOriginal`; `TRADUZIDO` exige `caminhoTraduzido`. O relatório retornado inclui o campo `modo` para a tela e a exportação se adaptarem.
 
 Diferente dos jobs longos, a auditoria responde o relatório **na própria requisição** (leitura pura, sem LLM). O log detalhado sai no canal SSE `auditor-conteudo`, encerrando com a linha `[RELATÓRIO FINAL]` padrão (operação + tempo total + hora local).
 
