@@ -25496,3 +25496,287 @@ Auditoria finalizada com sucesso!
 2026-07-14 12:22:07.682 [traducao]   [CONCLUÍDO] TRADUCAO LOCAL VIA LLM: 6 concluído(s), 7 parcial(is), 0 com falha/bloqueio de 13 arquivo(s).
 2026-07-14 12:22:07.683 [traducao] ========================================================================
 2026-07-14 12:22:07.683 [traducao] [RELATÓRIO FINAL] Operação: Tradução Local via LLM | Tempo total: 6,9s | Término: 12:22:07
+2026-07-14 12:35:45.379 [console] ==============================================================
+2026-07-14 12:35:45.379 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 12:35:45.379 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 12:35:45.379 [console] ==============================================================
+2026-07-14 12:36:25.892 [traducao] Verificando se o servidor LLM local está online...
+2026-07-14 12:36:25.896 [traducao] [OK] Servidor LLM ativo.
+2026-07-14 12:36:25.898 [traducao] [CONTEXTO] Utilizando contexto: Mobile Suit Gundam: The 08th MS Team
+2026-07-14 12:36:25.900 [traducao] Iniciando tradução de 13 arquivo(s)...
+2026-07-14 12:36:25.900 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:25.901 [traducao] Processando arquivo [1/13]: Mobile.Suit.Gundam.The.08th.MS.Team.S00E02_Track2.ass
+2026-07-14 12:36:25.902 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:26.333 [traducao] [K[ OK ] Lote 1 traduzido com sucesso.
+2026-07-14 12:36:26.397 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): Wasn't this area supposed\Nto be under our control?!
+2026-07-14 12:36:26.401 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: Wasn't this area supposed\Nto be under our control?!
+2026-07-14 12:36:26.433 [traducao] [ BACKUP CACHE ] Geração anterior preservada em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\backups\traducao-cache\sobrescrita_697149038579939904\Mobile.Suit.Gundam.The.08th.MS.Team.S00E02_Track2.cache.json
+2026-07-14 12:36:26.524 [traducao] [PARCIAL] Mobile.Suit.Gundam.The.08th.MS.Team.S00E02_Track2.ass: saída parcial em C:\animes\[Joseki] Mobile Suit Gundam The 08th MS Team COMPLETE (1996)(BD AV1 1080p Opus)[Sub Eng]\legendas ptbr\Mobile.Suit.Gundam.The.08th.MS.Team.S00E02_Track2_PT-BR.ass; corrija o cache e execute novamente.
+2026-07-14 12:36:26.525 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:26.526 [traducao] Processando arquivo [2/13]: Mobile.Suit.Gundam.The.08th.MS.Team.S01E01_Track3.ass
+2026-07-14 12:36:26.526 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:26.891 [traducao] [K[ OK ] Lote 1 traduzido com sucesso.
+2026-07-14 12:36:27.423 [traducao] [K[ OK ] Lote 2 traduzido com sucesso.
+2026-07-14 12:36:27.490 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): Just seeing it makes you excited!\NRight?
+2026-07-14 12:36:27.557 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): I'll do it, too. I'll take out as\Nmany Zeon soldiers as I can!
+2026-07-14 12:36:27.562 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: Just seeing it makes you excited!\NRight?
+2026-07-14 12:36:27.582 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: I'll do it, too. I'll take out as\Nmany Zeon soldiers as I can!
+2026-07-14 12:36:27.594 [traducao] [ BACKUP CACHE ] Geração anterior preservada em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\backups\traducao-cache\sobrescrita_15544889072378046020\Mobile.Suit.Gundam.The.08th.MS.Team.S01E01_Track3.cache.json
+2026-07-14 12:36:27.685 [traducao] [PARCIAL] Mobile.Suit.Gundam.The.08th.MS.Team.S01E01_Track3.ass: saída parcial em C:\animes\[Joseki] Mobile Suit Gundam The 08th MS Team COMPLETE (1996)(BD AV1 1080p Opus)[Sub Eng]\legendas ptbr\Mobile.Suit.Gundam.The.08th.MS.Team.S01E01_Track3_PT-BR.ass; corrija o cache e execute novamente.
+2026-07-14 12:36:27.685 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:27.686 [traducao] Processando arquivo [3/13]: Mobile.Suit.Gundam.The.08th.MS.Team.S01E02_Track3.ass
+2026-07-14 12:36:27.686 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:28.114 [traducao] [K[ OK ] Lote 1 traduzido com sucesso.
+2026-07-14 12:36:28.506 [traducao] [K[ OK ] Lote 2 traduzido com sucesso.
+2026-07-14 12:36:29.010 [traducao] [K[ OK ] Lote 3 traduzido com sucesso.
+2026-07-14 12:36:29.095 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): I'll also be doing whatever it\Ntakes to see you don't die.
+2026-07-14 12:36:29.168 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): She didn't have to just\Nstart shooting at me!
+2026-07-14 12:36:29.255 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): {\i1}But then I slip up and get\Ncaptured by guerillas...{\i0}
+2026-07-14 12:36:29.265 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: {\i1}But then I slip up and get\Ncaptured by guerillas...{\i0}
+2026-07-14 12:36:29.274 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: I'll also be doing whatever it\Ntakes to see you don't die.
+2026-07-14 12:36:29.286 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: She didn't have to just\Nstart shooting at me!
+2026-07-14 12:36:29.298 [traducao] [ BACKUP CACHE ] Geração anterior preservada em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\backups\traducao-cache\sobrescrita_920721568137324754\Mobile.Suit.Gundam.The.08th.MS.Team.S01E02_Track3.cache.json
+2026-07-14 12:36:29.379 [traducao] [PARCIAL] Mobile.Suit.Gundam.The.08th.MS.Team.S01E02_Track3.ass: saída parcial em C:\animes\[Joseki] Mobile Suit Gundam The 08th MS Team COMPLETE (1996)(BD AV1 1080p Opus)[Sub Eng]\legendas ptbr\Mobile.Suit.Gundam.The.08th.MS.Team.S01E02_Track3_PT-BR.ass; corrija o cache e execute novamente.
+2026-07-14 12:36:29.379 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:29.380 [traducao] Processando arquivo [4/13]: Mobile.Suit.Gundam.The.08th.MS.Team.S01E03_Track3.ass
+2026-07-14 12:36:29.380 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:29.924 [traducao] [K[ OK ] Lote 1 traduzido com sucesso.
+2026-07-14 12:36:30.444 [traducao] [K[ OK ] Lote 2 traduzido com sucesso.
+2026-07-14 12:36:30.742 [traducao] [K[ OK ] Lote 3 traduzido com sucesso.
+2026-07-14 12:36:31.196 [traducao] [K[ OK ] Lote 4 traduzido com sucesso.
+2026-07-14 12:36:31.889 [traducao] [K[ OK ] Lote 5 traduzido com sucesso.
+2026-07-14 12:36:32.262 [traducao] [K[ OK ] Lote 6 traduzido com sucesso.
+2026-07-14 12:36:32.301 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): Those "civilians" are the ones\Nyou should be most scared of!
+2026-07-14 12:36:32.341 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): Apparently this little pervert didn't\Nlearn his lesson from last time!
+2026-07-14 12:36:32.378 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): I don't have any time to\Nwaste with you guys!
+2026-07-14 12:36:32.415 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): If it works, they don't have to\Ntake orders from Zeon anymore.
+2026-07-14 12:36:32.471 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): If you need medicine, I'll get you\Nall you want! Just please...!
+2026-07-14 12:36:32.523 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): Heh... Then it's only a matter\Nof time before it falls.
+2026-07-14 12:36:32.532 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: I don't have any time to\Nwaste with you guys!
+2026-07-14 12:36:32.535 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: Those "civilians" are the ones\Nyou should be most scared of!
+2026-07-14 12:36:32.537 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: Apparently this little pervert didn't\Nlearn his lesson from last time!
+2026-07-14 12:36:32.544 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: If you need medicine, I'll get you\Nall you want! Just please...!
+2026-07-14 12:36:32.550 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: Heh... Then it's only a matter\Nof time before it falls.
+2026-07-14 12:36:32.554 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: If it works, they don't have to\Ntake orders from Zeon anymore.
+2026-07-14 12:36:32.572 [traducao] [ BACKUP CACHE ] Geração anterior preservada em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\backups\traducao-cache\sobrescrita_17996378851681376059\Mobile.Suit.Gundam.The.08th.MS.Team.S01E03_Track3.cache.json
+2026-07-14 12:36:32.625 [traducao] [PARCIAL] Mobile.Suit.Gundam.The.08th.MS.Team.S01E03_Track3.ass: saída parcial em C:\animes\[Joseki] Mobile Suit Gundam The 08th MS Team COMPLETE (1996)(BD AV1 1080p Opus)[Sub Eng]\legendas ptbr\Mobile.Suit.Gundam.The.08th.MS.Team.S01E03_Track3_PT-BR.ass; corrija o cache e execute novamente.
+2026-07-14 12:36:32.626 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:32.627 [traducao] Processando arquivo [5/13]: Mobile.Suit.Gundam.The.08th.MS.Team.S01E04_Track3.ass
+2026-07-14 12:36:32.627 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:33.323 [traducao] [K[ OK ] Lote 1 traduzido com sucesso.
+2026-07-14 12:36:33.689 [traducao] [K[ OK ] Lote 2 traduzido com sucesso.
+2026-07-14 12:36:34.171 [traducao] [K[ OK ] Lote 3 traduzido com sucesso.
+2026-07-14 12:36:34.754 [traducao] [K[ OK ] Lote 4 traduzido com sucesso.
+2026-07-14 12:36:34.789 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): That's why Sovereign Degwin placed\Nme in personal charge of this project.
+2026-07-14 12:36:34.832 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): when you can come with\Nme and have some fun?
+2026-07-14 12:36:34.870 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): Once you work out the bugs on\Nthat thing, send it over to me.
+2026-07-14 12:36:34.905 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): Commander! It'll be over\Nyour head in 40 seconds!
+2026-07-14 12:36:34.909 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: Commander! It'll be over\Nyour head in 40 seconds!
+2026-07-14 12:36:34.918 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: That's why Sovereign Degwin placed\Nme in personal charge of this project.
+2026-07-14 12:36:34.925 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: Once you work out the bugs on\Nthat thing, send it over to me.
+2026-07-14 12:36:34.931 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: when you can come with\Nme and have some fun?
+2026-07-14 12:36:34.947 [traducao] [ BACKUP CACHE ] Geração anterior preservada em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\backups\traducao-cache\sobrescrita_4899082135877930627\Mobile.Suit.Gundam.The.08th.MS.Team.S01E04_Track3.cache.json
+2026-07-14 12:36:34.988 [traducao] [PARCIAL] Mobile.Suit.Gundam.The.08th.MS.Team.S01E04_Track3.ass: saída parcial em C:\animes\[Joseki] Mobile Suit Gundam The 08th MS Team COMPLETE (1996)(BD AV1 1080p Opus)[Sub Eng]\legendas ptbr\Mobile.Suit.Gundam.The.08th.MS.Team.S01E04_Track3_PT-BR.ass; corrija o cache e execute novamente.
+2026-07-14 12:36:34.989 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:34.989 [traducao] Processando arquivo [6/13]: Mobile.Suit.Gundam.The.08th.MS.Team.S01E05_Track3.ass
+2026-07-14 12:36:34.989 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:35.225 [traducao] [K[ OK ] Lote 1 traduzido com sucesso.
+2026-07-14 12:36:35.233 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: E-Eledore...
+2026-07-14 12:36:35.267 [traducao] [ BACKUP CACHE ] Geração anterior preservada em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\backups\traducao-cache\sobrescrita_6278829743589432874\Mobile.Suit.Gundam.The.08th.MS.Team.S01E05_Track3.cache.json
+2026-07-14 12:36:35.306 [traducao] [PARCIAL] Mobile.Suit.Gundam.The.08th.MS.Team.S01E05_Track3.ass: saída parcial em C:\animes\[Joseki] Mobile Suit Gundam The 08th MS Team COMPLETE (1996)(BD AV1 1080p Opus)[Sub Eng]\legendas ptbr\Mobile.Suit.Gundam.The.08th.MS.Team.S01E05_Track3_PT-BR.ass; corrija o cache e execute novamente.
+2026-07-14 12:36:35.307 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:35.307 [traducao] Processando arquivo [7/13]: Mobile.Suit.Gundam.The.08th.MS.Team.S01E06_Track3.ass
+2026-07-14 12:36:35.307 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:35.757 [traducao] [K[ OK ] Lote 1 traduzido com sucesso.
+2026-07-14 12:36:36.178 [traducao] [K[ OK ] Lote 2 traduzido com sucesso.
+2026-07-14 12:36:36.559 [traducao] [K[ OK ] Lote 3 traduzido com sucesso.
+2026-07-14 12:36:37.122 [traducao] [K[ OK ] Lote 4 traduzido com sucesso.
+2026-07-14 12:36:37.651 [traducao] [K[ OK ] Lote 5 traduzido com sucesso.
+2026-07-14 12:36:38.107 [traducao] [K[ OK ] Lote 6 traduzido com sucesso.
+2026-07-14 12:36:38.481 [traducao] [K[ OK ] Lote 7 traduzido com sucesso.
+2026-07-14 12:36:38.524 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): The Feds are only doing\Nthis because of my info.
+2026-07-14 12:36:38.564 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): I'm too far away to reach\Nher with those feelings.
+2026-07-14 12:36:38.602 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): Beans never seem to go\Ndown smoothly for me.
+2026-07-14 12:36:38.656 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): Yeah, I'd like to take a nice long\Nshower and drink a cold beer.
+2026-07-14 12:36:38.705 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): but could you stop butting\Ninto our business?!
+2026-07-14 12:36:38.761 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): {\fad(0,1814)}Isn't that why you take such\Ngood care of that girl's watch?!
+2026-07-14 12:36:38.814 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): That's one guy who's\Ntotally honest with himself!
+2026-07-14 12:36:38.824 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: That's one guy who's\Ntotally honest with himself!
+2026-07-14 12:36:38.827 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: Beans never seem to go\Ndown smoothly for me.
+2026-07-14 12:36:38.828 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: but could you stop butting\Ninto our business?!
+2026-07-14 12:36:38.829 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: Yeah, I'd like to take a nice long\Nshower and drink a cold beer.
+2026-07-14 12:36:38.834 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: I'm too far away to reach\Nher with those feelings.
+2026-07-14 12:36:38.837 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: {\fad(0,1814)}Isn't that why you take such\Ngood care of that girl's watch?!
+2026-07-14 12:36:38.846 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: The Feds are only doing\Nthis because of my info.
+2026-07-14 12:36:38.867 [traducao] [ BACKUP CACHE ] Geração anterior preservada em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\backups\traducao-cache\sobrescrita_10317669174020656903\Mobile.Suit.Gundam.The.08th.MS.Team.S01E06_Track3.cache.json
+2026-07-14 12:36:38.926 [traducao] [PARCIAL] Mobile.Suit.Gundam.The.08th.MS.Team.S01E06_Track3.ass: saída parcial em C:\animes\[Joseki] Mobile Suit Gundam The 08th MS Team COMPLETE (1996)(BD AV1 1080p Opus)[Sub Eng]\legendas ptbr\Mobile.Suit.Gundam.The.08th.MS.Team.S01E06_Track3_PT-BR.ass; corrija o cache e execute novamente.
+2026-07-14 12:36:38.927 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:38.927 [traducao] Processando arquivo [8/13]: Mobile.Suit.Gundam.The.08th.MS.Team.S01E07_Track3.ass
+2026-07-14 12:36:38.928 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:39.469 [traducao] [K[ OK ] Lote 1 traduzido com sucesso.
+2026-07-14 12:36:39.799 [traducao] [K[ OK ] Lote 2 traduzido com sucesso.
+2026-07-14 12:36:40.394 [traducao] [K[ OK ] Lote 3 traduzido com sucesso.
+2026-07-14 12:36:40.630 [traducao] [K[ OK ] Lote 4 traduzido com sucesso.
+2026-07-14 12:36:40.703 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): Let'em cling to their\Ndoomed little ball of dirt!
+2026-07-14 12:36:40.777 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): We may have been fighting\Neach other up till now,
+2026-07-14 12:36:40.857 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): Things get very strange when you're\Naround, Ensign Shiro Amada.
+2026-07-14 12:36:40.870 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: We may have been fighting\Neach other up till now,
+2026-07-14 12:36:40.878 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: Things get very strange when you're\Naround, Ensign Shiro Amada.
+2026-07-14 12:36:40.886 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: Aina? Aina... Aina!
+2026-07-14 12:36:40.887 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: Let'em cling to their\Ndoomed little ball of dirt!
+2026-07-14 12:36:40.899 [traducao] [ BACKUP CACHE ] Geração anterior preservada em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\backups\traducao-cache\sobrescrita_6313722703076922170\Mobile.Suit.Gundam.The.08th.MS.Team.S01E07_Track3.cache.json
+2026-07-14 12:36:40.993 [traducao] [PARCIAL] Mobile.Suit.Gundam.The.08th.MS.Team.S01E07_Track3.ass: saída parcial em C:\animes\[Joseki] Mobile Suit Gundam The 08th MS Team COMPLETE (1996)(BD AV1 1080p Opus)[Sub Eng]\legendas ptbr\Mobile.Suit.Gundam.The.08th.MS.Team.S01E07_Track3_PT-BR.ass; corrija o cache e execute novamente.
+2026-07-14 12:36:40.994 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:40.995 [traducao] Processando arquivo [9/13]: Mobile.Suit.Gundam.The.08th.MS.Team.S01E08_Track3.ass
+2026-07-14 12:36:40.996 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:41.195 [traducao] [K[ OK ] Lote 1 traduzido com sucesso.
+2026-07-14 12:36:41.229 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: Arth!
+2026-07-14 12:36:41.241 [traducao] [ BACKUP CACHE ] Geração anterior preservada em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\backups\traducao-cache\sobrescrita_2879161349018279210\Mobile.Suit.Gundam.The.08th.MS.Team.S01E08_Track3.cache.json
+2026-07-14 12:36:41.307 [traducao] [PARCIAL] Mobile.Suit.Gundam.The.08th.MS.Team.S01E08_Track3.ass: saída parcial em C:\animes\[Joseki] Mobile Suit Gundam The 08th MS Team COMPLETE (1996)(BD AV1 1080p Opus)[Sub Eng]\legendas ptbr\Mobile.Suit.Gundam.The.08th.MS.Team.S01E08_Track3_PT-BR.ass; corrija o cache e execute novamente.
+2026-07-14 12:36:41.307 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:41.307 [traducao] Processando arquivo [10/13]: Mobile.Suit.Gundam.The.08th.MS.Team.S01E09_Track3.ass
+2026-07-14 12:36:41.309 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:41.897 [traducao] [K[ OK ] Lote 1 traduzido com sucesso.
+2026-07-14 12:36:42.321 [traducao] [K[ OK ] Lote 2 traduzido com sucesso.
+2026-07-14 12:36:42.679 [traducao] [K[ OK ] Lote 3 traduzido com sucesso.
+2026-07-14 12:36:43.069 [traducao] [K[ OK ] Lote 4 traduzido com sucesso.
+2026-07-14 12:36:43.633 [traducao] [K[ OK ] Lote 5 traduzido com sucesso.
+2026-07-14 12:36:43.695 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): Captain, are you sure you made the\Nright decision about the 08th Team?
+2026-07-14 12:36:43.776 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): Please, let the engine be the\Nonly trouble they had...
+2026-07-14 12:36:43.864 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): Even the Feds aren't {\i1}that{\i0} dumb.
+2026-07-14 12:36:43.942 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): I figured Commander Kojima would\Ndo something like this.
+2026-07-14 12:36:43.992 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): Supreme Commander Gihren still hasn't\Nheard about the cancellation order.
+2026-07-14 12:36:44.002 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: Captain, are you sure you made the\Nright decision about the 08th Team?
+2026-07-14 12:36:44.008 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: I figured Commander Kojima would\Ndo something like this.
+2026-07-14 12:36:44.015 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: Please, let the engine be the\Nonly trouble they had...
+2026-07-14 12:36:44.019 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: Supreme Commander Gihren still hasn't\Nheard about the cancellation order.
+2026-07-14 12:36:44.024 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: Even the Feds aren't {\i1}that{\i0} dumb.
+2026-07-14 12:36:44.041 [traducao] [ BACKUP CACHE ] Geração anterior preservada em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\backups\traducao-cache\sobrescrita_5294114164193415418\Mobile.Suit.Gundam.The.08th.MS.Team.S01E09_Track3.cache.json
+2026-07-14 12:36:44.101 [traducao] [PARCIAL] Mobile.Suit.Gundam.The.08th.MS.Team.S01E09_Track3.ass: saída parcial em C:\animes\[Joseki] Mobile Suit Gundam The 08th MS Team COMPLETE (1996)(BD AV1 1080p Opus)[Sub Eng]\legendas ptbr\Mobile.Suit.Gundam.The.08th.MS.Team.S01E09_Track3_PT-BR.ass; corrija o cache e execute novamente.
+2026-07-14 12:36:44.101 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:44.102 [traducao] Processando arquivo [11/13]: Mobile.Suit.Gundam.The.08th.MS.Team.S01E10_Track3.ass
+2026-07-14 12:36:44.102 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:44.359 [traducao] [K[ OK ] Lote 1 traduzido com sucesso.
+2026-07-14 12:36:44.834 [traducao] [K[ OK ] Lote 2 traduzido com sucesso.
+2026-07-14 12:36:44.919 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): {\fad(0,399)\fs100\pos(1060,600)\blur1\c&HDEDEE3&}(PART 1)
+2026-07-14 12:36:44.927 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: {\fad(0,399)\fs100\pos(1060,600)\blur1\c&HDEDEE3&}(PART 1)
+2026-07-14 12:36:44.966 [traducao] [ BACKUP CACHE ] Geração anterior preservada em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\backups\traducao-cache\sobrescrita_1605591179669410551\Mobile.Suit.Gundam.The.08th.MS.Team.S01E10_Track3.cache.json
+2026-07-14 12:36:45.018 [traducao] [PARCIAL] Mobile.Suit.Gundam.The.08th.MS.Team.S01E10_Track3.ass: saída parcial em C:\animes\[Joseki] Mobile Suit Gundam The 08th MS Team COMPLETE (1996)(BD AV1 1080p Opus)[Sub Eng]\legendas ptbr\Mobile.Suit.Gundam.The.08th.MS.Team.S01E10_Track3_PT-BR.ass; corrija o cache e execute novamente.
+2026-07-14 12:36:45.019 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:45.019 [traducao] Processando arquivo [12/13]: Mobile.Suit.Gundam.The.08th.MS.Team.S01E11_Track3.ass
+2026-07-14 12:36:45.020 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:45.337 [traducao] [K[ OK ] Lote 1 traduzido com sucesso.
+2026-07-14 12:36:45.543 [traducao] [K[ OK ] Lote 2 traduzido com sucesso.
+2026-07-14 12:36:45.637 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): {\i1}98! 97!
+2026-07-14 12:36:45.655 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: {\i1}98! 97!
+2026-07-14 12:36:45.670 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: Rob... Sally... Mike...
+2026-07-14 12:36:45.685 [traducao] [ BACKUP CACHE ] Geração anterior preservada em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\backups\traducao-cache\sobrescrita_2565345979140169200\Mobile.Suit.Gundam.The.08th.MS.Team.S01E11_Track3.cache.json
+2026-07-14 12:36:45.788 [traducao] [PARCIAL] Mobile.Suit.Gundam.The.08th.MS.Team.S01E11_Track3.ass: saída parcial em C:\animes\[Joseki] Mobile Suit Gundam The 08th MS Team COMPLETE (1996)(BD AV1 1080p Opus)[Sub Eng]\legendas ptbr\Mobile.Suit.Gundam.The.08th.MS.Team.S01E11_Track3_PT-BR.ass; corrija o cache e execute novamente.
+2026-07-14 12:36:45.789 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:45.790 [traducao] Processando arquivo [13/13]: Mobile.Suit.Gundam.The.08th.MS.Team.S01E12_Track3.ass
+2026-07-14 12:36:45.791 [traducao] --------------------------------------------------------------
+2026-07-14 12:36:46.073 [traducao] [K[ OK ] Lote 1 traduzido com sucesso.
+2026-07-14 12:36:46.586 [traducao] [K[ OK ] Lote 2 traduzido com sucesso.
+2026-07-14 12:36:46.675 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): {\fad(0,1354)}A mobile suit...
+2026-07-14 12:36:46.853 [traducao] [ WARN ] Tags corrompidas pelo LLM — fala mantida sem tradução (revise manualmente): You must have had some really\Nbad times after being drafted.
+2026-07-14 12:36:46.878 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: You must have had some really\Nbad times after being drafted.
+2026-07-14 12:36:46.888 [traducao] [ WARN ] Fala pendente após tentativas do LLM: modelo devolveu o texto original sem tradução. Original: {\fad(0,1354)}A mobile suit...
+2026-07-14 12:36:46.903 [traducao] [ BACKUP CACHE ] Geração anterior preservada em: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\backups\traducao-cache\sobrescrita_17179204749071064577\Mobile.Suit.Gundam.The.08th.MS.Team.S01E12_Track3.cache.json
+2026-07-14 12:36:47.004 [traducao] [PARCIAL] Mobile.Suit.Gundam.The.08th.MS.Team.S01E12_Track3.ass: saída parcial em C:\animes\[Joseki] Mobile Suit Gundam The 08th MS Team COMPLETE (1996)(BD AV1 1080p Opus)[Sub Eng]\legendas ptbr\Mobile.Suit.Gundam.The.08th.MS.Team.S01E12_Track3_PT-BR.ass; corrija o cache e execute novamente.
+2026-07-14 12:36:47.008 [traducao] Arquivo                                                Lore                                  Falas  Cache  Traduzidas  Avisos  Status 
+2026-07-14 12:36:47.008 [traducao] -----------------------------------------------------  ------------------------------------  -----  -----  ----------  ------  -------
+2026-07-14 12:36:47.008 [traducao] Mobile.Suit.Gundam.The.08th.MS.Team.S00E02_Track2.ass  Mobile Suit Gundam: The 08th MS Team  92     88     0           2       Parcial
+2026-07-14 12:36:47.009 [traducao] Mobile.Suit.Gundam.The.08th.MS.Team.S01E01_Track3.ass  Mobile Suit Gundam: The 08th MS Team  356    340    0           4       Parcial
+2026-07-14 12:36:47.009 [traducao] Mobile.Suit.Gundam.The.08th.MS.Team.S01E02_Track3.ass  Mobile Suit Gundam: The 08th MS Team  337    321    0           6       Parcial
+2026-07-14 12:36:47.009 [traducao] Mobile.Suit.Gundam.The.08th.MS.Team.S01E03_Track3.ass  Mobile Suit Gundam: The 08th MS Team  412    388    0           12      Parcial
+2026-07-14 12:36:47.010 [traducao] Mobile.Suit.Gundam.The.08th.MS.Team.S01E04_Track3.ass  Mobile Suit Gundam: The 08th MS Team  411    389    0           8       Parcial
+2026-07-14 12:36:47.010 [traducao] Mobile.Suit.Gundam.The.08th.MS.Team.S01E05_Track3.ass  Mobile Suit Gundam: The 08th MS Team  480    452    0           1       Parcial
+2026-07-14 12:36:47.010 [traducao] Mobile.Suit.Gundam.The.08th.MS.Team.S01E06_Track3.ass  Mobile Suit Gundam: The 08th MS Team  392    365    0           14      Parcial
+2026-07-14 12:36:47.012 [traducao] Mobile.Suit.Gundam.The.08th.MS.Team.S01E07_Track3.ass  Mobile Suit Gundam: The 08th MS Team  279    258    0           7       Parcial
+2026-07-14 12:36:47.013 [traducao] Mobile.Suit.Gundam.The.08th.MS.Team.S01E08_Track3.ass  Mobile Suit Gundam: The 08th MS Team  371    358    0           1       Parcial
+2026-07-14 12:36:47.013 [traducao] Mobile.Suit.Gundam.The.08th.MS.Team.S01E09_Track3.ass  Mobile Suit Gundam: The 08th MS Team  394    373    0           10      Parcial
+2026-07-14 12:36:47.013 [traducao] Mobile.Suit.Gundam.The.08th.MS.Team.S01E10_Track3.ass  Mobile Suit Gundam: The 08th MS Team  332    318    1           2       Parcial
+2026-07-14 12:36:47.014 [traducao] Mobile.Suit.Gundam.The.08th.MS.Team.S01E11_Track3.ass  Mobile Suit Gundam: The 08th MS Team  279    264    0           3       Parcial
+2026-07-14 12:36:47.014 [traducao] Mobile.Suit.Gundam.The.08th.MS.Team.S01E12_Track3.ass  Mobile Suit Gundam: The 08th MS Team  303    292    0           4       Parcial
+2026-07-14 12:36:47.016 [traducao] ========================================================================
+2026-07-14 12:36:47.020 [traducao]   [CONCLUÍDO] TRADUCAO LOCAL VIA LLM: 0 concluído(s), 13 parcial(is), 0 com falha/bloqueio de 13 arquivo(s).
+2026-07-14 12:36:47.020 [traducao] ========================================================================
+2026-07-14 12:36:47.023 [traducao] [RELATÓRIO FINAL] Operação: Tradução Local via LLM | Tempo total: 21s | Término: 12:36:47
+2026-07-14 12:37:55.618 [traducao] Verificando se o servidor LLM local está online...
+2026-07-14 12:37:55.623 [traducao] [OK] Servidor LLM ativo.
+2026-07-14 12:37:55.623 [traducao] [CONTEXTO] Utilizando contexto: Mobile Suit Gundam: The 08th MS Team
+2026-07-14 12:37:55.625 [traducao] Iniciando tradução de 13 arquivo(s)...
+2026-07-14 12:37:55.625 [traducao] --------------------------------------------------------------
+2026-07-14 12:37:55.625 [traducao] Processando arquivo [1/13]: Mobile.Suit.Gundam.The.08th.MS.Team.S00E02_Track2.ass
+2026-07-14 12:37:55.626 [traducao] --------------------------------------------------------------
+2026-07-14 12:37:58.383 [traducao] [K[ OK ] Lote 1 traduzido com sucesso.
+2026-07-14 12:37:59.296 [traducao] [K[ OK ] Lote 2 traduzido com sucesso.
+2026-07-14 12:38:00.300 [traducao] [K[ OK ] Lote 3 traduzido com sucesso.
+2026-07-14 12:38:01.564 [traducao] [K[ OK ] Lote 4 traduzido com sucesso.
+2026-07-14 12:38:02.633 [traducao] [K[ OK ] Lote 5 traduzido com sucesso.
+2026-07-14 12:38:03.374 [traducao] [K[ OK ] Lote 6 traduzido com sucesso.
+2026-07-14 12:38:04.076 [traducao] [K[ OK ] Lote 7 traduzido com sucesso.
+2026-07-14 12:38:05.625 [traducao] [K[ OK ] Lote 8 traduzido com sucesso.
+2026-07-14 12:38:06.645 [traducao] [K[ OK ] Lote 9 traduzido com sucesso.
+2026-07-14 12:38:07.124 [traducao] [K[ OK ] Lote 10 traduzido com sucesso.
+2026-07-14 12:38:07.877 [traducao] [K[ OK ] Lote 11 traduzido com sucesso.
+2026-07-14 12:38:08.445 [traducao] [K[ OK ] Lote 12 traduzido com sucesso.
+2026-07-14 12:38:08.777 [traducao] [K[ OK ] Lote 13 traduzido com sucesso.
+2026-07-14 12:38:09.154 [traducao] [K[ OK ] Lote 14 traduzido com sucesso.
+2026-07-14 12:38:09.643 [traducao] [K[ OK ] Lote 15 traduzido com sucesso.
+2026-07-14 12:38:10.197 [traducao] [K[ OK ] Lote 16 traduzido com sucesso.
+2026-07-14 12:38:11.376 [traducao] [K[ OK ] Lote 17 traduzido com sucesso.
+2026-07-14 12:38:12.086 [traducao] [K[ OK ] Lote 18 traduzido com sucesso.
+2026-07-14 12:38:13.027 [traducao] [K[ OK ] Lote 19 traduzido com sucesso.
+2026-07-14 12:38:13.598 [traducao] [K[ OK ] Lote 20 traduzido com sucesso.
+2026-07-14 12:38:14.829 [traducao] [K[ OK ] Lote 21 traduzido com sucesso.
+2026-07-14 12:38:15.789 [traducao] [K[ OK ] Lote 22 traduzido com sucesso.
+2026-07-14 12:38:16.122 [traducao] [K[ OK ] Lote 23 traduzido com sucesso.
+2026-07-14 12:38:16.532 [traducao] [K[ OK ] Lote 24 traduzido com sucesso.
+2026-07-14 12:38:17.582 [traducao] [K[ OK ] Lote 25 traduzido com sucesso.
+2026-07-14 12:38:17.925 [traducao] [K[ OK ] Lote 26 traduzido com sucesso.
+2026-07-14 12:38:19.443 [traducao] [K[ OK ] Lote 27 traduzido com sucesso.
+2026-07-14 12:38:19.832 [traducao] [K[ OK ] Lote 28 traduzido com sucesso.
+2026-07-14 12:38:20.540 [traducao] [K[ OK ] Lote 29 traduzido com sucesso.
+2026-07-14 12:38:21.155 [traducao] [K[ OK ] Lote 30 traduzido com sucesso.
+2026-07-14 12:38:22.326 [traducao] [K[ OK ] Lote 31 traduzido com sucesso.
+2026-07-14 12:38:23.192 [traducao] [K[ OK ] Lote 32 traduzido com sucesso.
+2026-07-14 12:38:23.552 [traducao] [K[ OK ] Lote 33 traduzido com sucesso.
+2026-07-14 12:38:24.023 [traducao] [K[ OK ] Lote 34 traduzido com sucesso.
+2026-07-14 12:38:24.906 [traducao] [K[ OK ] Lote 35 traduzido com sucesso.
+2026-07-14 12:38:25.394 [traducao] [K[ OK ] Lote 36 traduzido com sucesso.
+2026-07-14 12:38:26.132 [traducao] [K[ OK ] Lote 37 traduzido com sucesso.
+2026-07-14 12:38:26.846 [traducao] [K[ OK ] Lote 38 traduzido com sucesso.
+2026-07-14 12:38:27.316 [traducao] [K[ OK ] Lote 39 traduzido com sucesso.
+2026-07-14 12:38:28.458 [traducao] [K[ OK ] Lote 40 traduzido com sucesso.
+2026-07-14 12:38:28.774 [traducao] [K[ OK ] Lote 41 traduzido com sucesso.
+2026-07-14 12:38:29.471 [traducao] [K[ OK ] Lote 42 traduzido com sucesso.
+2026-07-14 12:38:30.282 [traducao] [K[ OK ] Lote 43 traduzido com sucesso.
+2026-07-14 12:38:30.731 [traducao] [K[ OK ] Lote 44 traduzido com sucesso.
+2026-07-14 12:38:31.549 [traducao] [K[ OK ] Lote 45 traduzido com sucesso.
+2026-07-14 12:38:31.943 [traducao] [K[ OK ] Lote 46 traduzido com sucesso.
+2026-07-14 12:38:32.411 [traducao] [K[ OK ] Lote 47 traduzido com sucesso.
+2026-07-14 12:38:32.928 [traducao] [K[ OK ] Lote 48 traduzido com sucesso.
+2026-07-14 12:38:33.450 [traducao] [K[ OK ] Lote 49 traduzido com sucesso.
+2026-07-14 12:38:34.614 [traducao] [K[ OK ] Lote 50 traduzido com sucesso.
+2026-07-14 12:38:35.102 [traducao] [K[ OK ] Lote 51 traduzido com sucesso.
+2026-07-14 12:38:36.222 [traducao] [K[ OK ] Lote 52 traduzido com sucesso.
+2026-07-14 12:38:36.742 [traducao] [K[ OK ] Lote 53 traduzido com sucesso.
+2026-07-14 12:38:37.073 [traducao] [K[ OK ] Lote 54 traduzido com sucesso.
+2026-07-14 12:38:37.751 [traducao] [K[ OK ] Lote 55 traduzido com sucesso.
+2026-07-14 12:38:38.430 [traducao] [K[ OK ] Lote 56 traduzido com sucesso.
+2026-07-14 12:38:39.140 [traducao] [K[ OK ] Lote 57 traduzido com sucesso.
+2026-07-14 12:38:39.884 [traducao] [K[ OK ] Lote 58 traduzido com sucesso.
+2026-07-14 12:38:40.561 [traducao] [K[ OK ] Lote 59 traduzido com sucesso.
+2026-07-14 12:38:41.430 [traducao] [K[ OK ] Lote 60 traduzido com sucesso.
+2026-07-14 12:38:41.887 [traducao] [K[ OK ] Lote 61 traduzido com sucesso.
+2026-07-14 12:38:42.660 [traducao] [K[ OK ] Lote 62 traduzido com sucesso.
+2026-07-14 12:38:43.057 [traducao] [K[ OK ] Lote 63 traduzido com sucesso.
+2026-07-14 12:38:43.780 [traducao] [K[ OK ] Lote 64 traduzido com sucesso.
+2026-07-14 12:38:44.109 [traducao] [K[ OK ] Lote 65 traduzido com sucesso.
+2026-07-14 12:38:44.478 [traducao] [K[ OK ] Lote 66 traduzido com sucesso.
+2026-07-14 12:38:45.739 [traducao] [K[ OK ] Lote 67 traduzido com sucesso.
+2026-07-14 12:38:46.415 [traducao] [K[ OK ] Lote 68 traduzido com sucesso.
+2026-07-14 12:38:46.886 [traducao] [K[ OK ] Lote 69 traduzido com sucesso.
+2026-07-14 12:38:48.681 [traducao] [K[ OK ] Lote 70 traduzido com sucesso.
+2026-07-14 12:38:49.630 [traducao] [K[ OK ] Lote 71 traduzido com sucesso.
