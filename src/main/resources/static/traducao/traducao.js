@@ -37,7 +37,7 @@ export function initTraducao() {
         if (saida) logNoConsole('console-traducao', `Pasta de Saída: ${saida}`, 'info');
         if (contextoId) logNoConsole('console-traducao', `Contexto Ativo: ${contextoId}`, 'info');
         logNoConsole('console-traducao', permitirRetraducao
-            ? 'Proteção de arquivos finais: LIBERADA (backup obrigatório antes da sobrescrita).'
+            ? 'Retradução integral: LIBERADA (cache anterior e arquivos PT-BR serão preservados em backup).'
             : 'Proteção de arquivos finais: ATIVADA.', permitirRetraducao ? 'aviso' : 'info');
 
         try {

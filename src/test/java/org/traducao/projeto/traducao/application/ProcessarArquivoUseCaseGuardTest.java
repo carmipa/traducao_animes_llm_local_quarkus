@@ -72,6 +72,29 @@ class ProcessarArquivoUseCaseGuardTest {
         assertEquals("versao anterior", Files.readString(publicado));
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: comprova que uma retradução liberada começa sem
+     * reutilizar o cache defeituoso que impedia a reconstrução da legenda.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: o cache ativo desaparece somente depois de uma
+     * cópia fiel existir no backup; o conteúdo anterior continua recuperável.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: qualquer erro de cópia/remoção é
+     * propagado pelo método de produção e faz o teste falhar imediatamente.
+     */
+    @Test
+    void retraducaoLiberadaArquivaERetiraCacheAnteriorDoUso() throws IOException {
+        Path cache = pastaTemporaria.resolve("episodio.cache.json");
+        Files.writeString(cache, "cache antigo");
+        Path raizBackup = pastaTemporaria.resolve("backups-cache");
+
+        Path backup = ProcessarArquivoUseCase.arquivarCacheParaRetraducao(cache, raizBackup);
+
+        assertFalse(Files.exists(cache));
+        assertTrue(Files.exists(backup));
+        assertEquals("cache antigo", Files.readString(backup));
+    }
+
     @Test
     void detectaSaidaDeLlmEmLinhaAssPesadaCurta() {
         String original = "{=68}{\\pos(1192,40)\\1c&H00B2BA&\\3c&HB2BABB&"
