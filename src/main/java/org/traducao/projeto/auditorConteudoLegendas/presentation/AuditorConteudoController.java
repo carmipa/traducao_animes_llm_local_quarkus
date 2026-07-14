@@ -43,27 +43,34 @@ public class AuditorConteudoController {
                 .build();
         }
 
-        ModoAuditoria modo = ModoAuditoria.porNome(request.modo());
-        boolean temOriginal = request.caminhoOriginal() != null && !request.caminhoOriginal().isBlank();
-        boolean temTraduzido = request.caminhoTraduzido() != null && !request.caminhoTraduzido().isBlank();
-
-        String erroValidacao = switch (modo) {
-            case AMBAS -> (temOriginal && temTraduzido) ? null
-                : "Caminhos original e traduzido sao obrigatorios.";
-            case ORIGINAL -> temOriginal ? null
-                : "Caminho do arquivo original e obrigatorio.";
-            case TRADUZIDO -> temTraduzido ? null
-                : "Caminho do arquivo traduzido e obrigatorio.";
-        };
-        if (erroValidacao != null) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(erroValidacao).build();
+        // Bug 7 — modo preenchido porém desconhecido é erro do cliente (não vira AMBAS).
+        if (!ModoAuditoria.reconhece(request.modo())) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                .entity("Modo de auditoria invalido: \"" + request.modo()
+                    + "\". Use AMBAS, ORIGINAL ou TRADUZIDO.")
+                .build();
         }
+        ModoAuditoria modo = ModoAuditoria.porNome(request.modo());
 
         try {
-            java.nio.file.Path original = temOriginal
-                ? java.nio.file.Path.of(request.caminhoOriginal().trim()) : null;
-            java.nio.file.Path traduzido = temTraduzido
-                ? java.nio.file.Path.of(request.caminhoTraduzido().trim()) : null;
+            // Bug 11 — normaliza aspas e rejeita caminho sintaticamente inválido com 400.
+            java.nio.file.Path original = parseCaminho(request.caminhoOriginal(), "original");
+            java.nio.file.Path traduzido = parseCaminho(request.caminhoTraduzido(), "traduzido");
+            boolean temOriginal = original != null;
+            boolean temTraduzido = traduzido != null;
+
+            String erroValidacao = switch (modo) {
+                case AMBAS -> (temOriginal && temTraduzido) ? null
+                    : "Caminhos original e traduzido sao obrigatorios.";
+                case ORIGINAL -> temOriginal ? null
+                    : "Caminho do arquivo original e obrigatorio.";
+                case TRADUZIDO -> temTraduzido ? null
+                    : "Caminho do arquivo traduzido e obrigatorio.";
+            };
+            if (erroValidacao != null) {
+                return Response.status(Response.Status.BAD_REQUEST).entity(erroValidacao).build();
+            }
+
             logStreamService.definirCanalAtual("auditor-conteudo");
             long inicioMs = System.currentTimeMillis();
             RelatorioAuditoriaConteudo relatorio = auditorConteudoUseCase.auditar(modo, original, traduzido);
@@ -76,6 +83,35 @@ public class AuditorConteudoController {
                 .build();
         } catch (Exception e) {
             return Response.serverError().entity(e.getMessage()).build();
+        }
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: converte o caminho recebido em {@link java.nio.file.Path}
+     * de forma segura, tolerando aspas coladas e rejeitando entradas inválidas com
+     * mensagem didática (em vez de HTTP 500).
+     * <p>INVARIANTES DO DOMÍNIO: valor ausente/em branco devolve {@code null}; aspas
+     * simples/duplas envolventes são removidas antes de resolver o caminho.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: caminho sintaticamente inválido lança
+     * {@link AuditoriaException} (mapeada para HTTP 400).
+     */
+    private java.nio.file.Path parseCaminho(String valor, String papel) {
+        if (valor == null || valor.isBlank()) {
+            return null;
+        }
+        String limpo = valor.trim();
+        if (limpo.length() >= 2
+            && ((limpo.startsWith("\"") && limpo.endsWith("\""))
+                || (limpo.startsWith("'") && limpo.endsWith("'")))) {
+            limpo = limpo.substring(1, limpo.length() - 1).trim();
+        }
+        if (limpo.isBlank()) {
+            return null;
+        }
+        try {
+            return java.nio.file.Path.of(limpo);
+        } catch (java.nio.file.InvalidPathException e) {
+            throw new AuditoriaException("Caminho " + papel + " invalido: " + valor);
         }
     }
 }

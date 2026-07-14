@@ -66,6 +66,7 @@ public class ValidadorParsingLegenda {
      */
     private List<AnomaliaConteudo> validarSrt(String[] linhas, String prefixo) {
         List<AnomaliaConteudo> anomalias = new ArrayList<>();
+        java.util.Set<String> indicesVistos = new java.util.LinkedHashSet<>();
         int i = 0;
         int n = linhas.length;
         while (i < n) {
@@ -78,7 +79,14 @@ public class ValidadorParsingLegenda {
             String linhaIndice = linhas[i].strip();
             i++;
 
-            if (!linhaIndice.chars().allMatch(Character::isDigit)) {
+            if (!linhaIndice.isEmpty() && linhaIndice.chars().allMatch(Character::isDigit)) {
+                if (!indicesVistos.add(linhaIndice)) {
+                    anomalias.add(new AnomaliaConteudo(AnomaliaConteudo.TipoSeveridade.CRITICAL, getNome(),
+                        prefixo + "Índice de bloco SRT duplicado: \"" + linhaIndice
+                            + "\". Blocos com o mesmo número tornam o pareamento ambíguo.",
+                        null, null, "Renumerar os blocos para que cada índice seja único."));
+                }
+            } else {
                 anomalias.add(new AnomaliaConteudo(AnomaliaConteudo.TipoSeveridade.CRITICAL, getNome(),
                     prefixo + "Índice de bloco SRT não numérico: \"" + linhaIndice
                         + "\". O leitor usaria uma posição sequencial no lugar.",
