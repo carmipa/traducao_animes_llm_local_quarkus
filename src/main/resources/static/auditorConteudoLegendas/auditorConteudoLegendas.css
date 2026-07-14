@@ -16,6 +16,13 @@
     font-size: 20px !important;
 }
 
+/* Utilitário de ocultação escopado ao painel: o projeto não tem um .hidden
+   global (só regras compostas), então garantimos o display:none aqui para as
+   abas esconderem o campo não usado e para resumo/filtros/alerta iniciarem ocultos. */
+#panel-auditor-conteudo .hidden{
+    display: none !important;
+}
+
 /* Abas de modo de análise (Ambas / Só Original / Só Traduzida) */
 #panel-auditor-conteudo .auditor-modo-tabs{
     display: flex;

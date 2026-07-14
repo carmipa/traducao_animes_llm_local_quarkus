@@ -19,16 +19,16 @@
 
     <form id="form-auditor-conteudo" class="standard-form">
         <div class="form-group auditor-campo-original">
-            <label for="auditor-original">Arquivo Original (ASS/SSA/SRT): <span class="help-icon" data-tooltip="O arquivo de legenda original usado como referência. O formato detectado será exibido no relatório.">?</span></label>
+            <label for="auditor-original">Legenda Original — Inglês (EN) · ASS/SSA/SRT: <span class="help-icon" data-tooltip="O arquivo de legenda original (inglês) usado como referência. O formato detectado será exibido no relatório.">?</span></label>
             <div class="input-with-button">
-                <input type="text" id="auditor-original" autocomplete="off" spellcheck="false" placeholder="Caminho do arquivo original">
+                <input type="text" id="auditor-original" autocomplete="off" spellcheck="false" placeholder="Caminho da legenda em inglês">
                 <button type="button" class="btn-procurar" data-target="auditor-original" data-type="arquivo"><span class="material-symbols-outlined btn-inline-icon">folder_open</span>Procurar...</button>
             </div>
         </div>
         <div class="form-group auditor-campo-traduzido">
-            <label for="auditor-traduzido">Arquivo Traduzido (ASS/SSA/SRT): <span class="help-icon" data-tooltip="O arquivo gerado pelo LLM. O relatório identifica seu formato e analisa possíveis danos estruturais.">?</span></label>
+            <label for="auditor-traduzido">Legenda Traduzida — PT-BR · ASS/SSA/SRT: <span class="help-icon" data-tooltip="O arquivo gerado pelo LLM (português). O relatório identifica seu formato e analisa possíveis danos estruturais.">?</span></label>
             <div class="input-with-button">
-                <input type="text" id="auditor-traduzido" autocomplete="off" spellcheck="false" placeholder="Caminho do arquivo traduzido">
+                <input type="text" id="auditor-traduzido" autocomplete="off" spellcheck="false" placeholder="Caminho da legenda em PT-BR">
                 <button type="button" class="btn-procurar" data-target="auditor-traduzido" data-type="arquivo"><span class="material-symbols-outlined btn-inline-icon">folder_open</span>Procurar...</button>
             </div>
         </div>

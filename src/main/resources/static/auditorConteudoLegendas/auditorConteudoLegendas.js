@@ -1,6 +1,6 @@
 import { logNoConsole, mostrarAlerta } from '../js/app.js';
 
-const PAINEL_HTML = 'auditorConteudoLegendas/auditorConteudoLegendas.html?v=3.7';
+const PAINEL_HTML = 'auditorConteudoLegendas/auditorConteudoLegendas.html?v=3.8';
 
 const ORDEM_SEVERIDADE = { CRITICAL: 0, ERROR: 1, WARNING: 2 };
 
