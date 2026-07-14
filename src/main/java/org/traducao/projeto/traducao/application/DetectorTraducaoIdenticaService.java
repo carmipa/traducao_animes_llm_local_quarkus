@@ -26,6 +26,8 @@ import java.util.regex.Pattern;
 public class DetectorTraducaoIdenticaService {
 
     private static final Pattern PADRAO_REMOVE_TAGS_ASS = Pattern.compile("\\{[^}]+}");
+    private static final Pattern PADRAO_GAGUEIRA_NOME = Pattern.compile(
+        "(?iu)(?<![\\p{L}\\p{N}])([\\p{L}])-(?=\\1[\\p{L}])");
 
     private final GerenciadorContexto gerenciadorContexto;
 
@@ -55,6 +57,7 @@ public class DetectorTraducaoIdenticaService {
             return true;
         }
         String textoLimpo = PADRAO_REMOVE_TAGS_ASS.matcher(texto).replaceAll("").strip();
+        textoLimpo = removerGagueiraDeNome(textoLimpo);
         textoLimpo = textoLimpo.replaceAll("[^\\w\\s\\d]", "").strip();
 
         // Um único caractere visível (letra de karaokê por letra, interjeição
@@ -72,9 +75,9 @@ public class DetectorTraducaoIdenticaService {
         if (termoDoLoreAtivo(minusculo)) {
             return true;
         }
-        if (palavras.length == 2
-            && Character.isUpperCase(palavras[0].charAt(0))
-            && Character.isUpperCase(palavras[1].charAt(0))) {
+        if (palavras.length >= 2 && palavras.length <= 4
+            && java.util.Arrays.stream(palavras)
+                .allMatch(p -> !p.isBlank() && Character.isUpperCase(p.charAt(0)))) {
             return java.util.Arrays.stream(palavras)
                 .map(p -> p.toLowerCase(Locale.ROOT))
                 .noneMatch(PALAVRAS_INGLES_COMUNS::contains);
@@ -111,6 +114,14 @@ public class DetectorTraducaoIdenticaService {
         return termoInteiro.matcher(lore.toLowerCase(Locale.ROOT)).find();
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: diferencia um nome próprio isolado de uma palavra
+     * inglesa comum que ainda precisa de tradução.
+     * <p>INVARIANTES DO DOMÍNIO: números, siglas, lore e nomes capitalizados são
+     * preservados; vocabulário conversacional cadastrado nunca vira nome.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: evidência insuficiente mantém o termo
+     * capitalizado para evitar retradução destrutiva de personagem.
+     */
     private boolean deveManterPalavraUnicaIdentica(String textoLimpo) {
         if (textoLimpo.matches("\\d+")) {
             return true;
@@ -124,7 +135,22 @@ public class DetectorTraducaoIdenticaService {
             return false;
         }
 
-        return termoDoLoreAtivo(minusculo);
+        return termoDoLoreAtivo(minusculo)
+            || (textoLimpo.length() >= 3 && Character.isUpperCase(textoLimpo.charAt(0)));
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: normaliza hesitações escritas antes de reconhecer um
+     * nome próprio, permitindo que `E-Eledore` seja comparado como `Eledore`.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: o prefixo só é removido quando a letra após o
+     * hífen repete a letra hesitada; palavras legítimas como `X-ray` permanecem.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: texto nulo não é esperado pelo chamador;
+     * texto sem o padrão é devolvido integralmente.
+     */
+    private String removerGagueiraDeNome(String texto) {
+        return PADRAO_GAGUEIRA_NOME.matcher(texto).replaceAll("");
     }
 
     /**

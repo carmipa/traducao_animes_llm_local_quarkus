@@ -48,6 +48,18 @@ public class DetectorConcordanciaService {
             + "irritada|confusa|ansiosa|fraca|linda|feia|brava|loca|louca|"
             + "assustada|machucada|ferida|ocupada|perdida|viva|morta|bêbada|bebada|doida";
 
+    private static final String ADJ_MASC_POSPOSTO =
+        "novo|velho|pequeno|pronto|cansado|sozinho|animado|nervoso|preocupado|furioso|"
+            + "surpreso|certo|errado|bom|mau|satisfeito|irritado|confuso|ansioso|fraco|"
+            + "lindo|feio|bravo|loco|louco|assustado|machucado|ferido|ocupado|perdido|"
+            + "vivo|morto|bêbado|bebado|doido";
+
+    private static final String ADJ_FEM_POSPOSTO =
+        "nova|velha|pequena|pronta|cansada|sozinha|animada|nervosa|preocupada|furiosa|"
+            + "surpresa|certa|errada|boa|má|ma|satisfeita|irritada|confusa|ansiosa|fraca|"
+            + "linda|feia|brava|loca|louca|assustada|machucada|ferida|ocupada|perdida|"
+            + "viva|morta|bêbada|bebada|doida";
+
     private static final String PARTIC_MASC =
         "cansado|pronto|preocupado|animado|nervoso|sozinho|furioso|surpreso|certo|errado|"
             + "satisfeito|irritado|confuso|ansioso|loco|louco|assustado|machucado|ferido|"
@@ -58,8 +70,8 @@ public class DetectorConcordanciaService {
             + "satisfeita|irritada|confusa|ansiosa|loca|louca|assustada|machucada|ferida|"
             + "ocupada|perdida|viva|morta|bêbada|bebada|doida";
 
-    private static final String TRATAMENTO_MASC = "senhor|moço|moco|garoto|rapaz|cara|homem|menino|irmão|irmao|pai";
-    private static final String TRATAMENTO_FEM = "senhora|moça|moca|garota|menina|dama|irmã|irma|mãe|mae|donzela";
+    private static final String TRATAMENTO_MASC = "senhor|moço|moco|garoto|rapaz|cara|homem|menino";
+    private static final String TRATAMENTO_FEM = "senhora|moça|moca|garota|menina|dama|donzela";
 
     private static final String VERBO_AUX =
         "está|esta|estava|é|era|foi|será|sera|ficou|parece|continua|ficará|ficara|estará|estara|"
@@ -73,7 +85,7 @@ public class DetectorConcordanciaService {
         Pattern.compile("\\b(o|um|este|esse|aquele|do|no|ao|pelo|num)\\s+(" + SUBST_FEM + ")\\b", FLAGS);
 
     private static final Pattern ART_FEM_COM_SUBST_MASC =
-        Pattern.compile("\\b(a|uma|esta|essa|aquela|da|na|à|pela|numa)\\s+(" + SUBST_MASC + ")\\b", FLAGS);
+        Pattern.compile("\\b(uma|esta|essa|aquela|da|na|à|pela|numa)\\s+(" + SUBST_MASC + ")\\b", FLAGS);
 
     private static final Pattern ADJ_MASC_COM_SUBST_FEM =
         Pattern.compile("\\b(" + ADJ_MASC + ")\\s+(" + SUBST_FEM + ")\\b", FLAGS);
@@ -82,10 +94,27 @@ public class DetectorConcordanciaService {
         Pattern.compile("\\b(" + ADJ_FEM + ")\\s+(" + SUBST_MASC + ")\\b", FLAGS);
 
     private static final Pattern SUBST_FEM_COM_ADJ_MASC =
-        Pattern.compile("\\b(" + SUBST_FEM + ")\\s+(" + ADJ_MASC + ")\\b", FLAGS);
+        Pattern.compile("\\b(" + SUBST_FEM + ")\\s+(" + ADJ_MASC_POSPOSTO + ")\\b", FLAGS);
 
     private static final Pattern SUBST_MASC_COM_ADJ_FEM =
-        Pattern.compile("\\b(" + SUBST_MASC + ")\\s+(" + ADJ_FEM + ")\\b", FLAGS);
+        Pattern.compile("\\b(" + SUBST_MASC + ")\\s+(" + ADJ_FEM_POSPOSTO + ")\\b", FLAGS);
+
+    private static final Pattern RELACAO_PAI_EN = Pattern.compile("\\b(father|dad|daddy)\\b", FLAGS);
+    private static final Pattern RELACAO_MAE_EN = Pattern.compile("\\b(mother|mom|mommy|mum|mummy)\\b", FLAGS);
+    private static final Pattern RELACAO_FILHO_EN = Pattern.compile("\\bson\\b", FLAGS);
+    private static final Pattern RELACAO_FILHA_EN = Pattern.compile("\\bdaughter\\b", FLAGS);
+    private static final Pattern RELACAO_IRMAO_EN = Pattern.compile("\\bbrother\\b", FLAGS);
+    private static final Pattern RELACAO_IRMA_EN = Pattern.compile("\\bsister\\b", FLAGS);
+    private static final Pattern PAI_PT = Pattern.compile("\\b(pai|papai)\\b", FLAGS);
+    private static final Pattern MAE_PT = Pattern.compile("\\b(mãe|mae|mamãe|mamae)\\b", FLAGS);
+    private static final Pattern FILHO_PT = Pattern.compile("\\bfilho\\b", FLAGS);
+    private static final Pattern FILHA_PT = Pattern.compile("\\bfilha\\b", FLAGS);
+    private static final Pattern IRMAO_PT = Pattern.compile("\\b(irmão|irmao)\\b", FLAGS);
+    private static final Pattern IRMA_PT = Pattern.compile("\\b(irmã|irma)\\b", FLAGS);
+    private static final Pattern PROFANIDADE_FORTE_PT = Pattern.compile("\\bfilh[oa] da puta\\b", FLAGS);
+    private static final Pattern PROFANIDADE_FORTE_EN = Pattern.compile(
+        "\\b(son of a bitch|motherfucker|fuck(?:er|ing)?|bitch|whore|bastard)\\b", FLAGS);
+    private static final Pattern GRACAS_AO_DEUS = Pattern.compile("\\bgraças ao deus\\b", FLAGS);
 
     // "a" sozinho fica fora do segundo grupo: é a preposição invariante em gênero
     // ("disse a ele" / "disse a ela" são ambos corretos), não o artigo feminino —
@@ -195,6 +224,16 @@ public class DetectorConcordanciaService {
     private static final Pattern DELA_COM_HIM =
         Pattern.compile("\\bdela\\b", FLAGS);
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: reúne evidências objetivas de concordância,
+     * parentesco, expressão idiomática e agressividade indevida numa fala PT-BR.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: tags ASS são invisíveis à análise; gênero ou
+     * parentesco só cruza idiomas quando o inglês fornece evidência inequívoca.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: tradução ausente retorna resultado
+     * limpo e nenhuma alteração é realizada no conteúdo recebido.
+     */
     public ResultadoDeteccaoConcordancia analisar(String originalIngles, String traducaoPt) {
         if (traducaoPt == null || traducaoPt.isBlank()) {
             return ResultadoDeteccaoConcordancia.limpo();
@@ -205,11 +244,15 @@ public class DetectorConcordanciaService {
 
         detectarConcordanciaNominal(texto, motivos);
         detectarVerboPredicado(texto, motivos);
+        adicionarSeEncontrado(motivos, GRACAS_AO_DEUS, texto,
+            "Expressão idiomática inválida; em PT-BR usa-se 'graças a Deus'");
 
         if (originalIngles != null && !originalIngles.isBlank()) {
             String original = removerTagsAss(originalIngles);
             detectarPronomesECruzamento(original, texto, motivos);
             detectarTratamentos(original, texto, motivos);
+            detectarParentesco(original, texto, motivos);
+            detectarAgressividadeIntroduzida(original, texto, motivos);
         }
 
         if (motivos.isEmpty()) {
@@ -319,6 +362,70 @@ public class DetectorConcordanciaService {
         if (mascEn && !femEn) {
             adicionarSeEncontrado(motivos, TRATAMENTO_FEM_COM_MASC_EN, texto,
                 "Tratamento/vocativo feminino (senhora/garota/moça) com referência masculina no original");
+        }
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: encontra troca objetiva de parentesco entre o inglês
+     * e o PT-BR sem inferir gênero a partir de outros substantivos da frase.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: a regra só dispara quando o original contém um
+     * único lado da relação relevante; construções com pai e mãe juntos ficam
+     * para revisão contextual.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: referência ambígua não adiciona motivo
+     * e a fala permanece inalterada.
+     */
+    private void detectarParentesco(String original, String texto, Set<String> motivos) {
+        detectarRelacaoInvertida(original, texto, motivos, RELACAO_PAI_EN, RELACAO_MAE_EN, MAE_PT,
+            "Original menciona pai, mas a tradução usa mãe");
+        detectarRelacaoInvertida(original, texto, motivos, RELACAO_MAE_EN, RELACAO_PAI_EN, PAI_PT,
+            "Original menciona mãe, mas a tradução usa pai");
+        detectarRelacaoInvertida(original, texto, motivos, RELACAO_FILHO_EN, RELACAO_FILHA_EN, FILHA_PT,
+            "Original menciona filho, mas a tradução usa filha");
+        detectarRelacaoInvertida(original, texto, motivos, RELACAO_FILHA_EN, RELACAO_FILHO_EN, FILHO_PT,
+            "Original menciona filha, mas a tradução usa filho");
+        detectarRelacaoInvertida(original, texto, motivos, RELACAO_IRMAO_EN, RELACAO_IRMA_EN, IRMA_PT,
+            "Original menciona irmão, mas a tradução usa irmã");
+        detectarRelacaoInvertida(original, texto, motivos, RELACAO_IRMA_EN, RELACAO_IRMAO_EN, IRMAO_PT,
+            "Original menciona irmã, mas a tradução usa irmão");
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: aplica uma comparação de parentesco somente quando
+     * a fala inglesa fornece evidência inequívoca da relação.
+     * <p>INVARIANTES DO DOMÍNIO: presença simultânea das duas relações bloqueia
+     * a heurística para evitar associar pessoas diferentes.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: não registra diagnóstico especulativo.
+     */
+    private void detectarRelacaoInvertida(
+        String original,
+        String texto,
+        Set<String> motivos,
+        Pattern esperadaEn,
+        Pattern opostaEn,
+        Pattern opostaPt,
+        String descricao
+    ) {
+        if (esperadaEn.matcher(original).find()
+            && !opostaEn.matcher(original).find()
+            && opostaPt.matcher(texto).find()) {
+            motivos.add(descricao);
+        }
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: impede que uma revisão neutra transforme a fala em
+     * insulto explícito que não existe no original.
+     * <p>INVARIANTES DO DOMÍNIO: palavrão equivalente presente no inglês permite
+     * a adaptação; somente introdução unilateral é sinalizada.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: linguagem não cadastrada não é julgada
+     * por esta regra conservadora.
+     */
+    private void detectarAgressividadeIntroduzida(String original, String texto, Set<String> motivos) {
+        if (PROFANIDADE_FORTE_PT.matcher(texto).find()
+            && !PROFANIDADE_FORTE_EN.matcher(original).find()) {
+            motivos.add("Tradução introduziu palavrão forte ausente no original");
         }
     }
 

@@ -36,7 +36,7 @@ public class ValidadorTraducaoService {
             + "throughout|till|toward|under|underneath|until|upon|within|although|unless|"
             + "does|did|been|had|went|gone|got|make|made|take|took|saw|seen|thought|transform|"
             + "rather|unknown|ensign|always|never|sometimes|often|usually|really|also|even|"
-            + "every|please|thank|thanks|sorry)\\b",
+            + "every|please|thank|thanks|sorry|feds)\\b",
         Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CHARACTER_CLASS
     );
 

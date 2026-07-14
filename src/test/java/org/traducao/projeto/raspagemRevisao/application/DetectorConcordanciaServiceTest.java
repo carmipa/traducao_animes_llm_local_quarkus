@@ -96,4 +96,41 @@ class DetectorConcordanciaServiceTest {
     void tagsAssNaoAtrapalhamADeteccao() {
         assertTrue(detector.analisar(null, "{\\i1}ela está cansado{\\i0}").suspeito());
     }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: preserva expressões e possessivos naturais do PT-BR.
+     * <p>INVARIANTES DO DOMÍNIO: preposição de `graças a Deus` e `seu` ligado a
+     * `nome` não concordam com o substantivo feminino anterior.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: falso positivo reprova o teste.
+     */
+    @Test
+    void expressoesCorretasNaoGeramFalsoPositivo() {
+        assertFalse(detector.analisar("Thank goodness.", "Graças a Deus.").suspeito());
+        assertFalse(detector.analisar(
+            "And Aina gave that girl her own name.",
+            "E Aina deu àquela garota seu próprio nome.").suspeito());
+        assertFalse(detector.analisar("You son of a hitch!", "Filho da mãe!").suspeito());
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: detecta troca inequívoca de pai por mãe sem depender do LLM.
+     * <p>INVARIANTES DO DOMÍNIO: `dad` sem referência materna torna `mãe` incompatível.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: ausência do motivo reprova o teste.
+     */
+    @Test
+    void parentescoInvertidoEhSuspeito() {
+        assertTrue(detector.analisar(
+            "Make sure my dad gets this info!", "Minha mãe precisa saber disso!").suspeito());
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: bloqueia aumento de agressividade criado pelo revisor.
+     * <p>INVARIANTES DO DOMÍNIO: palavrão já presente no original continua permitido.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: classificação invertida reprova o teste.
+     */
+    @Test
+    void detectaPalavraoIntroduzidoMasPermiteEquivalenteDoOriginal() {
+        assertTrue(detector.analisar("You son of a hitch!", "Filho da puta!").suspeito());
+        assertFalse(detector.analisar("You son of a bitch!", "Filho da puta!").suspeito());
+    }
 }

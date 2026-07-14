@@ -35,7 +35,7 @@ class RevisarLegendasContextoTest {
             new ContextoTeste("gundam_nt", "Gundam Narrative")));
         RevisarLegendasUseCase useCase = new RevisarLegendasUseCase(
             null, null, null, null, null, null, null, null, null, gerenciador,
-            null, null, null, null, null, new ProtetorTermosLoreService());
+            null, null, null, null, null, new ProtetorTermosLoreService(), null);
         ProvenienciaCache proveniencia = new ProvenienciaCache(
             1, "gundam_nt", "hash", "modelo", "en", "pt-br");
 

@@ -90,6 +90,7 @@ public class RevisarLegendasUseCase {
     private final DetectorEfeitoKaraokeService detectorKaraoke;
     private final ProtecaoLegendaAssService protecaoAss;
     private final ProtetorTermosLoreService protetorLore;
+    private final CorretorDeterministicoConcordanciaService corretorDeterministico;
 
     /**
      * PROPÓSITO DE NEGÓCIO: compõe a revisão final de legendas com leitura de
@@ -117,7 +118,8 @@ public class RevisarLegendasUseCase {
         TradutorProperties propriedades,
         DetectorEfeitoKaraokeService detectorKaraoke,
         ProtecaoLegendaAssService protecaoAss,
-        ProtetorTermosLoreService protetorLore
+        ProtetorTermosLoreService protetorLore,
+        CorretorDeterministicoConcordanciaService corretorDeterministico
     ) {
         this.leitor = leitor;
         this.escritor = escritor;
@@ -135,6 +137,7 @@ public class RevisarLegendasUseCase {
         this.detectorKaraoke = detectorKaraoke;
         this.protecaoAss = protecaoAss;
         this.protetorLore = protetorLore;
+        this.corretorDeterministico = corretorDeterministico;
     }
 
     /**
@@ -746,6 +749,26 @@ public class RevisarLegendasUseCase {
             String textoMascOriginal = temOriginalEn
                 ? mascaradorTags.mascarar(originalEn).texto()
                 : null;
+            Optional<String> correcaoDeterministica = corretorDeterministico.corrigir(
+                originalEn, traducaoAtual);
+            if (correcaoDeterministica.isPresent()
+                && correcaoEhSegura(
+                    originalEn, traducaoAtual, correcaoDeterministica.get(), auditoria, contexto)) {
+                String corrigida = correcaoDeterministica.get();
+                out("     PT corrigido por regra segura: " + AnsiCores.GREEN + corrigida + AnsiCores.RESET);
+                detalhesRevisao.add(new DetalheRevisao(
+                    arquivoPt.getFileName().toString(), evento.indice(), evento.estilo(),
+                    "CORRIGIDA_REGRA_SEGURA", auditoria.motivos(),
+                    "Contradição objetiva corrigida localmente, sem chamar LLM ou Google.",
+                    originalEn, traducaoAtual, corrigida));
+                eventosAtualizados.add(evento.comTexto(corrigida));
+                corrigidasNesteArquivo++;
+                modificado = true;
+                if (textoMascOriginal != null) {
+                    cacheRevisaoMasc.put(textoMascOriginal, mascaradorTags.mascarar(corrigida).texto());
+                }
+                continue;
+            }
             if (textoMascOriginal != null && revisoesSemAlteracao.contains(textoMascOriginal)) {
                 totalPendentes[0]++;
                 eventosAtualizados.add(evento);
@@ -911,7 +934,7 @@ public class RevisarLegendasUseCase {
      * fala atual sem introduzir alucinação ou piorar a auditoria.
      *
      * <p>INVARIANTES DO DOMÍNIO: texto vazio, alteração de termo canônico,
-     * suspeita estrutural e resultado com quantidade igual/maior de problemas
+     * suspeita estrutural, problema novo e resultado sem redução de problemas
      * são sempre rejeitados.
      *
      * <p>COMPORTAMENTO EM CASO DE FALHA: validação que lança exceção retorna
@@ -940,6 +963,14 @@ public class RevisarLegendasUseCase {
             return false;
         }
         ResultadoDeteccaoConcordancia posterior = auditor.auditar(original, candidata);
+        boolean introduziuProblemaNovo = posterior.motivos().stream()
+            .anyMatch(motivo -> !auditoriaAnterior.motivos().contains(motivo));
+        if (introduziuProblemaNovo) {
+            out("     " + AnsiCores.YELLOW
+                + "Correção rejeitada: a proposta introduziu um problema diferente do original."
+                + AnsiCores.RESET);
+            return false;
+        }
         return !posterior.suspeito()
             || posterior.motivos().size() < auditoriaAnterior.motivos().size();
     }

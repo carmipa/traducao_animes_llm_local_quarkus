@@ -86,4 +86,19 @@ class ValidadorTraducaoServiceTest {
         assertThrows(AlucinacaoDetectadaException.class, () ->
             validador.validarFala("{\\i1}Tradução: Ele nunca vai desistir.{\\i0}"));
     }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: impede que a abreviação coloquial inglesa `Feds`
+     * sobreviva numa fala declarada como PT-BR.
+     * <p>INVARIANTES DO DOMÍNIO: `federais` permanece aceito; somente o token
+     * inglês isolado é rejeitado.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: aceitação do resíduo reprova o teste.
+     */
+    @Test
+    void rejeitaFedsComoResiduoIngles() {
+        assertThrows(AlucinacaoDetectadaException.class, () ->
+            validador.validarFala("Mesmo que os Feds não sejam tão burros."));
+        assertDoesNotThrow(() ->
+            validador.validarFala("Nem os federais são tão burros."));
+    }
 }
