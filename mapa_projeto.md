@@ -2,9 +2,9 @@
  MAPA ESTRUTURAL DO PROJETO - TRACKER ANIMES
 ================================================================================
  Raiz do repositorio      : traducao_animes_llm_local_quarkus
- Pastas mapeadas          : 448
- Arquivos (na arvore)     : 904
- Arquivos-fonte indexados : 375  (.java: 375 | .py: 0)
+ Pastas mapeadas          : 498
+ Arquivos (na arvore)     : 1006
+ Arquivos-fonte indexados : 377  (.java: 377 | .py: 0)
  Memoria viva do projeto  : CEREBRO_IA.md (na raiz do repositorio)
 
  Objetivo: mapa de contexto para LLMs navegarem os diretorios e
@@ -61,8 +61,10 @@ traducao_animes_llm_local_quarkus/
 │   │   │   └── [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3_PT-BR.ass
 │   │   ├── revisao_20260713_195000_913/
 │   │   │   └── [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3_PT-BR.ass
-│   │   └── revisao_20260713_195010_433/
-│   │       └── [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3_PT-BR.ass
+│   │   ├── revisao_20260713_195010_433/
+│   │   │   └── [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3_PT-BR.ass
+│   │   └── revisao_20260714_090658_133/
+│   │       └── show_PT-BR.ass
 │   ├── revisao-lore/
 │   │   ├── rejeitadas/
 │   │   │   └── rejeitada_20260713_192820/
@@ -121,6 +123,12 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-10227280303715500912/
 │   │   ├── auditoria_conteudo_20260714_063942.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-10296441807073678817/
+│   │   ├── troca_fontes_20260714_083847.json
+│   │   └── troca_fontes_20260714_083847.md
+│   ├── junit-10325364391185026114/
+│   │   ├── auditoria_conteudo_20260714_090738.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-10429223382247824866/
 │   │   ├── auditoria_conteudo_20260713_203404.json
 │   │   └── telemetria_compartilhada.json
@@ -139,11 +147,20 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-10789098657161725398/
 │   │   ├── troca_fontes_20260713_183453.json
 │   │   └── troca_fontes_20260713_183453.md
+│   ├── junit-10800045146527051385/
+│   │   ├── auditoria_conteudo_20260714_085050.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-10841437506919976255/
 │   │   ├── auditoria_conteudo_20260713_203136.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-10927825506831782055/
+│   │   ├── auditoria_conteudo_20260714_080426.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-10957996537157011652/
 │   │   ├── auditoria_conteudo_20260714_063949.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-11010400001348860166/
+│   │   ├── auditoria_conteudo_20260714_085049.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-11032184801729803761/
 │   │   ├── auditoria_conteudo_20260714_064611.json
@@ -172,9 +189,18 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-1162096832399206289/
 │   │   ├── troca_fontes_20260713_191025.json
 │   │   └── troca_fontes_20260713_191025.md
+│   ├── junit-11945316342467234474/
+│   │   ├── auditoria_conteudo_20260714_083845.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-11971151956224538049/
+│   │   ├── auditoria_conteudo_20260714_085050.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-12123834374115920367/
 │   │   ├── troca_fontes_20260714_063944.json
 │   │   └── troca_fontes_20260714_063944.md
+│   ├── junit-12149220423983856618/
+│   │   ├── auditoria_conteudo_20260714_080426.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-1261949600736740632/
 │   │   ├── auditoria_conteudo_20260714_074234.json
 │   │   └── telemetria_compartilhada.json
@@ -187,11 +213,26 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-12751352410058798423/
 │   │   ├── troca_fontes_20260713_203145.json
 │   │   └── troca_fontes_20260713_203145.md
+│   ├── junit-12790831391675029417/
+│   │   ├── auditoria_conteudo_20260714_084637.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-12828562125860443501/
+│   │   ├── auditoria_conteudo_20260714_084637.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-12866379529194780344/
+│   │   ├── auditoria_conteudo_20260714_083839.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-12874932348256718237/
 │   │   ├── troca_fontes_20260713_203159.json
 │   │   └── troca_fontes_20260713_203159.md
 │   ├── junit-12883582640621963419/
 │   │   ├── auditoria_conteudo_20260714_074228.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-12927983631885964657/
+│   │   ├── auditoria_conteudo_20260714_080426.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-13002521823633966300/
+│   │   ├── auditoria_conteudo_20260714_080426.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-13117649771535326346/
 │   │   ├── auditoria_conteudo_20260714_063955.json
@@ -232,6 +273,9 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-14155822005978389924/
 │   │   ├── auditoria_conteudo_20260713_191102.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-14245657265462115852/
+│   │   ├── auditoria_conteudo_20260714_085050.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-14260166133412252573/
 │   │   ├── auditoria_conteudo_20260713_191019.json
 │   │   └── telemetria_compartilhada.json
@@ -246,6 +290,9 @@ traducao_animes_llm_local_quarkus/
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-14641184375152775591/
 │   │   ├── auditoria_conteudo_20260713_191825.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-14706871620832008205/
+│   │   ├── auditoria_conteudo_20260714_085050.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-14771635863309894571/
 │   │   ├── auditoria_conteudo_20260714_065139.json
@@ -273,6 +320,9 @@ traducao_animes_llm_local_quarkus/
 │   │   └── troca_fontes_20260714_063944.md
 │   ├── junit-1504525058248804194/
 │   │   ├── auditoria_conteudo_20260713_203404.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-15063090062481993946/
+│   │   ├── auditoria_conteudo_20260714_080426.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-1520803669190826890/
 │   │   ├── auditoria_conteudo_20260713_194727.json
@@ -313,6 +363,9 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-1625256290555820593/
 │   │   ├── auditoria_conteudo_20260714_065134.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-16395871962252049303/
+│   │   ├── auditoria_conteudo_20260714_084638.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-16436945431471805262/
 │   │   ├── auditoria_conteudo_20260714_064611.json
 │   │   └── telemetria_compartilhada.json
@@ -340,6 +393,12 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-17022578891640677104/
 │   │   ├── troca_fontes_20260713_200754.json
 │   │   └── troca_fontes_20260713_200754.md
+│   ├── junit-17023969779175382232/
+│   │   ├── auditoria_conteudo_20260714_084638.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-17066534629611773197/
+│   │   ├── auditoria_conteudo_20260714_083839.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-1709835422015276158/
 │   │   ├── auditoria_conteudo_20260713_190259.json
 │   │   └── telemetria_compartilhada.json
@@ -355,6 +414,9 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-17585511609345770306/
 │   │   ├── auditoria_conteudo_20260713_203231.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-17605817806758284347/
+│   │   ├── auditoria_conteudo_20260714_084632.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-17629466230037755750/
 │   │   ├── troca_fontes_20260713_200754.json
 │   │   └── troca_fontes_20260713_200754.md
@@ -369,6 +431,9 @@ traducao_animes_llm_local_quarkus/
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-17772477277470091695/
 │   │   ├── auditoria_conteudo_20260714_064611.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-17774651201826920578/
+│   │   ├── auditoria_conteudo_20260714_090738.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-17789439661901216037/
 │   │   ├── auditoria_conteudo_20260714_080250.json
@@ -391,8 +456,17 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-2042233824232254696/
 │   │   ├── auditoria_conteudo_20260713_184819.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-2288306071147125870/
+│   │   ├── auditoria_conteudo_20260714_084638.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-2538790557394439828/
 │   │   ├── auditoria_conteudo_20260714_065139.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-2620016672050343057/
+│   │   ├── auditoria_conteudo_20260714_083845.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-2909319590784646655/
+│   │   ├── auditoria_conteudo_20260714_083845.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-2937194050174819637/
 │   │   ├── auditoria_conteudo_20260713_191144.json
@@ -433,6 +507,9 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-3774972592274155597/
 │   │   ├── troca_fontes_20260713_193506.json
 │   │   └── troca_fontes_20260713_193506.md
+│   ├── junit-4302972346473643744/
+│   │   ├── auditoria_conteudo_20260714_083845.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-4312549584621142245/
 │   │   ├── troca_fontes_20260713_194729.json
 │   │   └── troca_fontes_20260713_194729.md
@@ -456,6 +533,9 @@ traducao_animes_llm_local_quarkus/
 │   │   └── troca_fontes_20260713_203159.md
 │   ├── junit-4630556452204909147/
 │   │   ├── auditoria_conteudo_20260714_065324.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-4695863859728375913/
+│   │   ├── auditoria_conteudo_20260714_083845.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-4745415262813171141/
 │   │   ├── troca_fontes_20260713_185921.json
@@ -487,14 +567,26 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-5211850075562945617/
 │   │   ├── auditoria_conteudo_20260714_065330.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-5270623805588409653/
+│   │   ├── auditoria_conteudo_20260714_085050.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-5461244447677747877/
 │   │   ├── auditoria_conteudo_20260713_191024.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-5504425162928594165/
+│   │   ├── troca_fontes_20260714_080428.json
+│   │   └── troca_fontes_20260714_080428.md
 │   ├── junit-5605091103497163376/
 │   │   ├── auditoria_conteudo_20260714_065139.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-5623659765985628960/
 │   │   ├── auditoria_conteudo_20260714_075523.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-5653249531396471157/
+│   │   ├── troca_fontes_20260714_084641.json
+│   │   └── troca_fontes_20260714_084641.md
+│   ├── junit-5733560377347049329/
+│   │   ├── auditoria_conteudo_20260714_080426.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-5773223045814514426/
 │   │   ├── troca_fontes_20260713_191827.json
@@ -523,8 +615,17 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-6110561904452410317/
 │   │   ├── auditoria_conteudo_20260713_200747.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-6189847854890890883/
+│   │   ├── auditoria_conteudo_20260714_085050.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-6202379203316285097/
 │   │   ├── auditoria_conteudo_20260713_191825.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-6239023583404095605/
+│   │   ├── auditoria_conteudo_20260714_085050.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-6370323400678249413/
+│   │   ├── auditoria_conteudo_20260714_080426.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-6473117663401957358/
 │   │   ├── auditoria_conteudo_20260714_065029.json
@@ -532,8 +633,14 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-6501039598696197998/
 │   │   ├── troca_fontes_20260713_191025.json
 │   │   └── troca_fontes_20260713_191025.md
+│   ├── junit-6604696115409700194/
+│   │   ├── troca_fontes_20260714_083847.json
+│   │   └── troca_fontes_20260714_083847.md
 │   ├── junit-6764077044226710273/
 │   │   ├── auditoria_conteudo_20260714_065139.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-6820083062054445444/
+│   │   ├── auditoria_conteudo_20260714_080426.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-6879107851720676150/
 │   │   ├── troca_fontes_20260713_183346.json
@@ -556,11 +663,17 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-7180719885411323645/
 │   │   ├── auditoria_conteudo_20260713_191037.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-7204380481212106540/
+│   │   ├── auditoria_conteudo_20260714_083845.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-7260187239034368309/
 │   │   ├── auditoria_conteudo_20260713_184819.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-7338170047583057968/
 │   │   ├── auditoria_conteudo_20260713_185920.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-745701628019155795/
+│   │   ├── auditoria_conteudo_20260714_085050.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-7545564788037825271/
 │   │   ├── auditoria_conteudo_20260713_194722.json
@@ -580,12 +693,18 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-7648015884372910295/
 │   │   ├── auditoria_conteudo_20260713_190204.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-7648598115810036914/
+│   │   ├── troca_fontes_20260714_084641.json
+│   │   └── troca_fontes_20260714_084641.md
 │   ├── junit-771100686976618595/
 │   │   ├── auditoria_conteudo_20260714_074234.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-7849950672529752735/
 │   │   ├── troca_fontes_20260713_191827.json
 │   │   └── troca_fontes_20260713_191827.md
+│   ├── junit-7936751565251655046/
+│   │   ├── auditoria_conteudo_20260714_084638.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-794671504824127589/
 │   │   ├── troca_fontes_20260713_183412.json
 │   │   └── troca_fontes_20260713_183412.md
@@ -594,6 +713,9 @@ traducao_animes_llm_local_quarkus/
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-8046926130290907999/
 │   │   ├── auditoria_conteudo_20260713_203151.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-8110001848739573292/
+│   │   ├── auditoria_conteudo_20260714_083845.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-8207709275410332562/
 │   │   ├── auditoria_conteudo_20260714_065034.json
@@ -604,14 +726,35 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-8390916704791800574/
 │   │   ├── auditoria_conteudo_20260713_190204.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-8423884190379317235/
+│   │   ├── auditoria_conteudo_20260714_085050.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-849663332384217450/
 │   │   ├── auditoria_conteudo_20260713_203157.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-8635486625755951636/
+│   │   ├── troca_fontes_20260714_080428.json
+│   │   └── troca_fontes_20260714_080428.md
+│   ├── junit-8694338198212205719/
+│   │   ├── auditoria_conteudo_20260714_084638.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-886673865692128015/
 │   │   ├── auditoria_conteudo_20260714_064656.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-89741975207636719/
+│   │   ├── auditoria_conteudo_20260714_084638.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-8990704934238772048/
+│   │   ├── auditoria_conteudo_20260714_084632.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-9059641419312351110/
 │   │   ├── auditoria_conteudo_20260714_075140.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-9177526898119177953/
+│   │   ├── auditoria_conteudo_20260714_090653.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-9218981569399800144/
+│   │   ├── auditoria_conteudo_20260714_090653.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-9267345309690367472/
 │   │   ├── troca_fontes_20260713_184821.json
@@ -630,6 +773,9 @@ traducao_animes_llm_local_quarkus/
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-9699803367819847090/
 │   │   ├── auditoria_conteudo_20260713_190253.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-9720514220370106886/
+│   │   ├── auditoria_conteudo_20260714_083845.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-9973901432443234060/
 │   │   ├── auditoria_conteudo_20260713_200753.json
@@ -657,16 +803,20 @@ traducao_animes_llm_local_quarkus/
 │   │   ├── telemetria_compartilhada.json
 │   │   ├── troca_fontes_20260713_195646.json
 │   │   └── troca_fontes_20260713_195646.md
-│   └── legendas ptbr/
-│       ├── revisao_concordancia_legendas_20260713_221335.json
-│       ├── revisao_concordancia_legendas_20260713_221335.txt
-│       ├── revisao_concordancia_legendas_20260713_221514.json
-│       ├── revisao_concordancia_legendas_20260713_221514.txt
-│       ├── revisao_concordancia_legendas_20260713_221933.json
-│       ├── revisao_concordancia_legendas_20260713_221933.txt
-│       ├── revisao_legendas_20260713_222039.json
-│       ├── revisao_legendas_20260713_222039.txt
-│       ├── revisao_lore_20260713_222436.json
+│   ├── legendas ptbr/
+│   │   ├── revisao_concordancia_legendas_20260713_221335.json
+│   │   ├── revisao_concordancia_legendas_20260713_221335.txt
+│   │   ├── revisao_concordancia_legendas_20260713_221514.json
+│   │   ├── revisao_concordancia_legendas_20260713_221514.txt
+│   │   ├── revisao_concordancia_legendas_20260713_221933.json
+│   │   ├── revisao_concordancia_legendas_20260713_221933.txt
+│   │   ├── revisao_legendas_20260713_222039.json
+│   │   ├── revisao_legendas_20260713_222039.txt
+│   │   ├── revisao_lore_20260713_222436.json
+│   │   └── telemetria_compartilhada.json
+│   └── pt/
+│       ├── revisao_legendas_20260714_090658.json
+│       ├── revisao_legendas_20260714_090658.txt
 │       └── telemetria_compartilhada.json
 ├── src/
 │   ├── main/
@@ -1295,6 +1445,8 @@ traducao_animes_llm_local_quarkus/
 │                       │       ├── LeitorCacheReferenciaServiceTest.java
 │                       │       ├── ResultadoRevisaoLegendasTest.java
 │                       │       ├── RevisarCacheUseCaseTest.java
+│                       │       ├── RevisarLegendasCacheIntegracaoTest.java
+│                       │       ├── RevisarLegendasCacheSeguroTest.java
 │                       │       ├── RevisarLegendasContextoTest.java
 │                       │       ├── RevisarLegendasProtecaoMassaTest.java
 │                       │       └── SincronizadorLegendaCacheServiceTest.java
@@ -3269,6 +3421,22 @@ traducao_animes_llm_local_quarkus/
       <p>COMPORTAMENTO EM CASO DE FALHA: status divergente reprova o teste.
   - RevisarCacheUseCaseTest.java
       (sem cabecalho explicativo)
+  - RevisarLegendasCacheIntegracaoTest.java
+      PROPÓSITO DE NEGÓCIO: cobre o fluxo completo da Opção 6 no modo Cache
+      (endpoint → sincronização → gravação), garantindo que cache seguro corrige o
+      ASS e cache ausente/insegurо nunca produz sucesso silencioso.
+      <p>INVARIANTES DO DOMÍNIO: o vídeo/legenda EN nunca é obrigatório; a
+      proveniência e o vínculo por índice/estilo/texto governam qualquer escrita.
+      <p>COMPORTAMENTO EM CASO DE FALHA: sem cache correspondente o arquivo fica
+      pendente; qualquer alteração indevida do ASS reprova o teste.
+  - RevisarLegendasCacheSeguroTest.java
+      PROPÓSITO DE NEGÓCIO: comprova a blindagem do modo "Cache" da Opção 6 — uma
+      entrada só vira referência quando casa com segurança (índice + estilo +
+      proveniência + texto); o resto fica SEM_REFERÊNCIA_SEGURA.
+      <p>INVARIANTES DO DOMÍNIO: placas/karaokê não exigem referência e não são
+      marcadas; cache sem proveniência não vincula nada.
+      <p>COMPORTAMENTO EM CASO DE FALHA: qualquer vínculo indevido ou marcação
+      incorreta reprova o teste.
   - RevisarLegendasContextoTest.java
       PROPÓSITO DE NEGÓCIO: prova que a Opção 6 não revisa uma obra usando a lore
       selecionada por engano na interface quando o cache conhece sua proveniência.

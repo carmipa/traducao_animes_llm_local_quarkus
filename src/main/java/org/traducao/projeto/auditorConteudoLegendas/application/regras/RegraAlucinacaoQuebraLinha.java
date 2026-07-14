@@ -24,7 +24,7 @@ public class RegraAlucinacaoQuebraLinha implements RegraAuditoriaConteudo {
     public List<AnomaliaConteudo> auditar(DocumentoLegenda original, DocumentoLegenda traduzido) {
         List<AnomaliaConteudo> anomalias = new ArrayList<>();
         Map<Integer, EventoLegenda> mapOriginal = original.eventos().stream()
-                .collect(Collectors.toMap(EventoLegenda::indice, Function.identity()));
+                .collect(Collectors.toMap(EventoLegenda::indice, Function.identity(), (a, b) -> a));
 
         for (EventoLegenda eventoTrad : traduzido.eventos()) {
             if (!eventoTrad.isDialogo() || !eventoTrad.temTexto()) continue;

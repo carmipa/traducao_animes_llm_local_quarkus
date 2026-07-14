@@ -51,6 +51,21 @@ public class RevisarLegendasUseCase {
         LLM_CONCORDANCIA
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: fonte de referência que protege o sentido durante a
+     * revisão do PT — a legenda EN + cache (AMBOS, comportamento histórico) ou
+     * exclusivamente o cache (CACHE), com vínculo seguro por entrada.
+     * <p>INVARIANTES DO DOMÍNIO: em CACHE não se usa {@code .ass} EN irmão nem
+     * fallback por texto não validado; só entradas de cache que casam com
+     * segurança (índice + estilo + proveniência + texto) viram referência.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: entrada de cache que não casa marca a
+     * fala como SEM_REFERÊNCIA_SEGURA e nunca é usada em silêncio.
+     */
+    public enum ModoReferenciaRevisao {
+        AMBOS,
+        CACHE
+    }
+
     private static final Set<String> EXTENSOES = Set.of(".ass", ".ssa");
     private static final long PAUSA_GOOGLE_MS = 400;
     private static final int LIMIAR_ABSOLUTO_RETRADUCAO_EM_MASSA = 20;
@@ -205,6 +220,30 @@ public class RevisarLegendasUseCase {
         ModoRevisaoLegendas modo,
         String contextoId
     ) {
+        return executar(pastaLegendasPt, pastaLegendasEn, pastaCache, pastaSaida,
+            modo, contextoId, ModoReferenciaRevisao.AMBOS);
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: executa a revisão em lote escolhendo a fonte de
+     * referência — EN + cache (AMBOS) ou somente o cache com vínculo seguro (CACHE).
+     *
+     * <p>INVARIANTES DO DOMÍNIO: em CACHE, cada fala só recebe referência de uma
+     * entrada de cache que casa com segurança; as demais viram SEM_REFERÊNCIA_SEGURA
+     * e são revisadas sem proteção semântica, nunca comparadas em silêncio.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: pasta inválida devolve resultado vazio;
+     * falha de listagem lança exceção de domínio sem alterar legendas.
+     */
+    public ResultadoRevisaoLegendas executar(
+        Path pastaLegendasPt,
+        Path pastaLegendasEn,
+        Path pastaCache,
+        Path pastaSaida,
+        ModoRevisaoLegendas modo,
+        String contextoId,
+        ModoReferenciaRevisao referencia
+    ) {
         long inicioMs = System.currentTimeMillis();
         if (modo == ModoRevisaoLegendas.LLM_CONCORDANCIA) {
             out("Iniciando revisão de concordância PT-BR (LLM) em legendas: "
@@ -230,6 +269,7 @@ public class RevisarLegendasUseCase {
         int[] falasAuditadas = {0};
         int[] falasSemOriginal = {0};
         int[] falasPendentes = {0};
+        int[] falasSemReferenciaSegura = {0};
 
         try (Stream<Path> stream = Files.list(pastaLegendasPt)) {
             List<Path> arquivos = stream
@@ -259,9 +299,10 @@ public class RevisarLegendasUseCase {
                     break;
                 }
                 processarArquivo(
-                    arquivoPt, pastaEn, cacheDir, saidaDir, pastaBackup, modo,
+                    arquivoPt, pastaEn, cacheDir, saidaDir, pastaBackup, modo, referencia,
                     arquivosProcessados, falasCorrigidas, falasComProblema,
-                    falasAuditadas, falasSemOriginal, falasPendentes, contextoId);
+                    falasAuditadas, falasSemOriginal, falasPendentes,
+                    falasSemReferenciaSegura, contextoId);
             }
         } catch (IOException e) {
             out(AnsiCores.RED + "Erro ao listar legendas: " + e.getMessage() + AnsiCores.RESET);
@@ -270,6 +311,9 @@ public class RevisarLegendasUseCase {
 
         out("Arquivos analisados: " + arquivosProcessados[0]);
         out("Falas auditadas: " + falasAuditadas[0]);
+        if (referencia == ModoReferenciaRevisao.CACHE) {
+            out("Falas sem referência segura no cache: " + falasSemReferenciaSegura[0]);
+        }
         out("Falas sem original EN (ignoradas): " + falasSemOriginal[0]);
         out("Falas com problemas detectados: " + falasComProblema[0]);
         out("Falas ainda pendentes: " + falasPendentes[0]);
@@ -429,30 +473,63 @@ public class RevisarLegendasUseCase {
         Path saidaDir,
         Path pastaBackup,
         ModoRevisaoLegendas modo,
+        ModoReferenciaRevisao referencia,
         int[] totalArquivos,
         int[] totalCorrigidas,
         int[] totalProblemas,
         int[] totalAuditadas,
         int[] totalSemOriginal,
         int[] totalPendentes,
+        int[] totalSemReferenciaSegura,
         String contextoFallback
     ) {
         totalArquivos[0]++;
         out("\nAnalisando legenda: " + arquivoPt.getFileName());
 
         DocumentoLegenda documentoPt = leitor.ler(arquivoPt);
-        Path arquivoEn = resolverArquivoOriginal(arquivoPt, pastaLegendasEn);
-        Map<Integer, String> originaisPorIndice = carregarOriginaisDeLegenda(arquivoEn);
 
         Path cachePath = resolverArquivoCache(arquivoPt, cacheDir);
         LeitorCacheReferenciaService.DocumentoReferencia cache = carregarDocumentoCache(cachePath);
         List<EntradaCache> entradasCache = cache.entradas();
+
+        // Modo Cache: sem cache correspondente não há referência possível. O arquivo
+        // fica BLOQUEADO/PENDENTE em vez de ser "revisado" com zero referência segura.
+        if (referencia == ModoReferenciaRevisao.CACHE && entradasCache.isEmpty()) {
+            out(AnsiCores.RED + "  [BLOQUEADO] Modo Cache: nenhum cache correspondente encontrado para "
+                + arquivoPt.getFileName() + " em " + cacheDir.toAbsolutePath()
+                + " (esperado algo como " + cachePath.getFileName() + "). Arquivo não revisado."
+                + AnsiCores.RESET);
+            totalProblemas[0]++;
+            totalPendentes[0]++;
+            return;
+        }
+
         ContextoRevisao contexto = ativarContextoDoArquivo(cache.proveniencia(), contextoFallback, cachePath);
-        Map<String, String> originalPorTraduzido = indexarOriginalPorTraduzido(entradasCache);
-        for (EntradaCache entrada : entradasCache) {
-            if (entrada.original() != null && !entrada.original().isBlank()) {
-                originaisPorIndice.putIfAbsent(entrada.indice(), entrada.original());
+
+        Path arquivoEn;
+        Map<Integer, String> originaisPorIndice;
+        Map<String, String> originalPorTraduzido;
+        Set<Integer> indicesSemReferenciaSegura;
+        if (referencia == ModoReferenciaRevisao.CACHE) {
+            // Modo "Cache": referência vem SÓ do cache, com vínculo seguro por entrada.
+            // Sem .ass EN irmão e sem fallback por texto não validado.
+            arquivoEn = null;
+            ReferenciaCacheSegura referenciaCache = montarReferenciaCacheSegura(
+                documentoPt, entradasCache, cache.proveniencia());
+            originaisPorIndice = referenciaCache.originaisPorIndice();
+            indicesSemReferenciaSegura = referenciaCache.semReferenciaSegura();
+            originalPorTraduzido = Map.of();
+        } else {
+            // Modo "Ambos": .ass EN + cache preenchendo lacunas (comportamento histórico).
+            arquivoEn = resolverArquivoOriginal(arquivoPt, pastaLegendasEn);
+            originaisPorIndice = carregarOriginaisDeLegenda(arquivoEn);
+            originalPorTraduzido = indexarOriginalPorTraduzido(entradasCache);
+            for (EntradaCache entrada : entradasCache) {
+                if (entrada.original() != null && !entrada.original().isBlank()) {
+                    originaisPorIndice.putIfAbsent(entrada.indice(), entrada.original());
+                }
             }
+            indicesSemReferenciaSegura = Set.of();
         }
 
         if (!entradasCache.isEmpty()) {
@@ -464,8 +541,36 @@ public class RevisarLegendasUseCase {
                 + " (esperado algo como " + cachePath.getFileName() + ")"
                 + AnsiCores.RESET);
         }
-        if (Files.isRegularFile(arquivoEn) && !originaisPorIndice.isEmpty()) {
+        if (arquivoEn != null && Files.isRegularFile(arquivoEn) && !originaisPorIndice.isEmpty()) {
             out("  Legenda .ass EN: " + arquivoEn.getFileName());
+        }
+        if (referencia == ModoReferenciaRevisao.CACHE) {
+            long dialogosAuditaveis = documentoPt.eventos().stream()
+                .filter(e -> e.isDialogo() && e.texto() != null && !e.texto().isBlank()
+                    && !deveIgnorarAuditoria(e, e.texto()))
+                .count();
+            // Cache resolvido (por código de episódio, p.ex.) mas que não casa com
+            // NENHUMA fala com segurança = cache de outra obra/episódio ou estale.
+            // Bloqueia em vez de "concluir com sucesso" sem nenhuma referência segura.
+            if (originaisPorIndice.isEmpty() && dialogosAuditaveis > 0) {
+                out(AnsiCores.RED + "  [BLOQUEADO] Modo Cache: o cache resolvido (" + cachePath.getFileName()
+                    + ") não corresponde com segurança a nenhuma das " + dialogosAuditaveis
+                    + " fala(s) de " + arquivoPt.getFileName()
+                    + " (índice/estilo/proveniência/texto divergem). Arquivo não revisado." + AnsiCores.RESET);
+                totalProblemas[0]++;
+                totalPendentes[0]++;
+                return;
+            }
+            if (!indicesSemReferenciaSegura.isEmpty()) {
+                totalSemReferenciaSegura[0] += indicesSemReferenciaSegura.size();
+                // Fala sem vínculo seguro é PENDÊNCIA: no modo Cache não há "conclusão
+                // com sucesso" enquanto restar fala sem referência segura.
+                totalPendentes[0] += indicesSemReferenciaSegura.size();
+                out(AnsiCores.YELLOW + "  [SEM_REFERÊNCIA_SEGURA] " + indicesSemReferenciaSegura.size()
+                    + " fala(s) sem vínculo seguro no cache (índice/estilo/proveniência/texto não conferem); "
+                    + "marcadas como pendentes, nunca comparadas em silêncio. Índices: "
+                    + indicesSemReferenciaSegura + AnsiCores.RESET);
+            }
         }
 
         List<EventoLegenda> eventosAtualizados = new ArrayList<>();
@@ -475,8 +580,12 @@ public class RevisarLegendasUseCase {
         boolean sincronizarCache = cacheMaisNovoQueLegenda(cachePath, arquivoPt);
         Set<Integer> indicesCanonicosProtegidos = localizarIndicesCanonicosProtegidos(
             documentoPt, entradasCache, contexto);
+        // Modo Cache: a sincronização só pode escrever índices com vínculo seguro
+        // (as chaves de originaisPorIndice). AMBOS mantém null = comportamento histórico.
+        Set<Integer> indicesPermitidosSync = referencia == ModoReferenciaRevisao.CACHE
+            ? originaisPorIndice.keySet() : null;
         SincronizadorLegendaCacheService.Resultado sincronizacao = sincronizadorCache.sincronizar(
-            documentoPt, entradasCache, sincronizarCache, indicesCanonicosProtegidos);
+            documentoPt, entradasCache, sincronizarCache, indicesCanonicosProtegidos, indicesPermitidosSync);
         documentoPt = sincronizacao.documento();
         int sincronizadasNesteArquivo = sincronizacao.total();
         int problemasNesteArquivo = 0;
@@ -963,7 +1072,7 @@ public class RevisarLegendasUseCase {
      * <p>COMPORTAMENTO EM CASO DE FALHA: lança exceção de domínio e bloqueia a
      * escrita da nova legenda.
      */
-    private Path criarBackupSeSobrescrever(Path origem, Path destino, Path pastaBackup) {
+    Path criarBackupSeSobrescrever(Path origem, Path destino, Path pastaBackup) {
         Path origemAbs = origem.toAbsolutePath().normalize();
         Path destinoAbs = destino.toAbsolutePath().normalize();
         if (!origemAbs.equals(destinoAbs)) return null;
@@ -1010,6 +1119,74 @@ public class RevisarLegendasUseCase {
     private String normalizarTexto(String texto) {
         return texto == null ? "" : texto.replaceAll("\\s+", " ").trim();
     }
+
+    private String normalizarEstilo(String estilo) {
+        return estilo == null ? "" : estilo.trim().toLowerCase();
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: no modo "Cache", monta a referência EN vindo somente
+     * do cache, aceitando uma entrada como referência de uma fala apenas quando o
+     * vínculo é seguro; o resto fica marcado como SEM_REFERÊNCIA_SEGURA.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: uma entrada só vira referência se houver
+     * proveniência válida no cache e ela casar com a fala em índice, estilo e
+     * texto traduzido (normalizado). Placas/karaokê ({@link #deveIgnorarAuditoria})
+     * não exigem referência e não são marcadas. Falas sem qualquer entrada no
+     * índice não são "inseguras" — apenas ficam sem referência.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: proveniência ausente (cache legado) torna
+     * toda fala SEM_REFERÊNCIA_SEGURA, protegendo contra vínculo às cegas.
+     */
+    ReferenciaCacheSegura montarReferenciaCacheSegura(
+        DocumentoLegenda documentoPt,
+        List<EntradaCache> entradasCache,
+        ProvenienciaCache proveniencia
+    ) {
+        Map<Integer, String> originaisPorIndice = new HashMap<>();
+        Set<Integer> semReferenciaSegura = new LinkedHashSet<>();
+
+        Map<Integer, EntradaCache> cachePorIndice = new HashMap<>();
+        for (EntradaCache entrada : entradasCache) {
+            cachePorIndice.putIfAbsent(entrada.indice(), entrada);
+        }
+        boolean provenienciaOk = proveniencia != null
+            && proveniencia.contextoId() != null && !proveniencia.contextoId().isBlank();
+
+        for (EventoLegenda evento : documentoPt.eventos()) {
+            if (!evento.isDialogo() || evento.texto() == null || evento.texto().isBlank()) {
+                continue;
+            }
+            if (deveIgnorarAuditoria(evento, evento.texto())) {
+                continue;
+            }
+            EntradaCache entrada = cachePorIndice.get(evento.indice());
+            if (entrada == null) {
+                continue; // sem entrada no índice: fala apenas não referenciada, não "insegura"
+            }
+            boolean estiloOk = normalizarEstilo(entrada.estilo()).equals(normalizarEstilo(evento.estilo()));
+            boolean originalOk = entrada.original() != null && !entrada.original().isBlank();
+            // Vínculo seguro coerente com a sincronização: a fala PT atual precisa
+            // corresponder à tradução do cache (já correta) OU ao original inglês do
+            // cache (regrediu ao EN e será restaurada pela sincronização). Qualquer
+            // outro texto indica índice deslocado / outro episódio → inseguro.
+            String ptNormalizado = normalizarTexto(evento.texto());
+            boolean textoOk = (entrada.traduzido() != null
+                    && ptNormalizado.equals(normalizarTexto(entrada.traduzido())))
+                || (originalOk && ptNormalizado.equals(normalizarTexto(entrada.original())));
+            if (provenienciaOk && estiloOk && textoOk && originalOk) {
+                originaisPorIndice.put(evento.indice(), entrada.original());
+            } else {
+                semReferenciaSegura.add(evento.indice());
+            }
+        }
+        return new ReferenciaCacheSegura(originaisPorIndice, semReferenciaSegura);
+    }
+
+    record ReferenciaCacheSegura(
+        Map<Integer, String> originaisPorIndice,
+        Set<Integer> semReferenciaSegura
+    ) {}
 
     /**
      * PROPÓSITO DE NEGÓCIO: localiza deterministicamente o cache correspondente

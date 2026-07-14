@@ -2,8 +2,10 @@ package org.traducao.projeto;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.traducao.projeto.auditorConteudoLegendas.support.AssAuditoriaFixtures;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -319,6 +321,44 @@ class ApiEndpointsTest {
             .then()
             .statusCode(400)
             .body(containsString("nao encontrado"));
+    }
+
+    @Test
+    void revisarLegendasModoCachePastaInexistenteRetornaBadRequest(@TempDir Path tempDir) throws Exception {
+        Path pastaPt = Files.createDirectory(tempDir.resolve("pt"));
+        AssAuditoriaFixtures.escreverArquivoUnicoLimpo(pastaPt.resolve("show_PT-BR.ass"));
+        Path cacheInexistente = tempDir.resolve("cache_que_nao_existe");
+
+        given()
+            .contentType("application/json")
+            .body("{\"modoReferencia\":\"CACHE\",\"entrada\":\"" + pastaPt.toString().replace("\\", "\\\\")
+                + "\",\"caminhoCache\":\"" + cacheInexistente.toString().replace("\\", "\\\\") + "\"}")
+            .when().post("/api/revisar-legendas")
+            .then()
+            .statusCode(400)
+            .body(containsString("cache"));
+    }
+
+    @Test
+    void revisarLegendasGoogleHonraContextoDesconhecido() {
+        given()
+            .contentType("application/json")
+            .body("{\"entrada\":\"cache\",\"contextoId\":\"contexto_inexistente_xyz\"}")
+            .when().post("/api/revisar-legendas")
+            .then()
+            .statusCode(400)
+            .body(containsString("Contexto"));
+    }
+
+    @Test
+    void revisarLegendasConcordanciaHonraContextoDesconhecido() {
+        given()
+            .contentType("application/json")
+            .body("{\"entrada\":\"cache\",\"contextoId\":\"contexto_inexistente_xyz\"}")
+            .when().post("/api/revisar-legendas-concordancia")
+            .then()
+            .statusCode(400)
+            .body(containsString("Contexto"));
     }
 
     @Test

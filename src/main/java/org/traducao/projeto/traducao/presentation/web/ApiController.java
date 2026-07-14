@@ -129,7 +129,7 @@ public class ApiController {
 
     // DTOs
     public record OperacaoRequest(String entrada, String saida, String contextoId, Long syncOffsetMs,
-                                  Boolean permitirRetraducao) {}
+                                  Boolean permitirRetraducao, String modoReferencia, String caminhoCache) {}
     /**
      * PROPÓSITO DE NEGÓCIO: transporta as opções exclusivas do Remuxer.
      * INVARIANTES DO DOMÍNIO: pasta de vídeo é obrigatória; offset e política de
@@ -719,11 +719,20 @@ public class ApiController {
             return ResponseEntity.badRequest().body(new RespostaPadrao(erroValidacao.get()));
         }
 
+        RevisarLegendasUseCase.ModoReferenciaRevisao referencia = resolverModoReferencia(req.modoReferencia());
+        final Path cacheDir = resolverCacheDir(referencia, req.caminhoCache());
+        final Path pathEnUso = referencia == RevisarLegendasUseCase.ModoReferenciaRevisao.CACHE ? null : pathEnFinal;
+
+        Optional<String> erroCache = validarCacheDirModo(referencia, cacheDir);
+        if (erroCache.isPresent()) {
+            return ResponseEntity.badRequest().body(new RespostaPadrao(erroCache.get()));
+        }
+
         submeterJobComRelatorio("revisao", "Revisão de Legendas Traduzidas", () -> {
             try {
                 ResultadoRevisaoLegendas resultado = revisarLegendasUseCase.executar(
-                    pathPt, pathEnFinal, Path.of("cache"), null,
-                    RevisarLegendasUseCase.ModoRevisaoLegendas.GOOGLE, req.contextoId());
+                    pathPt, pathEnUso, cacheDir, null,
+                    RevisarLegendasUseCase.ModoRevisaoLegendas.GOOGLE, req.contextoId(), referencia);
                 imprimirResultadoRevisaoLegendas("REVISÃO DE LEGENDAS TRADUZIDAS", resultado);
             } catch (Exception e) {
                 log.error("Erro na revisão de legendas", e);
@@ -775,6 +784,15 @@ public class ApiController {
             return ResponseEntity.badRequest().body(new RespostaPadrao(erroValidacao.get()));
         }
 
+        RevisarLegendasUseCase.ModoReferenciaRevisao referencia = resolverModoReferencia(req.modoReferencia());
+        final Path cacheDir = resolverCacheDir(referencia, req.caminhoCache());
+        final Path pathEnUso = referencia == RevisarLegendasUseCase.ModoReferenciaRevisao.CACHE ? null : pathEnFinal;
+
+        Optional<String> erroCache = validarCacheDirModo(referencia, cacheDir);
+        if (erroCache.isPresent()) {
+            return ResponseEntity.badRequest().body(new RespostaPadrao(erroCache.get()));
+        }
+
         submeterJobComRelatorio("revisao", "Revisão de Concordância PT-BR (LLM)", () -> {
             try {
                 StatusLlm status = mistralPort.verificarDisponibilidade();
@@ -785,11 +803,12 @@ public class ApiController {
                 }
                 ResultadoRevisaoLegendas resultado = revisarLegendasUseCase.executar(
                     pathPt,
-                    pathEnFinal,
-                    Path.of("cache"),
+                    pathEnUso,
+                    cacheDir,
                     null,
                     RevisarLegendasUseCase.ModoRevisaoLegendas.LLM_CONCORDANCIA,
-                    req.contextoId()
+                    req.contextoId(),
+                    referencia
                 );
                 imprimirResultadoRevisaoLegendas("REVISÃO DE CONCORDÂNCIA PT-BR (LLM)", resultado);
             } catch (Exception e) {
@@ -957,6 +976,66 @@ public class ApiController {
     private Optional<Path> parseCaminhoSeguro(String valor, String rotulo) {
         Path p = normalizarCaminho(valor);
         return Optional.ofNullable(p);
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: traduz a aba escolhida na Opção 6 (Ambos/Cache) para o
+     * modo de referência do use case de revisão.
+     * <p>INVARIANTES DO DOMÍNIO: qualquer valor diferente de "CACHE" cai em AMBOS
+     * (comportamento histórico e retrocompatível).
+     * <p>COMPORTAMENTO EM CASO DE FALHA: entrada nula/vazia resulta em AMBOS.
+     */
+    private RevisarLegendasUseCase.ModoReferenciaRevisao resolverModoReferencia(String modo) {
+        return modo != null && "CACHE".equalsIgnoreCase(modo.trim())
+            ? RevisarLegendasUseCase.ModoReferenciaRevisao.CACHE
+            : RevisarLegendasUseCase.ModoReferenciaRevisao.AMBOS;
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: resolve a pasta de cache usada como referência no modo
+     * Cache; nos demais casos mantém a pasta padrão do projeto.
+     * <p>INVARIANTES DO DOMÍNIO: só o modo Cache respeita a pasta informada pelo
+     * usuário; AMBOS sempre usa {@code cache}.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: caminho inválido/ausente no modo Cache
+     * volta ao padrão {@code cache}.
+     */
+    private Path resolverCacheDir(RevisarLegendasUseCase.ModoReferenciaRevisao referencia, String caminhoCache) {
+        if (referencia == RevisarLegendasUseCase.ModoReferenciaRevisao.CACHE) {
+            Path escolhido = normalizarCaminho(caminhoCache);
+            if (escolhido != null) {
+                return escolhido;
+            }
+        }
+        return Path.of("cache");
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: no modo Cache, garante que a pasta informada existe, é
+     * um diretório e contém ao menos um {@code .cache.json} antes de a fila iniciar
+     * um job que não teria referência alguma.
+     * <p>INVARIANTES DO DOMÍNIO: só valida no modo Cache; AMBOS não é afetado.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: devolve mensagem de erro (vira HTTP 400);
+     * ausência de erro devolve {@link Optional#empty()}.
+     */
+    private Optional<String> validarCacheDirModo(
+            RevisarLegendasUseCase.ModoReferenciaRevisao referencia, Path cacheDir) {
+        if (referencia != RevisarLegendasUseCase.ModoReferenciaRevisao.CACHE) {
+            return Optional.empty();
+        }
+        if (cacheDir == null || !java.nio.file.Files.isDirectory(cacheDir)) {
+            return Optional.of("Pasta de cache inexistente ou não é um diretório: "
+                + (cacheDir == null ? "(vazio)" : cacheDir.toString()));
+        }
+        try (java.util.stream.Stream<Path> walk = java.nio.file.Files.walk(cacheDir)) {
+            boolean temCache = walk.filter(java.nio.file.Files::isRegularFile)
+                .anyMatch(p -> p.getFileName().toString().toLowerCase().endsWith(".cache.json"));
+            if (!temCache) {
+                return Optional.of("Nenhum arquivo .cache.json encontrado na pasta de cache: " + cacheDir);
+            }
+        } catch (java.io.IOException e) {
+            return Optional.of("Falha ao ler a pasta de cache: " + e.getMessage());
+        }
+        return Optional.empty();
     }
 
     private Path normalizarCaminho(String valor) {

@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="traducao/traducao.css?v=4.0">
     <link rel="stylesheet" href="correcao/correcao.css?v=4.0">
     <link rel="stylesheet" href="auditorConteudoLegendas/auditorConteudoLegendas.css?v=4.2">
-    <link rel="stylesheet" href="revisao/revisao.css?v=4.0">
+    <link rel="stylesheet" href="revisao/revisao.css?v=4.2">
     <link rel="stylesheet" href="cura/cura.css?v=4.0">
     <link rel="stylesheet" href="revisaoLore/revisaoLore.css?v=4.0">
     <link rel="stylesheet" href="trocaTipoLegenda/trocaTipoLegenda.css?v=4.0">
@@ -872,6 +872,16 @@
                         <div class="anime-meta-banner hidden" id="meta-banner-revisao"></div>
 
                         <form id="form-revisao" class="standard-form">
+                            <div class="revisao-modo-tabs" role="tablist" aria-label="Fonte de referência">
+                                <button type="button" class="revisao-modo-tab ativo" role="tab" aria-selected="true" data-modo="AMBOS">
+                                    <span class="material-symbols-outlined">compare_arrows</span>Ambos (EN + cache)
+                                </button>
+                                <button type="button" class="revisao-modo-tab" role="tab" aria-selected="false" data-modo="CACHE">
+                                    <span class="material-symbols-outlined">database</span>Cache (sem EN)
+                                </button>
+                            </div>
+                            <p class="card-hint revisao-modo-desc" id="revisao-modo-desc">Referência: legenda EN (.ass) + cache do projeto. Comportamento padrão.</p>
+
                             <div class="form-group">
                                 <label for="revisao-contexto">Contexto de Lore (concordância LLM): <span
                                         class="help-icon"
@@ -894,7 +904,7 @@
                                             class="material-symbols-outlined btn-inline-icon">folder_open</span>Procurar...</button>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group revisao-campo-en">
                                 <label for="revisao-entrada-en">Pasta com legendas ORIGINAIS em inglês (opcional): <span
                                         class="help-icon"
                                         data-tooltip="Se os .ass em inglês estiverem em outra pasta. Vazio = procura na mesma pasta do PT (_Track2.ass, etc.).">?</span></label>
@@ -903,6 +913,18 @@
                                         spellcheck="false" placeholder="Opcional — mesma pasta do PT se vazio">
                                     <button type="button" class="btn-procurar" data-target="revisao-entrada-en"
                                         data-type="pasta"><span
+                                            class="material-symbols-outlined btn-inline-icon">folder_open</span>Procurar...</button>
+                                </div>
+                            </div>
+                            <div class="form-group revisao-campo-cache hidden">
+                                <label for="revisao-cache">Pasta do cache (referência EN vem do cache): <span
+                                        class="help-icon"
+                                        data-tooltip="Pasta com os .cache.json. O campo 'original' de cada entrada faz o papel da legenda em inglês. Vazio = pasta 'cache' padrão do projeto.">?</span></label>
+                                <div class="input-with-button">
+                                    <input type="text" id="revisao-cache" name="caminhoCache" autocomplete="off"
+                                        spellcheck="false" placeholder="Vazio = pasta 'cache' padrão do projeto">
+                                    <button type="button" class="btn-procurar" data-target="revisao-cache"
+                                        data-type="pasta" data-dir-inicial="cache"><span
                                             class="material-symbols-outlined btn-inline-icon">folder_open</span>Procurar...</button>
                                 </div>
                             </div>

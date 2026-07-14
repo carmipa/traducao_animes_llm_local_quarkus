@@ -23484,3 +23484,1034 @@ Auditoria finalizada com sucesso!
 2026-07-14 08:04:28.060 [console]   • Pasta de Backup      : C:\Users\Paulo\AppData\Local\Temp\junit-7709170316806712625\backups\troca_tipo_legenda_20260714_080428
 2026-07-14 08:04:28.061 [console] ========================================================================
 2026-07-14 08:04:28.064 [console] Relatórios persistidos em: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-8635486625755951636
+2026-07-14 08:30:13.189 [console] ==============================================================
+2026-07-14 08:30:13.190 [console] ==============================================================
+2026-07-14 08:30:13.190 [console] ==============================================================
+2026-07-14 08:30:13.191 [console] ==============================================================
+2026-07-14 08:30:13.191 [console] ==============================================================
+2026-07-14 08:30:13.191 [console] ==============================================================
+2026-07-14 08:30:13.192 [console] ==============================================================
+2026-07-14 08:30:13.192 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 08:30:13.192 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 08:30:13.193 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 08:30:13.193 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 08:30:13.193 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 08:30:13.194 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 08:30:13.194 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 08:30:13.194 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 08:30:13.195 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 08:30:13.195 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 08:30:13.195 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 08:30:13.195 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 08:30:13.196 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 08:30:13.196 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 08:30:13.197 [console] ==============================================================
+2026-07-14 08:30:13.197 [console] ==============================================================
+2026-07-14 08:30:13.197 [console] ==============================================================
+2026-07-14 08:30:13.198 [console] ==============================================================
+2026-07-14 08:30:13.198 [console] ==============================================================
+2026-07-14 08:30:13.198 [console] ==============================================================
+2026-07-14 08:30:13.199 [console] ==============================================================
+2026-07-14 08:38:17.870 [console] ==============================================================
+2026-07-14 08:38:17.870 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 08:38:17.871 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 08:38:17.871 [console] ==============================================================
+2026-07-14 08:38:37.566 [console] ==============================================================
+2026-07-14 08:38:37.567 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 08:38:37.568 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 08:38:37.568 [console] ==============================================================
+2026-07-14 08:38:39.327 [auditor-conteudo] === Auditoria de Conteudo de Legendas (arquivo unico: original) ===
+2026-07-14 08:38:39.328 [auditor-conteudo] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-12866379529194780344\solo_eng.ass
+2026-07-14 08:38:39.328 [auditor-conteudo] Formato : ASS
+2026-07-14 08:38:39.406 [auditor-conteudo] [Auditoria Conteudo] Arquivo limpo: solo_eng.ass
+2026-07-14 08:38:39.406 [auditor-conteudo] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-12866379529194780344\auditoria_conteudo_20260714_083839.json
+2026-07-14 08:38:39.407 [auditor-conteudo] Regras executadas: 6
+2026-07-14 08:38:39.407 [auditor-conteudo] Anomalias: 0
+2026-07-14 08:38:39.408 [auditor-conteudo] Duracao: 6 ms
+2026-07-14 08:38:39.409 [auditor-conteudo] [RELATÓRIO FINAL] Operação: Análise de Conteúdo de Legendas | Tempo total: 0,1s | Término: 08:38:39
+2026-07-14 08:38:39.468 [auditor-conteudo] === Auditoria de Conteudo de Legendas ===
+2026-07-14 08:38:39.469 [auditor-conteudo] Original : C:\Users\Paulo\AppData\Local\Temp\junit-17066534629611773197\ep_eng.ass
+2026-07-14 08:38:39.469 [auditor-conteudo] Formato original: ASS
+2026-07-14 08:38:39.470 [auditor-conteudo] Traduzido: C:\Users\Paulo\AppData\Local\Temp\junit-17066534629611773197\ep_pt.ass
+2026-07-14 08:38:39.470 [auditor-conteudo] Formato traduzido: ASS
+2026-07-14 08:38:39.485 [auditor-conteudo] [Auditoria Conteudo] Arquivo limpo: ep_pt.ass
+2026-07-14 08:38:39.486 [auditor-conteudo] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-17066534629611773197\auditoria_conteudo_20260714_083839.json
+2026-07-14 08:38:39.486 [auditor-conteudo] Regras executadas: 5
+2026-07-14 08:38:39.486 [auditor-conteudo] Anomalias: 0
+2026-07-14 08:38:39.487 [auditor-conteudo] Duracao: 5 ms
+2026-07-14 08:38:39.487 [auditor-conteudo] [RELATÓRIO FINAL] Operação: Análise de Conteúdo de Legendas | Tempo total: 0,0s | Término: 08:38:39
+2026-07-14 08:38:43.171 [revisao-lore] ========================================================================
+2026-07-14 08:38:43.172 [revisao-lore]   [FALHOU] REVISAO DE LORE
+2026-07-14 08:38:43.173 [revisao-lore]   LLM indisponivel para revisao de lore: Não foi possível conectar ao servidor LLM em http://127.0.0.1:1234/v1: null
+2026-07-14 08:38:43.173 [revisao-lore] ========================================================================
+2026-07-14 08:38:43.174 [revisao-lore] [RELATÓRIO FINAL] Operação: Revisão de Lore (LLM) | Tempo total: 0,0s | Término: 08:38:43
+2026-07-14 08:38:44.099 [correcao] Iniciando limpeza segura de cache em: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\cache
+2026-07-14 08:38:44.408 [correcao] Resultado da limpeza: CONCLUIDO | arquivos=14 alterados=0 falhas=0
+2026-07-14 08:38:44.410 [correcao] [SUCESSO] LIMPEZA E AUDITORIA DE CACHE — status=CONCLUIDO, arquivos=14, alterados=0, corrigidos=0, pendentes=0, falhas=0
+2026-07-14 08:38:44.410 [correcao] [RELATÓRIO FINAL] Operação: Limpeza e Auditoria de Cache | Tempo total: 0,3s | Término: 08:38:44
+2026-07-14 08:38:44.411 [correcao] Iniciando correção online do cache via Google Translate: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\cache
+2026-07-14 08:38:44.458 [correcao] [ARQUIVO] [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3.cache.json — 2 entrada(s) pendente(s) para correção.
+2026-07-14 08:38:44.476 [correcao] [CORRIGINDO 1/2] Evento 478 — Banchi 18, Metis.
+2026-07-14 08:38:44.912 [correcao] [PENDENTE 1/2] Evento 478 — SEM_ALTERACAO
+2026-07-14 08:38:45.131 [console] === Auditoria de Conteudo de Legendas (arquivo unico: original) ===
+2026-07-14 08:38:45.132 [console] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-4302972346473643744\solo_limpo.ass
+2026-07-14 08:38:45.133 [console] Formato : ASS
+2026-07-14 08:38:45.144 [console] [Auditoria Conteudo] Arquivo limpo: solo_limpo.ass
+2026-07-14 08:38:45.144 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-4302972346473643744\auditoria_conteudo_20260714_083845.json
+2026-07-14 08:38:45.145 [console] Regras executadas: 6
+2026-07-14 08:38:45.146 [console] Anomalias: 0
+2026-07-14 08:38:45.146 [console] Duracao: 3 ms
+2026-07-14 08:38:45.153 [console] === Auditoria de Conteudo de Legendas (arquivo unico: original) ===
+2026-07-14 08:38:45.154 [console] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-7204380481212106540\solo_eng.ass
+2026-07-14 08:38:45.154 [console] Formato : ASS
+2026-07-14 08:38:45.169 [console] [Auditoria Conteudo] 2 anomalia(s) em solo_eng.ass
+2026-07-14 08:38:45.171 [console]   [ERROR] Timestamp Inválido (fim ≤ início) — Fim (3000 ms) menor ou igual ao início (5000 ms). A linha tem duração inválida e não será exibida.
+2026-07-14 08:38:45.171 [console]   [CRITICAL] Bloco de Override ASS Não Fechado — Bloco de override '{...}' aberto e não fechado corretamente. O player pode exibir as tags como texto ou descartar a linha.
+2026-07-14 08:38:45.173 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-7204380481212106540\auditoria_conteudo_20260714_083845.json
+2026-07-14 08:38:45.175 [console] Regras executadas: 6
+2026-07-14 08:38:45.175 [console] Anomalias: 2
+2026-07-14 08:38:45.176 [console] Duracao: 2 ms
+2026-07-14 08:38:45.186 [console] === Auditoria de Conteudo de Legendas (arquivo unico: traduzido) ===
+2026-07-14 08:38:45.187 [console] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-4695863859728375913\solo_karaoke.ass
+2026-07-14 08:38:45.188 [console] Formato : ASS
+2026-07-14 08:38:45.197 [console] [Auditoria Conteudo] Arquivo limpo: solo_karaoke.ass
+2026-07-14 08:38:45.198 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-4695863859728375913\auditoria_conteudo_20260714_083845.json
+2026-07-14 08:38:45.201 [console] Regras executadas: 6
+2026-07-14 08:38:45.203 [console] Anomalias: 0
+2026-07-14 08:38:45.205 [console] Duracao: 4 ms
+2026-07-14 08:38:45.214 [console] === Auditoria de Conteudo de Legendas ===
+2026-07-14 08:38:45.214 [console] Original : C:\Users\Paulo\AppData\Local\Temp\junit-9720514220370106886\ep04_eng.srt
+2026-07-14 08:38:45.215 [console] Formato original: SRT
+2026-07-14 08:38:45.216 [console] Traduzido: C:\Users\Paulo\AppData\Local\Temp\junit-9720514220370106886\ep04_pt.srt
+2026-07-14 08:38:45.217 [console] Formato traduzido: SRT
+2026-07-14 08:38:45.227 [console] [Auditoria Conteudo] Arquivo limpo: ep04_pt.srt
+2026-07-14 08:38:45.227 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-9720514220370106886\auditoria_conteudo_20260714_083845.json
+2026-07-14 08:38:45.228 [console] Regras executadas: 5
+2026-07-14 08:38:45.229 [console] Anomalias: 0
+2026-07-14 08:38:45.229 [console] Duracao: 5 ms
+2026-07-14 08:38:45.245 [console] === Auditoria de Conteudo de Legendas (arquivo unico: original) ===
+2026-07-14 08:38:45.246 [console] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-2620016672050343057\solo_colisao.ass
+2026-07-14 08:38:45.246 [console] Formato : ASS
+2026-07-14 08:38:45.257 [console] [Auditoria Conteudo] 1 anomalia(s) em solo_colisao.ass
+2026-07-14 08:38:45.257 [console]   [WARNING] Sobreposição de Tempo Entre Diálogos — Este diálogo começa em 3000 ms, antes de a fala anterior de mesmo estilo e camada terminar em 5000 ms. As linhas se sobrepõem na tela.
+2026-07-14 08:38:45.258 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-2620016672050343057\auditoria_conteudo_20260714_083845.json
+2026-07-14 08:38:45.259 [console] Regras executadas: 6
+2026-07-14 08:38:45.259 [console] Anomalias: 1
+2026-07-14 08:38:45.259 [console] Duracao: 3 ms
+2026-07-14 08:38:45.272 [console] === Auditoria de Conteudo de Legendas ===
+2026-07-14 08:38:45.272 [console] Original : C:\Users\Paulo\AppData\Local\Temp\junit-11945316342467234474\ep02_eng.ass
+2026-07-14 08:38:45.273 [console] Formato original: ASS
+2026-07-14 08:38:45.274 [console] Traduzido: C:\Users\Paulo\AppData\Local\Temp\junit-11945316342467234474\ep02_pt.ass
+2026-07-14 08:38:45.274 [console] Formato traduzido: ASS
+2026-07-14 08:38:45.284 [console] [Auditoria Conteudo] 1 anomalia(s) em ep02_pt.ass
+2026-07-14 08:38:45.285 [console]   [CRITICAL] Alucinação de Quebra de Linha (\N) — A tradução inseriu 4 quebras de linha onde o original tinha 0. Isso destrói o posicionamento (\pos).
+2026-07-14 08:38:45.286 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-11945316342467234474\auditoria_conteudo_20260714_083845.json
+2026-07-14 08:38:45.286 [console] Regras executadas: 5
+2026-07-14 08:38:45.287 [console] Anomalias: 1
+2026-07-14 08:38:45.287 [console] Duracao: 4 ms
+2026-07-14 08:38:45.293 [console] === Auditoria de Conteudo de Legendas ===
+2026-07-14 08:38:45.294 [console] Original : C:\Users\Paulo\AppData\Local\Temp\junit-2909319590784646655\ep01_eng.ass
+2026-07-14 08:38:45.294 [console] Formato original: ASS
+2026-07-14 08:38:45.295 [console] Traduzido: C:\Users\Paulo\AppData\Local\Temp\junit-2909319590784646655\ep01_pt.ass
+2026-07-14 08:38:45.296 [console] Formato traduzido: ASS
+2026-07-14 08:38:45.303 [console] [Auditoria Conteudo] Arquivo limpo: ep01_pt.ass
+2026-07-14 08:38:45.304 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-2909319590784646655\auditoria_conteudo_20260714_083845.json
+2026-07-14 08:38:45.305 [console] Regras executadas: 5
+2026-07-14 08:38:45.306 [console] Anomalias: 0
+2026-07-14 08:38:45.306 [console] Duracao: 4 ms
+2026-07-14 08:38:45.320 [console] === Auditoria de Conteudo de Legendas (arquivo unico: traduzido) ===
+2026-07-14 08:38:45.320 [console] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-8110001848739573292\solo_pt.ass
+2026-07-14 08:38:45.321 [console] Formato : ASS
+2026-07-14 08:38:45.329 [console] [Auditoria Conteudo] 2 anomalia(s) em solo_pt.ass
+2026-07-14 08:38:45.330 [console]   [ERROR] Timestamp Inválido (fim ≤ início) — Fim (3000 ms) menor ou igual ao início (5000 ms). A linha tem duração inválida e não será exibida.
+2026-07-14 08:38:45.331 [console]   [CRITICAL] Bloco de Override ASS Não Fechado — Bloco de override '{...}' aberto e não fechado corretamente. O player pode exibir as tags como texto ou descartar a linha.
+2026-07-14 08:38:45.331 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-8110001848739573292\auditoria_conteudo_20260714_083845.json
+2026-07-14 08:38:45.332 [console] Regras executadas: 6
+2026-07-14 08:38:45.332 [console] Anomalias: 2
+2026-07-14 08:38:45.333 [console] Duracao: 2 ms
+2026-07-14 08:38:45.343 [correcao] [CORRIGINDO 2/2] Evento 1015 — Fransson!
+2026-07-14 08:38:45.412 [console] marcador-console-redirector-09f98bd1-fbc1-4951-a441-762fb3e45770
+2026-07-14 08:38:45.434 [correcao] [PENDENTE 2/2] Evento 1015 — SEM_ALTERACAO
+2026-07-14 08:38:45.818 [console] === Iniciando Correcao de Legendas ===
+2026-07-14 08:38:45.820 [console] Pasta original/ref: C:\Users\Paulo\AppData\Local\Temp\junit-12642675964450441086
+2026-07-14 08:38:45.821 [console] Pasta traduzida/alvo: C:\Users\Paulo\AppData\Local\Temp\junit-12642675964450441086
+2026-07-14 08:38:45.821 [console] Correcao de traducao via LLM ativa (contexto: Teste)
+2026-07-14 08:38:45.824 [console] [OK] episodio_PT-BR.ass (sem alteracao)
+2026-07-14 08:38:45.825 [console] Relatorio JSON salvo em: C:\Users\Paulo\AppData\Local\Temp\junit-12642675964450441086\relatorio-fake.json
+2026-07-14 08:38:45.827 [console] Correcao de legendas concluida: 0 arquivo(s) curado(s) (0 fala(s)), 0 fala(s) corrigida(s) via LLM, 1 ja perfeito(s), 0 fala(s) sem traducao.
+2026-07-14 08:38:45.831 [console] === Iniciando Correcao de Legendas ===
+2026-07-14 08:38:45.833 [console] Pasta original/ref: C:\Users\Paulo\AppData\Local\Temp\junit-1549644483540496509
+2026-07-14 08:38:45.833 [console] Pasta traduzida/alvo: C:\Users\Paulo\AppData\Local\Temp\junit-1549644483540496509
+2026-07-14 08:38:45.834 [console] Correcao de traducao via LLM ativa (contexto: Teste)
+2026-07-14 08:38:45.836 [console] Fala 1: karaokê japonês/romaji restaurado da legenda original.
+2026-07-14 08:38:45.840 [console] [Corrigido] episodio_PT-BR.ass (1 tags restauradas, 0 corrigidas via LLM)
+2026-07-14 08:38:45.841 [console] Relatorio JSON salvo em: C:\Users\Paulo\AppData\Local\Temp\junit-1549644483540496509\relatorio-fake.json
+2026-07-14 08:38:45.841 [console] Correcao de legendas concluida: 1 arquivo(s) curado(s) (1 fala(s)), 0 fala(s) corrigida(s) via LLM, 0 ja perfeito(s), 0 fala(s) sem traducao.
+2026-07-14 08:38:45.878 [correcao] [ARQUIVO] Mobile.Suit.Gundam.The.08th.MS.Team.S00E02_Track2.cache.json — 0 entrada(s) pendente(s) para correção.
+2026-07-14 08:38:45.896 [correcao] [ARQUIVO] Mobile.Suit.Gundam.The.08th.MS.Team.S01E01_Track3.cache.json — 0 entrada(s) pendente(s) para correção.
+2026-07-14 08:38:45.920 [correcao] [ARQUIVO] Mobile.Suit.Gundam.The.08th.MS.Team.S01E02_Track3.cache.json — 0 entrada(s) pendente(s) para correção.
+2026-07-14 08:38:45.952 [correcao] [ARQUIVO] Mobile.Suit.Gundam.The.08th.MS.Team.S01E03_Track3.cache.json — 0 entrada(s) pendente(s) para correção.
+2026-07-14 08:38:45.983 [correcao] [ARQUIVO] Mobile.Suit.Gundam.The.08th.MS.Team.S01E04_Track3.cache.json — 0 entrada(s) pendente(s) para correção.
+2026-07-14 08:38:46.015 [console] Iniciando correção online do cache via Google Translate: C:\Users\Paulo\AppData\Local\Temp\junit-12471155809105576456\cache-interrupcao
+2026-07-14 08:38:46.021 [correcao] [ARQUIVO] Mobile.Suit.Gundam.The.08th.MS.Team.S01E05_Track3.cache.json — 1 entrada(s) pendente(s) para correção.
+2026-07-14 08:38:46.022 [console] [ARQUIVO] ep.cache.json — 2 entrada(s) pendente(s) para correção.
+2026-07-14 08:38:46.023 [console] [CORRIGINDO 1/2] Evento 1 — Help!
+2026-07-14 08:38:46.024 [correcao] [CORRIGINDO 1/1] Evento 72 — E-Eledore...
+2026-07-14 08:38:46.032 [console] [CORRIGIDA 1/2] Evento 1 — Ajude!
+2026-07-14 08:38:46.032 [console] [OK] ep.cache.json: 1 entrada(s) corrigidas; backup em C:\Users\Paulo\AppData\Local\Temp\junit-12471155809105576456\backups-interrupcao\ep.cache.json
+2026-07-14 08:38:46.034 [console] Resultado da correção Google: CANCELADO | corrigidas=1 pendentes=0 falhas=0
+2026-07-14 08:38:46.042 [console] Iniciando correção online do cache via Google Translate: C:\Users\Paulo\AppData\Local\Temp\junit-10313664040354782812\cache
+2026-07-14 08:38:46.043 [console] [ARQUIVO] ep.cache.json — 1 entrada(s) pendente(s) para correção.
+2026-07-14 08:38:46.044 [console] [CORRIGINDO 1/1] Evento 1 — Help!
+2026-07-14 08:38:46.048 [console] [CORRIGIDA 1/1] Evento 1 — Ajude!
+2026-07-14 08:38:46.105 [correcao] [PENDENTE 1/1] Evento 72 — SEM_ALTERACAO
+2026-07-14 08:38:46.460 [console] [OK] ep.cache.json: 1 entrada(s) corrigidas; backup em C:\Users\Paulo\AppData\Local\Temp\junit-10313664040354782812\backups\ep.cache.json
+2026-07-14 08:38:46.461 [console] Resultado da correção Google: CONCLUIDO | corrigidas=1 pendentes=0 falhas=0
+2026-07-14 08:38:46.556 [console]   [CONTEXTO] Seleção manual "danmachi" ignorada: a proveniência do cache exige "gundam_nt".
+2026-07-14 08:38:46.557 [console]   Contexto ativo: Gundam Narrative (fonte: proveniência do cache)
+2026-07-14 08:38:46.558 [correcao] [ARQUIVO] Mobile.Suit.Gundam.The.08th.MS.Team.S01E07_Track3.cache.json — 1 entrada(s) pendente(s) para correção.
+2026-07-14 08:38:46.563 [correcao] [CORRIGINDO 1/1] Evento 177 — Aina? Aina... Aina!
+2026-07-14 08:38:46.629 [console] [08:38:46] [INFO   ] Vídeos=1 | Legendas=1 | Pareados=1 | Sem legenda=0 | Ambíguos=0
+2026-07-14 08:38:46.629 [console] [08:38:46] [INFO   ] Política de faixas: preservar legendas originais e adicionar PT-BR como padrão.
+2026-07-14 08:38:46.630 [console] [08:38:46] [INFO   ] [REMUX 1/1] Anime - S01E01.mkv + Anime - S01E01_PT-BR.ass -> Anime - S01E01_PTBR.mkv
+2026-07-14 08:38:46.633 [console] [08:38:46] [SUCESSO] [OK 1/1] MKV validado: Anime - S01E01_PTBR.mkv
+2026-07-14 08:38:46.642 [console] [08:38:46] [INFO   ] Vídeos=1 | Legendas=1 | Pareados=1 | Sem legenda=0 | Ambíguos=0
+2026-07-14 08:38:46.643 [console] [08:38:46] [INFO   ] Política de faixas: remover legendas originais e manter somente a nova PT-BR.
+2026-07-14 08:38:46.643 [console] [08:38:46] [INFO   ] [REMUX 1/1] Anime - S01E01.mkv + Anime - S01E01_PT-BR.ass -> Anime - S01E01_PTBR.mkv
+2026-07-14 08:38:46.644 [console] [08:38:46] [ERRO   ] [LEGENDA INVÁLIDA] Anime - S01E01_PT-BR.ass — Conteúdo extraído não corresponde ao formato ASS: C:\Users\Paulo\AppData\Local\Temp\junit-2644666777160233809\legendas\Anime - S01E01_PT-BR.ass
+2026-07-14 08:38:46.651 [correcao] [PENDENTE 1/1] Evento 177 — SEM_ALTERACAO
+2026-07-14 08:38:46.654 [console] [08:38:46] [INFO   ] Vídeos=1 | Legendas=1 | Pareados=1 | Sem legenda=0 | Ambíguos=0
+2026-07-14 08:38:46.654 [console] [08:38:46] [INFO   ] Política de faixas: remover legendas originais e manter somente a nova PT-BR.
+2026-07-14 08:38:46.655 [console] [08:38:46] [INFO   ] [REMUX 1/1] Anime - S01E01.mkv + Anime - S01E01_PT-BR.ass -> Anime - S01E01_PTBR.mkv
+2026-07-14 08:38:46.656 [console] [08:38:46] [AVISO  ] [PRESERVADO] preservado: C:\Users\Paulo\AppData\Local\Temp\junit-11990708991904247208\videos\mkv_final_ptbr\Anime - S01E01_PTBR.mkv
+2026-07-14 08:38:46.665 [console] [08:38:46] [INFO   ] Vídeos=1 | Legendas=1 | Pareados=1 | Sem legenda=0 | Ambíguos=0
+2026-07-14 08:38:46.665 [console] [08:38:46] [INFO   ] Política de faixas: remover legendas originais e manter somente a nova PT-BR.
+2026-07-14 08:38:46.666 [console] [08:38:46] [INFO   ] [REMUX 1/1] Anime - S01E01.mkv + Anime - S01E01_PT-BR.ass -> Anime - S01E01_PTBR.mkv
+2026-07-14 08:38:46.667 [console] [08:38:46] [AVISO  ] Remux cancelado durante Anime - S01E01.mkv; parcial descartado.
+2026-07-14 08:38:46.998 [console] Iniciando limpeza segura de cache em: C:\Users\Paulo\AppData\Local\Temp\junit-13213716576377724730\cache-legado
+2026-07-14 08:38:47.001 [console] Resultado da limpeza: CONCLUIDO_COM_FALHAS | arquivos=1 alterados=0 falhas=1
+2026-07-14 08:38:47.006 [console] Iniciando limpeza segura de cache em: C:\Users\Paulo\AppData\Local\Temp\junit-9170512552233736038\cache
+2026-07-14 08:38:47.010 [console] [OK] ep.cache.json: 1 entrada(s) invalidadas; backup em C:\Users\Paulo\AppData\Local\Temp\junit-9170512552233736038\backups\anime\ep.cache.json
+2026-07-14 08:38:47.011 [console] Resultado da limpeza: CONCLUIDO | arquivos=1 alterados=1 falhas=0
+2026-07-14 08:38:47.065 [console] === Iniciando Substituição em Lote de Fontes ASS ===
+2026-07-14 08:38:47.066 [console] Pasta alvo: C:\Users\Paulo\AppData\Local\Temp\junit-6604696115409700194
+2026-07-14 08:38:47.067 [console] Diretório de backup criado com sucesso: C:\Users\Paulo\AppData\Local\Temp\junit-3693443629954052776\backups\troca_tipo_legenda_20260714_083847
+2026-07-14 08:38:47.071 [console]   -> No arquivo: legenda1.ass estilo [Dialogue] substituído: .VnBook-Antiqua -> Arial
+2026-07-14 08:38:47.071 [console]   [SUCESSO] Arquivo legenda1.ass atualizado!
+2026-07-14 08:38:47.073 [console] Arquivo legenda2.ass [OK] - Sem fontes legadas problemáticas. Pulando.
+2026-07-14 08:38:47.073 [console] ========================================================================
+2026-07-14 08:38:47.074 [console]   [SUCESSO] OPERAÇÃO DE SUBSTITUIÇÃO DE FONTES FINALIZADA!
+2026-07-14 08:38:47.075 [console] ========================================================================
+2026-07-14 08:38:47.075 [console]   • Arquivos analisados  : 2
+2026-07-14 08:38:47.076 [console]   • Arquivos alterados   : 1
+2026-07-14 08:38:47.076 [console]   • Substituições feitas : 1
+2026-07-14 08:38:47.077 [console]   • Pasta de Backup      : C:\Users\Paulo\AppData\Local\Temp\junit-3693443629954052776\backups\troca_tipo_legenda_20260714_083847
+2026-07-14 08:38:47.078 [console] ========================================================================
+2026-07-14 08:38:47.081 [console] Relatórios persistidos em: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-6604696115409700194
+2026-07-14 08:38:47.082 [correcao] [ARQUIVO] Mobile.Suit.Gundam.The.08th.MS.Team.S01E08_Track3.cache.json — 1 entrada(s) pendente(s) para correção.
+2026-07-14 08:38:47.086 [correcao] [CORRIGINDO 1/1] Evento 92 — Arth!
+2026-07-14 08:38:47.103 [console] === Iniciando Substituição em Lote de Fontes ASS ===
+2026-07-14 08:38:47.104 [console] Pasta alvo: C:\Users\Paulo\AppData\Local\Temp\junit-10296441807073678817
+2026-07-14 08:38:47.105 [console] Diretório de backup criado com sucesso: C:\Users\Paulo\AppData\Local\Temp\junit-9979731002668127428\backups\troca_tipo_legenda_20260714_083847
+2026-07-14 08:38:47.108 [console]   -> No arquivo: legenda-multi.ass estilo [Dialogue] substituído: .VnBook-Antiqua -> Arial
+2026-07-14 08:38:47.108 [console]   -> No arquivo: legenda-multi.ass estilo [Title] substituído: .VnBook-Antiqua -> Arial
+2026-07-14 08:38:47.109 [console]   [SUCESSO] Arquivo legenda-multi.ass atualizado!
+2026-07-14 08:38:47.109 [console] ========================================================================
+2026-07-14 08:38:47.111 [console]   [SUCESSO] OPERAÇÃO DE SUBSTITUIÇÃO DE FONTES FINALIZADA!
+2026-07-14 08:38:47.111 [console] ========================================================================
+2026-07-14 08:38:47.112 [console]   • Arquivos analisados  : 1
+2026-07-14 08:38:47.112 [console]   • Arquivos alterados   : 1
+2026-07-14 08:38:47.112 [console]   • Substituições feitas : 2
+2026-07-14 08:38:47.113 [console]   • Pasta de Backup      : C:\Users\Paulo\AppData\Local\Temp\junit-9979731002668127428\backups\troca_tipo_legenda_20260714_083847
+2026-07-14 08:38:47.113 [console] ========================================================================
+2026-07-14 08:38:47.116 [console] Relatórios persistidos em: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-10296441807073678817
+2026-07-14 08:44:18.838 [console] ==============================================================
+2026-07-14 08:44:18.838 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 08:44:18.839 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 08:44:18.839 [console] ==============================================================
+2026-07-14 08:45:41.180 [console] ==============================================================
+2026-07-14 08:45:41.181 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 08:45:41.182 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 08:45:41.182 [console] ==============================================================
+2026-07-14 08:45:41.833 [console]   [CONTEXTO] Seleção manual "danmachi" ignorada: a proveniência do cache exige "gundam_nt".
+2026-07-14 08:45:41.834 [console]   Contexto ativo: Gundam Narrative (fonte: proveniência do cache)
+2026-07-14 08:46:30.806 [console] ==============================================================
+2026-07-14 08:46:30.807 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 08:46:30.807 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 08:46:30.808 [console] ==============================================================
+2026-07-14 08:46:32.366 [auditor-conteudo] === Auditoria de Conteudo de Legendas (arquivo unico: original) ===
+2026-07-14 08:46:32.367 [auditor-conteudo] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-17605817806758284347\solo_eng.ass
+2026-07-14 08:46:32.368 [auditor-conteudo] Formato : ASS
+2026-07-14 08:46:32.442 [auditor-conteudo] [Auditoria Conteudo] Arquivo limpo: solo_eng.ass
+2026-07-14 08:46:32.443 [auditor-conteudo] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-17605817806758284347\auditoria_conteudo_20260714_084632.json
+2026-07-14 08:46:32.444 [auditor-conteudo] Regras executadas: 6
+2026-07-14 08:46:32.444 [auditor-conteudo] Anomalias: 0
+2026-07-14 08:46:32.444 [auditor-conteudo] Duracao: 7 ms
+2026-07-14 08:46:32.447 [auditor-conteudo] [RELATÓRIO FINAL] Operação: Análise de Conteúdo de Legendas | Tempo total: 0,1s | Término: 08:46:32
+2026-07-14 08:46:32.502 [auditor-conteudo] === Auditoria de Conteudo de Legendas ===
+2026-07-14 08:46:32.502 [auditor-conteudo] Original : C:\Users\Paulo\AppData\Local\Temp\junit-8990704934238772048\ep_eng.ass
+2026-07-14 08:46:32.503 [auditor-conteudo] Formato original: ASS
+2026-07-14 08:46:32.503 [auditor-conteudo] Traduzido: C:\Users\Paulo\AppData\Local\Temp\junit-8990704934238772048\ep_pt.ass
+2026-07-14 08:46:32.503 [auditor-conteudo] Formato traduzido: ASS
+2026-07-14 08:46:32.518 [auditor-conteudo] [Auditoria Conteudo] Arquivo limpo: ep_pt.ass
+2026-07-14 08:46:32.519 [auditor-conteudo] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-8990704934238772048\auditoria_conteudo_20260714_084632.json
+2026-07-14 08:46:32.519 [auditor-conteudo] Regras executadas: 5
+2026-07-14 08:46:32.520 [auditor-conteudo] Anomalias: 0
+2026-07-14 08:46:32.520 [auditor-conteudo] Duracao: 5 ms
+2026-07-14 08:46:32.521 [auditor-conteudo] [RELATÓRIO FINAL] Operação: Análise de Conteúdo de Legendas | Tempo total: 0,0s | Término: 08:46:32
+2026-07-14 08:46:36.114 [revisao-lore] ========================================================================
+2026-07-14 08:46:36.116 [revisao-lore]   [FALHOU] REVISAO DE LORE
+2026-07-14 08:46:36.116 [revisao-lore]   LLM indisponivel para revisao de lore: Não foi possível conectar ao servidor LLM em http://127.0.0.1:1234/v1: null
+2026-07-14 08:46:36.117 [revisao-lore] ========================================================================
+2026-07-14 08:46:36.118 [revisao-lore] [RELATÓRIO FINAL] Operação: Revisão de Lore (LLM) | Tempo total: 0,0s | Término: 08:46:36
+2026-07-14 08:46:36.945 [correcao] Iniciando limpeza segura de cache em: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\cache
+2026-07-14 08:46:37.248 [correcao] Resultado da limpeza: CONCLUIDO | arquivos=14 alterados=0 falhas=0
+2026-07-14 08:46:37.249 [correcao] [SUCESSO] LIMPEZA E AUDITORIA DE CACHE — status=CONCLUIDO, arquivos=14, alterados=0, corrigidos=0, pendentes=0, falhas=0
+2026-07-14 08:46:37.250 [correcao] [RELATÓRIO FINAL] Operação: Limpeza e Auditoria de Cache | Tempo total: 0,3s | Término: 08:46:37
+2026-07-14 08:46:37.251 [correcao] Iniciando correção online do cache via Google Translate: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\cache
+2026-07-14 08:46:37.287 [correcao] [ARQUIVO] [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3.cache.json — 2 entrada(s) pendente(s) para correção.
+2026-07-14 08:46:37.304 [correcao] [CORRIGINDO 1/2] Evento 478 — Banchi 18, Metis.
+2026-07-14 08:46:37.794 [correcao] [PENDENTE 1/2] Evento 478 — SEM_ALTERACAO
+2026-07-14 08:46:37.961 [console] === Auditoria de Conteudo de Legendas (arquivo unico: original) ===
+2026-07-14 08:46:37.962 [console] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-12828562125860443501\solo_limpo.ass
+2026-07-14 08:46:37.963 [console] Formato : ASS
+2026-07-14 08:46:37.973 [console] [Auditoria Conteudo] Arquivo limpo: solo_limpo.ass
+2026-07-14 08:46:37.974 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-12828562125860443501\auditoria_conteudo_20260714_084637.json
+2026-07-14 08:46:37.974 [console] Regras executadas: 6
+2026-07-14 08:46:37.975 [console] Anomalias: 0
+2026-07-14 08:46:37.975 [console] Duracao: 4 ms
+2026-07-14 08:46:37.982 [console] === Auditoria de Conteudo de Legendas (arquivo unico: original) ===
+2026-07-14 08:46:37.983 [console] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-12790831391675029417\solo_eng.ass
+2026-07-14 08:46:37.984 [console] Formato : ASS
+2026-07-14 08:46:37.997 [console] [Auditoria Conteudo] 2 anomalia(s) em solo_eng.ass
+2026-07-14 08:46:37.998 [console]   [ERROR] Timestamp Inválido (fim ≤ início) — Fim (3000 ms) menor ou igual ao início (5000 ms). A linha tem duração inválida e não será exibida.
+2026-07-14 08:46:37.999 [console]   [CRITICAL] Bloco de Override ASS Não Fechado — Bloco de override '{...}' aberto e não fechado corretamente. O player pode exibir as tags como texto ou descartar a linha.
+2026-07-14 08:46:37.999 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-12790831391675029417\auditoria_conteudo_20260714_084637.json
+2026-07-14 08:46:38.000 [console] Regras executadas: 6
+2026-07-14 08:46:38.000 [console] Anomalias: 2
+2026-07-14 08:46:38.001 [console] Duracao: 3 ms
+2026-07-14 08:46:38.009 [console] === Auditoria de Conteudo de Legendas (arquivo unico: traduzido) ===
+2026-07-14 08:46:38.009 [console] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-7936751565251655046\solo_karaoke.ass
+2026-07-14 08:46:38.009 [console] Formato : ASS
+2026-07-14 08:46:38.019 [console] [Auditoria Conteudo] Arquivo limpo: solo_karaoke.ass
+2026-07-14 08:46:38.019 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-7936751565251655046\auditoria_conteudo_20260714_084638.json
+2026-07-14 08:46:38.020 [console] Regras executadas: 6
+2026-07-14 08:46:38.021 [console] Anomalias: 0
+2026-07-14 08:46:38.021 [console] Duracao: 2 ms
+2026-07-14 08:46:38.029 [console] === Auditoria de Conteudo de Legendas ===
+2026-07-14 08:46:38.029 [console] Original : C:\Users\Paulo\AppData\Local\Temp\junit-89741975207636719\ep04_eng.srt
+2026-07-14 08:46:38.030 [console] Formato original: SRT
+2026-07-14 08:46:38.031 [console] Traduzido: C:\Users\Paulo\AppData\Local\Temp\junit-89741975207636719\ep04_pt.srt
+2026-07-14 08:46:38.032 [console] Formato traduzido: SRT
+2026-07-14 08:46:38.042 [console] [Auditoria Conteudo] Arquivo limpo: ep04_pt.srt
+2026-07-14 08:46:38.043 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-89741975207636719\auditoria_conteudo_20260714_084638.json
+2026-07-14 08:46:38.043 [console] Regras executadas: 5
+2026-07-14 08:46:38.044 [console] Anomalias: 0
+2026-07-14 08:46:38.044 [console] Duracao: 5 ms
+2026-07-14 08:46:38.061 [console] === Auditoria de Conteudo de Legendas (arquivo unico: original) ===
+2026-07-14 08:46:38.062 [console] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-17023969779175382232\solo_colisao.ass
+2026-07-14 08:46:38.063 [console] Formato : ASS
+2026-07-14 08:46:38.073 [console] [Auditoria Conteudo] 1 anomalia(s) em solo_colisao.ass
+2026-07-14 08:46:38.073 [console]   [WARNING] Sobreposição de Tempo Entre Diálogos — Este diálogo começa em 3000 ms, antes de a fala anterior de mesmo estilo e camada terminar em 5000 ms. As linhas se sobrepõem na tela.
+2026-07-14 08:46:38.074 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-17023969779175382232\auditoria_conteudo_20260714_084638.json
+2026-07-14 08:46:38.075 [console] Regras executadas: 6
+2026-07-14 08:46:38.075 [console] Anomalias: 1
+2026-07-14 08:46:38.076 [console] Duracao: 3 ms
+2026-07-14 08:46:38.091 [console] === Auditoria de Conteudo de Legendas ===
+2026-07-14 08:46:38.091 [console] Original : C:\Users\Paulo\AppData\Local\Temp\junit-8694338198212205719\ep02_eng.ass
+2026-07-14 08:46:38.092 [console] Formato original: ASS
+2026-07-14 08:46:38.092 [console] Traduzido: C:\Users\Paulo\AppData\Local\Temp\junit-8694338198212205719\ep02_pt.ass
+2026-07-14 08:46:38.093 [console] Formato traduzido: ASS
+2026-07-14 08:46:38.105 [console] [Auditoria Conteudo] 1 anomalia(s) em ep02_pt.ass
+2026-07-14 08:46:38.106 [console]   [CRITICAL] Alucinação de Quebra de Linha (\N) — A tradução inseriu 4 quebras de linha onde o original tinha 0. Isso destrói o posicionamento (\pos).
+2026-07-14 08:46:38.107 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-8694338198212205719\auditoria_conteudo_20260714_084638.json
+2026-07-14 08:46:38.107 [console] Regras executadas: 5
+2026-07-14 08:46:38.108 [console] Anomalias: 1
+2026-07-14 08:46:38.109 [console] Duracao: 6 ms
+2026-07-14 08:46:38.115 [console] === Auditoria de Conteudo de Legendas ===
+2026-07-14 08:46:38.116 [console] Original : C:\Users\Paulo\AppData\Local\Temp\junit-2288306071147125870\ep01_eng.ass
+2026-07-14 08:46:38.116 [console] Formato original: ASS
+2026-07-14 08:46:38.117 [console] Traduzido: C:\Users\Paulo\AppData\Local\Temp\junit-2288306071147125870\ep01_pt.ass
+2026-07-14 08:46:38.117 [console] Formato traduzido: ASS
+2026-07-14 08:46:38.126 [console] [Auditoria Conteudo] Arquivo limpo: ep01_pt.ass
+2026-07-14 08:46:38.127 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-2288306071147125870\auditoria_conteudo_20260714_084638.json
+2026-07-14 08:46:38.127 [console] Regras executadas: 5
+2026-07-14 08:46:38.128 [console] Anomalias: 0
+2026-07-14 08:46:38.129 [console] Duracao: 4 ms
+2026-07-14 08:46:38.144 [console] === Auditoria de Conteudo de Legendas (arquivo unico: traduzido) ===
+2026-07-14 08:46:38.144 [console] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-16395871962252049303\solo_pt.ass
+2026-07-14 08:46:38.144 [console] Formato : ASS
+2026-07-14 08:46:38.152 [console] [Auditoria Conteudo] 2 anomalia(s) em solo_pt.ass
+2026-07-14 08:46:38.153 [console]   [ERROR] Timestamp Inválido (fim ≤ início) — Fim (3000 ms) menor ou igual ao início (5000 ms). A linha tem duração inválida e não será exibida.
+2026-07-14 08:46:38.154 [console]   [CRITICAL] Bloco de Override ASS Não Fechado — Bloco de override '{...}' aberto e não fechado corretamente. O player pode exibir as tags como texto ou descartar a linha.
+2026-07-14 08:46:38.154 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-16395871962252049303\auditoria_conteudo_20260714_084638.json
+2026-07-14 08:46:38.154 [console] Regras executadas: 6
+2026-07-14 08:46:38.156 [console] Anomalias: 2
+2026-07-14 08:46:38.156 [console] Duracao: 3 ms
+2026-07-14 08:46:38.221 [correcao] [CORRIGINDO 2/2] Evento 1015 — Fransson!
+2026-07-14 08:46:38.306 [correcao] [PENDENTE 2/2] Evento 1015 — SEM_ALTERACAO
+2026-07-14 08:46:38.720 [correcao] [ARQUIVO] Mobile.Suit.Gundam.The.08th.MS.Team.S00E02_Track2.cache.json — 0 entrada(s) pendente(s) para correção.
+2026-07-14 08:46:38.733 [correcao] [ARQUIVO] Mobile.Suit.Gundam.The.08th.MS.Team.S01E01_Track3.cache.json — 0 entrada(s) pendente(s) para correção.
+2026-07-14 08:46:38.748 [correcao] [ARQUIVO] Mobile.Suit.Gundam.The.08th.MS.Team.S01E02_Track3.cache.json — 0 entrada(s) pendente(s) para correção.
+2026-07-14 08:46:38.768 [correcao] [ARQUIVO] Mobile.Suit.Gundam.The.08th.MS.Team.S01E03_Track3.cache.json — 0 entrada(s) pendente(s) para correção.
+2026-07-14 08:46:38.786 [correcao] [ARQUIVO] Mobile.Suit.Gundam.The.08th.MS.Team.S01E04_Track3.cache.json — 0 entrada(s) pendente(s) para correção.
+2026-07-14 08:46:38.807 [correcao] [ARQUIVO] Mobile.Suit.Gundam.The.08th.MS.Team.S01E05_Track3.cache.json — 1 entrada(s) pendente(s) para correção.
+2026-07-14 08:46:38.809 [correcao] [CORRIGINDO 1/1] Evento 72 — E-Eledore...
+2026-07-14 08:46:38.896 [correcao] [PENDENTE 1/1] Evento 72 — SEM_ALTERACAO
+2026-07-14 08:46:39.317 [correcao] [ARQUIVO] Mobile.Suit.Gundam.The.08th.MS.Team.S01E06_Track3.cache.json — 0 entrada(s) pendente(s) para correção.
+2026-07-14 08:46:39.334 [correcao] [ARQUIVO] Mobile.Suit.Gundam.The.08th.MS.Team.S01E07_Track3.cache.json — 1 entrada(s) pendente(s) para correção.
+2026-07-14 08:46:39.339 [correcao] [CORRIGINDO 1/1] Evento 177 — Aina? Aina... Aina!
+2026-07-14 08:46:39.422 [correcao] [PENDENTE 1/1] Evento 177 — SEM_ALTERACAO
+2026-07-14 08:46:39.702 [console] marcador-console-redirector-7a60b51c-380c-418e-96cd-62ff4c3a92a8
+2026-07-14 08:46:39.842 [correcao] [ARQUIVO] Mobile.Suit.Gundam.The.08th.MS.Team.S01E08_Track3.cache.json — 1 entrada(s) pendente(s) para correção.
+2026-07-14 08:46:39.844 [correcao] [CORRIGINDO 1/1] Evento 92 — Arth!
+2026-07-14 08:46:39.925 [correcao] [PENDENTE 1/1] Evento 92 — SEM_ALTERACAO
+2026-07-14 08:46:40.043 [console] === Iniciando Correcao de Legendas ===
+2026-07-14 08:46:40.044 [console] Pasta original/ref: C:\Users\Paulo\AppData\Local\Temp\junit-7143602879741076105
+2026-07-14 08:46:40.044 [console] Pasta traduzida/alvo: C:\Users\Paulo\AppData\Local\Temp\junit-7143602879741076105
+2026-07-14 08:46:40.046 [console] Correcao de traducao via LLM ativa (contexto: Teste)
+2026-07-14 08:46:40.049 [console] [OK] episodio_PT-BR.ass (sem alteracao)
+2026-07-14 08:46:40.049 [console] Relatorio JSON salvo em: C:\Users\Paulo\AppData\Local\Temp\junit-7143602879741076105\relatorio-fake.json
+2026-07-14 08:46:40.051 [console] Correcao de legendas concluida: 0 arquivo(s) curado(s) (0 fala(s)), 0 fala(s) corrigida(s) via LLM, 1 ja perfeito(s), 0 fala(s) sem traducao.
+2026-07-14 08:46:40.054 [console] === Iniciando Correcao de Legendas ===
+2026-07-14 08:46:40.056 [console] Pasta original/ref: C:\Users\Paulo\AppData\Local\Temp\junit-8952383004387499018
+2026-07-14 08:46:40.057 [console] Pasta traduzida/alvo: C:\Users\Paulo\AppData\Local\Temp\junit-8952383004387499018
+2026-07-14 08:46:40.057 [console] Correcao de traducao via LLM ativa (contexto: Teste)
+2026-07-14 08:46:40.058 [console] Fala 1: karaokê japonês/romaji restaurado da legenda original.
+2026-07-14 08:46:40.061 [console] [Corrigido] episodio_PT-BR.ass (1 tags restauradas, 0 corrigidas via LLM)
+2026-07-14 08:46:40.062 [console] Relatorio JSON salvo em: C:\Users\Paulo\AppData\Local\Temp\junit-8952383004387499018\relatorio-fake.json
+2026-07-14 08:46:40.062 [console] Correcao de legendas concluida: 1 arquivo(s) curado(s) (1 fala(s)), 0 fala(s) corrigida(s) via LLM, 0 ja perfeito(s), 0 fala(s) sem traducao.
+2026-07-14 08:46:40.213 [console] Iniciando correção online do cache via Google Translate: C:\Users\Paulo\AppData\Local\Temp\junit-15139307903037678298\cache-interrupcao
+2026-07-14 08:46:40.220 [console] [ARQUIVO] ep.cache.json — 2 entrada(s) pendente(s) para correção.
+2026-07-14 08:46:40.221 [console] [CORRIGINDO 1/2] Evento 1 — Help!
+2026-07-14 08:46:40.229 [console] [CORRIGIDA 1/2] Evento 1 — Ajude!
+2026-07-14 08:46:40.229 [console] [OK] ep.cache.json: 1 entrada(s) corrigidas; backup em C:\Users\Paulo\AppData\Local\Temp\junit-15139307903037678298\backups-interrupcao\ep.cache.json
+2026-07-14 08:46:40.231 [console] Resultado da correção Google: CANCELADO | corrigidas=1 pendentes=0 falhas=0
+2026-07-14 08:46:40.238 [console] Iniciando correção online do cache via Google Translate: C:\Users\Paulo\AppData\Local\Temp\junit-16024969968592317947\cache
+2026-07-14 08:46:40.239 [console] [ARQUIVO] ep.cache.json — 1 entrada(s) pendente(s) para correção.
+2026-07-14 08:46:40.239 [console] [CORRIGINDO 1/1] Evento 1 — Help!
+2026-07-14 08:46:40.243 [console] [CORRIGIDA 1/1] Evento 1 — Ajude!
+2026-07-14 08:46:40.369 [correcao] [ARQUIVO] Mobile.Suit.Gundam.The.08th.MS.Team.S01E09_Track3.cache.json — 1 entrada(s) pendente(s) para correção.
+2026-07-14 08:46:40.373 [correcao] [CORRIGINDO 1/1] Evento 150 — Even the Feds aren't {\i1}that{\i0} dumb.
+2026-07-14 08:46:40.460 [correcao] [PENDENTE 1/1] Evento 150 — TAG_CORROMPIDA
+2026-07-14 08:46:40.644 [console] [OK] ep.cache.json: 1 entrada(s) corrigidas; backup em C:\Users\Paulo\AppData\Local\Temp\junit-16024969968592317947\backups\ep.cache.json
+2026-07-14 08:46:40.645 [console] Resultado da correção Google: CONCLUIDO | corrigidas=1 pendentes=0 falhas=0
+2026-07-14 08:46:40.727 [console]   [CONTEXTO] Seleção manual "danmachi" ignorada: a proveniência do cache exige "gundam_nt".
+2026-07-14 08:46:40.727 [console]   Contexto ativo: Gundam Narrative (fonte: proveniência do cache)
+2026-07-14 08:46:40.787 [console] [08:46:40] [INFO   ] Vídeos=1 | Legendas=1 | Pareados=1 | Sem legenda=0 | Ambíguos=0
+2026-07-14 08:46:40.787 [console] [08:46:40] [INFO   ] Política de faixas: preservar legendas originais e adicionar PT-BR como padrão.
+2026-07-14 08:46:40.789 [console] [08:46:40] [INFO   ] [REMUX 1/1] Anime - S01E01.mkv + Anime - S01E01_PT-BR.ass -> Anime - S01E01_PTBR.mkv
+2026-07-14 08:46:40.790 [console] [08:46:40] [SUCESSO] [OK 1/1] MKV validado: Anime - S01E01_PTBR.mkv
+2026-07-14 08:46:40.798 [console] [08:46:40] [INFO   ] Vídeos=1 | Legendas=1 | Pareados=1 | Sem legenda=0 | Ambíguos=0
+2026-07-14 08:46:40.798 [console] [08:46:40] [INFO   ] Política de faixas: remover legendas originais e manter somente a nova PT-BR.
+2026-07-14 08:46:40.799 [console] [08:46:40] [INFO   ] [REMUX 1/1] Anime - S01E01.mkv + Anime - S01E01_PT-BR.ass -> Anime - S01E01_PTBR.mkv
+2026-07-14 08:46:40.800 [console] [08:46:40] [ERRO   ] [LEGENDA INVÁLIDA] Anime - S01E01_PT-BR.ass — Conteúdo extraído não corresponde ao formato ASS: C:\Users\Paulo\AppData\Local\Temp\junit-7337635893364787841\legendas\Anime - S01E01_PT-BR.ass
+2026-07-14 08:46:40.806 [console] [08:46:40] [INFO   ] Vídeos=1 | Legendas=1 | Pareados=1 | Sem legenda=0 | Ambíguos=0
+2026-07-14 08:46:40.807 [console] [08:46:40] [INFO   ] Política de faixas: remover legendas originais e manter somente a nova PT-BR.
+2026-07-14 08:46:40.807 [console] [08:46:40] [INFO   ] [REMUX 1/1] Anime - S01E01.mkv + Anime - S01E01_PT-BR.ass -> Anime - S01E01_PTBR.mkv
+2026-07-14 08:46:40.808 [console] [08:46:40] [AVISO  ] [PRESERVADO] preservado: C:\Users\Paulo\AppData\Local\Temp\junit-13388094381247966706\videos\mkv_final_ptbr\Anime - S01E01_PTBR.mkv
+2026-07-14 08:46:40.817 [console] [08:46:40] [INFO   ] Vídeos=1 | Legendas=1 | Pareados=1 | Sem legenda=0 | Ambíguos=0
+2026-07-14 08:46:40.817 [console] [08:46:40] [INFO   ] Política de faixas: remover legendas originais e manter somente a nova PT-BR.
+2026-07-14 08:46:40.818 [console] [08:46:40] [INFO   ] [REMUX 1/1] Anime - S01E01.mkv + Anime - S01E01_PT-BR.ass -> Anime - S01E01_PTBR.mkv
+2026-07-14 08:46:40.819 [console] [08:46:40] [AVISO  ] Remux cancelado durante Anime - S01E01.mkv; parcial descartado.
+2026-07-14 08:46:40.879 [correcao] [ARQUIVO] Mobile.Suit.Gundam.The.08th.MS.Team.S01E10_Track3.cache.json — 0 entrada(s) pendente(s) para correção.
+2026-07-14 08:46:40.899 [correcao] [ARQUIVO] Mobile.Suit.Gundam.The.08th.MS.Team.S01E11_Track3.cache.json — 2 entrada(s) pendente(s) para correção.
+2026-07-14 08:46:40.902 [correcao] [CORRIGINDO 1/2] Evento 66 — {\i1}98! 97!
+2026-07-14 08:46:40.987 [correcao] [PENDENTE 1/2] Evento 66 — SEM_ALTERACAO
+2026-07-14 08:46:41.136 [console] Iniciando limpeza segura de cache em: C:\Users\Paulo\AppData\Local\Temp\junit-7635999412963914852\cache-legado
+2026-07-14 08:46:41.138 [console] Resultado da limpeza: CONCLUIDO_COM_FALHAS | arquivos=1 alterados=0 falhas=1
+2026-07-14 08:46:41.141 [console] Iniciando limpeza segura de cache em: C:\Users\Paulo\AppData\Local\Temp\junit-5611781371519523191\cache
+2026-07-14 08:46:41.146 [console] [OK] ep.cache.json: 1 entrada(s) invalidadas; backup em C:\Users\Paulo\AppData\Local\Temp\junit-5611781371519523191\backups\anime\ep.cache.json
+2026-07-14 08:46:41.146 [console] Resultado da limpeza: CONCLUIDO | arquivos=1 alterados=1 falhas=0
+2026-07-14 08:46:41.198 [console] === Iniciando Substituição em Lote de Fontes ASS ===
+2026-07-14 08:46:41.200 [console] Pasta alvo: C:\Users\Paulo\AppData\Local\Temp\junit-5653249531396471157
+2026-07-14 08:46:41.201 [console] Diretório de backup criado com sucesso: C:\Users\Paulo\AppData\Local\Temp\junit-12492648948004269856\backups\troca_tipo_legenda_20260714_084641
+2026-07-14 08:46:41.205 [console]   -> No arquivo: legenda1.ass estilo [Dialogue] substituído: .VnBook-Antiqua -> Arial
+2026-07-14 08:46:41.206 [console]   [SUCESSO] Arquivo legenda1.ass atualizado!
+2026-07-14 08:46:41.206 [console] Arquivo legenda2.ass [OK] - Sem fontes legadas problemáticas. Pulando.
+2026-07-14 08:46:41.207 [console] ========================================================================
+2026-07-14 08:46:41.207 [console]   [SUCESSO] OPERAÇÃO DE SUBSTITUIÇÃO DE FONTES FINALIZADA!
+2026-07-14 08:46:41.208 [console] ========================================================================
+2026-07-14 08:46:41.209 [console]   • Arquivos analisados  : 2
+2026-07-14 08:46:41.209 [console]   • Arquivos alterados   : 1
+2026-07-14 08:46:41.210 [console]   • Substituições feitas : 1
+2026-07-14 08:46:41.210 [console]   • Pasta de Backup      : C:\Users\Paulo\AppData\Local\Temp\junit-12492648948004269856\backups\troca_tipo_legenda_20260714_084641
+2026-07-14 08:46:41.211 [console] ========================================================================
+2026-07-14 08:46:41.216 [console] Relatórios persistidos em: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-5653249531396471157
+2026-07-14 08:46:41.241 [console] === Iniciando Substituição em Lote de Fontes ASS ===
+2026-07-14 08:46:41.242 [console] Pasta alvo: C:\Users\Paulo\AppData\Local\Temp\junit-7648598115810036914
+2026-07-14 08:46:41.243 [console] Diretório de backup criado com sucesso: C:\Users\Paulo\AppData\Local\Temp\junit-14492657186281086849\backups\troca_tipo_legenda_20260714_084641
+2026-07-14 08:46:41.246 [console]   -> No arquivo: legenda-multi.ass estilo [Dialogue] substituído: .VnBook-Antiqua -> Arial
+2026-07-14 08:46:41.247 [console]   -> No arquivo: legenda-multi.ass estilo [Title] substituído: .VnBook-Antiqua -> Arial
+2026-07-14 08:46:41.248 [console]   [SUCESSO] Arquivo legenda-multi.ass atualizado!
+2026-07-14 08:46:41.249 [console] ========================================================================
+2026-07-14 08:46:41.249 [console]   [SUCESSO] OPERAÇÃO DE SUBSTITUIÇÃO DE FONTES FINALIZADA!
+2026-07-14 08:46:41.249 [console] ========================================================================
+2026-07-14 08:46:41.250 [console]   • Arquivos analisados  : 1
+2026-07-14 08:46:41.250 [console]   • Arquivos alterados   : 1
+2026-07-14 08:46:41.251 [console]   • Substituições feitas : 2
+2026-07-14 08:46:41.251 [console]   • Pasta de Backup      : C:\Users\Paulo\AppData\Local\Temp\junit-14492657186281086849\backups\troca_tipo_legenda_20260714_084641
+2026-07-14 08:46:41.252 [console] ========================================================================
+2026-07-14 08:46:41.254 [console] Relatórios persistidos em: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-7648598115810036914
+2026-07-14 08:50:48.565 [console] ==============================================================
+2026-07-14 08:50:48.566 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 08:50:48.566 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 08:50:48.567 [console] ==============================================================
+2026-07-14 08:50:49.790 [auditor-conteudo] === Auditoria de Conteudo de Legendas (arquivo unico: original) ===
+2026-07-14 08:50:49.790 [auditor-conteudo] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-11010400001348860166\solo_eng.ass
+2026-07-14 08:50:49.791 [auditor-conteudo] Formato : ASS
+2026-07-14 08:50:49.899 [auditor-conteudo] [Auditoria Conteudo] Arquivo limpo: solo_eng.ass
+2026-07-14 08:50:49.899 [auditor-conteudo] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-11010400001348860166\auditoria_conteudo_20260714_085049.json
+2026-07-14 08:50:49.901 [auditor-conteudo] Regras executadas: 6
+2026-07-14 08:50:49.902 [auditor-conteudo] Anomalias: 0
+2026-07-14 08:50:49.903 [auditor-conteudo] Duracao: 12 ms
+2026-07-14 08:50:49.906 [auditor-conteudo] [RELATÓRIO FINAL] Operação: Análise de Conteúdo de Legendas | Tempo total: 0,1s | Término: 08:50:49
+2026-07-14 08:50:50.327 [auditor-conteudo] === Auditoria de Conteudo de Legendas ===
+2026-07-14 08:50:50.328 [auditor-conteudo] Original : C:\Users\Paulo\AppData\Local\Temp\junit-11971151956224538049\ep_eng.ass
+2026-07-14 08:50:50.328 [auditor-conteudo] Formato original: ASS
+2026-07-14 08:50:50.329 [auditor-conteudo] Traduzido: C:\Users\Paulo\AppData\Local\Temp\junit-11971151956224538049\ep_pt.ass
+2026-07-14 08:50:50.329 [auditor-conteudo] Formato traduzido: ASS
+2026-07-14 08:50:50.397 [auditor-conteudo] [Auditoria Conteudo] Arquivo limpo: ep_pt.ass
+2026-07-14 08:50:50.398 [auditor-conteudo] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-11971151956224538049\auditoria_conteudo_20260714_085050.json
+2026-07-14 08:50:50.398 [auditor-conteudo] Regras executadas: 5
+2026-07-14 08:50:50.399 [auditor-conteudo] Anomalias: 0
+2026-07-14 08:50:50.399 [auditor-conteudo] Duracao: 5 ms
+2026-07-14 08:50:50.400 [auditor-conteudo] [RELATÓRIO FINAL] Operação: Análise de Conteúdo de Legendas | Tempo total: 0,1s | Término: 08:50:50
+2026-07-14 08:50:50.517 [console] === Auditoria de Conteudo de Legendas (arquivo unico: original) ===
+2026-07-14 08:50:50.518 [console] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-6189847854890890883\solo_limpo.ass
+2026-07-14 08:50:50.518 [console] Formato : ASS
+2026-07-14 08:50:50.529 [console] [Auditoria Conteudo] Arquivo limpo: solo_limpo.ass
+2026-07-14 08:50:50.529 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-6189847854890890883\auditoria_conteudo_20260714_085050.json
+2026-07-14 08:50:50.530 [console] Regras executadas: 6
+2026-07-14 08:50:50.530 [console] Anomalias: 0
+2026-07-14 08:50:50.531 [console] Duracao: 2 ms
+2026-07-14 08:50:50.537 [console] === Auditoria de Conteudo de Legendas (arquivo unico: original) ===
+2026-07-14 08:50:50.537 [console] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-10800045146527051385\solo_eng.ass
+2026-07-14 08:50:50.538 [console] Formato : ASS
+2026-07-14 08:50:50.549 [console] [Auditoria Conteudo] 2 anomalia(s) em solo_eng.ass
+2026-07-14 08:50:50.550 [console]   [ERROR] Timestamp Inválido (fim ≤ início) — Fim (3000 ms) menor ou igual ao início (5000 ms). A linha tem duração inválida e não será exibida.
+2026-07-14 08:50:50.551 [console]   [CRITICAL] Bloco de Override ASS Não Fechado — Bloco de override '{...}' aberto e não fechado corretamente. O player pode exibir as tags como texto ou descartar a linha.
+2026-07-14 08:50:50.551 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-10800045146527051385\auditoria_conteudo_20260714_085050.json
+2026-07-14 08:50:50.552 [console] Regras executadas: 6
+2026-07-14 08:50:50.552 [console] Anomalias: 2
+2026-07-14 08:50:50.553 [console] Duracao: 3 ms
+2026-07-14 08:50:50.561 [console] === Auditoria de Conteudo de Legendas (arquivo unico: traduzido) ===
+2026-07-14 08:50:50.562 [console] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-745701628019155795\solo_karaoke.ass
+2026-07-14 08:50:50.562 [console] Formato : ASS
+2026-07-14 08:50:50.573 [console] [Auditoria Conteudo] Arquivo limpo: solo_karaoke.ass
+2026-07-14 08:50:50.573 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-745701628019155795\auditoria_conteudo_20260714_085050.json
+2026-07-14 08:50:50.574 [console] Regras executadas: 6
+2026-07-14 08:50:50.574 [console] Anomalias: 0
+2026-07-14 08:50:50.575 [console] Duracao: 2 ms
+2026-07-14 08:50:50.581 [console] === Auditoria de Conteudo de Legendas ===
+2026-07-14 08:50:50.581 [console] Original : C:\Users\Paulo\AppData\Local\Temp\junit-6239023583404095605\ep04_eng.srt
+2026-07-14 08:50:50.582 [console] Formato original: SRT
+2026-07-14 08:50:50.582 [console] Traduzido: C:\Users\Paulo\AppData\Local\Temp\junit-6239023583404095605\ep04_pt.srt
+2026-07-14 08:50:50.583 [console] Formato traduzido: SRT
+2026-07-14 08:50:50.592 [console] [Auditoria Conteudo] Arquivo limpo: ep04_pt.srt
+2026-07-14 08:50:50.592 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-6239023583404095605\auditoria_conteudo_20260714_085050.json
+2026-07-14 08:50:50.593 [console] Regras executadas: 5
+2026-07-14 08:50:50.593 [console] Anomalias: 0
+2026-07-14 08:50:50.594 [console] Duracao: 4 ms
+2026-07-14 08:50:50.608 [console] === Auditoria de Conteudo de Legendas (arquivo unico: original) ===
+2026-07-14 08:50:50.608 [console] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-8423884190379317235\solo_colisao.ass
+2026-07-14 08:50:50.609 [console] Formato : ASS
+2026-07-14 08:50:50.618 [console] [Auditoria Conteudo] 1 anomalia(s) em solo_colisao.ass
+2026-07-14 08:50:50.619 [console]   [WARNING] Sobreposição de Tempo Entre Diálogos — Este diálogo começa em 3000 ms, antes de a fala anterior de mesmo estilo e camada terminar em 5000 ms. As linhas se sobrepõem na tela.
+2026-07-14 08:50:50.619 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-8423884190379317235\auditoria_conteudo_20260714_085050.json
+2026-07-14 08:50:50.620 [console] Regras executadas: 6
+2026-07-14 08:50:50.620 [console] Anomalias: 1
+2026-07-14 08:50:50.621 [console] Duracao: 1 ms
+2026-07-14 08:50:50.632 [console] === Auditoria de Conteudo de Legendas ===
+2026-07-14 08:50:50.634 [console] Original : C:\Users\Paulo\AppData\Local\Temp\junit-5270623805588409653\ep02_eng.ass
+2026-07-14 08:50:50.634 [console] Formato original: ASS
+2026-07-14 08:50:50.635 [console] Traduzido: C:\Users\Paulo\AppData\Local\Temp\junit-5270623805588409653\ep02_pt.ass
+2026-07-14 08:50:50.636 [console] Formato traduzido: ASS
+2026-07-14 08:50:50.646 [console] [Auditoria Conteudo] 1 anomalia(s) em ep02_pt.ass
+2026-07-14 08:50:50.647 [console]   [CRITICAL] Alucinação de Quebra de Linha (\N) — A tradução inseriu 4 quebras de linha onde o original tinha 0. Isso destrói o posicionamento (\pos).
+2026-07-14 08:50:50.647 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-5270623805588409653\auditoria_conteudo_20260714_085050.json
+2026-07-14 08:50:50.648 [console] Regras executadas: 5
+2026-07-14 08:50:50.648 [console] Anomalias: 1
+2026-07-14 08:50:50.649 [console] Duracao: 6 ms
+2026-07-14 08:50:50.656 [console] === Auditoria de Conteudo de Legendas ===
+2026-07-14 08:50:50.656 [console] Original : C:\Users\Paulo\AppData\Local\Temp\junit-14706871620832008205\ep01_eng.ass
+2026-07-14 08:50:50.657 [console] Formato original: ASS
+2026-07-14 08:50:50.657 [console] Traduzido: C:\Users\Paulo\AppData\Local\Temp\junit-14706871620832008205\ep01_pt.ass
+2026-07-14 08:50:50.658 [console] Formato traduzido: ASS
+2026-07-14 08:50:50.667 [console] [Auditoria Conteudo] Arquivo limpo: ep01_pt.ass
+2026-07-14 08:50:50.668 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-14706871620832008205\auditoria_conteudo_20260714_085050.json
+2026-07-14 08:50:50.668 [console] Regras executadas: 5
+2026-07-14 08:50:50.669 [console] Anomalias: 0
+2026-07-14 08:50:50.669 [console] Duracao: 3 ms
+2026-07-14 08:50:50.682 [console] === Auditoria de Conteudo de Legendas (arquivo unico: traduzido) ===
+2026-07-14 08:50:50.683 [console] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-14245657265462115852\solo_pt.ass
+2026-07-14 08:50:50.684 [console] Formato : ASS
+2026-07-14 08:50:50.692 [console] [Auditoria Conteudo] 2 anomalia(s) em solo_pt.ass
+2026-07-14 08:50:50.692 [console]   [ERROR] Timestamp Inválido (fim ≤ início) — Fim (3000 ms) menor ou igual ao início (5000 ms). A linha tem duração inválida e não será exibida.
+2026-07-14 08:50:50.693 [console]   [CRITICAL] Bloco de Override ASS Não Fechado — Bloco de override '{...}' aberto e não fechado corretamente. O player pode exibir as tags como texto ou descartar a linha.
+2026-07-14 08:50:50.694 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-14245657265462115852\auditoria_conteudo_20260714_085050.json
+2026-07-14 08:50:50.694 [console] Regras executadas: 6
+2026-07-14 08:50:50.695 [console] Anomalias: 2
+2026-07-14 08:50:50.696 [console] Duracao: 3 ms
+2026-07-14 09:06:51.425 [console] ==============================================================
+2026-07-14 09:06:51.426 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:06:51.427 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:06:51.427 [console] ==============================================================
+2026-07-14 09:06:53.099 [auditor-conteudo] === Auditoria de Conteudo de Legendas (arquivo unico: original) ===
+2026-07-14 09:06:53.099 [auditor-conteudo] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-9218981569399800144\solo_eng.ass
+2026-07-14 09:06:53.100 [auditor-conteudo] Formato : ASS
+2026-07-14 09:06:53.184 [auditor-conteudo] [Auditoria Conteudo] Arquivo limpo: solo_eng.ass
+2026-07-14 09:06:53.186 [auditor-conteudo] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-9218981569399800144\auditoria_conteudo_20260714_090653.json
+2026-07-14 09:06:53.187 [auditor-conteudo] Regras executadas: 6
+2026-07-14 09:06:53.187 [auditor-conteudo] Anomalias: 0
+2026-07-14 09:06:53.187 [auditor-conteudo] Duracao: 7 ms
+2026-07-14 09:06:53.188 [auditor-conteudo] [RELATÓRIO FINAL] Operação: Análise de Conteúdo de Legendas | Tempo total: 0,1s | Término: 09:06:53
+2026-07-14 09:06:53.257 [auditor-conteudo] === Auditoria de Conteudo de Legendas ===
+2026-07-14 09:06:53.258 [auditor-conteudo] Original : C:\Users\Paulo\AppData\Local\Temp\junit-9177526898119177953\ep_eng.ass
+2026-07-14 09:06:53.258 [auditor-conteudo] Formato original: ASS
+2026-07-14 09:06:53.259 [auditor-conteudo] Traduzido: C:\Users\Paulo\AppData\Local\Temp\junit-9177526898119177953\ep_pt.ass
+2026-07-14 09:06:53.261 [auditor-conteudo] Formato traduzido: ASS
+2026-07-14 09:06:53.276 [auditor-conteudo] [Auditoria Conteudo] Arquivo limpo: ep_pt.ass
+2026-07-14 09:06:53.278 [auditor-conteudo] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-9177526898119177953\auditoria_conteudo_20260714_090653.json
+2026-07-14 09:06:53.278 [auditor-conteudo] Regras executadas: 5
+2026-07-14 09:06:53.279 [auditor-conteudo] Anomalias: 0
+2026-07-14 09:06:53.279 [auditor-conteudo] Duracao: 6 ms
+2026-07-14 09:06:53.280 [auditor-conteudo] [RELATÓRIO FINAL] Operação: Análise de Conteúdo de Legendas | Tempo total: 0,0s | Término: 09:06:53
+2026-07-14 09:06:57.048 [revisao-lore] ========================================================================
+2026-07-14 09:06:57.049 [revisao-lore]   [FALHOU] REVISAO DE LORE
+2026-07-14 09:06:57.049 [revisao-lore]   LLM indisponivel para revisao de lore: Não foi possível conectar ao servidor LLM em http://127.0.0.1:1234/v1: null
+2026-07-14 09:06:57.050 [revisao-lore] ========================================================================
+2026-07-14 09:06:57.051 [revisao-lore] [RELATÓRIO FINAL] Operação: Revisão de Lore (LLM) | Tempo total: 0,0s | Término: 09:06:57
+2026-07-14 09:06:58.015 [correcao] Iniciando limpeza segura de cache em: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\cache
+2026-07-14 09:06:58.133 [console] Iniciando revisão de legendas traduzidas em: C:\Users\Paulo\AppData\Local\Temp\junit-3757932388092128189\pt
+2026-07-14 09:06:58.134 [console] Originais EN: .ass em C:\Users\Paulo\AppData\Local\Temp\junit-3757932388092128189\pt (se existir) + cache/ em C:\Users\Paulo\AppData\Local\Temp\junit-3757932388092128189\cache
+2026-07-14 09:06:58.135 [console] Analisando legenda: show_PT-BR.ass
+2026-07-14 09:06:58.142 [console]   Contexto ativo: DanMachi (Geral) (fonte: proveniência do cache)
+2026-07-14 09:06:58.143 [console]   Cache carregado: show_ENG.cache.json (1 entradas EN)
+2026-07-14 09:06:58.146 [console]   Cache corrigido é mais novo que a legenda; sincronizando traduções antes da revisão.
+2026-07-14 09:06:58.147 [console]   [CACHE] Evento 0 sincronizado com a correção da Opção 5.
+2026-07-14 09:06:58.155 [console]   [OK] sincronizadas=1, revisadas=0. Salvo em: show_PT-BR.ass
+2026-07-14 09:06:58.156 [console]   Backup anterior: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\backups\revisao-legendas\revisao_20260714_090658_133\show_PT-BR.ass
+2026-07-14 09:06:58.156 [console] Arquivos analisados: 1
+2026-07-14 09:06:58.157 [console] Falas auditadas: 1
+2026-07-14 09:06:58.157 [console] Falas sem referência segura no cache: 0
+2026-07-14 09:06:58.159 [console] Falas sem original EN (ignoradas): 0
+2026-07-14 09:06:58.160 [console] Falas com problemas detectados: 0
+2026-07-14 09:06:58.160 [console] Falas ainda pendentes: 0
+2026-07-14 09:06:58.161 [console] Falas corrigidas via Google e salvas: 0
+2026-07-14 09:06:58.172 [console] Relatório salvo em: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\pt
+2026-07-14 09:06:58.187 [console] Iniciando revisão de legendas traduzidas em: C:\Users\Paulo\AppData\Local\Temp\junit-1007455389927719789\pt
+2026-07-14 09:06:58.189 [console] Originais EN: .ass em C:\Users\Paulo\AppData\Local\Temp\junit-1007455389927719789\pt (se existir) + cache/ em C:\Users\Paulo\AppData\Local\Temp\junit-1007455389927719789\cache
+2026-07-14 09:06:58.189 [console] Analisando legenda: showA_PT-BR.ass
+2026-07-14 09:06:58.191 [console]   [BLOQUEADO] Modo Cache: nenhum cache correspondente encontrado para showA_PT-BR.ass em C:\Users\Paulo\AppData\Local\Temp\junit-1007455389927719789\cache (esperado algo como showA_ENG.cache.json). Arquivo não revisado.
+2026-07-14 09:06:58.192 [console] Arquivos analisados: 1
+2026-07-14 09:06:58.193 [console] Falas auditadas: 0
+2026-07-14 09:06:58.193 [console] Falas sem referência segura no cache: 0
+2026-07-14 09:06:58.194 [console] Falas sem original EN (ignoradas): 0
+2026-07-14 09:06:58.194 [console] Falas com problemas detectados: 1
+2026-07-14 09:06:58.195 [console] Falas ainda pendentes: 1
+2026-07-14 09:06:58.195 [console] Falas corrigidas via Google e salvas: 0
+2026-07-14 09:06:58.206 [console] Relatório salvo em: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\pt
+2026-07-14 09:07:36.367 [console] ==============================================================
+2026-07-14 09:07:36.367 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:07:36.368 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:07:36.369 [console] ==============================================================
+2026-07-14 09:07:38.139 [auditor-conteudo] === Auditoria de Conteudo de Legendas (arquivo unico: original) ===
+2026-07-14 09:07:38.139 [auditor-conteudo] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-10325364391185026114\solo_eng.ass
+2026-07-14 09:07:38.140 [auditor-conteudo] Formato : ASS
+2026-07-14 09:07:38.217 [auditor-conteudo] [Auditoria Conteudo] Arquivo limpo: solo_eng.ass
+2026-07-14 09:07:38.217 [auditor-conteudo] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-10325364391185026114\auditoria_conteudo_20260714_090738.json
+2026-07-14 09:07:38.218 [auditor-conteudo] Regras executadas: 6
+2026-07-14 09:07:38.219 [auditor-conteudo] Anomalias: 0
+2026-07-14 09:07:38.219 [auditor-conteudo] Duracao: 4 ms
+2026-07-14 09:07:38.221 [auditor-conteudo] [RELATÓRIO FINAL] Operação: Análise de Conteúdo de Legendas | Tempo total: 0,1s | Término: 09:07:38
+2026-07-14 09:07:38.280 [auditor-conteudo] === Auditoria de Conteudo de Legendas ===
+2026-07-14 09:07:38.281 [auditor-conteudo] Original : C:\Users\Paulo\AppData\Local\Temp\junit-17774651201826920578\ep_eng.ass
+2026-07-14 09:07:38.281 [auditor-conteudo] Formato original: ASS
+2026-07-14 09:07:38.281 [auditor-conteudo] Traduzido: C:\Users\Paulo\AppData\Local\Temp\junit-17774651201826920578\ep_pt.ass
+2026-07-14 09:07:38.282 [auditor-conteudo] Formato traduzido: ASS
+2026-07-14 09:07:38.296 [auditor-conteudo] [Auditoria Conteudo] Arquivo limpo: ep_pt.ass
+2026-07-14 09:07:38.297 [auditor-conteudo] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-17774651201826920578\auditoria_conteudo_20260714_090738.json
+2026-07-14 09:07:38.298 [auditor-conteudo] Regras executadas: 5
+2026-07-14 09:07:38.298 [auditor-conteudo] Anomalias: 0
+2026-07-14 09:07:38.299 [auditor-conteudo] Duracao: 4 ms
+2026-07-14 09:07:38.299 [auditor-conteudo] [RELATÓRIO FINAL] Operação: Análise de Conteúdo de Legendas | Tempo total: 0,0s | Término: 09:07:38
+2026-07-14 09:07:42.002 [revisao-lore] ========================================================================
+2026-07-14 09:07:42.003 [revisao-lore]   [FALHOU] REVISAO DE LORE
+2026-07-14 09:07:42.004 [revisao-lore]   LLM indisponivel para revisao de lore: Não foi possível conectar ao servidor LLM em http://127.0.0.1:1234/v1: null
+2026-07-14 09:07:42.005 [revisao-lore] ========================================================================
+2026-07-14 09:07:42.005 [revisao-lore] [RELATÓRIO FINAL] Operação: Revisão de Lore (LLM) | Tempo total: 0,0s | Término: 09:07:42
+2026-07-14 09:07:43.015 [correcao] Iniciando limpeza segura de cache em: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\cache
+2026-07-14 09:07:43.349 [correcao] Resultado da limpeza: CONCLUIDO | arquivos=14 alterados=0 falhas=0
+2026-07-14 09:07:43.352 [correcao] [SUCESSO] LIMPEZA E AUDITORIA DE CACHE — status=CONCLUIDO, arquivos=14, alterados=0, corrigidos=0, pendentes=0, falhas=0
+2026-07-14 09:07:43.352 [correcao] [RELATÓRIO FINAL] Operação: Limpeza e Auditoria de Cache | Tempo total: 0,3s | Término: 09:07:43
+2026-07-14 09:07:43.353 [correcao] Iniciando correção online do cache via Google Translate: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\cache
+2026-07-14 09:07:43.412 [correcao] [ARQUIVO] [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3.cache.json — 2 entrada(s) pendente(s) para correção.
+2026-07-14 09:07:43.432 [correcao] [CORRIGINDO 1/2] Evento 478 — Banchi 18, Metis.
+2026-07-14 09:07:43.871 [correcao] [PENDENTE 1/2] Evento 478 — SEM_ALTERACAO
+2026-07-14 09:07:44.075 [console] === Auditoria de Conteudo de Legendas (arquivo unico: original) ===
+2026-07-14 09:07:44.076 [console] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-1180304862588367479\solo_limpo.ass
+2026-07-14 09:07:44.077 [console] Formato : ASS
+2026-07-14 09:07:44.086 [console] [Auditoria Conteudo] Arquivo limpo: solo_limpo.ass
+2026-07-14 09:07:44.087 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-1180304862588367479\auditoria_conteudo_20260714_090744.json
+2026-07-14 09:07:44.087 [console] Regras executadas: 6
+2026-07-14 09:07:44.088 [console] Anomalias: 0
+2026-07-14 09:07:44.088 [console] Duracao: 3 ms
+2026-07-14 09:07:44.094 [console] === Auditoria de Conteudo de Legendas (arquivo unico: original) ===
+2026-07-14 09:07:44.095 [console] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-6031390679088916375\solo_eng.ass
+2026-07-14 09:07:44.096 [console] Formato : ASS
+2026-07-14 09:07:44.108 [console] [Auditoria Conteudo] 2 anomalia(s) em solo_eng.ass
+2026-07-14 09:07:44.109 [console]   [CRITICAL] Bloco de Override ASS Não Fechado — Bloco de override '{...}' aberto e não fechado corretamente. O player pode exibir as tags como texto ou descartar a linha.
+2026-07-14 09:07:44.109 [console]   [ERROR] Timestamp Inválido (fim ≤ início) — Fim (3000 ms) menor ou igual ao início (5000 ms). A linha tem duração inválida e não será exibida.
+2026-07-14 09:07:44.110 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-6031390679088916375\auditoria_conteudo_20260714_090744.json
+2026-07-14 09:07:44.110 [console] Regras executadas: 6
+2026-07-14 09:07:44.112 [console] Anomalias: 2
+2026-07-14 09:07:44.112 [console] Duracao: 3 ms
+2026-07-14 09:07:44.119 [console] === Auditoria de Conteudo de Legendas (arquivo unico: traduzido) ===
+2026-07-14 09:07:44.120 [console] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-17002555909348050911\solo_karaoke.ass
+2026-07-14 09:07:44.121 [console] Formato : ASS
+2026-07-14 09:07:44.129 [console] [Auditoria Conteudo] Arquivo limpo: solo_karaoke.ass
+2026-07-14 09:07:44.129 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-17002555909348050911\auditoria_conteudo_20260714_090744.json
+2026-07-14 09:07:44.130 [console] Regras executadas: 6
+2026-07-14 09:07:44.130 [console] Anomalias: 0
+2026-07-14 09:07:44.131 [console] Duracao: 3 ms
+2026-07-14 09:07:44.137 [console] === Auditoria de Conteudo de Legendas ===
+2026-07-14 09:07:44.138 [console] Original : C:\Users\Paulo\AppData\Local\Temp\junit-228327759566767344\ep04_eng.srt
+2026-07-14 09:07:44.138 [console] Formato original: SRT
+2026-07-14 09:07:44.139 [console] Traduzido: C:\Users\Paulo\AppData\Local\Temp\junit-228327759566767344\ep04_pt.srt
+2026-07-14 09:07:44.139 [console] Formato traduzido: SRT
+2026-07-14 09:07:44.148 [console] [Auditoria Conteudo] Arquivo limpo: ep04_pt.srt
+2026-07-14 09:07:44.149 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-228327759566767344\auditoria_conteudo_20260714_090744.json
+2026-07-14 09:07:44.149 [console] Regras executadas: 5
+2026-07-14 09:07:44.149 [console] Anomalias: 0
+2026-07-14 09:07:44.149 [console] Duracao: 3 ms
+2026-07-14 09:07:44.163 [console] === Auditoria de Conteudo de Legendas (arquivo unico: original) ===
+2026-07-14 09:07:44.163 [console] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-6897246082952493756\solo_colisao.ass
+2026-07-14 09:07:44.164 [console] Formato : ASS
+2026-07-14 09:07:44.173 [console] [Auditoria Conteudo] 1 anomalia(s) em solo_colisao.ass
+2026-07-14 09:07:44.173 [console]   [WARNING] Sobreposição de Tempo Entre Diálogos — Este diálogo começa em 3000 ms, antes de a fala anterior de mesmo estilo e camada terminar em 5000 ms. As linhas se sobrepõem na tela.
+2026-07-14 09:07:44.174 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-6897246082952493756\auditoria_conteudo_20260714_090744.json
+2026-07-14 09:07:44.174 [console] Regras executadas: 6
+2026-07-14 09:07:44.175 [console] Anomalias: 1
+2026-07-14 09:07:44.175 [console] Duracao: 2 ms
+2026-07-14 09:07:44.186 [console] === Auditoria de Conteudo de Legendas ===
+2026-07-14 09:07:44.186 [console] Original : C:\Users\Paulo\AppData\Local\Temp\junit-9723771869977113546\ep02_eng.ass
+2026-07-14 09:07:44.187 [console] Formato original: ASS
+2026-07-14 09:07:44.187 [console] Traduzido: C:\Users\Paulo\AppData\Local\Temp\junit-9723771869977113546\ep02_pt.ass
+2026-07-14 09:07:44.188 [console] Formato traduzido: ASS
+2026-07-14 09:07:44.196 [console] [Auditoria Conteudo] 1 anomalia(s) em ep02_pt.ass
+2026-07-14 09:07:44.197 [console]   [CRITICAL] Alucinação de Quebra de Linha (\N) — A tradução inseriu 4 quebras de linha onde o original tinha 0. Isso destrói o posicionamento (\pos).
+2026-07-14 09:07:44.197 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-9723771869977113546\auditoria_conteudo_20260714_090744.json
+2026-07-14 09:07:44.198 [console] Regras executadas: 5
+2026-07-14 09:07:44.199 [console] Anomalias: 1
+2026-07-14 09:07:44.199 [console] Duracao: 5 ms
+2026-07-14 09:07:44.205 [console] === Auditoria de Conteudo de Legendas ===
+2026-07-14 09:07:44.205 [console] Original : C:\Users\Paulo\AppData\Local\Temp\junit-3077107490182779322\ep01_eng.ass
+2026-07-14 09:07:44.206 [console] Formato original: ASS
+2026-07-14 09:07:44.206 [console] Traduzido: C:\Users\Paulo\AppData\Local\Temp\junit-3077107490182779322\ep01_pt.ass
+2026-07-14 09:07:44.207 [console] Formato traduzido: ASS
+2026-07-14 09:07:44.216 [console] [Auditoria Conteudo] Arquivo limpo: ep01_pt.ass
+2026-07-14 09:07:44.217 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-3077107490182779322\auditoria_conteudo_20260714_090744.json
+2026-07-14 09:07:44.217 [console] Regras executadas: 5
+2026-07-14 09:07:44.218 [console] Anomalias: 0
+2026-07-14 09:07:44.219 [console] Duracao: 4 ms
+2026-07-14 09:07:44.231 [console] === Auditoria de Conteudo de Legendas (arquivo unico: traduzido) ===
+2026-07-14 09:07:44.232 [console] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-13527380754101640888\solo_pt.ass
+2026-07-14 09:07:44.232 [console] Formato : ASS
+2026-07-14 09:07:44.241 [console] [Auditoria Conteudo] 2 anomalia(s) em solo_pt.ass
+2026-07-14 09:07:44.241 [console]   [CRITICAL] Bloco de Override ASS Não Fechado — Bloco de override '{...}' aberto e não fechado corretamente. O player pode exibir as tags como texto ou descartar a linha.
+2026-07-14 09:07:44.242 [console]   [ERROR] Timestamp Inválido (fim ≤ início) — Fim (3000 ms) menor ou igual ao início (5000 ms). A linha tem duração inválida e não será exibida.
+2026-07-14 09:07:44.242 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-13527380754101640888\auditoria_conteudo_20260714_090744.json
+2026-07-14 09:07:44.243 [console] Regras executadas: 6
+2026-07-14 09:07:44.243 [console] Anomalias: 2
+2026-07-14 09:07:44.244 [console] Duracao: 2 ms
+2026-07-14 09:07:44.296 [console] Iniciando revisão de legendas traduzidas em: C:\Users\Paulo\AppData\Local\Temp\junit-482893316784118586\pt
+2026-07-14 09:07:44.297 [console] Originais EN: .ass em C:\Users\Paulo\AppData\Local\Temp\junit-482893316784118586\pt (se existir) + cache/ em C:\Users\Paulo\AppData\Local\Temp\junit-482893316784118586\cache
+2026-07-14 09:07:44.298 [correcao] [CORRIGINDO 2/2] Evento 1015 — Fransson!
+2026-07-14 09:07:44.298 [console] Analisando legenda: show_PT-BR.ass
+2026-07-14 09:07:44.307 [console]   Contexto ativo: DanMachi (Geral) (fonte: proveniência do cache)
+2026-07-14 09:07:44.309 [console]   Cache carregado: show_ENG.cache.json (1 entradas EN)
+2026-07-14 09:07:44.310 [console]   Cache corrigido é mais novo que a legenda; sincronizando traduções antes da revisão.
+2026-07-14 09:07:44.311 [console]   [CACHE] Evento 0 sincronizado com a correção da Opção 5.
+2026-07-14 09:07:44.318 [console]   [OK] sincronizadas=1, revisadas=0. Salvo em: show_PT-BR.ass
+2026-07-14 09:07:44.319 [console]   Backup anterior: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\backups\revisao-legendas\revisao_20260714_090744_296\show_PT-BR.ass
+2026-07-14 09:07:44.320 [console] Arquivos analisados: 1
+2026-07-14 09:07:44.320 [console] Falas auditadas: 1
+2026-07-14 09:07:44.321 [console] Falas sem referência segura no cache: 0
+2026-07-14 09:07:44.321 [console] Falas sem original EN (ignoradas): 0
+2026-07-14 09:07:44.322 [console] Falas com problemas detectados: 0
+2026-07-14 09:07:44.322 [console] Falas ainda pendentes: 0
+2026-07-14 09:07:44.323 [console] Falas corrigidas via Google e salvas: 0
+2026-07-14 09:07:44.330 [console] Relatório salvo em: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\pt
+2026-07-14 09:07:44.343 [console] Iniciando revisão de legendas traduzidas em: C:\Users\Paulo\AppData\Local\Temp\junit-13262371778707420602\pt
+2026-07-14 09:07:44.344 [console] Originais EN: .ass em C:\Users\Paulo\AppData\Local\Temp\junit-13262371778707420602\pt (se existir) + cache/ em C:\Users\Paulo\AppData\Local\Temp\junit-13262371778707420602\cache
+2026-07-14 09:07:44.344 [console] Analisando legenda: showA_PT-BR.ass
+2026-07-14 09:07:44.346 [console]   [BLOQUEADO] Modo Cache: nenhum cache correspondente encontrado para showA_PT-BR.ass em C:\Users\Paulo\AppData\Local\Temp\junit-13262371778707420602\cache (esperado algo como showA_ENG.cache.json). Arquivo não revisado.
+2026-07-14 09:07:44.347 [console] Arquivos analisados: 1
+2026-07-14 09:07:44.347 [console] Falas auditadas: 0
+2026-07-14 09:07:44.348 [console] Falas sem referência segura no cache: 0
+2026-07-14 09:07:44.348 [console] Falas sem original EN (ignoradas): 0
+2026-07-14 09:07:44.350 [console] Falas com problemas detectados: 1
+2026-07-14 09:07:44.350 [console] Falas ainda pendentes: 1
+2026-07-14 09:07:44.350 [console] Falas corrigidas via Google e salvas: 0
+2026-07-14 09:07:44.359 [console] Relatório salvo em: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\pt
+2026-07-14 09:07:44.384 [correcao] [PENDENTE 2/2] Evento 1015 — SEM_ALTERACAO
+2026-07-14 09:07:44.422 [console] marcador-console-redirector-e06538c5-403e-4ea2-a596-8efd11c2c761
+2026-07-14 09:07:44.786 [correcao] [CORRIGINDO 3/2] Evento 1029 — Rita...
+2026-07-14 09:07:44.820 [console] === Iniciando Correcao de Legendas ===
+2026-07-14 09:07:44.822 [console] Pasta original/ref: C:\Users\Paulo\AppData\Local\Temp\junit-12102617467413037048
+2026-07-14 09:07:44.822 [console] Pasta traduzida/alvo: C:\Users\Paulo\AppData\Local\Temp\junit-12102617467413037048
+2026-07-14 09:07:44.822 [console] Correcao de traducao via LLM ativa (contexto: Teste)
+2026-07-14 09:07:44.827 [console] [OK] episodio_PT-BR.ass (sem alteracao)
+2026-07-14 09:07:44.828 [console] Relatorio JSON salvo em: C:\Users\Paulo\AppData\Local\Temp\junit-12102617467413037048\relatorio-fake.json
+2026-07-14 09:07:44.829 [console] Correcao de legendas concluida: 0 arquivo(s) curado(s) (0 fala(s)), 0 fala(s) corrigida(s) via LLM, 1 ja perfeito(s), 0 fala(s) sem traducao.
+2026-07-14 09:07:44.835 [console] === Iniciando Correcao de Legendas ===
+2026-07-14 09:07:44.835 [console] Pasta original/ref: C:\Users\Paulo\AppData\Local\Temp\junit-4964442484007089263
+2026-07-14 09:07:44.836 [console] Pasta traduzida/alvo: C:\Users\Paulo\AppData\Local\Temp\junit-4964442484007089263
+2026-07-14 09:07:44.836 [console] Correcao de traducao via LLM ativa (contexto: Teste)
+2026-07-14 09:07:44.838 [console] Fala 1: karaokê japonês/romaji restaurado da legenda original.
+2026-07-14 09:07:44.841 [console] [Corrigido] episodio_PT-BR.ass (1 tags restauradas, 0 corrigidas via LLM)
+2026-07-14 09:07:44.841 [console] Relatorio JSON salvo em: C:\Users\Paulo\AppData\Local\Temp\junit-4964442484007089263\relatorio-fake.json
+2026-07-14 09:07:44.842 [console] Correcao de legendas concluida: 1 arquivo(s) curado(s) (1 fala(s)), 0 fala(s) corrigida(s) via LLM, 0 ja perfeito(s), 0 fala(s) sem traducao.
+2026-07-14 09:07:44.870 [correcao] [PENDENTE 3/2] Evento 1029 — SEM_ALTERACAO
+2026-07-14 09:07:45.014 [console] Iniciando correção online do cache via Google Translate: C:\Users\Paulo\AppData\Local\Temp\junit-8975955843100389004\cache-interrupcao
+2026-07-14 09:07:45.023 [console] [ARQUIVO] ep.cache.json — 2 entrada(s) pendente(s) para correção.
+2026-07-14 09:07:45.023 [console] [CORRIGINDO 1/2] Evento 1 — Help!
+2026-07-14 09:07:45.031 [console] [CORRIGIDA 1/2] Evento 1 — Ajude!
+2026-07-14 09:07:45.031 [console] [OK] ep.cache.json: 1 entrada(s) corrigidas; backup em C:\Users\Paulo\AppData\Local\Temp\junit-8975955843100389004\backups-interrupcao\ep.cache.json
+2026-07-14 09:07:45.032 [console] Resultado da correção Google: CANCELADO | corrigidas=1 pendentes=0 falhas=0
+2026-07-14 09:07:45.040 [console] Iniciando correção online do cache via Google Translate: C:\Users\Paulo\AppData\Local\Temp\junit-1438144282485211643\cache
+2026-07-14 09:07:45.042 [console] [ARQUIVO] ep.cache.json — 1 entrada(s) pendente(s) para correção.
+2026-07-14 09:07:45.042 [console] [CORRIGINDO 1/1] Evento 1 — Help!
+2026-07-14 09:07:45.046 [console] [CORRIGIDA 1/1] Evento 1 — Ajude!
+2026-07-14 09:07:45.272 [correcao] [CORRIGINDO 4/2] Evento 1038 — {\i1}Jona!{\i0}
+2026-07-14 09:07:45.375 [correcao] [CORRIGIDA 4/2] Evento 1038 — {\i1}Jonas!{\i0}
+2026-07-14 09:07:45.447 [console] [OK] ep.cache.json: 1 entrada(s) corrigidas; backup em C:\Users\Paulo\AppData\Local\Temp\junit-1438144282485211643\backups\ep.cache.json
+2026-07-14 09:07:45.448 [console] Resultado da correção Google: CONCLUIDO | corrigidas=1 pendentes=0 falhas=0
+2026-07-14 09:07:45.546 [console]   [CONTEXTO] Seleção manual "danmachi" ignorada: a proveniência do cache exige "gundam_nt".
+2026-07-14 09:07:45.547 [console]   Contexto ativo: Gundam Narrative (fonte: proveniência do cache)
+2026-07-14 09:07:45.614 [console] [09:07:45] [INFO   ] Vídeos=1 | Legendas=1 | Pareados=1 | Sem legenda=0 | Ambíguos=0
+2026-07-14 09:07:45.615 [console] [09:07:45] [INFO   ] Política de faixas: preservar legendas originais e adicionar PT-BR como padrão.
+2026-07-14 09:07:45.616 [console] [09:07:45] [INFO   ] [REMUX 1/1] Anime - S01E01.mkv + Anime - S01E01_PT-BR.ass -> Anime - S01E01_PTBR.mkv
+2026-07-14 09:07:45.618 [console] [09:07:45] [SUCESSO] [OK 1/1] MKV validado: Anime - S01E01_PTBR.mkv
+2026-07-14 09:07:45.630 [console] [09:07:45] [INFO   ] Vídeos=1 | Legendas=1 | Pareados=1 | Sem legenda=0 | Ambíguos=0
+2026-07-14 09:07:45.685 [console] [09:07:45] [INFO   ] Política de faixas: remover legendas originais e manter somente a nova PT-BR.
+2026-07-14 09:07:45.686 [console] [09:07:45] [INFO   ] [REMUX 1/1] Anime - S01E01.mkv + Anime - S01E01_PT-BR.ass -> Anime - S01E01_PTBR.mkv
+2026-07-14 09:07:45.687 [console] [09:07:45] [ERRO   ] [LEGENDA INVÁLIDA] Anime - S01E01_PT-BR.ass — Conteúdo extraído não corresponde ao formato ASS: C:\Users\Paulo\AppData\Local\Temp\junit-9627352409052863151\legendas\Anime - S01E01_PT-BR.ass
+2026-07-14 09:07:45.695 [console] [09:07:45] [INFO   ] Vídeos=1 | Legendas=1 | Pareados=1 | Sem legenda=0 | Ambíguos=0
+2026-07-14 09:07:45.695 [console] [09:07:45] [INFO   ] Política de faixas: remover legendas originais e manter somente a nova PT-BR.
+2026-07-14 09:07:45.697 [console] [09:07:45] [INFO   ] [REMUX 1/1] Anime - S01E01.mkv + Anime - S01E01_PT-BR.ass -> Anime - S01E01_PTBR.mkv
+2026-07-14 09:07:45.698 [console] [09:07:45] [AVISO  ] [PRESERVADO] preservado: C:\Users\Paulo\AppData\Local\Temp\junit-6177322763316325598\videos\mkv_final_ptbr\Anime - S01E01_PTBR.mkv
+2026-07-14 09:07:45.706 [console] [09:07:45] [INFO   ] Vídeos=1 | Legendas=1 | Pareados=1 | Sem legenda=0 | Ambíguos=0
+2026-07-14 09:07:45.708 [console] [09:07:45] [INFO   ] Política de faixas: remover legendas originais e manter somente a nova PT-BR.
+2026-07-14 09:07:45.708 [console] [09:07:45] [INFO   ] [REMUX 1/1] Anime - S01E01.mkv + Anime - S01E01_PT-BR.ass -> Anime - S01E01_PTBR.mkv
+2026-07-14 09:07:45.709 [console] [09:07:45] [AVISO  ] Remux cancelado durante Anime - S01E01.mkv; parcial descartado.
+2026-07-14 09:07:45.777 [correcao] [CORRIGINDO 5/2] Evento 1060 — Jona!
+2026-07-14 09:07:45.881 [correcao] [CORRIGIDA 5/2] Evento 1060 — Jonas!
+2026-07-14 09:07:46.037 [console] Iniciando limpeza segura de cache em: C:\Users\Paulo\AppData\Local\Temp\junit-11187100379174335193\cache-legado
+2026-07-14 09:07:46.040 [console] Resultado da limpeza: CONCLUIDO_COM_FALHAS | arquivos=1 alterados=0 falhas=1
+2026-07-14 09:07:46.044 [console] Iniciando limpeza segura de cache em: C:\Users\Paulo\AppData\Local\Temp\junit-17652320619761623379\cache
+2026-07-14 09:07:46.050 [console] [OK] ep.cache.json: 1 entrada(s) invalidadas; backup em C:\Users\Paulo\AppData\Local\Temp\junit-17652320619761623379\backups\anime\ep.cache.json
+2026-07-14 09:07:46.051 [console] Resultado da limpeza: CONCLUIDO | arquivos=1 alterados=1 falhas=0
+2026-07-14 09:07:46.099 [console] === Iniciando Substituição em Lote de Fontes ASS ===
+2026-07-14 09:07:46.100 [console] Pasta alvo: C:\Users\Paulo\AppData\Local\Temp\junit-8175833208299980549
+2026-07-14 09:07:46.101 [console] Diretório de backup criado com sucesso: C:\Users\Paulo\AppData\Local\Temp\junit-8504116699102062660\backups\troca_tipo_legenda_20260714_090746
+2026-07-14 09:07:46.104 [console]   -> No arquivo: legenda1.ass estilo [Dialogue] substituído: .VnBook-Antiqua -> Arial
+2026-07-14 09:07:46.104 [console]   [SUCESSO] Arquivo legenda1.ass atualizado!
+2026-07-14 09:07:46.105 [console] Arquivo legenda2.ass [OK] - Sem fontes legadas problemáticas. Pulando.
+2026-07-14 09:07:46.106 [console] ========================================================================
+2026-07-14 09:07:46.106 [console]   [SUCESSO] OPERAÇÃO DE SUBSTITUIÇÃO DE FONTES FINALIZADA!
+2026-07-14 09:07:46.107 [console] ========================================================================
+2026-07-14 09:07:46.107 [console]   • Arquivos analisados  : 2
+2026-07-14 09:07:46.109 [console]   • Arquivos alterados   : 1
+2026-07-14 09:07:46.109 [console]   • Substituições feitas : 1
+2026-07-14 09:07:46.109 [console]   • Pasta de Backup      : C:\Users\Paulo\AppData\Local\Temp\junit-8504116699102062660\backups\troca_tipo_legenda_20260714_090746
+2026-07-14 09:07:46.110 [console] ========================================================================
+2026-07-14 09:07:46.113 [console] Relatórios persistidos em: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-8175833208299980549
+2026-07-14 09:07:46.135 [console] === Iniciando Substituição em Lote de Fontes ASS ===
+2026-07-14 09:07:46.135 [console] Pasta alvo: C:\Users\Paulo\AppData\Local\Temp\junit-8150751292690140035
+2026-07-14 09:07:46.136 [console] Diretório de backup criado com sucesso: C:\Users\Paulo\AppData\Local\Temp\junit-12512718730403812786\backups\troca_tipo_legenda_20260714_090746
+2026-07-14 09:07:46.139 [console]   -> No arquivo: legenda-multi.ass estilo [Dialogue] substituído: .VnBook-Antiqua -> Arial
+2026-07-14 09:07:46.140 [console]   -> No arquivo: legenda-multi.ass estilo [Title] substituído: .VnBook-Antiqua -> Arial
+2026-07-14 09:07:46.140 [console]   [SUCESSO] Arquivo legenda-multi.ass atualizado!
+2026-07-14 09:07:46.141 [console] ========================================================================
+2026-07-14 09:07:46.141 [console]   [SUCESSO] OPERAÇÃO DE SUBSTITUIÇÃO DE FONTES FINALIZADA!
+2026-07-14 09:07:46.142 [console] ========================================================================
+2026-07-14 09:07:46.142 [console]   • Arquivos analisados  : 1
+2026-07-14 09:07:46.143 [console]   • Arquivos alterados   : 1
+2026-07-14 09:07:46.143 [console]   • Substituições feitas : 2
+2026-07-14 09:07:46.144 [console]   • Pasta de Backup      : C:\Users\Paulo\AppData\Local\Temp\junit-12512718730403812786\backups\troca_tipo_legenda_20260714_090746
+2026-07-14 09:07:46.145 [console] ========================================================================
+2026-07-14 09:07:46.147 [console] Relatórios persistidos em: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-8150751292690140035
+2026-07-14 09:07:46.175 [console] [OK] [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3.cache.json: 2 entrada(s) corrigidas; backup em G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\backups\correcao-cache\google_20260714_090743_353\Gundam Narrative NT\[2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3.cache.json
+2026-07-14 09:07:46.197 [console] Resultado da correção Google: CANCELADO | corrigidas=2 pendentes=3 falhas=0
+2026-07-14 09:07:46.197 [console] [ATENÇÃO] CORREÇÃO ONLINE VIA GOOGLE TRANSLATE — status=CANCELADO, arquivos=1, alterados=1, corrigidos=2, pendentes=3, falhas=0
+2026-07-14 09:07:46.197 [console] [PRÓXIMO PASSO] Avance para a Opção 6. Ela sincronizará este cache mais novo no ASS antes da revisão.
+2026-07-14 09:07:46.199 [console] [RELATÓRIO FINAL] Operação: Correção via Google Translate | Tempo total: 2,8s | Término: 09:07:46
+2026-07-14 09:13:21.072 [console] ==============================================================
+2026-07-14 09:13:21.073 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:13:21.073 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:13:21.074 [console] ==============================================================
+2026-07-14 09:16:40.557 [console] ==============================================================
+2026-07-14 09:16:40.558 [console] ==============================================================
+2026-07-14 09:16:40.559 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:16:40.559 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:16:40.559 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:16:40.560 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:16:40.560 [console] ==============================================================
+2026-07-14 09:16:40.561 [console] ==============================================================
+2026-07-14 09:16:45.261 [console] ==============================================================
+2026-07-14 09:16:45.262 [console] ==============================================================
+2026-07-14 09:16:45.262 [console] ==============================================================
+2026-07-14 09:16:45.262 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:16:45.263 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:16:45.263 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:16:45.264 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:16:45.264 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:16:45.264 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:16:45.265 [console] ==============================================================
+2026-07-14 09:16:45.265 [console] ==============================================================
+2026-07-14 09:16:45.266 [console] ==============================================================
+2026-07-14 09:16:52.282 [console] ==============================================================
+2026-07-14 09:16:52.282 [console] ==============================================================
+2026-07-14 09:16:52.282 [console] ==============================================================
+2026-07-14 09:16:52.284 [console] ==============================================================
+2026-07-14 09:16:52.284 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:16:52.285 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:16:52.285 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:16:52.285 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:16:52.286 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:16:52.286 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:16:52.287 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:16:52.287 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:16:52.287 [console] ==============================================================
+2026-07-14 09:16:52.287 [console] ==============================================================
+2026-07-14 09:16:52.288 [console] ==============================================================
+2026-07-14 09:16:52.288 [console] ==============================================================
+2026-07-14 09:19:54.777 [console] ==============================================================
+2026-07-14 09:19:54.779 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:19:54.779 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:19:54.780 [console] ==============================================================
+2026-07-14 09:19:55.270 [console] Iniciando revisão de legendas traduzidas em: C:\Users\Paulo\AppData\Local\Temp\junit-7281331755019460018\pt
+2026-07-14 09:19:55.272 [console] Originais EN: .ass em C:\Users\Paulo\AppData\Local\Temp\junit-7281331755019460018\pt (se existir) + cache/ em C:\Users\Paulo\AppData\Local\Temp\junit-7281331755019460018\cache
+2026-07-14 09:19:55.273 [console] Analisando legenda: show_PT-BR.ass
+2026-07-14 09:19:55.311 [console]   Contexto ativo: DanMachi (Geral) (fonte: proveniência do cache)
+2026-07-14 09:19:55.313 [console]   Cache carregado: show_ENG.cache.json (1 entradas EN)
+2026-07-14 09:19:55.317 [console]   Cache corrigido é mais novo que a legenda; sincronizando traduções antes da revisão.
+2026-07-14 09:19:55.317 [console]   [CACHE] Evento 0 sincronizado com a correção da Opção 5.
+2026-07-14 09:19:55.327 [console]   [OK] sincronizadas=1, revisadas=0. Salvo em: show_PT-BR.ass
+2026-07-14 09:19:55.328 [console]   Backup anterior: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\backups\revisao-legendas\revisao_20260714_091955_271\show_PT-BR.ass
+2026-07-14 09:19:55.329 [console] Arquivos analisados: 1
+2026-07-14 09:19:55.329 [console] Falas auditadas: 1
+2026-07-14 09:19:55.330 [console] Falas sem referência segura no cache: 0
+2026-07-14 09:19:55.330 [console] Falas sem original EN (ignoradas): 0
+2026-07-14 09:19:55.331 [console] Falas com problemas detectados: 0
+2026-07-14 09:19:55.331 [console] Falas ainda pendentes: 0
+2026-07-14 09:19:55.332 [console] Falas corrigidas via Google e salvas: 0
+2026-07-14 09:19:55.399 [console] Relatório salvo em: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\pt
+2026-07-14 09:19:55.426 [console] Iniciando revisão de legendas traduzidas em: C:\Users\Paulo\AppData\Local\Temp\junit-11736076133093428833\pt
+2026-07-14 09:19:55.427 [console] Originais EN: .ass em C:\Users\Paulo\AppData\Local\Temp\junit-11736076133093428833\pt (se existir) + cache/ em C:\Users\Paulo\AppData\Local\Temp\junit-11736076133093428833\cache
+2026-07-14 09:19:55.427 [console] Analisando legenda: MY_SHOW_S01E05_PT-BR.ass
+2026-07-14 09:19:55.430 [console]   Contexto ativo: DanMachi (Geral) (fonte: proveniência do cache)
+2026-07-14 09:19:55.431 [console]   Cache carregado: OTHER_SHOW_S01E05_ENG.cache.json (1 entradas EN)
+2026-07-14 09:19:55.432 [console]   [BLOQUEADO] Modo Cache: o cache resolvido (OTHER_SHOW_S01E05_ENG.cache.json) não corresponde com segurança a nenhuma das 1 fala(s) de MY_SHOW_S01E05_PT-BR.ass (índice/estilo/proveniência/texto divergem). Arquivo não revisado.
+2026-07-14 09:19:55.433 [console] Arquivos analisados: 1
+2026-07-14 09:19:55.433 [console] Falas auditadas: 0
+2026-07-14 09:19:55.434 [console] Falas sem referência segura no cache: 0
+2026-07-14 09:19:55.434 [console] Falas sem original EN (ignoradas): 0
+2026-07-14 09:19:55.435 [console] Falas com problemas detectados: 1
+2026-07-14 09:19:55.435 [console] Falas ainda pendentes: 1
+2026-07-14 09:19:55.436 [console] Falas corrigidas via Google e salvas: 0
+2026-07-14 09:19:55.449 [console] Relatório salvo em: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\pt
+2026-07-14 09:19:55.463 [console] Iniciando revisão de legendas traduzidas em: C:\Users\Paulo\AppData\Local\Temp\junit-4449589275026688748\pt
+2026-07-14 09:19:55.464 [console] Originais EN: .ass em C:\Users\Paulo\AppData\Local\Temp\junit-4449589275026688748\pt (se existir) + cache/ em C:\Users\Paulo\AppData\Local\Temp\junit-4449589275026688748\cache
+2026-07-14 09:19:55.464 [console] Analisando legenda: showA_PT-BR.ass
+2026-07-14 09:19:55.466 [console]   [BLOQUEADO] Modo Cache: nenhum cache correspondente encontrado para showA_PT-BR.ass em C:\Users\Paulo\AppData\Local\Temp\junit-4449589275026688748\cache (esperado algo como showA_ENG.cache.json). Arquivo não revisado.
+2026-07-14 09:19:55.467 [console] Arquivos analisados: 1
+2026-07-14 09:19:55.467 [console] Falas auditadas: 0
+2026-07-14 09:19:55.467 [console] Falas sem referência segura no cache: 0
+2026-07-14 09:19:55.468 [console] Falas sem original EN (ignoradas): 0
+2026-07-14 09:19:55.468 [console] Falas com problemas detectados: 1
+2026-07-14 09:19:55.469 [console] Falas ainda pendentes: 1
+2026-07-14 09:19:55.470 [console] Falas corrigidas via Google e salvas: 0
+2026-07-14 09:19:55.480 [console] Relatório salvo em: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\pt
+2026-07-14 09:22:02.500 [console] ==============================================================
+2026-07-14 09:22:02.501 [console] ==============================================================
+2026-07-14 09:22:02.501 [console] ==============================================================
+2026-07-14 09:22:02.501 [console] ==============================================================
+2026-07-14 09:22:02.502 [console] ==============================================================
+2026-07-14 09:22:02.502 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:22:02.503 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:22:02.503 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:22:02.503 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:22:02.505 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:22:02.505 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:22:02.506 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:22:02.506 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:22:02.506 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:22:02.506 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:22:02.507 [console] ==============================================================
+2026-07-14 09:22:02.507 [console] ==============================================================
+2026-07-14 09:22:02.507 [console] ==============================================================
+2026-07-14 09:22:02.508 [console] ==============================================================
+2026-07-14 09:22:02.508 [console] ==============================================================
+2026-07-14 09:22:31.864 [console] ==============================================================
+2026-07-14 09:22:31.864 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:22:31.865 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:22:31.865 [console] ==============================================================
+2026-07-14 09:23:09.696 [console] ==============================================================
+2026-07-14 09:23:09.696 [console] ==============================================================
+2026-07-14 09:23:09.697 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:23:09.697 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:23:09.698 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:23:09.698 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:23:09.699 [console] ==============================================================
+2026-07-14 09:23:09.699 [console] ==============================================================
+2026-07-14 09:23:48.247 [console] ==============================================================
+2026-07-14 09:23:48.248 [console] ==============================================================
+2026-07-14 09:23:48.248 [console] ==============================================================
+2026-07-14 09:23:48.249 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:23:48.249 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:23:48.250 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:23:48.250 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:23:48.251 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:23:48.251 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:23:48.251 [console] ==============================================================
+2026-07-14 09:23:48.252 [console] ==============================================================
+2026-07-14 09:23:48.252 [console] ==============================================================
+2026-07-14 09:24:03.997 [console] ==============================================================
+2026-07-14 09:24:03.998 [console] ==============================================================
+2026-07-14 09:24:03.998 [console] ==============================================================
+2026-07-14 09:24:03.999 [console] ==============================================================
+2026-07-14 09:24:03.999 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:24:03.999 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:24:04.000 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:24:04.000 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:24:04.001 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:24:04.001 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:24:04.001 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:24:04.002 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:24:04.002 [console] ==============================================================
+2026-07-14 09:24:04.002 [console] ==============================================================
+2026-07-14 09:24:04.004 [console] ==============================================================
+2026-07-14 09:24:04.004 [console] ==============================================================
+2026-07-14 09:25:43.647 [console] ==============================================================
+2026-07-14 09:25:43.647 [console] ==============================================================
+2026-07-14 09:25:43.648 [console] ==============================================================
+2026-07-14 09:25:43.648 [console] ==============================================================
+2026-07-14 09:25:43.648 [console] ==============================================================
+2026-07-14 09:25:43.648 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:25:43.648 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:25:43.649 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:25:43.649 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:25:43.649 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:25:43.650 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:25:43.650 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:25:43.650 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:25:43.651 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:25:43.651 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:25:43.651 [console] ==============================================================
+2026-07-14 09:25:43.651 [console] ==============================================================
+2026-07-14 09:25:43.653 [console] ==============================================================
+2026-07-14 09:25:43.654 [console] ==============================================================
+2026-07-14 09:25:43.654 [console] ==============================================================

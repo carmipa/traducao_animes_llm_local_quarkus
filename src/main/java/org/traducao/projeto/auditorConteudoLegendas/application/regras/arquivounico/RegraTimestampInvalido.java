@@ -26,7 +26,7 @@ public class RegraTimestampInvalido implements RegraAuditoriaArquivoUnico {
 
     @Override
     public String getNome() {
-        return "Timestamp Inválido (fim ≤ início)";
+        return "Timestamp Inválido ou Ilegível";
     }
 
     @Override
@@ -36,21 +36,38 @@ public class RegraTimestampInvalido implements RegraAuditoriaArquivoUnico {
             if (!evento.isDialogo()) {
                 continue;
             }
-            long[] tempo = TempoEventoUtil.extrairInicioFimMs(evento);
-            if (tempo == null) {
-                continue;
-            }
-            if (tempo[1] <= tempo[0]) {
-                anomalias.add(new AnomaliaConteudo(
-                    AnomaliaConteudo.TipoSeveridade.ERROR,
-                    getNome(),
-                    "Fim (" + tempo[1] + " ms) menor ou igual ao início (" + tempo[0] + " ms). A linha tem duração inválida e não será exibida.",
-                    evento,
-                    null,
-                    "Corrigir o timestamp de fim para depois do início."
-                ));
+            TempoEventoUtil.Diagnostico d = TempoEventoUtil.diagnosticar(evento);
+            AnomaliaConteudo anomalia = switch (d.status()) {
+                case OK -> null;
+                case FIM_ANTES_INICIO -> criar(AnomaliaConteudo.TipoSeveridade.ERROR, evento,
+                    "Fim (" + d.fimMs() + " ms) menor ou igual ao início (" + d.inicioMs()
+                        + " ms). A linha tem duração inválida e não será exibida.",
+                    "Corrigir o timestamp de fim para depois do início.");
+                case AUSENTE -> criar(AnomaliaConteudo.TipoSeveridade.CRITICAL, evento,
+                    "Diálogo sem timestamp. A linha não pode ser exibida no tempo certo.",
+                    "Adicionar o carimbo de tempo (início e fim) da fala.");
+                case ILEGIVEL -> criar(AnomaliaConteudo.TipoSeveridade.CRITICAL, evento,
+                    "Timestamp ilegível (sintaxe hh:mm:ss inválida). O parser não consegue posicionar a fala.",
+                    "Corrigir o formato do tempo (ex.: 0:00:01.00 no ASS, 00:00:01,000 no SRT).");
+                case FORA_INTERVALO -> criar(AnomaliaConteudo.TipoSeveridade.ERROR, evento,
+                    "Timestamp com minutos ou segundos fora do intervalo (0–59).",
+                    "Normalizar minutos/segundos para 0–59, ajustando as horas se necessário.");
+                case SETA_SRT_INVALIDA -> criar(AnomaliaConteudo.TipoSeveridade.CRITICAL, evento,
+                    "Linha de tempo SRT sem a seta '-->' válida entre início e fim.",
+                    "Usar exatamente 'início --> fim' na linha de tempo do bloco SRT.");
+                case INCOMPLETO -> criar(AnomaliaConteudo.TipoSeveridade.CRITICAL, evento,
+                    "Linha Dialogue ASS incompleta: faltam os campos de início/fim.",
+                    "Restaurar os campos Layer,Início,Fim,Style,... do evento.");
+            };
+            if (anomalia != null) {
+                anomalias.add(anomalia);
             }
         }
         return anomalias;
+    }
+
+    private AnomaliaConteudo criar(AnomaliaConteudo.TipoSeveridade severidade, EventoLegenda evento,
+                                   String descricao, String sugestao) {
+        return new AnomaliaConteudo(severidade, getNome(), descricao, evento, null, sugestao);
     }
 }

@@ -81,6 +81,29 @@ public class SincronizadorLegendaCacheService {
         boolean autorizado,
         Set<Integer> indicesCanonicosProtegidos
     ) {
+        return sincronizar(documento, entradas, autorizado, indicesCanonicosProtegidos, null);
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: sincroniza o cache limitando a escrita a uma lista de
+     * índices previamente validados (modo Cache da Opção 6), impedindo que uma
+     * entrada com estilo/texto/proveniência incompatível ou de outro episódio
+     * sobrescreva a legenda por coincidência de índice.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: {@code indicesPermitidos} nulo mantém o
+     * comportamento histórico (todos os índices elegíveis); um conjunto restringe
+     * a escrita a exatamente esses índices, mesmo que o cache seja mais novo.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: lista de permitidos vazia não sincroniza
+     * nada; argumentos ausentes devolvem o documento intacto.
+     */
+    public Resultado sincronizar(
+        DocumentoLegenda documento,
+        List<EntradaCache> entradas,
+        boolean autorizado,
+        Set<Integer> indicesCanonicosProtegidos,
+        Set<Integer> indicesPermitidos
+    ) {
         if (documento == null || entradas == null || entradas.isEmpty()) {
             return new Resultado(documento, List.of(), List.of());
         }
@@ -95,10 +118,12 @@ public class SincronizadorLegendaCacheService {
         List<Integer> recuperadosDoOriginal = new ArrayList<>();
         for (EventoLegenda evento : documento.eventos()) {
             EntradaCache entrada = porIndice.get(evento.indice());
+            // Modo Cache: só índices validados como vínculo seguro podem ser escritos.
+            boolean permitido = indicesPermitidos == null || indicesPermitidos.contains(evento.indice());
             boolean regrediuAoOriginal = entrada != null && entrada.original() != null
                 && entrada.original().equals(evento.texto())
                 && !protegidos.contains(evento.indice());
-            boolean podeAplicar = autorizado || regrediuAoOriginal;
+            boolean podeAplicar = permitido && (autorizado || regrediuAoOriginal);
             if (podeAplicar && evento.isDialogo() && entrada != null && entrada.traduzido() != null
                 && !entrada.traduzido().isBlank() && !entrada.traduzido().equals(evento.texto())) {
                 atualizados.add(evento.comTexto(entrada.traduzido()));
