@@ -270,6 +270,7 @@ public class RevisarLegendasUseCase {
         int[] falasSemOriginal = {0};
         int[] falasPendentes = {0};
         int[] falasSemReferenciaSegura = {0};
+        List<DetalheRevisao> detalhesRevisao = new ArrayList<>();
 
         try (Stream<Path> stream = Files.list(pastaLegendasPt)) {
             List<Path> arquivos = stream
@@ -283,7 +284,8 @@ public class RevisarLegendasUseCase {
                 Optional<String> erro = validarPastaEntrada(pastaLegendasPt);
                 out(AnsiCores.YELLOW + erro.orElse("Nenhum arquivo .ass/.ssa traduzido encontrado na pasta.")
                     + AnsiCores.RESET);
-                registrarTelemetria(pastaLegendasPt, inicioMs, 0, 0, 0, 0, 0, 0, modo);
+                registrarTelemetria(pastaLegendasPt, inicioMs, 0, 0, 0, 0, 0, 0, modo,
+                    detalhesRevisao);
                 return new ResultadoRevisaoLegendas(0, 0, 0, 0);
             }
 
@@ -302,7 +304,7 @@ public class RevisarLegendasUseCase {
                     arquivoPt, pastaEn, cacheDir, saidaDir, pastaBackup, modo, referencia,
                     arquivosProcessados, falasCorrigidas, falasComProblema,
                     falasAuditadas, falasSemOriginal, falasPendentes,
-                    falasSemReferenciaSegura, contextoId);
+                    falasSemReferenciaSegura, contextoId, detalhesRevisao);
             }
         } catch (IOException e) {
             out(AnsiCores.RED + "Erro ao listar legendas: " + e.getMessage() + AnsiCores.RESET);
@@ -323,7 +325,8 @@ public class RevisarLegendasUseCase {
             out("Falas corrigidas via Google e salvas: " + falasCorrigidas[0]);
         }
         registrarTelemetria(pastaLegendasPt, inicioMs, arquivosProcessados[0], falasComProblema[0],
-            falasCorrigidas[0], falasAuditadas[0], falasSemOriginal[0], falasPendentes[0], modo);
+            falasCorrigidas[0], falasAuditadas[0], falasSemOriginal[0], falasPendentes[0], modo,
+            detalhesRevisao);
         return new ResultadoRevisaoLegendas(
             arquivosProcessados[0], falasCorrigidas[0], falasComProblema[0], falasPendentes[0]);
     }
@@ -374,6 +377,16 @@ public class RevisarLegendasUseCase {
             gerenciadorContexto.termosProtegidosAtivos());
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: encerra a revisão persistindo métricas agregadas e a
+     * explicação por ocorrência para auditoria e evolução do dataset.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: os totais do relatório correspondem ao resultado
+     * devolvido pela operação e detalhes nunca substituem a telemetria canônica.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: lista de detalhes vazia ainda produz um
+     * relatório válido com os totais disponíveis.
+     */
     private void registrarTelemetria(
         Path pastaLegendasPt,
         long inicioMs,
@@ -383,7 +396,8 @@ public class RevisarLegendasUseCase {
         int auditadas,
         int semOriginal,
         int pendentes,
-        ModoRevisaoLegendas modo
+        ModoRevisaoLegendas modo,
+        List<DetalheRevisao> detalhes
     ) {
         long duracaoMs = System.currentTimeMillis() - inicioMs;
         boolean llm = modo == ModoRevisaoLegendas.LLM_CONCORDANCIA;
@@ -439,6 +453,7 @@ public class RevisarLegendasUseCase {
             corrigidas,
             pendentes
         );
+        relatorio += formatarDetalhesRelatorio(detalhes);
         telemetriaService.finalizarOperacao(
             operacao, pastaLegendasPt,
             llm ? "revisao_concordancia_legendas" : "revisao_legendas",
@@ -481,7 +496,8 @@ public class RevisarLegendasUseCase {
         int[] totalSemOriginal,
         int[] totalPendentes,
         int[] totalSemReferenciaSegura,
-        String contextoFallback
+        String contextoFallback,
+        List<DetalheRevisao> detalhesRevisao
     ) {
         totalArquivos[0]++;
         out("\nAnalisando legenda: " + arquivoPt.getFileName());
@@ -630,6 +646,12 @@ public class RevisarLegendasUseCase {
                 + " falas auditáveis iguais ao inglês. A Opção 6 revisa traduções; "
                 + "não fará retradução em massa. Regenere pela Opção 4 ou corrija o cache."
                 + AnsiCores.RESET);
+            detalhesRevisao.add(new DetalheRevisao(
+                arquivoPt.getFileName().toString(), -1, "ARQUIVO", "BLOQUEADO_RETRADUCAO_EM_MASSA",
+                List.of("Falas iguais ao original acima do limite seguro"),
+                diagnosticoRetraducao.falasNaoTraduzidas() + " de "
+                    + diagnosticoRetraducao.falasAuditaveis() + " falas auditáveis",
+                null, null, null));
             return;
         }
 
@@ -767,19 +789,28 @@ public class RevisarLegendasUseCase {
 
             String novaTraducao;
             if (modo == ModoRevisaoLegendas.LLM_CONCORDANCIA) {
-                Optional<String> revisadoOpt = tentarRevisarConcordancia(
+                TentativaRevisaoLegenda tentativa = tentarRevisarConcordancia(
                     originalEn, traducaoAtual, auditoria.motivos(), contexto);
-                if (revisadoOpt.isEmpty()) {
+                if (tentativa.revisado().isEmpty()) {
                     out("     " + AnsiCores.RED
-                        + "Revisão não aplicada (LLM indisponível ou resposta inválida)."
+                        + "Revisão não aplicada: " + tentativa.detalhe()
                         + AnsiCores.RESET);
+                    detalhesRevisao.add(new DetalheRevisao(
+                        arquivoPt.getFileName().toString(), evento.indice(), evento.estilo(),
+                        tentativa.codigo(), auditoria.motivos(), tentativa.detalhe(),
+                        originalEn, traducaoAtual, tentativa.proposta()));
                     totalPendentes[0]++;
                     eventosAtualizados.add(evento);
                     continue;
                 }
-                novaTraducao = revisadoOpt.get();
+                novaTraducao = tentativa.revisado().get();
                 if (novaTraducao.equals(traducaoAtual)) {
                     out("     " + AnsiCores.DIM + "LLM manteve o texto original." + AnsiCores.RESET);
+                    detalhesRevisao.add(new DetalheRevisao(
+                        arquivoPt.getFileName().toString(), evento.indice(), evento.estilo(),
+                        "LLM_SEM_ALTERACAO", auditoria.motivos(),
+                        "O modelo respondeu, mas manteve a tradução atual.",
+                        originalEn, traducaoAtual, novaTraducao));
                     registrarSemAlteracao(textoMascOriginal, revisoesSemAlteracao);
                     totalPendentes[0]++;
                     eventosAtualizados.add(evento);
@@ -819,6 +850,11 @@ public class RevisarLegendasUseCase {
                     ? "Correção descartada: resposta LLM inválida ou sem melhoria."
                     : "Correção descartada: resposta Google inválida ou sem melhoria.";
                 out("     " + AnsiCores.YELLOW + motivo + AnsiCores.RESET);
+                detalhesRevisao.add(new DetalheRevisao(
+                    arquivoPt.getFileName().toString(), evento.indice(), evento.estilo(),
+                    modo == ModoRevisaoLegendas.LLM_CONCORDANCIA
+                        ? "LLM_REJEITADO_SEM_MELHORIA" : "GOOGLE_REJEITADO_SEM_MELHORIA",
+                    auditoria.motivos(), motivo, originalEn, traducaoAtual, novaTraducao));
                 registrarSemAlteracao(textoMascOriginal, revisoesSemAlteracao);
                 totalPendentes[0]++;
                 eventosAtualizados.add(evento);
@@ -826,6 +862,11 @@ public class RevisarLegendasUseCase {
             }
 
             out("     PT corrigido: " + AnsiCores.GREEN + novaTraducao + AnsiCores.RESET);
+            detalhesRevisao.add(new DetalheRevisao(
+                arquivoPt.getFileName().toString(), evento.indice(), evento.estilo(),
+                modo == ModoRevisaoLegendas.LLM_CONCORDANCIA ? "CORRIGIDA_LLM" : "CORRIGIDA_GOOGLE",
+                auditoria.motivos(), "Correção validada e persistida.",
+                originalEn, traducaoAtual, novaTraducao));
             eventosAtualizados.add(evento.comTexto(novaTraducao));
             corrigidasNesteArquivo++;
             modificado = true;
@@ -1091,7 +1132,20 @@ public class RevisarLegendasUseCase {
         }
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: exclui da revisão linguística elementos estruturais,
+     * desenhos, estilos ignorados e karaokê que não representam diálogo PT-BR.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: conteúdo vetorial ASS e efeitos protegidos nunca
+     * são enviados ao Google ou ao LLM; música traduzível continua auditável.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: conteúdo sem texto visível é preservado
+     * e tratado como ignorável, evitando alteração estrutural.
+     */
     private boolean deveIgnorarAuditoria(EventoLegenda evento, String texto) {
+        if (!mascaradorTags.contemTextoTraduzivel(texto)) {
+            return true;
+        }
         if (evento.estilo() != null
             && propriedades.estiloIgnorado(evento.estilo())
             && !detectorKaraoke.eKaraokeOuMusicaTraduzivel(evento.estilo(), texto)) {
@@ -1396,9 +1450,10 @@ public class RevisarLegendasUseCase {
      * da chamada e precisam ser restaurados integralmente antes da validação.
      *
      * <p>COMPORTAMENTO EM CASO DE FALHA: resposta vazia, marcador perdido ou
-     * proposta estruturalmente inválida devolve {@link Optional#empty()}.
+     * proposta estruturalmente inválida devolve diagnóstico explícito, sem
+     * confundir rejeição de conteúdo com indisponibilidade do servidor.
      */
-    private Optional<String> tentarRevisarConcordancia(
+    private TentativaRevisaoLegenda tentarRevisarConcordancia(
         String original,
         String traduzido,
         List<String> motivos,
@@ -1431,21 +1486,92 @@ public class RevisarLegendasUseCase {
         }
 
         if (resposta.isEmpty()) {
-            return Optional.empty();
+            return TentativaRevisaoLegenda.pendente(
+                "LLM_SEM_CONTEUDO_UTILIZAVEL",
+                "O servidor não devolveu choices/content utilizável; consulte o log técnico para HTTP ou timeout.",
+                null);
         }
 
+        String proposta = resposta.get();
         try {
-            String desmascarado = mascaradorTags.desmascarar(resposta.get(), mascTraduzido.tags());
+            String desmascarado = mascaradorTags.desmascarar(proposta, mascTraduzido.tags());
             String restaurado = protetorLore.restaurar(desmascarado, traducaoProtegida);
-            if (restaurado == null) return Optional.empty();
+            if (restaurado == null) {
+                return TentativaRevisaoLegenda.pendente(
+                    "LLM_MARCADOR_LORE_INCOMPATIVEL",
+                    "A proposta perdeu ou alterou marcador protegido pela lore.", proposta);
+            }
             validador.validarFala(restaurado);
             if (protecaoAss.respostaSuspeita(original, restaurado)) {
-                return Optional.empty();
+                return TentativaRevisaoLegenda.pendente(
+                    "LLM_ESTRUTURA_ASS_SUSPEITA",
+                    "A proposta alterou a estrutura protegida da legenda ASS.", proposta);
             }
-            return Optional.of(restaurado);
+            return TentativaRevisaoLegenda.sucesso(restaurado, proposta);
         } catch (AlucinacaoDetectadaException e) {
-            return Optional.empty();
+            return TentativaRevisaoLegenda.pendente(
+                "LLM_VALIDACAO_REJEITADA", mensagemFalha(e), proposta);
         }
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: transforma exceções de validação em mensagens curtas
+     * para o console e para o relatório operacional da revisão.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: nunca expõe stack trace e nunca devolve texto
+     * vazio; a proposta completa continua registrada separadamente no detalhe.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: quando a exceção não possui mensagem,
+     * usa o nome da classe como diagnóstico mínimo.
+     */
+    private String mensagemFalha(Exception erro) {
+        return erro.getMessage() == null || erro.getMessage().isBlank()
+            ? erro.getClass().getSimpleName() : erro.getMessage();
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: acrescenta ao relatório final a trilha auditável de
+     * cada correção, rejeição ou bloqueio ocorrido durante a Opção 6.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: cada item identifica arquivo, evento, resultado,
+     * problemas detectados e proposta do modelo; quebras internas são escapadas
+     * para que uma ocorrência permaneça legível em um único bloco.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: lista nula ou vazia gera seção explícita
+     * sem detalhes, sem impedir a persistência da telemetria resumida.
+     */
+    private String formatarDetalhesRelatorio(List<DetalheRevisao> detalhes) {
+        StringBuilder texto = new StringBuilder("\nDETALHES POR OCORRÊNCIA\n=======================\n");
+        if (detalhes == null || detalhes.isEmpty()) {
+            return texto.append("Nenhuma ocorrência detalhada registrada.\n").toString();
+        }
+        for (DetalheRevisao detalhe : detalhes) {
+            texto.append("\nArquivo: ").append(detalhe.arquivo()).append('\n')
+                .append("Evento: ").append(detalhe.evento()).append(" | Estilo: ")
+                .append(resumirCampo(detalhe.estilo())).append('\n')
+                .append("Resultado: ").append(detalhe.resultado()).append('\n')
+                .append("Problemas: ").append(String.join(" | ", detalhe.problemas())).append('\n')
+                .append("Diagnóstico: ").append(resumirCampo(detalhe.diagnostico())).append('\n')
+                .append("EN: ").append(resumirCampo(detalhe.original())).append('\n')
+                .append("PT anterior: ").append(resumirCampo(detalhe.antes())).append('\n')
+                .append("Proposta: ").append(resumirCampo(detalhe.depois())).append('\n');
+        }
+        return texto.toString();
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: mantém textos de legenda legíveis dentro do relatório
+     * operacional sem perder as quebras ASS relevantes.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: não altera o conteúdo persistido e limita apenas
+     * a representação diagnóstica a 500 caracteres.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: valor ausente é representado por hífen.
+     */
+    private String resumirCampo(String valor) {
+        if (valor == null || valor.isBlank()) return "—";
+        String limpo = valor.replace("\r", "").replace("\n", " ↵ ").strip();
+        return limpo.length() <= 500 ? limpo : limpo.substring(0, 497) + "...";
     }
 
     private void pausaGoogle() {
@@ -1459,6 +1585,59 @@ public class RevisarLegendasUseCase {
     private boolean temExtensaoSuportada(Path arquivo) {
         String nome = arquivo.getFileName().toString().toLowerCase();
         return EXTENSOES.stream().anyMatch(nome::endsWith);
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: transporta o resultado técnico de uma chamada de
+     * revisão para que console e relatório expliquem por que a fala foi mantida.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: sucesso sempre contém texto revisado; pendência
+     * sempre contém código e diagnóstico, podendo conservar a proposta rejeitada.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: fábricas normalizam valores ausentes e
+     * nunca permitem que a indisponibilidade seja inferida sem evidência.
+     */
+    private record TentativaRevisaoLegenda(
+        Optional<String> revisado,
+        String codigo,
+        String detalhe,
+        String proposta
+    ) {
+        static TentativaRevisaoLegenda sucesso(String revisado, String proposta) {
+            return new TentativaRevisaoLegenda(
+                Optional.of(revisado), "LLM_RESPOSTA_VALIDADA", "Resposta validada.", proposta);
+        }
+
+        static TentativaRevisaoLegenda pendente(String codigo, String detalhe, String proposta) {
+            return new TentativaRevisaoLegenda(
+                Optional.empty(), codigo, detalhe == null ? "Falha não detalhada." : detalhe, proposta);
+        }
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: registra a evidência por fala usada no relatório da
+     * revisão e no futuro dataset de melhoria dos detectores.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: problemas é imutável e cada registro pertence a
+     * um arquivo/evento ou ao bloqueio global do arquivo indicado por evento -1.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: lista de problemas ausente é normalizada
+     * para lista vazia e o record não executa I/O.
+     */
+    private record DetalheRevisao(
+        String arquivo,
+        int evento,
+        String estilo,
+        String resultado,
+        List<String> problemas,
+        String diagnostico,
+        String original,
+        String antes,
+        String depois
+    ) {
+        private DetalheRevisao {
+            problemas = problemas == null ? List.of() : List.copyOf(problemas);
+        }
     }
 
     /**
