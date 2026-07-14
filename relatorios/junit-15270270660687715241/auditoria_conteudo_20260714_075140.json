@@ -1,0 +1,48 @@
+{
+  "tipo" : "auditoria_conteudo",
+  "operacao" : {
+    "tipo" : "Auditoria de Conteudo de Legendas",
+    "detalhe" : "C:\\Users\\Paulo\\AppData\\Local\\Temp\\junit-15270270660687715241\\solo_eng.ass | modo=ORIGINAL | formatoOriginal=ASS | formatoTraduzido=— | anomalias=2 | criticas=1",
+    "tempoTotalMs" : 3,
+    "arquivosProcessados" : 1,
+    "itensDetectados" : 2,
+    "itensCorrigidos" : 0,
+    "registradoEm" : "2026-07-14T10:51:40.018483300Z"
+  },
+  "arquivoOriginal" : "solo_eng.ass",
+  "arquivoTraduzido" : null,
+  "formatoOriginal" : "ASS",
+  "formatoTraduzido" : null,
+  "limpo" : false,
+  "totalAnomalias" : 2,
+  "duracaoMs" : 3,
+  "anomalias" : [ {
+    "severidade" : "CRITICAL",
+    "regra" : "Bloco de Override ASS Não Fechado",
+    "descricao" : "Bloco de override '{...}' aberto e não fechado corretamente. O player pode exibir as tags como texto ou descartar a linha.",
+    "eventoOriginal" : {
+      "indice" : 1,
+      "tipoLinha" : "Dialogue",
+      "estilo" : "Default",
+      "prefixo" : "Dialogue: 0,0:00:06.00,0:00:08.00,Default,,0,0,0,,",
+      "texto" : "{\\i1 texto sem fechar",
+      "dialogo" : true
+    },
+    "eventoTraduzido" : null,
+    "sugestaoCorrecao" : "Fechar a chave '}' correspondente ou remover o '{' órfão."
+  }, {
+    "severidade" : "ERROR",
+    "regra" : "Timestamp Inválido (fim ≤ início)",
+    "descricao" : "Fim (3000 ms) menor ou igual ao início (5000 ms). A linha tem duração inválida e não será exibida.",
+    "eventoOriginal" : {
+      "indice" : 0,
+      "tipoLinha" : "Dialogue",
+      "estilo" : "Default",
+      "prefixo" : "Dialogue: 0,0:00:05.00,0:00:03.00,Default,,0,0,0,,",
+      "texto" : "Fala com tempo invertido",
+      "dialogo" : true
+    },
+    "eventoTraduzido" : null,
+    "sugestaoCorrecao" : "Corrigir o timestamp de fim para depois do início."
+  } ]
+}

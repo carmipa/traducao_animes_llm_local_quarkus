@@ -22956,3 +22956,70 @@ Auditoria finalizada com sucesso!
 2026-07-14 07:42:34.302 [console] Regras executadas: 6
 2026-07-14 07:42:34.303 [console] Anomalias: 2
 2026-07-14 07:42:34.303 [console] Duracao: 3 ms
+2026-07-14 07:47:50.080 [console] ==============================================================
+2026-07-14 07:47:50.080 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 07:47:50.081 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 07:47:50.081 [console] ==============================================================
+2026-07-14 07:51:39.585 [console] ==============================================================
+2026-07-14 07:51:39.585 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 07:51:39.586 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 07:51:39.587 [console] ==============================================================
+2026-07-14 07:51:39.887 [console] === Auditoria de Conteudo de Legendas (arquivo unico: original) ===
+2026-07-14 07:51:39.887 [console] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-801700764825411369\solo_limpo.ass
+2026-07-14 07:51:39.888 [console] Formato : ASS
+2026-07-14 07:51:40.005 [console] [Auditoria Conteudo] Arquivo limpo: solo_limpo.ass
+2026-07-14 07:51:40.006 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-801700764825411369\auditoria_conteudo_20260714_075139.json
+2026-07-14 07:51:40.006 [console] Regras executadas: 6
+2026-07-14 07:51:40.008 [console] Anomalias: 0
+2026-07-14 07:51:40.008 [console] Duracao: 8 ms
+2026-07-14 07:51:40.015 [console] === Auditoria de Conteudo de Legendas (arquivo unico: original) ===
+2026-07-14 07:51:40.016 [console] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-15270270660687715241\solo_eng.ass
+2026-07-14 07:51:40.016 [console] Formato : ASS
+2026-07-14 07:51:40.030 [console] [Auditoria Conteudo] 2 anomalia(s) em solo_eng.ass
+2026-07-14 07:51:40.031 [console]   [CRITICAL] Bloco de Override ASS Não Fechado — Bloco de override '{...}' aberto e não fechado corretamente. O player pode exibir as tags como texto ou descartar a linha.
+2026-07-14 07:51:40.031 [console]   [ERROR] Timestamp Inválido (fim ≤ início) — Fim (3000 ms) menor ou igual ao início (5000 ms). A linha tem duração inválida e não será exibida.
+2026-07-14 07:51:40.032 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-15270270660687715241\auditoria_conteudo_20260714_075140.json
+2026-07-14 07:51:40.032 [console] Regras executadas: 6
+2026-07-14 07:51:40.033 [console] Anomalias: 2
+2026-07-14 07:51:40.033 [console] Duracao: 3 ms
+2026-07-14 07:51:40.040 [console] === Auditoria de Conteudo de Legendas ===
+2026-07-14 07:51:40.041 [console] Original : C:\Users\Paulo\AppData\Local\Temp\junit-4356679920382606409\ep04_eng.srt
+2026-07-14 07:51:40.041 [console] Formato original: SRT
+2026-07-14 07:51:40.042 [console] Traduzido: C:\Users\Paulo\AppData\Local\Temp\junit-4356679920382606409\ep04_pt.srt
+2026-07-14 07:51:40.042 [console] Formato traduzido: SRT
+2026-07-14 07:51:40.054 [console] [Auditoria Conteudo] Arquivo limpo: ep04_pt.srt
+2026-07-14 07:51:40.056 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-4356679920382606409\auditoria_conteudo_20260714_075140.json
+2026-07-14 07:51:40.056 [console] Regras executadas: 5
+2026-07-14 07:51:40.057 [console] Anomalias: 0
+2026-07-14 07:51:40.057 [console] Duracao: 7 ms
+2026-07-14 07:51:40.075 [console] === Auditoria de Conteudo de Legendas ===
+2026-07-14 07:51:40.075 [console] Original : C:\Users\Paulo\AppData\Local\Temp\junit-15866390571392396768\ep02_eng.ass
+2026-07-14 07:51:40.077 [console] Formato original: ASS
+2026-07-14 07:51:40.077 [console] Traduzido: C:\Users\Paulo\AppData\Local\Temp\junit-15866390571392396768\ep02_pt.ass
+2026-07-14 07:51:40.078 [console] Formato traduzido: ASS
+2026-07-14 07:51:40.087 [console] [Auditoria Conteudo] 1 anomalia(s) em ep02_pt.ass
+2026-07-14 07:51:40.088 [console]   [CRITICAL] Alucinação de Quebra de Linha (\N) — A tradução inseriu 4 quebras de linha onde o original tinha 0. Isso destrói o posicionamento (\pos).
+2026-07-14 07:51:40.088 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-15866390571392396768\auditoria_conteudo_20260714_075140.json
+2026-07-14 07:51:40.089 [console] Regras executadas: 5
+2026-07-14 07:51:40.089 [console] Anomalias: 1
+2026-07-14 07:51:40.090 [console] Duracao: 5 ms
+2026-07-14 07:51:40.096 [console] === Auditoria de Conteudo de Legendas ===
+2026-07-14 07:51:40.096 [console] Original : C:\Users\Paulo\AppData\Local\Temp\junit-17730025243754741555\ep01_eng.ass
+2026-07-14 07:51:40.097 [console] Formato original: ASS
+2026-07-14 07:51:40.097 [console] Traduzido: C:\Users\Paulo\AppData\Local\Temp\junit-17730025243754741555\ep01_pt.ass
+2026-07-14 07:51:40.098 [console] Formato traduzido: ASS
+2026-07-14 07:51:40.106 [console] [Auditoria Conteudo] Arquivo limpo: ep01_pt.ass
+2026-07-14 07:51:40.106 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-17730025243754741555\auditoria_conteudo_20260714_075140.json
+2026-07-14 07:51:40.108 [console] Regras executadas: 5
+2026-07-14 07:51:40.108 [console] Anomalias: 0
+2026-07-14 07:51:40.108 [console] Duracao: 3 ms
+2026-07-14 07:51:40.122 [console] === Auditoria de Conteudo de Legendas (arquivo unico: traduzido) ===
+2026-07-14 07:51:40.122 [console] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-9059641419312351110\solo_pt.ass
+2026-07-14 07:51:40.122 [console] Formato : ASS
+2026-07-14 07:51:40.131 [console] [Auditoria Conteudo] 2 anomalia(s) em solo_pt.ass
+2026-07-14 07:51:40.132 [console]   [CRITICAL] Bloco de Override ASS Não Fechado — Bloco de override '{...}' aberto e não fechado corretamente. O player pode exibir as tags como texto ou descartar a linha.
+2026-07-14 07:51:40.132 [console]   [ERROR] Timestamp Inválido (fim ≤ início) — Fim (3000 ms) menor ou igual ao início (5000 ms). A linha tem duração inválida e não será exibida.
+2026-07-14 07:51:40.133 [console] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-9059641419312351110\auditoria_conteudo_20260714_075140.json
+2026-07-14 07:51:40.133 [console] Regras executadas: 6
+2026-07-14 07:51:40.134 [console] Anomalias: 2
+2026-07-14 07:51:40.135 [console] Duracao: 3 ms
