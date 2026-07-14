@@ -29,7 +29,10 @@ import org.traducao.projeto.traducao.presentation.ui.PastasExecucao;
 import org.traducao.projeto.telemetria.LlmTelemetria;
 import org.traducao.projeto.telemetria.TelemetriaService;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -40,13 +43,16 @@ import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
 /**
- * Orquestra a tradução de um único arquivo de legenda: le -> reaproveita o
- * cache existente -> traduz só o que falta (deduplicando falas repetidas) ->
- * valida -> escreve a legenda final em PT-BR -> grava/atualiza o cache.
- * <p>
- * Correções manuais feitas pelo usuário no JSON de cache são respeitadas na
- * próxima execução: uma fala cujo texto original já tem tradução não-vazia no
- * cache nunca é reenviada ao LLM.
+ * PROPÓSITO DE NEGÓCIO: orquestra a tradução de uma legenda, reaproveitando o
+ * cache, traduzindo somente pendências e publicando uma saída PT-BR recuperável.
+ *
+ * <p>INVARIANTES DO DOMÍNIO: correções válidas do cache não são reenviadas ao
+ * LLM; tags e estrutura temporal são preservadas; saída parcial não substitui a
+ * final sem liberação explícita e backup obrigatório.
+ *
+ * <p>COMPORTAMENTO EM CASO DE FALHA: respostas inválidas permanecem pendentes,
+ * falhas de IO viram {@link ArquivoLegendaException} e uma substituição liberada
+ * é abortada se a versão anterior não puder ser copiada para backup.
  */
 @Service
 public class ProcessarArquivoUseCase {
@@ -149,11 +155,13 @@ public class ProcessarArquivoUseCase {
      *
      * <p>INVARIANTES DO DOMÍNIO: só reprocessa uma entrada que parece traduzida se
      * {@code permitirRetraducao} for explicitamente verdadeiro (confirmação do
-     * usuário); a decisão é registrada nos avisos/telemetria.
+     * usuário); com essa liberação, uma saída final existente só é substituída após
+     * backup obrigatório, inclusive quando a nova execução ainda ficar parcial.
      *
      * <p>COMPORTAMENTO EM CASO DE FALHA: entrada aparentemente já traduzida sem
      * confirmação → lança {@link ArquivoLegendaException} (o lote registra o
-     * arquivo como falha e segue para o próximo).
+     * arquivo como falha e segue para o próximo); falha ao criar backup aborta a
+     * substituição e preserva o arquivo final anterior.
      */
     public ResultadoTraducaoArquivo processar(Path arquivoEntrada, boolean permitirRetraducao) throws InterruptedException, ExecutionException {
         long inicioMs = System.currentTimeMillis();
@@ -310,8 +318,12 @@ public class ProcessarArquivoUseCase {
             documento.cabecalho(), eventosFinais, documento.quebraDeLinha(), documento.comBom());
 
         Path arquivoSaidaFinal = resolverArquivoSaida(arquivoEntrada);
-        Path arquivoSaida = falhasDistintas.isEmpty()
-            ? arquivoSaidaFinal : resolverArquivoParcial(arquivoSaidaFinal);
+        Path arquivoSaida = selecionarArquivoSaida(
+            arquivoSaidaFinal, !falhasDistintas.isEmpty(), permitirRetraducao);
+        Path backupSobrescrita = null;
+        if (permitirRetraducao && arquivoSaida.equals(arquivoSaidaFinal) && Files.exists(arquivoSaidaFinal)) {
+            backupSobrescrita = criarBackupAntesSobrescrita(arquivoSaidaFinal);
+        }
         if (ehSrt) {
             escritorSrt.escrever(arquivoSaida, documentoFinal);
         } else {
@@ -347,8 +359,13 @@ public class ProcessarArquivoUseCase {
         ));
 
         if (status == StatusArquivoTraducao.PARCIAL) {
-            log.warn("Tradução parcial salva em {}: {} fala(s) distinta(s) continuam pendentes; saída final {} não foi sobrescrita.",
-                arquivoSaida, falhasDistintas.size(), arquivoSaidaFinal);
+            if (permitirRetraducao) {
+                log.warn("Tradução parcial publicada em {} por liberação explícita: {} fala(s) distinta(s) continuam pendentes; backup anterior em {}.",
+                    arquivoSaida, falhasDistintas.size(), backupSobrescrita);
+            } else {
+                log.warn("Tradução parcial salva em {}: {} fala(s) distinta(s) continuam pendentes; saída final {} não foi sobrescrita.",
+                    arquivoSaida, falhasDistintas.size(), arquivoSaidaFinal);
+            }
         } else {
             log.info("Arquivo traduzido salvo em {} (cache em {})", arquivoSaida, arquivoCache);
         }
@@ -617,11 +634,68 @@ public class ProcessarArquivoUseCase {
      * <p>COMPORTAMENTO EM CASO DE FALHA: caminho sem extensão reconhecida ainda
      * recebe o sufixo calculado a partir da convenção ASS/SRT do módulo.
      */
-    private Path resolverArquivoParcial(Path arquivoFinal) {
+    private static Path resolverArquivoParcial(Path arquivoFinal) {
         String nome = arquivoFinal.getFileName().toString();
         String extensao = extensaoLegenda(nome);
         String base = nome.substring(0, nome.length() - extensao.length());
         return arquivoFinal.resolveSibling(base + ".parcial" + extensao);
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: decide se uma retomada publica diretamente a saída
+     * PT-BR final ou mantém o resultado incompleto isolado como arquivo parcial.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: sem pendências, sempre publica a saída final;
+     * com pendências, só publica a saída final quando a proteção foi liberada
+     * explicitamente, mantendo o comportamento seguro como padrão.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: não acessa disco nem lança exceção;
+     * retorna deterministicamente um caminho final ou com sufixo {@code .parcial}.
+     */
+    static Path selecionarArquivoSaida(Path arquivoFinal, boolean temPendencias, boolean protecaoLiberada) {
+        return !temPendencias || protecaoLiberada
+            ? arquivoFinal : resolverArquivoParcial(arquivoFinal);
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: preserva a versão PT-BR atualmente publicada antes
+     * de uma substituição autorizada, permitindo recuperação após uma revisão ruim.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: cada substituição recebe uma pasta exclusiva em
+     * {@code backups/traducao}; o arquivo original é copiado com seus atributos e
+     * nunca é alterado antes de o backup terminar com sucesso.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: lança {@link ArquivoLegendaException} e
+     * impede a escrita da nova saída final, mantendo intacta a versão anterior.
+     */
+    private Path criarBackupAntesSobrescrita(Path arquivoFinal) {
+        Path raizBackup = Path.of("backups", "traducao").toAbsolutePath().normalize();
+        try {
+            Path backup = copiarParaBackupExclusivo(arquivoFinal, raizBackup);
+            log.info("Backup da tradução final criado em {}", backup);
+            uiLogger.log("[ BACKUP ] Tradução anterior preservada em: " + backup);
+            return backup;
+        } catch (IOException e) {
+            throw new ArquivoLegendaException(
+                "Falha ao criar backup obrigatório antes de sobrescrever: " + arquivoFinal, e);
+        }
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: copia uma tradução publicada para uma pasta exclusiva
+     * de histórico antes que uma nova versão ocupe o mesmo caminho final.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: cria um diretório novo por operação, preserva os
+     * atributos do arquivo e nunca substitui um backup anterior.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: propaga {@link IOException}; o chamador
+     * converte a falha em bloqueio da sobrescrita.
+     */
+    static Path copiarParaBackupExclusivo(Path arquivoFinal, Path raizBackup) throws IOException {
+        Files.createDirectories(raizBackup);
+        Path pastaBackup = Files.createTempDirectory(raizBackup, "sobrescrita_");
+        Path backup = pastaBackup.resolve(arquivoFinal.getFileName()).normalize();
+        return Files.copy(arquivoFinal, backup, StandardCopyOption.COPY_ATTRIBUTES);
     }
 
     private Path resolverArquivoCache(Path entrada) {

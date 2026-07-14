@@ -2,6 +2,16 @@ import { logNoConsole, mostrarAlerta } from '../js/app.js';
 
 let contextosCarregados = false;
 
+/**
+ * PROPÓSITO DE NEGÓCIO: prepara o formulário da tradução local e envia a decisão
+ * explícita de Paulo sobre manter ou liberar a proteção de arquivos PT-BR existentes.
+ *
+ * INVARIANTES DO DOMÍNIO: a proteção começa sempre ativada; a liberação só é enviada
+ * quando a caixa correspondente estiver marcada no momento da submissão.
+ *
+ * COMPORTAMENTO EM CASO DE FALHA: valida contexto e resposta HTTP, registra a falha
+ * no console da interface e não inicia o acompanhamento de uma operação rejeitada.
+ */
 export function initTraducao() {
     const form = document.getElementById('form-traducao');
     carregarContextos();
@@ -15,6 +25,7 @@ export function initTraducao() {
         const saida = document.getElementById('traducao-saida').value.trim();
         const contextoSelect = document.getElementById('traducao-contexto');
         const contextoId = contextoSelect ? contextoSelect.value : null;
+        const permitirRetraducao = document.getElementById('traducao-liberar-protecao')?.checked === true;
 
         if (!contextosCarregados || !contextoId) {
             logNoConsole('console-traducao', 'Lista de contextos de tradução ainda não carregou. Aguarde ou recarregue a página antes de iniciar.', 'erro');
@@ -25,9 +36,12 @@ export function initTraducao() {
         logNoConsole('console-traducao', `Pasta Original: ${entrada}`, 'info');
         if (saida) logNoConsole('console-traducao', `Pasta de Saída: ${saida}`, 'info');
         if (contextoId) logNoConsole('console-traducao', `Contexto Ativo: ${contextoId}`, 'info');
+        logNoConsole('console-traducao', permitirRetraducao
+            ? 'Proteção de arquivos finais: LIBERADA (backup obrigatório antes da sobrescrita).'
+            : 'Proteção de arquivos finais: ATIVADA.', permitirRetraducao ? 'aviso' : 'info');
 
         try {
-            const reqBody = { entrada: entrada };
+            const reqBody = { entrada: entrada, permitirRetraducao: permitirRetraducao };
             if (saida) reqBody.saida = saida;
             if (contextoId) reqBody.contextoId = contextoId;
 

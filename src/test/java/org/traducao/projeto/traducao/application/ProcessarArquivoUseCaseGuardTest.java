@@ -1,13 +1,76 @@
 package org.traducao.projeto.traducao.application;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * PROPÓSITO DE NEGÓCIO: protege por regressão as decisões que impedem o tradutor
+ * de publicar linhas ASS suspeitas ou substituir uma legenda sem autorização.
+ *
+ * <p>INVARIANTES DO DOMÍNIO: entradas protegidas permanecem bloqueadas, a chave
+ * de liberação escolhe o destino correto e toda sobrescrita preserva um backup.
+ *
+ * <p>COMPORTAMENTO EM CASO DE FALHA: qualquer desvio interrompe a suíte antes de
+ * o comportamento inseguro alcançar arquivos reais.
+ */
 class ProcessarArquivoUseCaseGuardTest {
+
+    @TempDir
+    Path pastaTemporaria;
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: comprova que a chave de proteção mantém resultados
+     * incompletos isolados, mas permite publicar a retomada quando Paulo a libera.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: resultado completo sempre usa o nome final;
+     * resultado parcial protegido recebe o sufixo {@code .parcial}; liberação
+     * explícita volta a selecionar o nome final.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: qualquer regressão na seleção dos caminhos
+     * falha o teste antes de uma versão insegura chegar à execução real.
+     */
+    @Test
+    void selecionaSaidaConformeChaveDeProtecao() {
+        Path finalPtBr = Path.of("episodio_PT-BR.ass");
+
+        assertEquals(finalPtBr,
+            ProcessarArquivoUseCase.selecionarArquivoSaida(finalPtBr, false, false));
+        assertEquals(Path.of("episodio_PT-BR.parcial.ass"),
+            ProcessarArquivoUseCase.selecionarArquivoSaida(finalPtBr, true, false));
+        assertEquals(finalPtBr,
+            ProcessarArquivoUseCase.selecionarArquivoSaida(finalPtBr, true, true));
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: garante que liberar a proteção não destrua a tradução
+     * publicada sem antes guardar uma cópia recuperável e fiel.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: o backup fica fora do caminho original, conserva
+     * exatamente o conteúdo e usa uma pasta exclusiva sob a raiz indicada.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: erro de criação ou cópia propaga
+     * {@link IOException} e faz o teste falhar sem alterar o arquivo de origem.
+     */
+    @Test
+    void criaBackupExclusivoAntesDaSobrescrita() throws IOException {
+        Path publicado = Files.writeString(pastaTemporaria.resolve("episodio_PT-BR.ass"), "versao anterior");
+        Path raizBackup = pastaTemporaria.resolve("backups");
+
+        Path backup = ProcessarArquivoUseCase.copiarParaBackupExclusivo(publicado, raizBackup);
+
+        assertTrue(Files.exists(backup));
+        assertTrue(backup.startsWith(raizBackup));
+        assertEquals("versao anterior", Files.readString(backup));
+        assertEquals("versao anterior", Files.readString(publicado));
+    }
 
     @Test
     void detectaSaidaDeLlmEmLinhaAssPesadaCurta() {
