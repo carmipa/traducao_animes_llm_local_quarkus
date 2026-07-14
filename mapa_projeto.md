@@ -2,9 +2,9 @@
  MAPA ESTRUTURAL DO PROJETO - TRACKER ANIMES
 ================================================================================
  Raiz do repositorio      : traducao_animes_llm_local_quarkus
- Pastas mapeadas          : 498
- Arquivos (na arvore)     : 1006
- Arquivos-fonte indexados : 377  (.java: 377 | .py: 0)
+ Pastas mapeadas          : 513
+ Arquivos (na arvore)     : 1038
+ Arquivos-fonte indexados : 380  (.java: 380 | .py: 0)
  Memoria viva do projeto  : CEREBRO_IA.md (na raiz do repositorio)
 
  Objetivo: mapa de contexto para LLMs navegarem os diretorios e
@@ -36,6 +36,9 @@ traducao_animes_llm_local_quarkus/
 │   │   ├── google_20260713_203142_314/
 │   │   │   └── Gundam Narrative NT/
 │   │   │       └── [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3.cache.json
+│   │   ├── google_20260714_090743_353/
+│   │   │   └── Gundam Narrative NT/
+│   │   │       └── [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3.cache.json
 │   │   ├── hotfix_opcao6_20260713_185403_591/
 │   │   │   └── [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3.cache.json
 │   │   ├── limpeza_20260713_194726_839/
@@ -63,7 +66,11 @@ traducao_animes_llm_local_quarkus/
 │   │   │   └── [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3_PT-BR.ass
 │   │   ├── revisao_20260713_195010_433/
 │   │   │   └── [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3_PT-BR.ass
-│   │   └── revisao_20260714_090658_133/
+│   │   ├── revisao_20260714_090658_133/
+│   │   │   └── show_PT-BR.ass
+│   │   ├── revisao_20260714_090744_296/
+│   │   │   └── show_PT-BR.ass
+│   │   └── revisao_20260714_091955_271/
 │   │       └── show_PT-BR.ass
 │   ├── revisao-lore/
 │   │   ├── rejeitadas/
@@ -189,6 +196,9 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-1162096832399206289/
 │   │   ├── troca_fontes_20260713_191025.json
 │   │   └── troca_fontes_20260713_191025.md
+│   ├── junit-1180304862588367479/
+│   │   ├── auditoria_conteudo_20260714_090744.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-11945316342467234474/
 │   │   ├── auditoria_conteudo_20260714_083845.json
 │   │   └── telemetria_compartilhada.json
@@ -246,6 +256,9 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-13375308382607049833/
 │   │   ├── troca_fontes_20260713_203233.json
 │   │   └── troca_fontes_20260713_203233.md
+│   ├── junit-13527380754101640888/
+│   │   ├── auditoria_conteudo_20260714_090744.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-13567051080975770149/
 │   │   ├── auditoria_conteudo_20260714_080250.json
 │   │   └── telemetria_compartilhada.json
@@ -390,6 +403,9 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-16780971241375691519/
 │   │   ├── auditoria_conteudo_20260714_064656.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-17002555909348050911/
+│   │   ├── auditoria_conteudo_20260714_090744.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-17022578891640677104/
 │   │   ├── troca_fontes_20260713_200754.json
 │   │   └── troca_fontes_20260713_200754.md
@@ -456,6 +472,9 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-2042233824232254696/
 │   │   ├── auditoria_conteudo_20260713_184819.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-228327759566767344/
+│   │   ├── auditoria_conteudo_20260714_090744.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-2288306071147125870/
 │   │   ├── auditoria_conteudo_20260714_084638.json
 │   │   └── telemetria_compartilhada.json
@@ -473,6 +492,9 @@ traducao_animes_llm_local_quarkus/
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-2995173643097678241/
 │   │   ├── auditoria_conteudo_20260714_065034.json
+│   │   └── telemetria_compartilhada.json
+│   ├── junit-3077107490182779322/
+│   │   ├── auditoria_conteudo_20260714_090744.json
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-3162615508395148088/
 │   │   ├── troca_fontes_20260713_203145.json
@@ -609,6 +631,9 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-5939165943042423982/
 │   │   ├── auditoria_conteudo_20260714_064651.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-6031390679088916375/
+│   │   ├── auditoria_conteudo_20260714_090744.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-6062259134079859252/
 │   │   ├── auditoria_conteudo_20260714_065330.json
 │   │   └── telemetria_compartilhada.json
@@ -645,6 +670,9 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-6879107851720676150/
 │   │   ├── troca_fontes_20260713_183346.json
 │   │   └── troca_fontes_20260713_183346.md
+│   ├── junit-6897246082952493756/
+│   │   ├── auditoria_conteudo_20260714_090744.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-6978639301786280244/
 │   │   ├── auditoria_conteudo_20260713_203157.json
 │   │   └── telemetria_compartilhada.json
@@ -717,6 +745,12 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-8110001848739573292/
 │   │   ├── auditoria_conteudo_20260714_083845.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-8150751292690140035/
+│   │   ├── troca_fontes_20260714_090746.json
+│   │   └── troca_fontes_20260714_090746.md
+│   ├── junit-8175833208299980549/
+│   │   ├── troca_fontes_20260714_090746.json
+│   │   └── troca_fontes_20260714_090746.md
 │   ├── junit-8207709275410332562/
 │   │   ├── auditoria_conteudo_20260714_065034.json
 │   │   └── telemetria_compartilhada.json
@@ -777,6 +811,9 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-9720514220370106886/
 │   │   ├── auditoria_conteudo_20260714_083845.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-9723771869977113546/
+│   │   ├── auditoria_conteudo_20260714_090744.json
+│   │   └── telemetria_compartilhada.json
 │   ├── junit-9973901432443234060/
 │   │   ├── auditoria_conteudo_20260713_200753.json
 │   │   └── telemetria_compartilhada.json
@@ -817,6 +854,10 @@ traducao_animes_llm_local_quarkus/
 │   └── pt/
 │       ├── revisao_legendas_20260714_090658.json
 │       ├── revisao_legendas_20260714_090658.txt
+│       ├── revisao_legendas_20260714_090744.json
+│       ├── revisao_legendas_20260714_090744.txt
+│       ├── revisao_legendas_20260714_091955.json
+│       ├── revisao_legendas_20260714_091955.txt
 │       └── telemetria_compartilhada.json
 ├── src/
 │   ├── main/
@@ -882,10 +923,12 @@ traducao_animes_llm_local_quarkus/
 │   │   │               │   │   │   ├── RegraAlucinacaoQuebraLinha.java
 │   │   │               │   │   │   ├── RegraDanoKaraoke.java
 │   │   │               │   │   │   ├── RegraEfeitoVazado.java
+│   │   │               │   │   │   ├── RegraIntegridadePareamento.java
 │   │   │               │   │   │   ├── RegraMetadadosAss.java
 │   │   │               │   │   │   └── RegraSincroniaEstilos.java
 │   │   │               │   │   ├── AuditorConteudoUseCase.java
-│   │   │               │   │   └── TelemetriaAuditoriaService.java
+│   │   │               │   │   ├── TelemetriaAuditoriaService.java
+│   │   │               │   │   └── ValidadorParsingLegenda.java
 │   │   │               │   ├── domain/
 │   │   │               │   │   ├── AnomaliaConteudo.java
 │   │   │               │   │   ├── AuditoriaConteudoRelatorioJson.java
@@ -1302,6 +1345,9 @@ traducao_animes_llm_local_quarkus/
 │   │       │   ├── extracao/
 │   │       │   │   ├── extracao.css
 │   │       │   │   └── extracao.js
+│   │       │   ├── i18n/
+│   │       │   │   ├── i18n.css
+│   │       │   │   └── i18n.js
 │   │       │   ├── img/
 │   │       │   │   ├── screenshots/
 │   │       │   │   │   ├── analise-conteudo.png
@@ -1406,6 +1452,7 @@ traducao_animes_llm_local_quarkus/
 │                       │   │   │   ├── RegraEfeitoVazadoTest.java
 │                       │   │   │   ├── RegraMetadadosAssTest.java
 │                       │   │   │   └── RegraSincroniaEstilosTest.java
+│                       │   │   ├── AuditorConteudoIntegridadeTest.java
 │                       │   │   └── AuditorConteudoUseCaseTest.java
 │                       │   └── support/
 │                       │       └── AssAuditoriaFixtures.java
@@ -1635,6 +1682,18 @@ traducao_animes_llm_local_quarkus/
       execução e os mesmos arquivos.
       <p>COMPORTAMENTO EM CASO DE FALHA: falha de persistência é registrada, mas
       não invalida o resultado em memória da auditoria.
+  - ValidadorParsingLegenda.java
+      PROPÓSITO DE NEGÓCIO: audita o arquivo BRUTO para expor corrupções que os
+      leitores tolerantes escondem — bloco SRT truncado, índice SRT não numérico e
+      linha Dialogue/Comment ASS malformada. Sem isso, uma linha que deveria ser
+      auditada era silenciosamente descartada e o arquivo saía "limpo".
+      
+      <p>INVARIANTES DO DOMÍNIO: é 100% leitura e nunca altera os leitores de legenda
+      compartilhados pelo pipeline; reporta apenas o que só é visível no texto cru.
+      A validação de sintaxe de tempo fica com {@code RegraTimestampInvalido}.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: arquivo ilegível gera uma anomalia crítica em
+      vez de exceção; formato desconhecido devolve lista vazia.
 
 [PASTA] src/main/java/org/traducao/projeto/auditorConteudoLegendas/application/regras/arquivounico/
   - RegraEfeitoComTextoLongo.java
@@ -1718,6 +1777,20 @@ traducao_animes_llm_local_quarkus/
       de verdade, a mesma régua da tradução, correção e revisão.
   - RegraEfeitoVazado.java
       (sem cabecalho explicativo)
+  - RegraIntegridadePareamento.java
+      PROPÓSITO DE NEGÓCIO: garante que o par original ↔ traduzido descreve o MESMO
+      conjunto de falas antes de qualquer regra confiar no pareamento por índice.
+      Sem ela, uma fala apagada, uma fala inventada ou um deslocamento por
+      Comentário passavam despercebidos e o arquivo era declarado "limpo".
+      
+      <p>INVARIANTES DO DOMÍNIO: detecta divergência de contagem de diálogos, índices
+      de diálogo ausentes no traduzido, índices extras no traduzido, índices
+      duplicados (pareamento ambíguo) e mudança de tipo (Dialogue↔Comment) no mesmo
+      índice. Qualquer uma dessas anomalias impede o resultado "limpo".
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: opera só em memória; documentos válidos e
+      equivalentes não geram anomalia. Só é executada entre formatos comparáveis
+      (o caso de uso bloqueia ASS↔SRT antes de chegar aqui).
   - RegraMetadadosAss.java
       (sem cabecalho explicativo)
   - RegraSincroniaEstilos.java
@@ -1779,22 +1852,29 @@ traducao_animes_llm_local_quarkus/
       <p>COMPORTAMENTO EM CASO DE FALHA: esta classe não executa I/O; dados
       inválidos precisam ser rejeitados pelo caso de uso antes de sua criação.
   - TempoEventoUtil.java
-      PROPÓSITO DE NEGÓCIO: extrai os instantes de início e fim de um evento de
-      legenda para as regras de arquivo único que dependem do tempo (timestamp
-      inválido e sobreposição), unificando os dois formatos suportados.
+      PROPÓSITO DE NEGÓCIO: interpreta e DIAGNOSTICA os instantes de início e fim de
+      um evento de legenda, para que a auditoria distinga um timestamp válido de um
+      corrompido em vez de simplesmente ignorá-lo.
       
       <p>INVARIANTES DO DOMÍNIO: o tempo é lido do campo {@code prefixo} preservado
-      pelos leitores — ASS guarda {@code Dialogue: Layer,Início,Fim,...} e SRT
-      guarda a linha {@code hh:mm:ss,mmm --> hh:mm:ss,mmm}. Todos os valores são
-      normalizados para milissegundos absolutos desde 0.
+      pelos leitores — ASS guarda {@code Dialogue: Layer,Início,Fim,...} e SRT guarda
+      a linha {@code hh:mm:ss,mmm --> hh:mm:ss,mmm}. Valores são milissegundos desde
+      0; minutos e segundos válidos ficam em 0–59.
       
-      <p>COMPORTAMENTO EM CASO DE FALHA: qualquer prefixo ilegível ou incompleto
-      resulta em {@code null} (não lança), sinalizando à regra que aquele evento não
-      pode ser avaliado no eixo do tempo.
+      <p>COMPORTAMENTO EM CASO DE FALHA: nunca lança; um prefixo ilegível, incompleto
+      ou fora do intervalo é reportado com o {@link StatusTempo} correspondente.
 
 [PASTA] src/main/java/org/traducao/projeto/auditorConteudoLegendas/infrastructure/
   - AuditoriaConteudoPersistencia.java
-      (sem cabecalho explicativo)
+      PROPÓSITO DE NEGÓCIO: grava cada relatório de auditoria como um arquivo JSON
+      imutável e único, para que execuções não sobrescrevam umas às outras.
+      
+      <p>INVARIANTES DO DOMÍNIO: o nome combina timestamp em milissegundos com um
+      contador atômico; a gravação usa {@code CREATE_NEW} para nunca substituir um
+      relatório existente; a pasta de destino é decidida pelo chamador.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: colisão de nome tenta o próximo contador;
+      esgotadas as tentativas, lança {@link IOException} sem sobrescrever nada.
 
 [PASTA] src/main/java/org/traducao/projeto/auditorConteudoLegendas/presentation/
   - AuditorConteudoController.java
@@ -3285,6 +3365,14 @@ traducao_animes_llm_local_quarkus/
       reprova a suíte antes de produzir banners vazios em execução.
 
 [PASTA] src/test/java/org/traducao/projeto/auditorConteudoLegendas/application/
+  - AuditorConteudoIntegridadeTest.java
+      PROPÓSITO DE NEGÓCIO: cobre os problemas estruturais da Opção 3 que o conjunto
+      de testes anterior não pegava — falas ausentes/extras, deslocamento por
+      Comentário, comparação ASS↔SRT, corrupção de parsing, índices duplicados,
+      timestamps ilegíveis, imutabilidade e isolamento dos relatórios.
+      <p>INVARIANTES DO DOMÍNIO: o modo AMBAS nunca declara "limpo" quando há eventos
+      sem par; o modo de arquivo único também audita a integridade de parsing.
+      <p>COMPORTAMENTO EM CASO DE FALHA: qualquer "limpo" indevido ou exceção reprova.
   - AuditorConteudoUseCaseTest.java
       PROPÓSITO DE NEGÓCIO: confirma que uma auditoria ASS limpa expõe formato
       e gera o dataset JSON esperado.

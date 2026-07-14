@@ -309,6 +309,17 @@ class ApiEndpointsTest {
     }
 
     @Test
+    void auditoriaConteudoModoDesconhecidoRetornaBadRequest() {
+        given()
+            .contentType("application/json")
+            .body("{\"modo\":\"XPTO\",\"caminhoOriginal\":\"a.ass\",\"caminhoTraduzido\":\"b.ass\"}")
+            .when().post("/api/auditoria-conteudo")
+            .then()
+            .statusCode(400)
+            .body(containsString("AMBAS"));
+    }
+
+    @Test
     void auditoriaConteudoArquivoInexistenteRetornaBadRequest(@org.junit.jupiter.api.io.TempDir Path tempDir) throws Exception {
         Path traduzido = tempDir.resolve("ep_pt.ass");
         AssAuditoriaFixtures.escreverParLimpo(tempDir.resolve("ref.ass"), traduzido);
