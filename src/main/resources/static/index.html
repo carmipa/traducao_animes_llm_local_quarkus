@@ -37,13 +37,14 @@
     <link rel="stylesheet" href="mapa/mapa.css?v=6.0">
     <link rel="stylesheet" href="documentacao/documentacao.css?v=4.0">
     <link rel="stylesheet" href="sobre/sobre.css?v=4.0">
+    <link rel="stylesheet" href="i18n/i18n.css?v=1.0">
 </head>
 
 <body>
     <div class="app-container">
         <!-- Sidebar de Navegação -->
         <aside class="sidebar">
-            <div class="brand">
+            <div class="brand" translate="no">
                 <div class="brand-logo">
                     <img src="img/kronos_logo.svg" alt="Logo"
                         style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%;">
@@ -52,6 +53,18 @@
                     <h2>KRONOS CORE</h2>
                     <span>Pipeline Industrial</span>
                 </div>
+            </div>
+
+            <div class="seletor-idioma-wrapper" translate="no">
+                <div class="seletor-idioma" role="group" aria-label="Idioma da interface">
+                    <button type="button" class="seletor-idioma-botao" data-idioma="pt-BR"
+                        aria-label="Português (Brasil)" title="Português (Brasil)" aria-pressed="false">🇧🇷</button>
+                    <button type="button" class="seletor-idioma-botao" data-idioma="en-US"
+                        aria-label="English (United States)" title="English (United States)" aria-pressed="false">🇺🇸</button>
+                    <button type="button" class="seletor-idioma-botao" data-idioma="es-ES"
+                        aria-label="Español (España)" title="Español (España)" aria-pressed="false">🇪🇸</button>
+                </div>
+                <div id="idioma-status" class="idioma-status" role="status" aria-live="polite"></div>
             </div>
 
             <nav class="nav-menu">

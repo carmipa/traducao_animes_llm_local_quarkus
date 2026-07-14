@@ -24515,3 +24515,123 @@ Auditoria finalizada com sucesso!
 2026-07-14 09:25:43.653 [console] ==============================================================
 2026-07-14 09:25:43.654 [console] ==============================================================
 2026-07-14 09:25:43.654 [console] ==============================================================
+2026-07-14 09:26:57.422 [console] ==============================================================
+2026-07-14 09:26:57.422 [console] ==============================================================
+2026-07-14 09:26:57.423 [console] ==============================================================
+2026-07-14 09:26:57.423 [console] ==============================================================
+2026-07-14 09:26:57.423 [console] ==============================================================
+2026-07-14 09:26:57.424 [console] ==============================================================
+2026-07-14 09:26:57.424 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:26:57.425 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:26:57.425 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:26:57.426 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:26:57.426 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:26:57.426 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 09:26:57.427 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:26:57.427 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:26:57.427 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:26:57.429 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:26:57.430 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:26:57.430 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 09:26:57.431 [console] ==============================================================
+2026-07-14 09:26:57.431 [console] ==============================================================
+2026-07-14 09:26:57.432 [console] ==============================================================
+2026-07-14 09:26:57.432 [console] ==============================================================
+2026-07-14 09:26:57.433 [console] ==============================================================
+2026-07-14 09:26:57.433 [console] ==============================================================
+2026-07-14 09:28:04.300 [console] Compilation Failed:
+2026-07-14 09:28:04.301 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\auditorConteudoLegendas\application\AuditorConteudoUseCase.java:155: error: cannot find symbol
+2026-07-14 09:28:04.302 [console]             if (formatosComparaveis(formatoOriginal, formatoTraduzido)) {
+2026-07-14 09:28:04.302 [console]                 ^
+2026-07-14 09:28:04.303 [console]   symbol:   method formatosComparaveis(java.lang.String,java.lang.String)
+2026-07-14 09:28:04.303 [console]   location: class org.traducao.projeto.auditorConteudoLegendas.application.AuditorConteudoUseCase
+2026-07-14 09:28:04.304 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\auditorConteudoLegendas\application\AuditorConteudoUseCase.java:173: error: cannot find symbol
+2026-07-14 09:28:04.304 [console]             for (AnomaliaConteudo a : deduplicar(anomalias)) {
+2026-07-14 09:28:04.305 [console]                                       ^
+2026-07-14 09:28:04.305 [console]   symbol:   method deduplicar(java.util.List<org.traducao.projeto.auditorConteudoLegendas.domain.AnomaliaConteudo>)
+2026-07-14 09:28:04.305 [console]   location: class org.traducao.projeto.auditorConteudoLegendas.application.AuditorConteudoUseCase
+2026-07-14 09:28:04.306 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\auditorConteudoLegendas\application\AuditorConteudoUseCase.java:247: error: cannot find symbol
+2026-07-14 09:28:04.306 [console]             for (AnomaliaConteudo a : deduplicar(anomalias)) {
+2026-07-14 09:28:04.306 [console]                                       ^
+2026-07-14 09:28:04.307 [console]   symbol:   method deduplicar(java.util.List<org.traducao.projeto.auditorConteudoLegendas.domain.AnomaliaConteudo>)
+2026-07-14 09:28:04.307 [console]   location: class org.traducao.projeto.auditorConteudoLegendas.application.AuditorConteudoUseCase
+2026-07-14 09:28:04.307 [console] Compilation Failed:
+2026-07-14 09:28:04.309 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\auditorConteudoLegendas\application\AuditorConteudoUseCase.java:155: error: cannot find symbol
+2026-07-14 09:28:04.309 [console]             if (formatosComparaveis(formatoOriginal, formatoTraduzido)) {
+2026-07-14 09:28:04.310 [console]                 ^
+2026-07-14 09:28:04.310 [console]   symbol:   method formatosComparaveis(java.lang.String,java.lang.String)
+2026-07-14 09:28:04.311 [console]   location: class org.traducao.projeto.auditorConteudoLegendas.application.AuditorConteudoUseCase
+2026-07-14 09:28:04.311 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\auditorConteudoLegendas\application\AuditorConteudoUseCase.java:173: error: cannot find symbol
+2026-07-14 09:28:04.312 [console]             for (AnomaliaConteudo a : deduplicar(anomalias)) {
+2026-07-14 09:28:04.312 [console]                                       ^
+2026-07-14 09:28:04.313 [console]   symbol:   method deduplicar(java.util.List<org.traducao.projeto.auditorConteudoLegendas.domain.AnomaliaConteudo>)
+2026-07-14 09:28:04.313 [console]   location: class org.traducao.projeto.auditorConteudoLegendas.application.AuditorConteudoUseCase
+2026-07-14 09:28:04.314 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\auditorConteudoLegendas\application\AuditorConteudoUseCase.java:247: error: cannot find symbol
+2026-07-14 09:28:04.314 [console]             for (AnomaliaConteudo a : deduplicar(anomalias)) {
+2026-07-14 09:28:04.315 [console]                                       ^
+2026-07-14 09:28:04.315 [console]   symbol:   method deduplicar(java.util.List<org.traducao.projeto.auditorConteudoLegendas.domain.AnomaliaConteudo>)
+2026-07-14 09:28:04.316 [console]   location: class org.traducao.projeto.auditorConteudoLegendas.application.AuditorConteudoUseCase
+2026-07-14 09:28:04.316 [console] Compilation Failed:
+2026-07-14 09:28:04.317 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\auditorConteudoLegendas\application\AuditorConteudoUseCase.java:155: error: cannot find symbol
+2026-07-14 09:28:04.317 [console]             if (formatosComparaveis(formatoOriginal, formatoTraduzido)) {
+2026-07-14 09:28:04.317 [console]                 ^
+2026-07-14 09:28:04.318 [console]   symbol:   method formatosComparaveis(java.lang.String,java.lang.String)
+2026-07-14 09:28:04.319 [console]   location: class org.traducao.projeto.auditorConteudoLegendas.application.AuditorConteudoUseCase
+2026-07-14 09:28:04.319 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\auditorConteudoLegendas\application\AuditorConteudoUseCase.java:173: error: cannot find symbol
+2026-07-14 09:28:04.320 [console]             for (AnomaliaConteudo a : deduplicar(anomalias)) {
+2026-07-14 09:28:04.320 [console]                                       ^
+2026-07-14 09:28:04.321 [console]   symbol:   method deduplicar(java.util.List<org.traducao.projeto.auditorConteudoLegendas.domain.AnomaliaConteudo>)
+2026-07-14 09:28:04.321 [console]   location: class org.traducao.projeto.auditorConteudoLegendas.application.AuditorConteudoUseCase
+2026-07-14 09:28:04.322 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\auditorConteudoLegendas\application\AuditorConteudoUseCase.java:247: error: cannot find symbol
+2026-07-14 09:28:04.322 [console]             for (AnomaliaConteudo a : deduplicar(anomalias)) {
+2026-07-14 09:28:04.323 [console]                                       ^
+2026-07-14 09:28:04.323 [console]   symbol:   method deduplicar(java.util.List<org.traducao.projeto.auditorConteudoLegendas.domain.AnomaliaConteudo>)
+2026-07-14 09:28:04.324 [console]   location: class org.traducao.projeto.auditorConteudoLegendas.application.AuditorConteudoUseCase
+2026-07-14 09:28:04.324 [console] Compilation Failed:
+2026-07-14 09:28:04.325 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\auditorConteudoLegendas\application\AuditorConteudoUseCase.java:155: error: cannot find symbol
+2026-07-14 09:28:04.325 [console]             if (formatosComparaveis(formatoOriginal, formatoTraduzido)) {
+2026-07-14 09:28:04.325 [console]                 ^
+2026-07-14 09:28:04.326 [console]   symbol:   method formatosComparaveis(java.lang.String,java.lang.String)
+2026-07-14 09:28:04.326 [console]   location: class org.traducao.projeto.auditorConteudoLegendas.application.AuditorConteudoUseCase
+2026-07-14 09:28:04.327 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\auditorConteudoLegendas\application\AuditorConteudoUseCase.java:173: error: cannot find symbol
+2026-07-14 09:28:04.327 [console]             for (AnomaliaConteudo a : deduplicar(anomalias)) {
+2026-07-14 09:28:04.328 [console]                                       ^
+2026-07-14 09:28:04.328 [console]   symbol:   method deduplicar(java.util.List<org.traducao.projeto.auditorConteudoLegendas.domain.AnomaliaConteudo>)
+2026-07-14 09:28:04.329 [console]   location: class org.traducao.projeto.auditorConteudoLegendas.application.AuditorConteudoUseCase
+2026-07-14 09:28:04.329 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\auditorConteudoLegendas\application\AuditorConteudoUseCase.java:247: error: cannot find symbol
+2026-07-14 09:28:04.330 [console]             for (AnomaliaConteudo a : deduplicar(anomalias)) {
+2026-07-14 09:28:04.330 [console]                                       ^
+2026-07-14 09:28:04.330 [console]   symbol:   method deduplicar(java.util.List<org.traducao.projeto.auditorConteudoLegendas.domain.AnomaliaConteudo>)
+2026-07-14 09:28:04.331 [console]   location: class org.traducao.projeto.auditorConteudoLegendas.application.AuditorConteudoUseCase
+2026-07-14 09:28:04.331 [console] Compilation Failed:
+2026-07-14 09:28:04.332 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\auditorConteudoLegendas\application\AuditorConteudoUseCase.java:155: error: cannot find symbol
+2026-07-14 09:28:04.332 [console]             if (formatosComparaveis(formatoOriginal, formatoTraduzido)) {
+2026-07-14 09:28:04.333 [console]                 ^
+2026-07-14 09:28:04.333 [console]   symbol:   method formatosComparaveis(java.lang.String,java.lang.String)
+2026-07-14 09:28:04.334 [console]   location: class org.traducao.projeto.auditorConteudoLegendas.application.AuditorConteudoUseCase
+2026-07-14 09:28:04.334 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\auditorConteudoLegendas\application\AuditorConteudoUseCase.java:173: error: cannot find symbol
+2026-07-14 09:28:04.335 [console]             for (AnomaliaConteudo a : deduplicar(anomalias)) {
+2026-07-14 09:28:04.335 [console]                                       ^
+2026-07-14 09:28:04.336 [console]   symbol:   method deduplicar(java.util.List<org.traducao.projeto.auditorConteudoLegendas.domain.AnomaliaConteudo>)
+2026-07-14 09:28:04.336 [console]   location: class org.traducao.projeto.auditorConteudoLegendas.application.AuditorConteudoUseCase
+2026-07-14 09:28:04.337 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\auditorConteudoLegendas\application\AuditorConteudoUseCase.java:247: error: cannot find symbol
+2026-07-14 09:28:04.337 [console]             for (AnomaliaConteudo a : deduplicar(anomalias)) {
+2026-07-14 09:28:04.338 [console]                                       ^
+2026-07-14 09:28:04.338 [console]   symbol:   method deduplicar(java.util.List<org.traducao.projeto.auditorConteudoLegendas.domain.AnomaliaConteudo>)
+2026-07-14 09:28:04.339 [console]   location: class org.traducao.projeto.auditorConteudoLegendas.application.AuditorConteudoUseCase
+2026-07-14 09:28:04.339 [console] Compilation Failed:
+2026-07-14 09:28:04.340 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\auditorConteudoLegendas\application\AuditorConteudoUseCase.java:155: error: cannot find symbol
+2026-07-14 09:28:04.341 [console]             if (formatosComparaveis(formatoOriginal, formatoTraduzido)) {
+2026-07-14 09:28:04.342 [console]                 ^
+2026-07-14 09:28:04.342 [console]   symbol:   method formatosComparaveis(java.lang.String,java.lang.String)
+2026-07-14 09:28:04.343 [console]   location: class org.traducao.projeto.auditorConteudoLegendas.application.AuditorConteudoUseCase
+2026-07-14 09:28:04.343 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\auditorConteudoLegendas\application\AuditorConteudoUseCase.java:173: error: cannot find symbol
+2026-07-14 09:28:04.344 [console]             for (AnomaliaConteudo a : deduplicar(anomalias)) {
+2026-07-14 09:28:04.345 [console]                                       ^
+2026-07-14 09:28:04.345 [console]   symbol:   method deduplicar(java.util.List<org.traducao.projeto.auditorConteudoLegendas.domain.AnomaliaConteudo>)
+2026-07-14 09:28:04.345 [console]   location: class org.traducao.projeto.auditorConteudoLegendas.application.AuditorConteudoUseCase
+2026-07-14 09:28:04.346 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\auditorConteudoLegendas\application\AuditorConteudoUseCase.java:247: error: cannot find symbol
+2026-07-14 09:28:04.347 [console]             for (AnomaliaConteudo a : deduplicar(anomalias)) {
+2026-07-14 09:28:04.347 [console]                                       ^
+2026-07-14 09:28:04.348 [console]   symbol:   method deduplicar(java.util.List<org.traducao.projeto.auditorConteudoLegendas.domain.AnomaliaConteudo>)
+2026-07-14 09:28:04.349 [console]   location: class org.traducao.projeto.auditorConteudoLegendas.application.AuditorConteudoUseCase

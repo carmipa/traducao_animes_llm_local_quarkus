@@ -37,6 +37,33 @@ class WebInterfaceTest {
             .contentType(containsString("javascript"));
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: garante que a distribuição web entrega o tradutor
+     * automático local e as três bandeiras sem depender de classes Java.
+     * INVARIANTES DO DOMÍNIO: Brasil, Estados Unidos e Espanha permanecem
+     * acessíveis no HTML e o módulo i18n é servido como JavaScript.
+     * COMPORTAMENTO EM CASO DE FALHA: recurso ausente ou seletor removido
+     * reprova a suíte antes da publicação do JAR.
+     */
+    @Test
+    void internacionalizacaoAutomaticaDisponivel() {
+        given()
+            .when().get("/")
+            .then()
+            .statusCode(200)
+            .body(containsString("data-idioma=\"pt-BR\""))
+            .body(containsString("data-idioma=\"en-US\""))
+            .body(containsString("data-idioma=\"es-ES\""));
+
+        given()
+            .when().get("/i18n/i18n.js")
+            .then()
+            .statusCode(200)
+            .contentType(containsString("javascript"))
+            .body(containsString("Translator.availability"))
+            .body(containsString("navigator.languages"));
+    }
+
     @Test
     void logoDisponivel() {
         given()

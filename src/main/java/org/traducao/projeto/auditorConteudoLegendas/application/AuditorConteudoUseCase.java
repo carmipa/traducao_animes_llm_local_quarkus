@@ -17,7 +17,10 @@ import org.traducao.projeto.traducao.infrastructure.legenda.LeitorLegendaSrt;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * PROPÓSITO DE NEGÓCIO: audita legendas em três escopos — só o original (EN), só
@@ -38,6 +41,7 @@ public class AuditorConteudoUseCase {
     private final LeitorLegendaSrt leitorLegendaSrt;
     private final Instance<RegraAuditoriaConteudo> regras;
     private final Instance<RegraAuditoriaArquivoUnico> regrasArquivoUnico;
+    private final ValidadorParsingLegenda validadorParsing;
     private final TelemetriaAuditoriaService telemetria;
 
     /**
@@ -54,12 +58,14 @@ public class AuditorConteudoUseCase {
         LeitorLegendaSrt leitorLegendaSrt,
         Instance<RegraAuditoriaConteudo> regras,
         Instance<RegraAuditoriaArquivoUnico> regrasArquivoUnico,
+        ValidadorParsingLegenda validadorParsing,
         TelemetriaAuditoriaService telemetria
     ) {
         this.leitorLegendaAss = leitorLegendaAss;
         this.leitorLegendaSrt = leitorLegendaSrt;
         this.regras = regras;
         this.regrasArquivoUnico = regrasArquivoUnico;
+        this.validadorParsing = validadorParsing;
         this.telemetria = telemetria;
     }
 
@@ -126,14 +132,46 @@ public class AuditorConteudoUseCase {
             DocumentoLegenda docOriginal = lerLegenda(caminhoOriginal, formatoOriginal);
             DocumentoLegenda docTraduzido = lerLegenda(caminhoTraduzido, formatoTraduzido);
 
+            List<AnomaliaConteudo> anomalias = new ArrayList<>();
             int regrasExecutadas = 0;
-            for (RegraAuditoriaConteudo regra : regras) {
-                regrasExecutadas++;
-                List<AnomaliaConteudo> anomaliasEncontradas = regra.auditar(docOriginal, docTraduzido);
-                log.debug("Regra '{}' encontrou {} anomalia(s)", regra.getNome(), anomaliasEncontradas.size());
-                for (AnomaliaConteudo anomalia : anomaliasEncontradas) {
-                    relatorio.adicionarAnomalia(anomalia);
+
+            // Bug 5 — integridade de parsing dos dois arquivos brutos.
+            anomalias.addAll(validadorParsing.validar(caminhoOriginal, formatoOriginal, "original"));
+            for (AnomaliaConteudo a : validadorParsing.validar(caminhoTraduzido, formatoTraduzido, "traduzido")) {
+                anomalias.add(reposicionarParaTraduzido(a));
+            }
+
+            // Bug 3 — o modo AMBAS também roda as regras estruturais sobre CADA lado.
+            for (RegraAuditoriaArquivoUnico regra : regrasArquivoUnico) {
+                regrasExecutadas += 2;
+                anomalias.addAll(regra.auditar(docOriginal));
+                for (AnomaliaConteudo a : regra.auditar(docTraduzido)) {
+                    anomalias.add(reposicionarParaTraduzido(a));
                 }
+            }
+
+            // Bug 2 — índice ASS (posicional) ≠ índice SRT (número do bloco): comparar
+            // por índice entre formatos diferentes associa falas erradas. Bloqueamos.
+            if (formatosComparaveis(formatoOriginal, formatoTraduzido)) {
+                for (RegraAuditoriaConteudo regra : regras) {
+                    regrasExecutadas++;
+                    List<AnomaliaConteudo> encontradas = regra.auditar(docOriginal, docTraduzido);
+                    log.debug("Regra '{}' encontrou {} anomalia(s)", regra.getNome(), encontradas.size());
+                    anomalias.addAll(encontradas);
+                }
+            } else {
+                anomalias.add(new AnomaliaConteudo(
+                    AnomaliaConteudo.TipoSeveridade.CRITICAL,
+                    "Formatos Incompatíveis para Comparação",
+                    "Comparação por índice entre formatos diferentes (" + formatoOriginal + " ↔ "
+                        + formatoTraduzido + ") não é confiável: o índice ASS é posicional e o SRT é o "
+                        + "número do bloco. As regras comparativas foram puladas.",
+                    null, null,
+                    "Usar o mesmo formato nos dois lados, ou auditar cada arquivo no modo de arquivo único."));
+            }
+
+            for (AnomaliaConteudo a : deduplicar(anomalias)) {
+                relatorio.adicionarAnomalia(a);
             }
 
             long duracaoMs = System.currentTimeMillis() - inicioMs;
@@ -191,14 +229,23 @@ public class AuditorConteudoUseCase {
 
             DocumentoLegenda documento = lerLegenda(caminho, formato);
 
+            List<AnomaliaConteudo> anomalias = new ArrayList<>();
             int regrasExecutadas = 0;
+
+            // Bug 5 — integridade de parsing do arquivo bruto.
+            for (AnomaliaConteudo a : validadorParsing.validar(caminho, formato, papel)) {
+                anomalias.add(ehOriginal ? a : reposicionarParaTraduzido(a));
+            }
+
             for (RegraAuditoriaArquivoUnico regra : regrasArquivoUnico) {
                 regrasExecutadas++;
-                List<AnomaliaConteudo> anomaliasEncontradas = regra.auditar(documento);
-                log.debug("Regra '{}' encontrou {} anomalia(s)", regra.getNome(), anomaliasEncontradas.size());
-                for (AnomaliaConteudo anomalia : anomaliasEncontradas) {
-                    relatorio.adicionarAnomalia(ehOriginal ? anomalia : reposicionarParaTraduzido(anomalia));
+                for (AnomaliaConteudo a : regra.auditar(documento)) {
+                    anomalias.add(ehOriginal ? a : reposicionarParaTraduzido(a));
                 }
+            }
+
+            for (AnomaliaConteudo a : deduplicar(anomalias)) {
+                relatorio.adicionarAnomalia(a);
             }
 
             long duracaoMs = System.currentTimeMillis() - inicioMs;
@@ -237,6 +284,44 @@ public class AuditorConteudoUseCase {
             anomalia.eventoOriginal(),
             anomalia.sugestaoCorrecao()
         );
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: decide se dois formatos podem ser comparados por índice.
+     * <p>INVARIANTES DO DOMÍNIO: ASS e SSA são a mesma família (índice posicional);
+     * SRT é família própria (índice = número do bloco). Famílias diferentes não são
+     * comparáveis por índice.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: formato desconhecido cai na família ASS.
+     */
+    private boolean formatosComparaveis(String formatoA, String formatoB) {
+        return familiaFormato(formatoA).equals(familiaFormato(formatoB));
+    }
+
+    private String familiaFormato(String formato) {
+        return "SRT".equals(formato) ? "SRT" : "ASS";
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: remove anomalias equivalentes antes de apresentar, já
+     * que AMBAS combina regras estruturais e comparativas que podem apontar o mesmo
+     * defeito na mesma linha.
+     * <p>INVARIANTES DO DOMÍNIO: a chave considera regra, severidade, índices dos
+     * eventos e descrição; a ordem de primeira ocorrência é preservada.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: não executa I/O e nunca lança.
+     */
+    private List<AnomaliaConteudo> deduplicar(List<AnomaliaConteudo> anomalias) {
+        Set<String> vistos = new LinkedHashSet<>();
+        List<AnomaliaConteudo> unicas = new ArrayList<>();
+        for (AnomaliaConteudo a : anomalias) {
+            String chave = a.regra() + "|" + a.severidade() + "|"
+                + (a.eventoOriginal() != null ? a.eventoOriginal().indice() : "-") + "|"
+                + (a.eventoTraduzido() != null ? a.eventoTraduzido().indice() : "-") + "|"
+                + a.descricao();
+            if (vistos.add(chave)) {
+                unicas.add(a);
+            }
+        }
+        return unicas;
     }
 
     /**
