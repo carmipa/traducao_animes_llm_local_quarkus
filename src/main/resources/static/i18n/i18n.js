@@ -125,6 +125,25 @@ function salvarCache(idioma, cache) {
 }
 
 /**
+ * PROPÓSITO DE NEGÓCIO: transforma falhas técnicas do navegador em orientação
+ * curta e compreensível para quem troca o idioma da interface.
+ * INVARIANTES DO DOMÍNIO: mensagens internas em inglês não são expostas quando
+ * correspondem a restrições conhecidas de ativação ou compatibilidade.
+ * COMPORTAMENTO EM CASO DE FALHA: erro desconhecido recebe uma mensagem neutra
+ * em português e a causa original permanece disponível no console do navegador.
+ */
+function mensagemAmigavelErro(erro) {
+    const mensagem = String(erro?.message || '');
+    if (/user gesture|user activation|ativação do usuário/i.test(mensagem)) {
+        return 'O navegador exige um clique direto na bandeira para baixar o tradutor local.';
+    }
+    if (/not supported|unavailable|indisponível/i.test(mensagem)) {
+        return 'A tradução automática local não está disponível neste navegador.';
+    }
+    return 'Não foi possível traduzir a interface. Ela foi restaurada para português.';
+}
+
+/**
  * PROPÓSITO DE NEGÓCIO: apresenta progresso e falhas da tradução automática no
  * próprio seletor, sem depender do backend ou do sistema global de toasts.
  * INVARIANTES DO DOMÍNIO: mensagens são curtas, não bloqueiam a navegação e o
@@ -137,6 +156,38 @@ function atualizarStatus(mensagem = '', erro = false) {
     status.textContent = mensagem;
     status.classList.toggle('erro', erro);
     status.classList.toggle('visivel', Boolean(mensagem));
+}
+
+/**
+ * PROPÓSITO DE NEGÓCIO: inicia o tradutor local no mesmo gesto do clique para
+ * permitir que o navegador baixe o pacote de idioma quando necessário.
+ * INVARIANTES DO DOMÍNIO: existe no máximo uma promessa de sessão por idioma e
+ * todo processamento permanece no dispositivo do operador.
+ * COMPORTAMENTO EM CASO DE FALHA: remove a sessão rejeitada para permitir nova
+ * tentativa e propaga o erro ao fluxo que restaura a interface em português.
+ */
+function criarSessaoLocal(idioma) {
+    const alvo = idioma === 'es-ES' ? 'es' : 'en';
+    if (sessoes.has(alvo)) return sessoes.get(alvo);
+    if (!navegadorSuportaTraducao()) {
+        throw new Error('Tradução automática indisponível. Use Chrome 138 ou superior.');
+    }
+    const criada = globalThis.Translator.create({
+        sourceLanguage: 'pt',
+        targetLanguage: alvo,
+        monitor(monitor) {
+            monitor.addEventListener('downloadprogress', evento => {
+                const progresso = Math.round((evento.loaded || 0) * 100);
+                atualizarStatus(`Baixando tradutor local… ${progresso}%`);
+            });
+        }
+    });
+    const promessa = Promise.resolve(criada).catch(erro => {
+        sessoes.delete(alvo);
+        throw erro;
+    });
+    sessoes.set(alvo, promessa);
+    return promessa;
 }
 
 /**
@@ -158,23 +209,10 @@ async function obterSessao(idioma) {
     if (disponibilidade === 'unavailable') {
         throw new Error('O navegador não oferece o pacote de idioma solicitado.');
     }
-    const promessa = globalThis.Translator.create({
-        sourceLanguage: 'pt',
-        targetLanguage: alvo,
-        monitor(monitor) {
-            monitor.addEventListener('downloadprogress', evento => {
-                const progresso = Math.round((evento.loaded || 0) * 100);
-                atualizarStatus(`Baixando tradutor local… ${progresso}%`);
-            });
-        }
-    });
-    sessoes.set(alvo, promessa);
-    try {
-        return await promessa;
-    } catch (erro) {
-        sessoes.delete(alvo);
-        throw erro;
+    if (disponibilidade === 'downloadable' || disponibilidade === 'downloading') {
+        throw new Error('Clique na bandeira para autorizar o download do tradutor local.');
     }
+    return criarSessaoLocal(idioma);
 }
 
 /**
@@ -216,8 +254,12 @@ function coletarAlvos(raiz) {
     while (no) {
         if (no.nodeType === Node.ELEMENT_NODE) processarElemento(no);
         if (no.nodeType === Node.TEXT_NODE && !deveIgnorar(no) && textoEhTraduzivel(no.nodeValue)) {
-            if (!originaisTexto.has(no)) originaisTexto.set(no, no.nodeValue);
-            alvos.push({ original: originaisTexto.get(no), aplicar: valor => { no.nodeValue = valor; } });
+            const noTexto = no;
+            if (!originaisTexto.has(noTexto)) originaisTexto.set(noTexto, noTexto.nodeValue);
+            alvos.push({
+                original: originaisTexto.get(noTexto),
+                aplicar: valor => { noTexto.nodeValue = valor; }
+            });
         }
         no = walker.nextNode();
     }
@@ -280,7 +322,8 @@ async function traduzirSubarvore(raiz, idioma, geracao) {
         document.documentElement.lang = idiomaAtual;
         restaurarPortugues(document);
         atualizarBandeiras();
-        atualizarStatus(erro?.message || 'Não foi possível traduzir a interface.', true);
+        console.warn('Falha na tradução automática local da interface:', erro);
+        atualizarStatus(mensagemAmigavelErro(erro), true);
     }
 }
 
@@ -333,7 +376,17 @@ function vincularBandeiras() {
     document.querySelectorAll('[data-idioma]').forEach(botao => {
         if (botao.dataset.vinculado === 'true') return;
         botao.dataset.vinculado = 'true';
-        botao.addEventListener('click', () => definirIdioma(botao.dataset.idioma, true));
+        botao.addEventListener('click', () => {
+            const idioma = botao.dataset.idioma;
+            if (idioma !== 'pt-BR' && navegadorSuportaTraducao()) {
+                try {
+                    criarSessaoLocal(idioma);
+                } catch (ignored) {
+                    // definirIdioma apresentará a falha sem bloquear o restante da interface.
+                }
+            }
+            definirIdioma(idioma, true);
+        });
     });
 }
 
