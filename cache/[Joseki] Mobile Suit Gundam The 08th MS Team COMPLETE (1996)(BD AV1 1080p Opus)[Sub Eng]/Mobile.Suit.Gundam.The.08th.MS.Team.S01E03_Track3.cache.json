@@ -109,7 +109,7 @@
     "indice" : 15,
     "estilo" : "Dialogue",
     "original" : "Somebody over there\\Nhas got some good ears!",
-    "traduzido" : "",
+    "traduzido" : "Alguém ali \\N tem bons ouvidos!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -172,7 +172,7 @@
     "indice" : 24,
     "estilo" : "Dialogue",
     "original" : "And some nasty hill terrain\\Nfor good measure.",
-    "traduzido" : "",
+    "traduzido" : "\"E algum terreno horrível nas colinas\" --\\N",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -235,7 +235,7 @@
     "indice" : 33,
     "estilo" : "Dialogue",
     "original" : "I really wish we could call\\Nin some support for this.",
-    "traduzido" : "",
+    "traduzido" : "Realmente gostaria que pudéssemos pedir \\N algum apoio para isso.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -270,7 +270,7 @@
     "indice" : 38,
     "estilo" : "Dialogue",
     "original" : "If we follow the river around\\Nto the western hills...",
-    "traduzido" : "",
+    "traduzido" : "Se seguirmos o rio em torno\\N das colinas ocidentais...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -326,7 +326,7 @@
     "indice" : 46,
     "estilo" : "Dialogue",
     "original" : "Hey, the commander's got\\Nthe least experience...",
-    "traduzido" : "",
+    "traduzido" : "\"Ei, o comandante tem \\N a menor experiência...\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -403,14 +403,14 @@
     "indice" : 57,
     "estilo" : "Dialogue",
     "original" : "Just to be sure you know,\\NI should mention that...",
-    "traduzido" : "",
+    "traduzido" : "Apenas para ter certeza que você sabe, \\Ndevo mencionar que...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 58,
     "estilo" : "Dialogue",
     "original" : "...we can hold out against them\\Nfor one hour at most.",
-    "traduzido" : "",
+    "traduzido" : "...podemos resistir contra eles \\Npor uma hora no máximo.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -543,14 +543,14 @@
     "indice" : 77,
     "estilo" : "Dialogue",
     "original" : "You gotta pay the admission price\\Nto go into the waterfall pool.",
-    "traduzido" : "",
+    "traduzido" : "\"Você tem que pagar a entrada\" \\Npara ir à piscina da cachoeira\".",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 78,
     "estilo" : "Dialogue",
     "original" : "You came'cuz you thought you could\\Nget another peep show, didn't you?",
-    "traduzido" : "",
+    "traduzido" : "Você veio porque achou que poderia ter outro \\Nespetáculo, não é?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -753,7 +753,7 @@
     "indice" : 107,
     "estilo" : "Dialogue",
     "original" : "Jeez, how the hell did this song\\Never get to the top of the charts?",
-    "traduzido" : "",
+    "traduzido" : "\"Nossa, como essa música \\N chegou ao topo das paradas?\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -851,7 +851,7 @@
     "indice" : 121,
     "estilo" : "Dialogue",
     "original" : "I don't have time for this!\\NWhere are you taking me?!",
-    "traduzido" : "",
+    "traduzido" : "Não tenho tempo para isso! \\NOnde você está me levando?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -872,7 +872,7 @@
     "indice" : 124,
     "estilo" : "Dialogue",
     "original" : "Don't be rude to the person\\Nyou're gonna meet.",
-    "traduzido" : "",
+    "traduzido" : "Não seja grosseiro com a pessoa \\N.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -900,7 +900,7 @@
     "indice" : 128,
     "estilo" : "Dialogue",
     "original" : "What did you come to our territory for,\\NEnsign Shiro Amada?",
-    "traduzido" : "",
+    "traduzido" : "\"Para que vieram ao nosso território, \\NTenente Shiro Amada?\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1033,7 +1033,7 @@
     "indice" : 147,
     "estilo" : "Dialogue",
     "original" : "My friends are waiting for me\\Nto help carry out our plan.",
-    "traduzido" : "",
+    "traduzido" : "Meus amigos estão esperando por mim\\N para ajudar a realizar nosso plano.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1089,7 +1089,7 @@
     "indice" : 155,
     "estilo" : "Dialogue",
     "original" : "You think you can try that\\Nin front of our boss?!",
-    "traduzido" : "",
+    "traduzido" : "\"Você acha que pode tentar isso \\N na frente do nosso chefe?!\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1257,7 +1257,7 @@
     "indice" : 179,
     "estilo" : "Dialogue",
     "original" : "Ensign, for this one time,\\NI'll declare a truce between us.",
-    "traduzido" : "",
+    "traduzido" : "\"Por esta única vez, \\Ndeclaro uma trégua entre nós.\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1306,7 +1306,7 @@
     "indice" : 186,
     "estilo" : "Dialogue",
     "original" : "...a guy who came along\\Nquietly with them!",
-    "traduzido" : "",
+    "traduzido" : "...um cara que veio junto \\N calado com eles!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1439,7 +1439,7 @@
     "indice" : 205,
     "estilo" : "Dialogue",
     "original" : "Shiro...?! You...!\\NKids should show respect...",
-    "traduzido" : "",
+    "traduzido" : "Shiro...?! Você...! \\NAs crianças devem mostrar respeito...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1481,7 +1481,7 @@
     "indice" : 211,
     "estilo" : "Dialogue",
     "original" : "Eledore! Any movement above?",
-    "traduzido" : "",
+    "traduzido" : "Eledore! Qualquer movimento acima?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1747,7 +1747,7 @@
     "indice" : 249,
     "estilo" : "Dialogue",
     "original" : "From over there!\\NThey're attacking from the river!",
-    "traduzido" : "",
+    "traduzido" : "\"De lá!\" -- \"\\N Eles estão atacando do rio!\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1817,7 +1817,7 @@
     "indice" : 259,
     "estilo" : "Dialogue",
     "original" : "Right.",
-    "traduzido" : "",
+    "traduzido" : "Certo.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1866,7 +1866,7 @@
     "indice" : 266,
     "estilo" : "Dialogue",
     "original" : "Masado! Withdraw! I'll buy us some time!",
-    "traduzido" : "",
+    "traduzido" : "Masado! Retirem-se! Eu comprarei tempo para nós!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2153,7 +2153,7 @@
     "indice" : 307,
     "estilo" : "Dialogue",
     "original" : "Yeah. They could show\\Na little more gratitude.",
-    "traduzido" : "",
+    "traduzido" : "Sim. Eles poderiam mostrar \\N um pouco mais de gratidão.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2230,14 +2230,14 @@
     "indice" : 318,
     "estilo" : "Dialogue",
     "original" : "I made a promise. Let them\\Ntake whatever they want.",
-    "traduzido" : "",
+    "traduzido" : "Fiz uma promessa. Deixe que eles \\Ntenham o que quiserem.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 319,
     "estilo" : "Dialogue",
     "original" : "It doesn't really matter.\\NRight, Master Chief Joshua?",
-    "traduzido" : "",
+    "traduzido" : "Não importa muito. \\NEstá certo, Mestre Shiro?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2328,7 +2328,7 @@
     "indice" : 332,
     "estilo" : "Dialogue",
     "original" : "{\\i1}While on a mission in the western area,",
-    "traduzido" : "",
+    "traduzido" : "\"{\\i1}Enquanto em missão na área oeste,\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2398,14 +2398,14 @@
     "indice" : 342,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}Hang on to it now! Don't let it go.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}Aguente firme agora! Não deixe ir embora.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 343,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}Hang on to it now! Don't let it go.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Agora, agarrem-na! Não a soltem!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2552,14 +2552,14 @@
     "indice" : 364,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}Hang on to it now! Don't let it go.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}Aguente firme agora! Não deixe ir embora.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 365,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}Hang on to it now! Don't let it go.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Agora, agarrem-na! Não a soltem!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2874,7 +2874,7 @@
     "indice" : 481,
     "estilo" : "Titles",
     "original" : "{\\pos(724.8,658.6)\\blur1\\c&HDEDEE3&}THE TIME LIMIT ON TRUST",
-    "traduzido" : "",
+    "traduzido" : "{\\pos(724.8,658.6)\\blur1\\c&HDEDEE3&}O LIMITE DE TEMPO PARA CONFIANÇA.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {

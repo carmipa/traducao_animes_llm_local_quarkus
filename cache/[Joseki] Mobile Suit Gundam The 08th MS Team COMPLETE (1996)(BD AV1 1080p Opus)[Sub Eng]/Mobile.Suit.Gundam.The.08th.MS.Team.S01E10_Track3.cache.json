@@ -25,7 +25,7 @@
     "indice" : 4,
     "estilo" : "Titles",
     "original" : "{\\fad(0,399)\\fs100\\pos(1060,600)\\blur1\\c&HDEDEE3&}(PART 1)",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(0,399)\\fs100\\pos(1060,600)\\blur1\\c&HDEDEE3&} (PARTE 1)",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -319,7 +319,7 @@
     "indice" : 46,
     "estilo" : "Dialogue",
     "original" : "Let's pull the GMs back until\\Nthe bombs are disarmed.",
-    "traduzido" : "",
+    "traduzido" : "\"Vamos recuar até que os \\N bombas sejam desarmadas.\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -375,7 +375,7 @@
     "indice" : 54,
     "estilo" : "Dialogue",
     "original" : "But, without using nuclear weapons,\\Nthat won't be a simple task.",
-    "traduzido" : "",
+    "traduzido" : "\"Mas sem usar armas nucleares, \\Nisso não será uma tarefa simples.\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -403,7 +403,7 @@
     "indice" : 58,
     "estilo" : "Dialogue",
     "original" : "Secure from alert. Looks like\\Nnothing's going to blow.",
-    "traduzido" : "",
+    "traduzido" : "\"Seguro do alerta. Parece que \\Nnão vai acontecer nada.\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -515,7 +515,7 @@
     "indice" : 74,
     "estilo" : "Dialogue",
     "original" : "You were right!\\NIt's getting ready to leave.",
-    "traduzido" : "",
+    "traduzido" : "\"Você estava certa! \\NEstá se preparando para ir embora.\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -557,7 +557,7 @@
     "indice" : 80,
     "estilo" : "Dialogue",
     "original" : "Anyone who isn't busy,\\Nplease get aboard the Kergeren!",
-    "traduzido" : "",
+    "traduzido" : "\"Qualquer um que não esteja ocupado, \\Npor favor entre no Kergeren!\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -578,7 +578,7 @@
     "indice" : 83,
     "estilo" : "Dialogue",
     "original" : "You, in the mobile suit, please help\\Nget the wounded on board.",
-    "traduzido" : "",
+    "traduzido" : "Você, no Mobile Suit, por favor ajude a \\N a levar os feridos a bordo.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -641,7 +641,7 @@
     "indice" : 92,
     "estilo" : "Dialogue",
     "original" : "You've gotten stronger...\\NIs it because you're in love?",
-    "traduzido" : "",
+    "traduzido" : "\"Você ficou mais forte... \\NÉ porque você está apaixonado?\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -690,7 +690,7 @@
     "indice" : 99,
     "estilo" : "Dialogue",
     "original" : "You can't! If you leave now,\\Nyou won't be able to go with us!",
-    "traduzido" : "",
+    "traduzido" : "Você não pode! Se você sair agora, \\Nvocê não poderá ir conosco!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -704,7 +704,7 @@
     "indice" : 101,
     "estilo" : "Dialogue",
     "original" : "Master Ginius has made his dream\\Ncome true, and that's commendable.",
-    "traduzido" : "",
+    "traduzido" : "Mestre Ginius realizou seu sonho \\Ne isso é louvável.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -718,7 +718,7 @@
     "indice" : 103,
     "estilo" : "Dialogue",
     "original" : "then it is my duty as a soldier\\Nto help you accomplish that.",
-    "traduzido" : "",
+    "traduzido" : "então é meu dever como soldado\\N ajudá-la a realizar isso.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -739,7 +739,7 @@
     "indice" : 106,
     "estilo" : "Dialogue",
     "original" : "Niever!",
-    "traduzido" : "",
+    "traduzido" : "Não jamais!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -907,7 +907,7 @@
     "indice" : 130,
     "estilo" : "Dialogue",
     "original" : "Three tanks, one directly below.",
-    "traduzido" : "",
+    "traduzido" : "Três tanques, um diretamente abaixo.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -942,7 +942,7 @@
     "indice" : 135,
     "estilo" : "Dialogue",
     "original" : "Gotcha!",
-    "traduzido" : "",
+    "traduzido" : "\"Peguei você!\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1005,7 +1005,7 @@
     "indice" : 144,
     "estilo" : "Dialogue",
     "original" : "I appreciate you giving me\\Nan escape route! Thanks!",
-    "traduzido" : "",
+    "traduzido" : "Aprecio que você \\Nme dê uma rota de fuga! Obrigado!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1033,7 +1033,7 @@
     "indice" : 148,
     "estilo" : "Dialogue",
     "original" : "You want me to {\\i1}what{\\i0}?!",
-    "traduzido" : "",
+    "traduzido" : "Você quer que eu {\\i1}veja{\\i0}?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1138,7 +1138,7 @@
     "indice" : 163,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Tell me something I don't know!",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Diga-me algo que eu não saiba!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1243,7 +1243,7 @@
     "indice" : 178,
     "estilo" : "Dialogue",
     "original" : "Cheers!",
-    "traduzido" : "",
+    "traduzido" : "Chega!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1390,7 +1390,7 @@
     "indice" : 199,
     "estilo" : "Dialogue",
     "original" : "Yes.",
-    "traduzido" : "",
+    "traduzido" : "Sim.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1411,7 +1411,7 @@
     "indice" : 202,
     "estilo" : "Dialogue",
     "original" : "Gentlemen...",
-    "traduzido" : "",
+    "traduzido" : "Cavalheiros...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1852,7 +1852,7 @@
     "indice" : 266,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}Hang on to it now! Don't let it go.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Aguente firme agora! Não deixe ir embora.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2006,7 +2006,7 @@
     "indice" : 288,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}Hang on to it now! Don't let it go.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Aguente firme agora! Não deixe ir embora.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {

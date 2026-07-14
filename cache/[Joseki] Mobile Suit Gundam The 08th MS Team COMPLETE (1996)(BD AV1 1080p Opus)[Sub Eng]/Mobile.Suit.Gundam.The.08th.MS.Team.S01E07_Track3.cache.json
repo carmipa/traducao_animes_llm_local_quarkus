@@ -81,7 +81,7 @@
     "indice" : 11,
     "estilo" : "Dialogue",
     "original" : "I'm gonna take you all\\Nback to space, I swear!",
-    "traduzido" : "",
+    "traduzido" : "\"Eu vou te levar todas as \\N de volta ao espaço, juro!\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -109,7 +109,7 @@
     "indice" : 15,
     "estilo" : "Dialogue",
     "original" : "Hey, get your head down!\\NYou wanna go blind?!",
-    "traduzido" : "",
+    "traduzido" : "\"Oiçam isso!\" \\N\"Vocês querem ficar cegos?!\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -130,7 +130,7 @@
     "indice" : 18,
     "estilo" : "Dialogue",
     "original" : "Leave the heavy stuff!\\NJust take what you can carry!",
-    "traduzido" : "",
+    "traduzido" : "Deixe a coisa pesada! \\N Apenas leve o que você pode carregar!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -256,14 +256,14 @@
     "indice" : 36,
     "estilo" : "Dialogue",
     "original" : "Aina! Aina Sakhalin! Do you read me?!",
-    "traduzido" : "",
+    "traduzido" : "Aina! Aina Sahalin! Você me ouve?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 37,
     "estilo" : "Dialogue",
     "original" : "Aina, I know it's you! Answer me!",
-    "traduzido" : "",
+    "traduzido" : "Aina, eu sei que é você! Responda!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -424,7 +424,7 @@
     "indice" : 60,
     "estilo" : "Dialogue",
     "original" : "but unless we work together,\\Nwe're not going to survive.",
-    "traduzido" : "",
+    "traduzido" : "\"Mas se não trabalharmos juntos, \\Nnão vamos sobreviver.\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -613,7 +613,7 @@
     "indice" : 87,
     "estilo" : "Dialogue",
     "original" : "Verify its coordinates and dispatch a Lugun.",
-    "traduzido" : "",
+    "traduzido" : "Verifique suas coordenadas e envie um Lugun.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -844,7 +844,7 @@
     "indice" : 120,
     "estilo" : "Dialogue",
     "original" : "I wish we could heat up some water\\Nand warm them up slowly.",
-    "traduzido" : "",
+    "traduzido" : "\"Queria que pudéssemos aquecer um pouco de água \\N e aquece-los lentamente.\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1033,7 +1033,7 @@
     "indice" : 147,
     "estilo" : "Dialogue",
     "original" : "Right?",
-    "traduzido" : "",
+    "traduzido" : "Certo?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1334,7 +1334,7 @@
     "indice" : 190,
     "estilo" : "Dialogue",
     "original" : "Aina, tell me!",
-    "traduzido" : "",
+    "traduzido" : "Aina, diga-me!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1376,7 +1376,7 @@
     "indice" : 196,
     "estilo" : "Dialogue",
     "original" : "Was the Aina I saw in the\\Nblizzard just an illusion?",
-    "traduzido" : "",
+    "traduzido" : "\"Aina que eu vi no \\Nblizzard era apenas uma ilusão?\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {

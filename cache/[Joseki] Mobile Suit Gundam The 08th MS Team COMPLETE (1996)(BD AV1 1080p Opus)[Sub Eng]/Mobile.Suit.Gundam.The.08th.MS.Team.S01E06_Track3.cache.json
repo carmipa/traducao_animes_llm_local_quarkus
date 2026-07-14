@@ -284,7 +284,7 @@
     "indice" : 40,
     "estilo" : "Dialogue",
     "original" : "You called this one right, Kiki.\\NI appreciate this.",
-    "traduzido" : "",
+    "traduzido" : "Você acertou com essa, Kiki. \\NEu agradeço isso.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -319,7 +319,7 @@
     "indice" : 45,
     "estilo" : "Dialogue",
     "original" : "...little lady.",
-    "traduzido" : "",
+    "traduzido" : "...pequena senhora.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -382,7 +382,7 @@
     "indice" : 54,
     "estilo" : "Dialogue",
     "original" : "Michel! Stop it!",
-    "traduzido" : "",
+    "traduzido" : "Michel! Pare com isso!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -627,7 +627,7 @@
     "indice" : 89,
     "estilo" : "Dialogue",
     "original" : "...is headed for point Delta\\Nin the testing site.",
-    "traduzido" : "",
+    "traduzido" : "\"Estamos indo para o ponto Delta\\N no local de testes.\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -788,7 +788,7 @@
     "indice" : 112,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Hey, Commander!\\NI brought some water and food for you.",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Oi, Comandante! \\NTrago um pouco de água e comida para você.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1096,7 +1096,7 @@
     "indice" : 156,
     "estilo" : "Dialogue",
     "original" : "\"And I'm afraid that one day\\Nthe letters will stop coming.\"",
-    "traduzido" : "",
+    "traduzido" : "\"E receio que um dia \\N as cartas deixarão de vir\".",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1145,7 +1145,7 @@
     "indice" : 163,
     "estilo" : "Dialogue",
     "original" : "My feelings... aren't lessened\\Nby our distance apart.",
-    "traduzido" : "",
+    "traduzido" : "\"Meus sentimentos... não diminuem \\N por estarmos distantes.\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1215,14 +1215,14 @@
     "indice" : 173,
     "estilo" : "Dialogue",
     "original" : "Sometimes you can be too far away\\Neven when you're right next to them...",
-    "traduzido" : "",
+    "traduzido" : "\"As vezes voce pode estar muito longe \\Nmesmo quando esta bem perto deles...\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 174,
     "estilo" : "Dialogue",
     "original" : "Maybe it'll come tomorrow...\\NMaybe it'll come.",
-    "traduzido" : "",
+    "traduzido" : "Talvez amanhã chegue... \\NTalvez chegue.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1292,7 +1292,7 @@
     "indice" : 184,
     "estilo" : "Dialogue",
     "original" : "I thought you said this\\Nwould take 3 days at most.",
-    "traduzido" : "",
+    "traduzido" : "Pensei que você disse que isso \\Nlevaria no máximo 3 dias.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1579,7 +1579,7 @@
     "indice" : 225,
     "estilo" : "Dialogue",
     "original" : "Better that than someone who\\Ndoesn't try understand them!",
-    "traduzido" : "",
+    "traduzido" : "Melhor do que alguém que \\Nnão tenta entendê-los!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1719,7 +1719,7 @@
     "indice" : 245,
     "estilo" : "Dialogue",
     "original" : "Aina Sakhalin... Does she have a boyfriend?",
-    "traduzido" : "",
+    "traduzido" : "Aina Sakhalin ... Tem um namorado?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1733,7 +1733,7 @@
     "indice" : 247,
     "estilo" : "Dialogue",
     "original" : "Dammit, it's just like Michel said.",
-    "traduzido" : "",
+    "traduzido" : "\"Maldito, é como o Michel disse.\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1922,7 +1922,7 @@
     "indice" : 274,
     "estilo" : "Dialogue",
     "original" : "I'm not going to die!\\NB.B., believe in me and wait!",
-    "traduzido" : "",
+    "traduzido" : "Não vou morrer! \\N B.B., acredite em mim e espere!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1943,7 +1943,7 @@
     "indice" : 277,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Raise the balloons!",
-    "traduzido" : "",
+    "traduzido" : "{\\i1} Levantem os balões!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2258,14 +2258,14 @@
     "indice" : 322,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}Hang on to it now! Don't let it go.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}Aguente firme agora! Não a solte.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 323,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}Hang on to it now! Don't let it go.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Aguente firme agora! Não deixe ir embora.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2412,14 +2412,14 @@
     "indice" : 344,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}Hang on to it now! Don't let it go.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}Aguente firme agora! Não a solte.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 345,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}Hang on to it now! Don't let it go.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Aguente firme agora! Não deixe ir embora.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {

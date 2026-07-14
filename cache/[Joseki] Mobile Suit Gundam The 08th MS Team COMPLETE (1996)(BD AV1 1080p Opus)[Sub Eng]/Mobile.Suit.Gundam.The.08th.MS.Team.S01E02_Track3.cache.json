@@ -200,7 +200,7 @@
     "indice" : 28,
     "estilo" : "Dialogue",
     "original" : "And due to the fact that their\\Nfinal defense line...",
-    "traduzido" : "",
+    "traduzido" : "E devido ao fato que a sua \\Ndefesa final está em risco...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -242,7 +242,7 @@
     "indice" : 34,
     "estilo" : "Dialogue",
     "original" : "Oh, and there are civilians\\Nin the jungle as well.",
-    "traduzido" : "",
+    "traduzido" : "Oh, e também há civis \\N na selva.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -389,7 +389,7 @@
     "indice" : 55,
     "estilo" : "Dialogue",
     "original" : "Listen, Zeon isn't gonna come\\Nvisit us when it's convenient.",
-    "traduzido" : "",
+    "traduzido" : "Ouça, Zeon não vai nos \\Nvisitar quando for conveniente para eles.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -452,7 +452,7 @@
     "indice" : 64,
     "estilo" : "Dialogue",
     "original" : "Unit 3's loaded with 100 millimeter!",
-    "traduzido" : "",
+    "traduzido" : "Unidade 3 carregada com 100 milímetros!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -501,7 +501,7 @@
     "indice" : 71,
     "estilo" : "Dialogue",
     "original" : "It's in excellent condition,\\NMaster Chief Joshua.",
-    "traduzido" : "",
+    "traduzido" : "\"Está em excelente condição, \\N, Mestre Chefe Joshua.\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -571,7 +571,7 @@
     "indice" : 81,
     "estilo" : "Dialogue",
     "original" : "it's my job to see that everyone\\Nin this unit makes it back alive.",
-    "traduzido" : "",
+    "traduzido" : "\"É meu trabalho garantir que todos \\Nnesta unidade voltem vivos.\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -592,7 +592,7 @@
     "indice" : 84,
     "estilo" : "Dialogue",
     "original" : "All hands, prepare to move out!\\NDismissed!",
-    "traduzido" : "",
+    "traduzido" : "Todos os homens, preparem-se para sair em marcha! \\NDespedido!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -606,21 +606,21 @@
     "indice" : 86,
     "estilo" : "Dialogue",
     "original" : "Now, care to show us\\Nhow good you actually are?",
-    "traduzido" : "",
+    "traduzido" : "Agora, você quer nos mostrar \\N quão bom você realmente é?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 87,
     "estilo" : "Dialogue",
     "original" : "Show me a man who\\Nwants to go and die!",
-    "traduzido" : "",
+    "traduzido" : "Mostre-me um homem que \\N quer ir e morrer!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 88,
     "estilo" : "Dialogue",
     "original" : "You're disappointing me,\\NCommander Newbie.",
-    "traduzido" : "",
+    "traduzido" : "\"Está me desapontando, \\NComandante Novato.\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -907,7 +907,7 @@
     "indice" : 129,
     "estilo" : "Dialogue",
     "original" : "Master Chief Joshua!\\NWhat are you trying to do?!",
-    "traduzido" : "",
+    "traduzido" : "Mestre Chefe Joshua! \\NO que você está tentando fazer?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1271,7 +1271,7 @@
     "indice" : 181,
     "estilo" : "Dialogue",
     "original" : "And there are people\\Nwho actually live here?!",
-    "traduzido" : "",
+    "traduzido" : "E tem gente\\N que mora aqui de verdade?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1285,7 +1285,7 @@
     "indice" : 183,
     "estilo" : "Dialogue",
     "original" : "I get an insubordinate master chief\\Nand a smart-ass petty officer...!",
-    "traduzido" : "",
+    "traduzido" : "\"Recebo um mestre chefe insubordinado\\N e um oficial subalterno mimado...!\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1341,7 +1341,7 @@
     "indice" : 191,
     "estilo" : "Dialogue",
     "original" : "I heard the test unit was lost...\\NWhy did you do it?",
-    "traduzido" : "",
+    "traduzido" : "Ouvi dizer que a unidade de teste foi perdida... \\N Porque você fez isso?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1404,7 +1404,7 @@
     "indice" : 200,
     "estilo" : "Dialogue",
     "original" : "I want to help you any way I can,\\NBig Brother.",
-    "traduzido" : "",
+    "traduzido" : "Quero ajudá-lo da maneira que puder, \\NGrande Irmão.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1425,7 +1425,7 @@
     "indice" : 203,
     "estilo" : "Dialogue",
     "original" : "Right.",
-    "traduzido" : "",
+    "traduzido" : "Certo.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1488,7 +1488,7 @@
     "indice" : 212,
     "estilo" : "Dialogue",
     "original" : "We can't move until we get\\Norders from the commander.",
-    "traduzido" : "",
+    "traduzido" : "Não podemos nos mover até recebermos as \\Nordens do comandante.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2111,7 +2111,7 @@
     "indice" : 301,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}Hang on to it now! Don't let it go.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Agarrar-se a ela agora! Não a deixe ir.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2188,7 +2188,7 @@
     "indice" : 312,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}Hang on to it now! Don't let it go.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Agarrar-se a ela agora! Não a deixe ir.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2265,7 +2265,7 @@
     "indice" : 323,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}All shining in my history.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0} Tudo brilhando em minha história.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2356,7 +2356,7 @@
     "indice" : 408,
     "estilo" : "Titles",
     "original" : "{\\blur1\\pos(720,650)\\c&HDEDEE3&}THE TIME LIMIT ON TRUST",
-    "traduzido" : "",
+    "traduzido" : "{\\blur1\\pos(720,650)\\c&HDEDEE3&}O limite de tempo para confiança.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {

@@ -137,7 +137,7 @@
     "indice" : 18,
     "estilo" : "Dialogue",
     "original" : "I think Revil's Antarctic Treaty\\Nmay have backfired on us.",
-    "traduzido" : "",
+    "traduzido" : "Acho que o Tratado da Antártica de Revil \\N pode ter saído pela culatra para nós.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -207,7 +207,7 @@
     "indice" : 28,
     "estilo" : "Dialogue",
     "original" : "...we'll proceed to point Beta while\\Nwe search for the enemy base.",
-    "traduzido" : "",
+    "traduzido" : "Vamos prosseguir para o ponto Beta enquanto \\N procuramos pela base inimiga.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -942,7 +942,7 @@
     "indice" : 133,
     "estilo" : "Dialogue",
     "original" : "Correct right, six degrees!\\NHere he comes!",
-    "traduzido" : "",
+    "traduzido" : "Correto direito, seis graus! \\NAí ele vem!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1054,7 +1054,7 @@
     "indice" : 149,
     "estilo" : "Dialogue",
     "original" : "There's no way this smoke isn't\\Ngoing to attract attention.",
-    "traduzido" : "",
+    "traduzido" : "Não há como essa fumaça \\Nnão atrair atenção.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1446,7 +1446,7 @@
     "indice" : 205,
     "estilo" : "Dialogue",
     "original" : "But we can't stand by and\\Nlet our people get killed.",
-    "traduzido" : "",
+    "traduzido" : "Mas não podemos ficar parados e \\Ndeixar que nosso povo seja morto.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1621,14 +1621,14 @@
     "indice" : 230,
     "estilo" : "Dialogue",
     "original" : "HEAT rounds, on the one\\Nwith the horns! Fire!",
-    "traduzido" : "",
+    "traduzido" : "Rodadas de calor, naquela \\N com os chifres! Fogo!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 231,
     "estilo" : "Dialogue",
     "original" : "Switch to penetrator rounds!\\NFinish the horned one!",
-    "traduzido" : "",
+    "traduzido" : "Mude para munição perfurante!\\NAcabe com o chifrudo!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1698,7 +1698,7 @@
     "indice" : 241,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Let's try a little psychological warfare...",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Tentemos um pouco de guerra psicológica...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1796,7 +1796,7 @@
     "indice" : 255,
     "estilo" : "Dialogue",
     "original" : "Our soldiers are suffering!\\NPlease stop construction now!",
-    "traduzido" : "",
+    "traduzido" : "Nossos soldados estão sofrendo! \\NPor favor parem a construção agora!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1817,7 +1817,7 @@
     "indice" : 258,
     "estilo" : "Dialogue",
     "original" : "But you've already received the\\Norder to cease construction.",
-    "traduzido" : "",
+    "traduzido" : "Mas vocês já receberam a \\Nordem para interromper a construção.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1978,7 +1978,7 @@
     "indice" : 281,
     "estilo" : "Dialogue",
     "original" : "We've only been doing it all\\Nthe way from Odessa, after all!",
-    "traduzido" : "",
+    "traduzido" : "Temos feito isso toda a maneira de \\N Odessa, afinal!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1992,7 +1992,7 @@
     "indice" : 283,
     "estilo" : "Dialogue",
     "original" : "{\\i1}I won't fight for the Federation! However,",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Não lutarei pela Federação. No entanto,",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2230,7 +2230,7 @@
     "indice" : 317,
     "estilo" : "Dialogue",
     "original" : "Next time,\\NThe Shuddering Mountain (Part 1).",
-    "traduzido" : "",
+    "traduzido" : "Próxima vez, \\N A Montanha que Treme (Parte 1).",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2251,7 +2251,7 @@
     "indice" : 320,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}Hang on to it now! Don't let it go.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}Aguente firme agora! Não deixe ir embora.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2405,7 +2405,7 @@
     "indice" : 342,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}Hang on to it now! Don't let it go.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}Aguente firme agora! Não deixe ir embora.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2559,7 +2559,7 @@
     "indice" : 364,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}All shining in my history.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&} Tudo brilhando em minha história.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {

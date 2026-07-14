@@ -88,7 +88,7 @@
     "indice" : 12,
     "estilo" : "Dialogue",
     "original" : "Hey, Pietro! Make sure you\\Ncome back in one piece!",
-    "traduzido" : "",
+    "traduzido" : "Olá, \\N! Faça o possível para voltar todo inteiro!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -144,7 +144,7 @@
     "indice" : 20,
     "estilo" : "Dialogue",
     "original" : "Karen, your new commander\\Nstill hasn't shown up?",
-    "traduzido" : "",
+    "traduzido" : "Karen, sua nova comandante \\N ainda não apareceu?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -263,14 +263,14 @@
     "indice" : 37,
     "estilo" : "Dialogue",
     "original" : "Hey, take a look at this, too.\\NIt's the Earth! The Earth!",
-    "traduzido" : "",
+    "traduzido" : "Olha isso também. \\NÉ a Terra! A Terra!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 38,
     "estilo" : "Dialogue",
     "original" : "All right...",
-    "traduzido" : "",
+    "traduzido" : "Tudo bem...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -760,7 +760,7 @@
     "indice" : 108,
     "estilo" : "Dialogue",
     "original" : "G-God dammit! If I just had some ammo...!",
-    "traduzido" : "",
+    "traduzido" : "\"Maldição! Se eu tivesse munição...\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1271,7 +1271,7 @@
     "indice" : 181,
     "estilo" : "Dialogue",
     "original" : "Can't see that Federation transport\\Nor any Zeon mobile suits from here.",
-    "traduzido" : "",
+    "traduzido" : "Não consigo ver o transporte da Federação \\N nem nenhum Mobile Suit de Zeon daqui.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1313,7 +1313,7 @@
     "indice" : 187,
     "estilo" : "Dialogue",
     "original" : "Right.",
-    "traduzido" : "",
+    "traduzido" : "Certo.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1369,7 +1369,7 @@
     "indice" : 195,
     "estilo" : "Dialogue",
     "original" : "Right.",
-    "traduzido" : "",
+    "traduzido" : "Certo.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1495,7 +1495,7 @@
     "indice" : 213,
     "estilo" : "Dialogue",
     "original" : "Don't knock it against anything!\\NGently, now...",
-    "traduzido" : "",
+    "traduzido" : "Não bata com ela em nada! \\NSuavemente, agora...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2153,7 +2153,7 @@
     "indice" : 307,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}All shining in my history.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}Tudo brilhando em minha história.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2230,7 +2230,7 @@
     "indice" : 318,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}...I want to be at your side with a smile.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}...Eu quero estar ao seu lado com um sorriso.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2244,7 +2244,7 @@
     "indice" : 320,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}Hang on to it now! Don't let it go.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Espere um pouco! Não deixe ir embora.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2321,7 +2321,7 @@
     "indice" : 331,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}Hang on to it now! Don't let it go.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Espere um pouco! Não deixe ir embora.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {

@@ -18,7 +18,7 @@
     "indice" : 2,
     "estilo" : "Default",
     "original" : "{\\i1}Hey B.B., was there someone\\Nlike this in your class...?",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Oi B.B., tinha alguém assim...? \\N",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -123,7 +123,7 @@
     "indice" : 17,
     "estilo" : "Default",
     "original" : "And the other one still wasn't\\Ndestroyed, even after that!",
-    "traduzido" : "",
+    "traduzido" : "E o outro ainda não foi \\Ndestruído, nem mesmo depois disso!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -298,7 +298,7 @@
     "indice" : 42,
     "estilo" : "Default",
     "original" : "The enemy is making me fight\\Nthree-dimensionally!",
-    "traduzido" : "",
+    "traduzido" : "O inimigo está me forçando a lutar \\Ndimensionalmente!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -501,7 +501,7 @@
     "indice" : 71,
     "estilo" : "Default",
     "original" : "O-Oh, i-it's no-",
-    "traduzido" : "",
+    "traduzido" : "O-Oh, isso é não.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -571,7 +571,7 @@
     "indice" : 102,
     "estilo" : "Song ENG",
     "original" : "{\\fad(150,150)\\blur0.5\\bord0}All shining in my history.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(150,150)\\blur0.5\\bord0} Tudo brilhando na minha história.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {

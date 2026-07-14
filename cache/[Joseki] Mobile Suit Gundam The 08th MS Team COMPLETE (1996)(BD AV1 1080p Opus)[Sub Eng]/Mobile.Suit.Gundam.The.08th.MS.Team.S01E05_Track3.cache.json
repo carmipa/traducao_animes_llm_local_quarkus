@@ -25,7 +25,7 @@
     "indice" : 2,
     "estilo" : "Dialogue",
     "original" : "You fill your stomach,\\Nyou're back in the fight!",
-    "traduzido" : "",
+    "traduzido" : "Você enche seu estômago, \\N você volta ao combate!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -46,7 +46,7 @@
     "indice" : 5,
     "estilo" : "Dialogue",
     "original" : "Dammit! Hey, where's\\NLieutenant Nickerd?",
-    "traduzido" : "",
+    "traduzido" : "\"Porra!\" \"Onde esta o tenente Nickerd?\" \\N",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -172,7 +172,7 @@
     "indice" : 23,
     "estilo" : "Dialogue",
     "original" : "Right.",
-    "traduzido" : "",
+    "traduzido" : "Direito.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -445,7 +445,7 @@
     "indice" : 62,
     "estilo" : "Dialogue",
     "original" : "We're on an actual mission at\\Nthe moment! A recon mission!",
-    "traduzido" : "",
+    "traduzido" : "Estamos em uma missao real no momento! Uma missao de reconhecimento!\\N!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -571,7 +571,7 @@
     "indice" : 80,
     "estilo" : "Dialogue",
     "original" : "Right. Increase patrols and\\Nhurry up on the repairs!",
-    "traduzido" : "",
+    "traduzido" : "Direito. Aumente as patrulhas e \\N apresse-se nos reparos!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -690,7 +690,7 @@
     "indice" : 97,
     "estilo" : "Dialogue",
     "original" : "Right.",
-    "traduzido" : "",
+    "traduzido" : "Direito.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -739,7 +739,7 @@
     "indice" : 104,
     "estilo" : "Dialogue",
     "original" : "I have to get him to the\\Ndoctor in the next village!",
-    "traduzido" : "",
+    "traduzido" : "Tenho que levá-lo ao \\Ndoutor no vilarejo mais próximo!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -788,7 +788,7 @@
     "indice" : 111,
     "estilo" : "Dialogue",
     "original" : "We can't allow anyone to leave\\Nunder these circumstances.",
-    "traduzido" : "",
+    "traduzido" : "Não podemos permitir que ninguém saia \\N nestas circunstâncias.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -816,7 +816,7 @@
     "indice" : 115,
     "estilo" : "Dialogue",
     "original" : "Naturally, we won't need to stay here\\Nafter the repairs are done, so...",
-    "traduzido" : "",
+    "traduzido" : "Naturalmente, não precisaremos ficar aqui\\N após as reparações estarem prontas, então...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -851,7 +851,7 @@
     "indice" : 120,
     "estilo" : "Dialogue",
     "original" : "I can't stand this.\\NI'm going back to the Apsaras!",
-    "traduzido" : "",
+    "traduzido" : "Não aguento mais isso. \\NVou voltar para os Apsaras!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -872,7 +872,7 @@
     "indice" : 123,
     "estilo" : "Dialogue",
     "original" : "Right... T-The 408th infantry division.",
-    "traduzido" : "",
+    "traduzido" : "Certo... T-A 408a divisão de infantaria.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -914,14 +914,14 @@
     "indice" : 129,
     "estilo" : "Dialogue",
     "original" : "Were you serious before?\\NAbout wanting to join Zeon?",
-    "traduzido" : "",
+    "traduzido" : "\"Foi sincero antes?\" -- \"\\NSobre querer se juntar a Zeon?\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 130,
     "estilo" : "Dialogue",
     "original" : "You dumb-ass! If I hadn't said that,\\Nwe might already be...!",
-    "traduzido" : "",
+    "traduzido" : "\"Lixo!\" \"Se eu não tivesse dito isso, nós poderíamos já estar...\" \\N",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -935,7 +935,7 @@
     "indice" : 132,
     "estilo" : "Dialogue",
     "original" : "Yeah, that's right.\\NYou wouldn't do that, would you?",
-    "traduzido" : "",
+    "traduzido" : "Sim, é verdade. \\NVocê não faria isso, não é?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -984,7 +984,7 @@
     "indice" : 139,
     "estilo" : "Dialogue",
     "original" : "Firing squad?!",
-    "traduzido" : "",
+    "traduzido" : "\"Esquadrão de fuzilamento?!\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1327,7 +1327,7 @@
     "indice" : 188,
     "estilo" : "Dialogue",
     "original" : "Just when I thought I was finally\\Ngonna turn pro, this happens!",
-    "traduzido" : "",
+    "traduzido" : "Exatamente quando eu pensei que finalmente estava indo pro\\Nfissional, isso aconteceu!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1712,7 +1712,7 @@
     "indice" : 243,
     "estilo" : "Dialogue",
     "original" : "Miss Aina, you should get back at once.",
-    "traduzido" : "",
+    "traduzido" : "\"Aina, senhoria, você deveria voltar imediatamente.\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1782,7 +1782,7 @@
     "indice" : 253,
     "estilo" : "Dialogue",
     "original" : "Halt! A Federation attack?! Take us back!",
-    "traduzido" : "",
+    "traduzido" : "\"Ataque da Federação?\" \"Tirem-nos dali!\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2006,7 +2006,7 @@
     "indice" : 285,
     "estilo" : "Dialogue",
     "original" : "Eledore! Eledore! Eledore!",
-    "traduzido" : "",
+    "traduzido" : "\"Eledore!\" \"Eledore!\" \"Eledore!\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2139,7 +2139,7 @@
     "indice" : 304,
     "estilo" : "Dialogue",
     "original" : "H-Hold on, lady!\\NAt least give me some anesthesia!",
-    "traduzido" : "",
+    "traduzido" : "\"Aguente firme, senhora! \\NPelo menos me dê alguma anestesia!\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2160,7 +2160,7 @@
     "indice" : 307,
     "estilo" : "Dialogue",
     "original" : "So, we'll be sending Petty Officer\\NEledore to the rear line.",
-    "traduzido" : "",
+    "traduzido" : "\"Bom, vamos mandar o segundo-tenente \\NEledore para a retaguarda.\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2181,14 +2181,14 @@
     "indice" : 310,
     "estilo" : "Dialogue",
     "original" : "I never knew Karen used\\Nto be a medical student.",
-    "traduzido" : "",
+    "traduzido" : "Nunca soube que Karen usava \\N para ser uma estudante de medicina.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 311,
     "estilo" : "Dialogue",
     "original" : "Her husband was a good surgeon\\Nbefore he was killed in battle.",
-    "traduzido" : "",
+    "traduzido" : "O marido dela era um bom cirurgião \\Nantes de ser morto em batalha.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2279,7 +2279,7 @@
     "indice" : 324,
     "estilo" : "Dialogue",
     "original" : "Right...",
-    "traduzido" : "",
+    "traduzido" : "Certo...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2300,7 +2300,7 @@
     "indice" : 327,
     "estilo" : "Dialogue",
     "original" : "I'll just say this...\\NThe 08th Team moves as a team!",
-    "traduzido" : "",
+    "traduzido" : "\\NO 08º Esquadrão se move como uma equipe!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2363,7 +2363,7 @@
     "indice" : 336,
     "estilo" : "Dialogue",
     "original" : "All we need to do is wait\\Nfor his fever to drop.",
-    "traduzido" : "",
+    "traduzido" : "Tudo o que precisamos fazer é esperar \\N a febre dele baixar.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2468,7 +2468,7 @@
     "indice" : 385,
     "estilo" : "Song ENG",
     "original" : "{\\fs40\\an9\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}Hey,",
-    "traduzido" : "",
+    "traduzido" : "{\\fs40\\an9\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}Oi,",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2664,7 +2664,7 @@
     "indice" : 413,
     "estilo" : "Dialogue",
     "original" : "See? They're still attached.\\NBoth of them.",
-    "traduzido" : "",
+    "traduzido" : "Veja só. Eles ainda estão presos. \\NAmbos.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2692,7 +2692,7 @@
     "indice" : 417,
     "estilo" : "Dialogue",
     "original" : "Now, don't go hitting on the\\Nnurses in that field hospital!",
-    "traduzido" : "",
+    "traduzido" : "Agora, não vá assediar as \\N enfermeiras daquele hospital de campanha!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2741,7 +2741,7 @@
     "indice" : 424,
     "estilo" : "Dialogue",
     "original" : "Right.",
-    "traduzido" : "",
+    "traduzido" : "Direito.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2790,7 +2790,7 @@
     "indice" : 431,
     "estilo" : "Dialogue",
     "original" : "...where the Zeon monster\\Nsupposedly trains.",
-    "traduzido" : "",
+    "traduzido" : "...onde o monstro \\NZeon supostamente treina.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2811,7 +2811,7 @@
     "indice" : 434,
     "estilo" : "Dialogue",
     "original" : "But the harsh environment\\Nis putting us all on edge.",
-    "traduzido" : "",
+    "traduzido" : "Mas o ambiente hostil \\N está nos deixando a todos nervosos.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2881,7 +2881,7 @@
     "indice" : 445,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}Hang on to it now! Don't let it go.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Agora, agarrem-na! Não a soltem!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -3035,7 +3035,7 @@
     "indice" : 467,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}Hang on to it now! Don't let it go.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Agora, agarrem-na! Não a soltem!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -3182,7 +3182,7 @@
     "indice" : 488,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}All shining in my history.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&} Tudo brilhando em minha história.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {

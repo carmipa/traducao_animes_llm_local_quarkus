@@ -39,7 +39,7 @@
     "indice" : 7,
     "estilo" : "Dialogue",
     "original" : "All right, shake a leg!\\NWe're ready to evac you now!",
-    "traduzido" : "",
+    "traduzido" : "Tudo bem, dê um jeito! \\NEstamos prontos para fazer sua retirada agora!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -326,7 +326,7 @@
     "indice" : 48,
     "estilo" : "Dialogue",
     "original" : "Dog tags!",
-    "traduzido" : "",
+    "traduzido" : "\"Faixas de identificação!\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -466,7 +466,7 @@
     "indice" : 68,
     "estilo" : "Dialogue",
     "original" : "The river's course must\\Nhave been changed.",
-    "traduzido" : "",
+    "traduzido" : "O curso do rio \\Ndeve ter sido alterado.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -543,7 +543,7 @@
     "indice" : 79,
     "estilo" : "Dialogue",
     "original" : "Right... Earth Federation Forces,\\NFar East Division.",
-    "traduzido" : "",
+    "traduzido" : "\"Direita... Forças da Federação Terrestre, \\NDivisão do Extremo Oriente.\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -802,7 +802,7 @@
     "indice" : 116,
     "estilo" : "Dialogue",
     "original" : "And then they couldn't go back to\\Neither the Federation or Zeon!",
-    "traduzido" : "",
+    "traduzido" : "\"E então eles não poderiam voltar para \\N nem para a Federação ou Zeon!\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -844,7 +844,7 @@
     "indice" : 122,
     "estilo" : "Dialogue",
     "original" : "Don't be ridiculous!\\NShiro's still alive, remember?",
-    "traduzido" : "",
+    "traduzido" : "Não seja ridículo! \\N Shiro ainda está vivo, lembra?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1061,7 +1061,7 @@
     "indice" : 153,
     "estilo" : "Dialogue",
     "original" : "...She shall live on inside of us.\\NForever.",
-    "traduzido" : "",
+    "traduzido" : "Ela viverá dentro de nós. \\NPara sempre.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1124,7 +1124,7 @@
     "indice" : 162,
     "estilo" : "Dialogue",
     "original" : "You know, don't you?!\\NWhere's the commander now?!",
-    "traduzido" : "",
+    "traduzido" : "Você sabe, não sabe?!\\N Onde está o comandante agora?!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1327,7 +1327,7 @@
     "indice" : 191,
     "estilo" : "Dialogue",
     "original" : "She didn't have one! She was Aina!\\NHer name was Aina!",
-    "traduzido" : "",
+    "traduzido" : "Ela não tinha um só! Ela era Aina! \\NSeu nome era Aina!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1404,7 +1404,7 @@
     "indice" : 202,
     "estilo" : "Dialogue",
     "original" : "What are you doing?!\\NWe don't need that many!",
-    "traduzido" : "",
+    "traduzido" : "O que vocês estão fazendo? \\NNós não precisamos de tanto!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1425,7 +1425,7 @@
     "indice" : 205,
     "estilo" : "Dialogue",
     "original" : "No way! We won't get anywhere\\Nuntil we see who's in this grave!",
-    "traduzido" : "",
+    "traduzido" : "Não é possível! Nós não chegaremos a lugar algum \\N até que vejamos quem está nesse túmulo!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1831,7 +1831,7 @@
     "indice" : 263,
     "estilo" : "Dialogue",
     "original" : "You're a great commander.\\NYou deserve to be Shiro Amada.",
-    "traduzido" : "",
+    "traduzido" : "Você é um grande comandante. \\NVocê merece ser Shiro Amada.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1901,7 +1901,7 @@
     "indice" : 273,
     "estilo" : "Dialogue",
     "original" : "He said there's a new world there.\\NA new life.",
-    "traduzido" : "",
+    "traduzido" : "Ele disse que há um novo mundo lá. \\NUma nova vida.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {

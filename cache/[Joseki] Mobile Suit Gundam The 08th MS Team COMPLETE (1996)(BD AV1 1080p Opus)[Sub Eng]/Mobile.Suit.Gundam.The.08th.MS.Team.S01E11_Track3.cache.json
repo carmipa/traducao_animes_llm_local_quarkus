@@ -214,7 +214,7 @@
     "indice" : 29,
     "estilo" : "Dialogue",
     "original" : "Master Chief, no!",
-    "traduzido" : "",
+    "traduzido" : "Traduzido: \"Comandante, não!\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -277,7 +277,7 @@
     "indice" : 38,
     "estilo" : "Dialogue",
     "original" : "It's getting ready to fire?! All units, attack!",
-    "traduzido" : "",
+    "traduzido" : "Está se preparando para disparar? Todas as unidades, ataquem!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -424,7 +424,7 @@
     "indice" : 59,
     "estilo" : "Dialogue",
     "original" : "For this moment at least,\\Nplease stop the fighting!",
-    "traduzido" : "",
+    "traduzido" : "\"Para este momento, pelo menos, \\Npor favor parem a luta!\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -767,7 +767,7 @@
     "indice" : 108,
     "estilo" : "Dialogue",
     "original" : "No. This is my answer.",
-    "traduzido" : "",
+    "traduzido" : "No. Esta é a minha resposta.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -900,7 +900,7 @@
     "indice" : 127,
     "estilo" : "Dialogue",
     "original" : "Let's surrender.\\NLet the burden be taken away.",
-    "traduzido" : "",
+    "traduzido" : "Vamos render-nos. \\N Deixemos o fardo ser levado embora.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -984,7 +984,7 @@
     "indice" : 139,
     "estilo" : "Dialogue",
     "original" : "Interesting. I've always wanted\\Nto see a ghost, if only once.",
-    "traduzido" : "",
+    "traduzido" : "\"Interessante. Eu sempre quis \\N ver um fantasma, ao menos uma vez.\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1082,7 +1082,7 @@
     "indice" : 153,
     "estilo" : "Dialogue",
     "original" : "Execute him?!",
-    "traduzido" : "",
+    "traduzido" : "Execute ele?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1187,7 +1187,7 @@
     "indice" : 168,
     "estilo" : "Dialogue",
     "original" : "Those offices at Jaburo\\Nare pretty comfortable.",
-    "traduzido" : "",
+    "traduzido" : "Esses escritórios no Jaburo\\N são bastante confortáveis.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1257,7 +1257,7 @@
     "indice" : 178,
     "estilo" : "Dialogue",
     "original" : "The watch my brother gave me is\\Nwhat brought us together again.",
-    "traduzido" : "",
+    "traduzido" : "O relógio que o meu irmão me deu é \\No que nos trouxe novamente juntos.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1404,7 +1404,7 @@
     "indice" : 199,
     "estilo" : "Dialogue",
     "original" : "Sniper 2!",
-    "traduzido" : "",
+    "traduzido" : "Sniper dois!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1474,7 +1474,7 @@
     "indice" : 209,
     "estilo" : "Dialogue",
     "original" : "...and your main force out\\Nwith a full power blast!",
-    "traduzido" : "",
+    "traduzido" : "...e sua força principal fora\\N com um disparo de pleno poder!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1495,7 +1495,7 @@
     "indice" : 212,
     "estilo" : "Dialogue",
     "original" : "He's hurt us both too much,\\Nand he's left us no choice now.",
-    "traduzido" : "",
+    "traduzido" : "\"Ele nos machucou demais aos dois, \\Ne agora ele não nos deixou outra escolha.\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1705,7 +1705,7 @@
     "indice" : 242,
     "estilo" : "Dialogue",
     "original" : "Right...",
-    "traduzido" : "",
+    "traduzido" : "Certo...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1740,14 +1740,14 @@
     "indice" : 250,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}Hang on to it now! Don't let it go.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}Agora, agarrem-na! Não a soltem.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 251,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}Hang on to it now! Don't let it go.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Espere por isso agora! Não deixe ir embora.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1894,14 +1894,14 @@
     "indice" : 294,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}Hang on to it now! Don't let it go.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}Agora, agarrem-na! Não a soltem.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 295,
     "estilo" : "Song ENG",
     "original" : "{\\fad(100,100)\\blur1\\bord0}Hang on to it now! Don't let it go.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Espere por isso agora! Não deixe ir embora.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
