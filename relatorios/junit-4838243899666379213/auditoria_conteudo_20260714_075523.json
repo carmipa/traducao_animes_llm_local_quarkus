@@ -1,0 +1,20 @@
+{
+  "tipo" : "auditoria_conteudo",
+  "operacao" : {
+    "tipo" : "Auditoria de Conteudo de Legendas",
+    "detalhe" : "C:\\Users\\Paulo\\AppData\\Local\\Temp\\junit-4838243899666379213\\ep_pt.ass | modo=AMBAS | formatoOriginal=ASS | formatoTraduzido=ASS | anomalias=0 | criticas=0",
+    "tempoTotalMs" : 7,
+    "arquivosProcessados" : 1,
+    "itensDetectados" : 0,
+    "itensCorrigidos" : 0,
+    "registradoEm" : "2026-07-14T10:55:23.579795500Z"
+  },
+  "arquivoOriginal" : "ep_eng.ass",
+  "arquivoTraduzido" : "ep_pt.ass",
+  "formatoOriginal" : "ASS",
+  "formatoTraduzido" : "ASS",
+  "limpo" : true,
+  "totalAnomalias" : 0,
+  "duracaoMs" : 7,
+  "anomalias" : [ ]
+}

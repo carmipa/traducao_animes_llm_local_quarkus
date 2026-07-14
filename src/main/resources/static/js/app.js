@@ -1010,6 +1010,8 @@ function inicializarBotoesProcurarCaminho() {
 
         const targetId = btn.getAttribute('data-target');
         const tipo = btn.getAttribute('data-type') || 'pasta';
+        // Diretório inicial opcional (ex.: pasta "cache" do projeto na Correção de Cache).
+        const dirInicial = btn.getAttribute('data-dir-inicial') || '';
         const inputTarget = document.getElementById(targetId);
         if (!inputTarget) return;
 
@@ -1019,7 +1021,10 @@ function inicializarBotoesProcurarCaminho() {
         seletorCaminhoEmAndamento = true;
 
         try {
-            const endpoint = tipo === 'arquivo' ? '/api/dialogo/selecionar-arquivo' : '/api/dialogo/selecionar-pasta';
+            const endpointBase = tipo === 'arquivo' ? '/api/dialogo/selecionar-arquivo' : '/api/dialogo/selecionar-pasta';
+            const endpoint = dirInicial
+                ? `${endpointBase}?dirInicial=${encodeURIComponent(dirInicial)}`
+                : endpointBase;
             const res = await fetch(endpoint);
             if (res.ok) {
                 const data = await res.json();

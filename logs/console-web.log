@@ -23023,3 +23023,177 @@ Auditoria finalizada com sucesso!
 2026-07-14 07:51:40.133 [console] Regras executadas: 6
 2026-07-14 07:51:40.134 [console] Anomalias: 2
 2026-07-14 07:51:40.135 [console] Duracao: 3 ms
+2026-07-14 07:52:24.488 [console] ==============================================================
+2026-07-14 07:52:24.489 [console] ==============================================================
+2026-07-14 07:52:24.489 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 07:52:24.490 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 07:52:24.490 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 07:52:24.491 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 07:52:24.491 [console] ==============================================================
+2026-07-14 07:52:24.491 [console] ==============================================================
+2026-07-14 07:52:30.841 [console] ==============================================================
+2026-07-14 07:52:30.842 [console] ==============================================================
+2026-07-14 07:52:30.842 [console] ==============================================================
+2026-07-14 07:52:30.842 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 07:52:30.843 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 07:52:30.843 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 07:52:30.844 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 07:52:30.844 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 07:52:30.844 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 07:52:30.844 [console] ==============================================================
+2026-07-14 07:52:30.846 [console] ==============================================================
+2026-07-14 07:52:30.846 [console] ==============================================================
+2026-07-14 07:52:36.783 [console] Compilation Failed:
+2026-07-14 07:52:36.783 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\traducao\presentation\web\DialogoArquivoController.java:175: error: cannot find symbol
+2026-07-14 07:52:36.784 [console]         return resposta(executarComando("PASTA", "", resolverDirInicial(dirInicial)));
+2026-07-14 07:52:36.784 [console]                                                      ^
+2026-07-14 07:52:36.785 [console]   symbol:   method resolverDirInicial(java.lang.String)
+2026-07-14 07:52:36.786 [console]   location: class org.traducao.projeto.traducao.presentation.web.DialogoArquivoController
+2026-07-14 07:52:36.786 [console] Compilation Failed:
+2026-07-14 07:52:36.786 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\traducao\presentation\web\DialogoArquivoController.java:175: error: cannot find symbol
+2026-07-14 07:52:36.787 [console]         return resposta(executarComando("PASTA", "", resolverDirInicial(dirInicial)));
+2026-07-14 07:52:36.787 [console]                                                      ^
+2026-07-14 07:52:36.788 [console]   symbol:   method resolverDirInicial(java.lang.String)
+2026-07-14 07:52:36.788 [console]   location: class org.traducao.projeto.traducao.presentation.web.DialogoArquivoController
+2026-07-14 07:52:36.789 [console] Compilation Failed:
+2026-07-14 07:52:36.789 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\traducao\presentation\web\DialogoArquivoController.java:175: error: cannot find symbol
+2026-07-14 07:52:36.790 [console]         return resposta(executarComando("PASTA", "", resolverDirInicial(dirInicial)));
+2026-07-14 07:52:36.790 [console]                                                      ^
+2026-07-14 07:52:36.791 [console]   symbol:   method resolverDirInicial(java.lang.String)
+2026-07-14 07:52:36.791 [console]   location: class org.traducao.projeto.traducao.presentation.web.DialogoArquivoController
+2026-07-14 07:52:51.620 [console] Compilation Failed:
+2026-07-14 07:52:51.620 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\traducao\presentation\web\DialogoArquivoController.java:175: error: method executarComando in class org.traducao.projeto.traducao.presentation.web.DialogoArquivoController cannot be applied to given types;
+2026-07-14 07:52:51.620 [console]         return resposta(executarComando("PASTA", "", resolverDirInicial(dirInicial)));
+2026-07-14 07:52:51.621 [console]                         ^
+2026-07-14 07:52:51.621 [console]   required: java.lang.String,java.lang.String
+2026-07-14 07:52:51.622 [console]   found:    java.lang.String,java.lang.String,java.lang.String
+2026-07-14 07:52:51.622 [console]   reason: actual and formal argument lists differ in length
+2026-07-14 07:52:51.622 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\traducao\presentation\web\DialogoArquivoController.java:192: error: method executarComando in class org.traducao.projeto.traducao.presentation.web.DialogoArquivoController cannot be applied to given types;
+2026-07-14 07:52:51.623 [console]         return resposta(executarComando("ARQUIVO", normalizarFiltro(filtro), resolverDirInicial(dirInicial)));
+2026-07-14 07:52:51.623 [console]                         ^
+2026-07-14 07:52:51.624 [console]   required: java.lang.String,java.lang.String
+2026-07-14 07:52:51.624 [console]   found:    java.lang.String,java.lang.String,java.lang.String
+2026-07-14 07:52:51.625 [console]   reason: actual and formal argument lists differ in length
+2026-07-14 07:52:51.625 [console] Compilation Failed:
+2026-07-14 07:52:51.625 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\traducao\presentation\web\DialogoArquivoController.java:175: error: method executarComando in class org.traducao.projeto.traducao.presentation.web.DialogoArquivoController cannot be applied to given types;
+2026-07-14 07:52:51.626 [console]         return resposta(executarComando("PASTA", "", resolverDirInicial(dirInicial)));
+2026-07-14 07:52:51.626 [console]                         ^
+2026-07-14 07:52:51.626 [console]   required: java.lang.String,java.lang.String
+2026-07-14 07:52:51.627 [console]   found:    java.lang.String,java.lang.String,java.lang.String
+2026-07-14 07:52:51.627 [console]   reason: actual and formal argument lists differ in length
+2026-07-14 07:52:51.628 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\traducao\presentation\web\DialogoArquivoController.java:192: error: method executarComando in class org.traducao.projeto.traducao.presentation.web.DialogoArquivoController cannot be applied to given types;
+2026-07-14 07:52:51.628 [console]         return resposta(executarComando("ARQUIVO", normalizarFiltro(filtro), resolverDirInicial(dirInicial)));
+2026-07-14 07:52:51.628 [console]                         ^
+2026-07-14 07:52:51.629 [console]   required: java.lang.String,java.lang.String
+2026-07-14 07:52:51.629 [console]   found:    java.lang.String,java.lang.String,java.lang.String
+2026-07-14 07:52:51.629 [console]   reason: actual and formal argument lists differ in length
+2026-07-14 07:52:51.630 [console] Compilation Failed:
+2026-07-14 07:52:51.630 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\traducao\presentation\web\DialogoArquivoController.java:175: error: method executarComando in class org.traducao.projeto.traducao.presentation.web.DialogoArquivoController cannot be applied to given types;
+2026-07-14 07:52:51.631 [console]         return resposta(executarComando("PASTA", "", resolverDirInicial(dirInicial)));
+2026-07-14 07:52:51.631 [console]                         ^
+2026-07-14 07:52:51.632 [console]   required: java.lang.String,java.lang.String
+2026-07-14 07:52:51.632 [console]   found:    java.lang.String,java.lang.String,java.lang.String
+2026-07-14 07:52:51.633 [console]   reason: actual and formal argument lists differ in length
+2026-07-14 07:52:51.633 [console] G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\src\main\java\org\traducao\projeto\traducao\presentation\web\DialogoArquivoController.java:192: error: method executarComando in class org.traducao.projeto.traducao.presentation.web.DialogoArquivoController cannot be applied to given types;
+2026-07-14 07:52:51.634 [console]         return resposta(executarComando("ARQUIVO", normalizarFiltro(filtro), resolverDirInicial(dirInicial)));
+2026-07-14 07:52:51.634 [console]                         ^
+2026-07-14 07:52:51.635 [console]   required: java.lang.String,java.lang.String
+2026-07-14 07:52:51.636 [console]   found:    java.lang.String,java.lang.String,java.lang.String
+2026-07-14 07:52:51.636 [console]   reason: actual and formal argument lists differ in length
+2026-07-14 07:53:07.127 [console] ==============================================================
+2026-07-14 07:53:07.128 [console] ==============================================================
+2026-07-14 07:53:07.128 [console] ==============================================================
+2026-07-14 07:53:07.129 [console] ==============================================================
+2026-07-14 07:53:07.129 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 07:53:07.129 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 07:53:07.130 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 07:53:07.130 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 07:53:07.131 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 07:53:07.131 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 07:53:07.132 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 07:53:07.132 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 07:53:07.132 [console] ==============================================================
+2026-07-14 07:53:07.133 [console] ==============================================================
+2026-07-14 07:53:07.133 [console] ==============================================================
+2026-07-14 07:53:07.134 [console] ==============================================================
+2026-07-14 07:55:22.006 [console] ==============================================================
+2026-07-14 07:55:22.007 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 07:55:22.008 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 07:55:22.008 [console] ==============================================================
+2026-07-14 07:55:23.399 [auditor-conteudo] === Auditoria de Conteudo de Legendas (arquivo unico: original) ===
+2026-07-14 07:55:23.400 [auditor-conteudo] Arquivo : C:\Users\Paulo\AppData\Local\Temp\junit-5623659765985628960\solo_eng.ass
+2026-07-14 07:55:23.401 [auditor-conteudo] Formato : ASS
+2026-07-14 07:55:23.481 [auditor-conteudo] [Auditoria Conteudo] Arquivo limpo: solo_eng.ass
+2026-07-14 07:55:23.482 [auditor-conteudo] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-5623659765985628960\auditoria_conteudo_20260714_075523.json
+2026-07-14 07:55:23.482 [auditor-conteudo] Regras executadas: 6
+2026-07-14 07:55:23.483 [auditor-conteudo] Anomalias: 0
+2026-07-14 07:55:23.483 [auditor-conteudo] Duracao: 6 ms
+2026-07-14 07:55:23.485 [auditor-conteudo] [RELATÓRIO FINAL] Operação: Análise de Conteúdo de Legendas | Tempo total: 0,1s | Término: 07:55:23
+2026-07-14 07:55:23.573 [auditor-conteudo] === Auditoria de Conteudo de Legendas ===
+2026-07-14 07:55:23.574 [auditor-conteudo] Original : C:\Users\Paulo\AppData\Local\Temp\junit-4838243899666379213\ep_eng.ass
+2026-07-14 07:55:23.574 [auditor-conteudo] Formato original: ASS
+2026-07-14 07:55:23.575 [auditor-conteudo] Traduzido: C:\Users\Paulo\AppData\Local\Temp\junit-4838243899666379213\ep_pt.ass
+2026-07-14 07:55:23.575 [auditor-conteudo] Formato traduzido: ASS
+2026-07-14 07:55:23.590 [auditor-conteudo] [Auditoria Conteudo] Arquivo limpo: ep_pt.ass
+2026-07-14 07:55:23.591 [auditor-conteudo] [Auditoria Conteudo] Relatorio JSON: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\relatorios\junit-4838243899666379213\auditoria_conteudo_20260714_075523.json
+2026-07-14 07:55:23.591 [auditor-conteudo] Regras executadas: 5
+2026-07-14 07:55:23.592 [auditor-conteudo] Anomalias: 0
+2026-07-14 07:55:23.592 [auditor-conteudo] Duracao: 7 ms
+2026-07-14 07:55:23.593 [auditor-conteudo] [RELATÓRIO FINAL] Operação: Análise de Conteúdo de Legendas | Tempo total: 0,0s | Término: 07:55:23
+2026-07-14 07:55:27.195 [revisao-lore] ========================================================================
+2026-07-14 07:55:27.197 [revisao-lore]   [FALHOU] REVISAO DE LORE
+2026-07-14 07:55:27.198 [revisao-lore]   LLM indisponivel para revisao de lore: Não foi possível conectar ao servidor LLM em http://127.0.0.1:1234/v1: null
+2026-07-14 07:55:27.198 [revisao-lore] ========================================================================
+2026-07-14 07:55:27.199 [revisao-lore] [RELATÓRIO FINAL] Operação: Revisão de Lore (LLM) | Tempo total: 0,0s | Término: 07:55:27
+2026-07-14 07:55:28.035 [correcao] Iniciando limpeza segura de cache em: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\cache
+2026-07-14 07:55:28.352 [correcao] Resultado da limpeza: CONCLUIDO | arquivos=14 alterados=0 falhas=0
+2026-07-14 07:55:28.353 [correcao] [SUCESSO] LIMPEZA E AUDITORIA DE CACHE — status=CONCLUIDO, arquivos=14, alterados=0, corrigidos=0, pendentes=0, falhas=0
+2026-07-14 07:55:28.354 [correcao] [RELATÓRIO FINAL] Operação: Limpeza e Auditoria de Cache | Tempo total: 0,3s | Término: 07:55:28
+2026-07-14 07:55:28.355 [correcao] Iniciando correção online do cache via Google Translate: G:\PROJETOS-OPEN\JAVA\traducao_animes_llm_local_quarkus\cache
+2026-07-14 07:55:28.392 [correcao] [ARQUIVO] [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3.cache.json — 2 entrada(s) pendente(s) para correção.
+2026-07-14 07:55:28.404 [correcao] [CORRIGINDO 1/2] Evento 478 — Banchi 18, Metis.
+2026-07-14 07:55:28.815 [correcao] [PENDENTE 1/2] Evento 478 — SEM_ALTERACAO
+2026-07-14 07:56:21.263 [console] ==============================================================
+2026-07-14 07:56:21.263 [console] ==============================================================
+2026-07-14 07:56:21.264 [console] ==============================================================
+2026-07-14 07:56:21.265 [console] ==============================================================
+2026-07-14 07:56:21.266 [console] ==============================================================
+2026-07-14 07:56:21.266 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 07:56:21.266 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 07:56:21.266 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 07:56:21.267 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 07:56:21.267 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 07:56:21.268 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 07:56:21.268 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 07:56:21.269 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 07:56:21.269 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 07:56:21.270 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 07:56:21.270 [console] ==============================================================
+2026-07-14 07:56:21.271 [console] ==============================================================
+2026-07-14 07:56:21.271 [console] ==============================================================
+2026-07-14 07:56:21.271 [console] ==============================================================
+2026-07-14 07:56:21.272 [console] ==============================================================
+2026-07-14 08:00:09.438 [console] ==============================================================
+2026-07-14 08:00:09.438 [console] ==============================================================
+2026-07-14 08:00:09.439 [console] ==============================================================
+2026-07-14 08:00:09.439 [console] ==============================================================
+2026-07-14 08:00:09.440 [console] ==============================================================
+2026-07-14 08:00:09.440 [console] ==============================================================
+2026-07-14 08:00:09.441 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 08:00:09.441 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 08:00:09.441 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 08:00:09.442 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 08:00:09.442 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 08:00:09.443 [console]    SERVIDOR WEB INICIADO COM SUCESSO!
+2026-07-14 08:00:09.443 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 08:00:09.443 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 08:00:09.444 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 08:00:09.444 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 08:00:09.444 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 08:00:09.446 [console]    Acesse a interface visual em: http://127.0.0.1:8099
+2026-07-14 08:00:09.446 [console] ==============================================================
+2026-07-14 08:00:09.447 [console] ==============================================================
+2026-07-14 08:00:09.447 [console] ==============================================================
+2026-07-14 08:00:09.447 [console] ==============================================================
+2026-07-14 08:00:09.448 [console] ==============================================================
+2026-07-14 08:00:09.448 [console] ==============================================================

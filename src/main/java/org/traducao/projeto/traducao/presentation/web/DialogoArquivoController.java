@@ -57,10 +57,13 @@ public class DialogoArquivoController {
             $owner = $null
             $dialogo = $null
             try {
-                $partes = $requisicao -split '\\|', 2
+                $partes = $requisicao -split '\\|', 3
                 $tipo = $partes[0]
                 $argumento = if ($partes.Length -gt 1 -and $partes[1]) {
                     [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($partes[1]))
+                } else { '' }
+                $dirInicial = if ($partes.Length -gt 2 -and $partes[2]) {
+                    [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($partes[2]))
                 } else { '' }
 
                 if ($tipo -eq 'PING') {
@@ -88,6 +91,10 @@ public class DialogoArquivoController {
                     } else {
                         $dialogo.Title = 'Selecione o arquivo desejado'
                         if ($argumento) { $dialogo.Filter = $argumento }
+                    }
+
+                    if ($dirInicial -and (Test-Path -LiteralPath $dirInicial -PathType Container)) {
+                        $dialogo.InitialDirectory = $dirInicial
                     }
 
                     if ($dialogo.ShowDialog($owner) -eq [System.Windows.Forms.DialogResult]::OK) {
@@ -163,8 +170,9 @@ public class DialogoArquivoController {
      * cancela o diálogo, ocorre timeout ou o helper falha após a retentativa.
      */
     @GetMapping("/selecionar-pasta")
-    public ResponseEntity<Map<String, String>> selecionarPasta() {
-        return resposta(executarComando("PASTA", ""));
+    public ResponseEntity<Map<String, String>> selecionarPasta(
+            @RequestParam(required = false, defaultValue = "") String dirInicial) {
+        return resposta(executarComando("PASTA", "", resolverDirInicial(dirInicial)));
     }
 
     /**
@@ -179,8 +187,37 @@ public class DialogoArquivoController {
      */
     @GetMapping("/selecionar-arquivo")
     public ResponseEntity<Map<String, String>> selecionarArquivo(
-            @RequestParam(required = false, defaultValue = "Todos os arquivos (*.*)|*.*") String filtro) {
-        return resposta(executarComando("ARQUIVO", normalizarFiltro(filtro)));
+            @RequestParam(required = false, defaultValue = "Todos os arquivos (*.*)|*.*") String filtro,
+            @RequestParam(required = false, defaultValue = "") String dirInicial) {
+        return resposta(executarComando("ARQUIVO", normalizarFiltro(filtro), resolverDirInicial(dirInicial)));
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: converte o diretório inicial pedido pelo formulário
+     * (ex.: a pasta "cache" do projeto no módulo de Correção de Cache) em um
+     * caminho absoluto que o seletor nativo possa abrir por padrão.
+     * <p>
+     * INVARIANTES DO DOMÍNIO: só devolve caminho quando ele existe e é uma pasta;
+     * caminhos relativos são resolvidos contra o diretório de trabalho do KRONOS,
+     * o mesmo que a aplicação usa para {@code Path.of("cache")}.
+     * <p>
+     * COMPORTAMENTO EM CASO DE FALHA: entrada vazia, inexistente ou inválida
+     * resulta em {@code ""}, e o diálogo abre no diretório padrão do sistema.
+     */
+    private String resolverDirInicial(String dirInicial) {
+        if (dirInicial == null || dirInicial.isBlank()) {
+            return "";
+        }
+        try {
+            Path resolvido = Path.of(dirInicial.trim()).toAbsolutePath().normalize();
+            if (Files.isDirectory(resolvido)) {
+                return resolvido.toString();
+            }
+            log.debug("Diretorio inicial ignorado (nao e pasta existente): {}", resolvido);
+        } catch (RuntimeException e) {
+            log.debug("Diretorio inicial invalido ignorado: {}", dirInicial, e);
+        }
+        return "";
     }
 
     /**
@@ -206,7 +243,7 @@ public class DialogoArquivoController {
      * COMPORTAMENTO EM CASO DE FALHA: reinicia o helper e repete uma vez; se a
      * segunda tentativa falhar, registra o erro e retorna {@code null}.
      */
-    private String executarComando(String tipo, String argumento) {
+    private String executarComando(String tipo, String argumento, String dirInicial) {
         if (!ehWindows()) {
             log.warn("O seletor nativo de caminhos esta disponivel apenas no Windows");
             return null;
@@ -217,7 +254,9 @@ public class DialogoArquivoController {
                     iniciarHelper();
                     String argumentoCodificado = Base64.getEncoder()
                         .encodeToString(argumento.getBytes(StandardCharsets.UTF_8));
-                    entradaHelper.write(tipo + "|" + argumentoCodificado);
+                    String dirInicialCodificado = Base64.getEncoder()
+                        .encodeToString((dirInicial == null ? "" : dirInicial).getBytes(StandardCharsets.UTF_8));
+                    entradaHelper.write(tipo + "|" + argumentoCodificado + "|" + dirInicialCodificado);
                     entradaHelper.newLine();
                     entradaHelper.flush();
                     String respostaCodificada = lerLinhaComTimeout(saidaHelper, TIMEOUT_DIALOGO);
