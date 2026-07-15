@@ -46,14 +46,14 @@
     "indice" : 5,
     "estilo" : "Default",
     "original" : "{\\i1}They're making a quick retreat! They're making a quick retreat! Breach their front!{\\i0}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Eles estão fazendo uma retirada rápida! Eles estão fazendo uma retirada rápida! Quebre a frente deles!{\\i0}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 6,
     "estilo" : "Default",
     "original" : "Living in this world is like rolling the dice,\\Nso I may as well go out in style!",
-    "traduzido" : "",
+    "traduzido" : "Viver neste mundo é como jogar os dados,\\N, então é melhor sair com estilo!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -67,7 +67,7 @@
     "indice" : 8,
     "estilo" : "Default",
     "original" : "Geil, I'm prepared for anything!\\NI suppose military law trumps honor then?",
-    "traduzido" : "",
+    "traduzido" : "Geil, estou preparado para tudo!\\NSuponho que a lei militar supere a honra, então?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -109,21 +109,21 @@
     "indice" : 15,
     "estilo" : "Default",
     "original" : "{\\i1}The Yulin and Nashville are to fall back!\\NGM Squadron, launch! Recapture the GP02!{\\i0}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Yulin e Nashville vão recuar!\\NEsquadrão GM, lançamento! Recapture o GP02!{\\i0}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 16,
     "estilo" : "Default",
     "original" : "{\\i1}Commander! Enemy mobile suits! This way!{\\i0}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Comandante! Trajes móveis inimigos! Por aqui!{\\i0}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 17,
     "estilo" : "Default",
     "original" : "{\\i1}Please hurry!{\\i0}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Por favor, se apresse!{\\i0}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -137,14 +137,14 @@
     "indice" : 19,
     "estilo" : "Default",
     "original" : "{\\i1}They're still far off.",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Eles ainda estão longe.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 20,
     "estilo" : "Default",
     "original" : "{\\i1}But!",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Mas!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -214,7 +214,7 @@
     "indice" : 30,
     "estilo" : "Default",
     "original" : "Don't be naïve! We'll regroup\\Nunder Maharaja Karn at Axis!",
-    "traduzido" : "",
+    "traduzido" : "Não seja ingênuo! Vamos nos reagrupar\\Nsob o comando do Maharaja Karn no Eixo!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -235,7 +235,7 @@
     "indice" : 33,
     "estilo" : "Default",
     "original" : "{\\i1}I don't have time to deal with these trifling matters.\\NWhy don't you try sorting out your own problems yourself?{\\i0}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Não tenho tempo para lidar com esses assuntos insignificantes.\\NPor que você não tenta resolver seus próprios problemas sozinho?{\\i0}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -256,7 +256,7 @@
     "indice" : 36,
     "estilo" : "Default",
     "original" : "{\\i1}Lieutenant Commander, control yourself!{\\i0}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Tenente Comandante, controle-se!{\\i0}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -319,7 +319,7 @@
     "indice" : 45,
     "estilo" : "Default",
     "original" : "{\\i1}...and make sure that justice prevails!{\\i0}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}...e garanta que a justiça prevaleça!{\\i0}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -354,7 +354,7 @@
     "indice" : 50,
     "estilo" : "Default",
     "original" : "Long time no see. I escaped\\Nthe noose thanks to you.",
-    "traduzido" : "",
+    "traduzido" : "Muito tempo sem ver. Eu escapei\\Ndo laço graças a você.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -382,7 +382,7 @@
     "indice" : 54,
     "estilo" : "Default",
     "original" : "{\\i1}He was indicted for war crimes after the fighting had ended and has been given the death penalty.{\\i0}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Foi indiciado por crimes de guerra após o fim dos combates e foi-lhe aplicada a pena de morte.{\\i0}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -396,7 +396,7 @@
     "indice" : 56,
     "estilo" : "Default",
     "original" : "Geil, you've surrendered too?",
-    "traduzido" : "",
+    "traduzido" : "Geil, você se rendeu também?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -410,7 +410,7 @@
     "indice" : 58,
     "estilo" : "Default",
     "original" : "{\\i1}Your fleet overstepped military regulations. You will face a heavy penalty for dirtying the noble name of Zeon!{\\i0}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Sua frota ultrapassou os regulamentos militares. Você enfrentará uma pesada penalidade por sujar o nobre nome de Zeon!{\\i0}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -424,7 +424,7 @@
     "indice" : 60,
     "estilo" : "Default",
     "original" : "{\\i1}Truthfully, you've been a thorn in my side!{\\i0}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Sinceramente, você tem sido uma pedra no meu sapato!{\\i0}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -494,42 +494,42 @@
     "indice" : 70,
     "estilo" : "Default",
     "original" : "{\\i1}Ms. Cima! Just as predicted, the Peer Gynt is engaged in battle with the Federation.{\\i0}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Dona Cima! Tal como previsto, o Peer Gynt está envolvido numa batalha com a Federação.{\\i0}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 71,
     "estilo" : "Gundam 0083 ED3 Lyrics",
     "original" : "{\\fad(500,500)\\blur5}Somewhere in the Milky Way...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(500,500)\\blur5}Em algum lugar da Via Láctea...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 72,
     "estilo" : "Default",
     "original" : "{\\i1}Come to the bridge right away!{\\i0}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Venha para a ponte imediatamente!{\\i0}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 73,
     "estilo" : "Gundam 0083 ED3 Lyrics",
     "original" : "{\\fad(500,500)\\blur5}Somewhere deep in outer space...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(500,500)\\blur5}Em algum lugar nas profundezas do espaço sideral...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 74,
     "estilo" : "Gundam 0083 ED3 Lyrics",
     "original" : "{\\fad(500,500)\\blur5}As he travels all the galaxy...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(500,500)\\blur5}Enquanto ele viaja por toda a galáxia...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 75,
     "estilo" : "Gundam 0083 ED3 Lyrics",
     "original" : "{\\fad(500,500)\\blur5}Does he feel as lonely as me?",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(500,500)\\blur5}Ele se sente tão solitário quanto eu?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -557,14 +557,14 @@
     "indice" : 79,
     "estilo" : "Gundam 0083 ED3 Lyrics",
     "original" : "{\\fad(500,500)\\blur5}Out there where the comets fly...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(500,500)\\blur5}Lá fora, onde voam os cometas...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 80,
     "estilo" : "Default",
     "original" : "To the Musai ahead of us:\\NTerribly sorry!",
-    "traduzido" : "",
+    "traduzido" : "Para o Musai à nossa frente:\\NSinto muito!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -585,42 +585,42 @@
     "indice" : 83,
     "estilo" : "Default",
     "original" : "{\\i1}However, it looks like it's too late to change course.",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}No entanto, parece que é tarde demais para mudar de rumo.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 84,
     "estilo" : "Gundam 0083 ED3 Lyrics",
     "original" : "{\\fad(500,500)\\blur5}Out there where worlds collide...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(500,500)\\blur5}Lá fora, onde mundos colidem...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 85,
     "estilo" : "Gundam 0083 ED3 Lyrics",
     "original" : "{\\fad(500,500)\\blur5}As he chases all his wildest dreams...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(500,500)\\blur5}Enquanto ele persegue todos os seus sonhos mais loucos...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 86,
     "estilo" : "Gundam 0083 ED3 Lyrics",
     "original" : "{\\fad(500,500)\\blur5}Does he ever dream of me?",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(500,500)\\blur5}Ele alguma vez sonha comigo?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 87,
     "estilo" : "Gundam 0083 ED3 Lyrics A",
     "original" : "{\\fad(500,500)\\blur5}Star bright...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(500,500)\\blur5}Estrela brilhante...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 88,
     "estilo" : "Gundam 0083 ED3 Lyrics",
     "original" : "{\\fad(500,500)\\blur5}Shining so high above...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(500,500)\\blur5}Brilhando tão alto...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -634,28 +634,28 @@
     "indice" : 90,
     "estilo" : "Gundam 0083 ED3 Lyrics A",
     "original" : "{\\fad(500,500)\\blur5}Star bright...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(500,500)\\blur5}Estrela brilhante...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 91,
     "estilo" : "Gundam 0083 ED3 Lyrics",
     "original" : "{\\fad(500,500)\\blur5}Send me the one I love...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(500,500)\\blur5}Envie-me quem eu amo...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 92,
     "estilo" : "Gundam 0083 ED3 Lyrics",
     "original" : "{\\fad(500,500)\\blur5\\fs52}Make my wishes all come true tonight...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(500,500)\\blur5\\fs52}Realize todos os meus desejos esta noite...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 93,
     "estilo" : "Gundam 0083 ED3 Lyrics A",
     "original" : "{\\fad(500,1500)\\blur5}Star bright...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(500,1500)\\blur5}Estrela brilhante...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   } ]

@@ -32,7 +32,7 @@
     "indice" : 3,
     "estilo" : "Dialogue",
     "original" : "{\\i1}What a persistent nightmare!{\\i}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Que pesadelo persistente!{\\i}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -46,21 +46,21 @@
     "indice" : 5,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Four years of nightmares...{\\i}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Quatro anos de pesadelos...{\\i}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 6,
     "estilo" : "Dialogue",
     "original" : "{\\i1}We are entering enemy territory.",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Estamos entrando em território inimigo.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 7,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Battle stations! Battle stations!",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Estações de batalha! Estações de batalha!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -102,21 +102,21 @@
     "indice" : 13,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Whatever! We are the infamous Cima Fleet.{\\i}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Tanto faz! Somos a infame Frota de Cima.{\\i}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 14,
     "estilo" : "Dialogue",
     "original" : "{\\i1}It's too late for second thoughts!{\\i}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}É tarde demais para pensar duas vezes!{\\i}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 15,
     "estilo" : "Dialogue",
     "original" : "{\\i1}...the true desire of we spacenoids...",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}...o verdadeiro desejo de nós, espaçonóides...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -165,7 +165,7 @@
     "indice" : 22,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Lt. Commander Cima, have a good hunt!",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Tenente Comandante Cima, boa caçada!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
