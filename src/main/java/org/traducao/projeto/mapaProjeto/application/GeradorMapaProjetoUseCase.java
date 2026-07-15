@@ -26,10 +26,54 @@ public class GeradorMapaProjetoUseCase {
 
     private static final Logger log = LoggerFactory.getLogger(GeradorMapaProjetoUseCase.class);
 
+    // Pastas que não representam arquitetura/código-fonte e por isso são podadas
+    // do mapa: controle de versão/IDE, build/gradle/bin, e artefatos OPERACIONAIS
+    // volumosos (cache, logs, relatorios, backups) que, se incluídos, dominavam o
+    // mapa com centenas de entradas de saída de execução em vez de estrutura.
     private static final Set<String> PASTAS_IGNORAR = Set.of(
         ".git", ".venv", "__pycache__", ".idea", ".cursor", ".claude", "docs", "multiplexar",
-        "legendas-traduzidas-ptbr", ".gradle", "build", "bin", "cache", "target", "node_modules"
+        "legendas-traduzidas-ptbr", ".gradle", "build", "bin", "cache", "target", "node_modules",
+        "relatorios", "logs", "backups"
     );
+
+    // Prefixos de nomes de diretório/arquivo criados por testes (ex.: os
+    // relatorios/junit-<n> gerados por @TempDir do JUnit) — podados onde quer
+    // que apareçam, pois são resíduos de execução, não arquitetura.
+    private static final List<String> PREFIXOS_IGNORAR = List.of("junit-");
+
+    // Sufixos de arquivos temporários/parciais (escrita atômica, extração
+    // interrompida) que não devem poluir a taxonomia do mapa.
+    private static final List<String> SUFIXOS_IGNORAR = List.of(".tmp", ".part");
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: decide se um nome de pasta/arquivo deve ficar de fora
+     * do mapa por ser infraestrutura, saída operacional ou resíduo de teste — e
+     * não estrutura de código relevante para navegação por LLMs.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: nunca poda fontes, testes, documentação ou
+     * configuração de projeto; a decisão depende apenas do nome simples, não do
+     * caminho completo, e cobre os resíduos {@code junit-*} onde quer que surjam.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: método puro sem I/O; entrada nula lança
+     * {@link NullPointerException} (nunca é chamado com nome nulo, pois
+     * {@code getFileName()} de um filho listado é sempre presente).
+     */
+    static boolean deveIgnorar(String nome) {
+        if (PASTAS_IGNORAR.contains(nome)) {
+            return true;
+        }
+        for (String prefixo : PREFIXOS_IGNORAR) {
+            if (nome.startsWith(prefixo)) {
+                return true;
+            }
+        }
+        for (String sufixo : SUFIXOS_IGNORAR) {
+            if (nome.endsWith(sufixo)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     // Conectores de árvore (estilo `tree` do Unix) — linhas alinhadas em fonte monoespaçada.
     private static final String RAMO = "├── ";
@@ -147,7 +191,7 @@ public class GeradorMapaProjetoUseCase {
         List<Path> filhos;
         try (Stream<Path> list = Files.list(dir)) {
             filhos = list
-                .filter(p -> !PASTAS_IGNORAR.contains(p.getFileName().toString()))
+                .filter(p -> !deveIgnorar(p.getFileName().toString()))
                 .sorted(ORDEM_ARVORE)
                 .collect(Collectors.toList());
         } catch (IOException e) {
@@ -181,7 +225,7 @@ public class GeradorMapaProjetoUseCase {
         Files.walkFileTree(raiz, new SimpleFileVisitor<>() {
             @Override
             public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
-                if (!dir.equals(raiz) && PASTAS_IGNORAR.contains(dir.getFileName().toString())) {
+                if (!dir.equals(raiz) && deveIgnorar(dir.getFileName().toString())) {
                     return FileVisitResult.SKIP_SUBTREE;
                 }
                 return FileVisitResult.CONTINUE;
