@@ -1,0 +1,29 @@
+[ {
+  "indice" : 8,
+  "estilo" : "Karaoke Simples",
+  "original" : "{\\i1}Conectando ao computador principal.",
+  "traduzido" : "{\\i1}Conectando ao computador principal.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 10,
+  "estilo" : "Karaoke Simples",
+  "original" : "{\\i1}Sistema gerador, R.G.A.\\NAtivando todos os sistemas de controle.",
+  "traduzido" : "{\\i1}Sistema gerador, R.G.A.\\NAtivando todos os sistemas de controle.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 12,
+  "estilo" : "Karaoke Simples",
+  "original" : "{\\i1}Aproximadamente 3% abaixo do normal.",
+  "traduzido" : "{\\i1}Aproximadamente 3% abaixo do normal.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 347,
+  "estilo" : "Karaoke Simples",
+  "original" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}...traga-os para perto de mim.",
+  "traduzido" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}...traga-os perto de mim.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+} ]
