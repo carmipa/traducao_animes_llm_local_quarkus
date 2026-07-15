@@ -109,7 +109,6 @@ class DetectorConcordanciaServiceTest {
         assertFalse(detector.analisar(
             "And Aina gave that girl her own name.",
             "E Aina deu àquela garota seu próprio nome.").suspeito());
-        assertFalse(detector.analisar("You son of a hitch!", "Filho da mãe!").suspeito());
     }
 
     /**
@@ -124,13 +123,17 @@ class DetectorConcordanciaServiceTest {
     }
 
     /**
-     * PROPÓSITO DE NEGÓCIO: bloqueia aumento de agressividade criado pelo revisor.
-     * <p>INVARIANTES DO DOMÍNIO: palavrão já presente no original continua permitido.
+     * PROPÓSITO DE NEGÓCIO: bloqueia palavrão aleatório, mas preserva insultos
+     * fortes quando a fala inglesa contém esse tom explícito ou interrompido.
+     * <p>INVARIANTES DO DOMÍNIO: `son of a hitch` é tratado como o eufemismo/erro
+     * observado para `son of a bitch` e não deve ser suavizado.
      * <p>COMPORTAMENTO EM CASO DE FALHA: classificação invertida reprova o teste.
      */
     @Test
-    void detectaPalavraoIntroduzidoMasPermiteEquivalenteDoOriginal() {
-        assertTrue(detector.analisar("You son of a hitch!", "Filho da puta!").suspeito());
+    void respeitaIntensidadeDoInsultoOriginal() {
+        assertTrue(detector.analisar("You are late!", "Filho da puta!").suspeito());
+        assertFalse(detector.analisar("You son of a hitch!", "Filho da puta!").suspeito());
         assertFalse(detector.analisar("You son of a bitch!", "Filho da puta!").suspeito());
+        assertTrue(detector.analisar("You son of a...!", "Filho da mãe!").suspeito());
     }
 }

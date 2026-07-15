@@ -40,14 +40,17 @@ class CorretorDeterministicoConcordanciaServiceTest {
     }
 
     /**
-     * PROPÓSITO DE NEGÓCIO: desfaz a agressividade introduzida no incidente real.
-     * <p>INVARIANTES DO DOMÍNIO: a regra exige o eufemismo/erro `son of a hitch`.
-     * <p>COMPORTAMENTO EM CASO DE FALHA: palavrão preservado reprova o teste.
+     * PROPÓSITO DE NEGÓCIO: restaura o insulto forte escolhido para o tom da obra.
+     * <p>INVARIANTES DO DOMÍNIO: a regra exige `son of a bitch`, o erro observado
+     * `son of a hitch` ou o insulto deliberadamente interrompido.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: suavização ou perda do insulto reprova o teste.
      */
     @Test
-    void removePalavraoIntroduzidoNoIncidente() {
-        assertEquals("Filho da mãe!",
-            corretor.corrigir("You son of a hitch!", "Filho da puta!").orElseThrow());
+    void preservaRealismoDoInsulto() {
+        assertEquals("Filho da puta!",
+            corretor.corrigir("You son of a hitch!", "Filho da mãe!").orElseThrow());
+        assertEquals("Seu filho da puta!",
+            corretor.corrigir("You son of a...!", "Porra!").orElseThrow());
         assertTrue(corretor.corrigir("You son of a bitch!", "Filho da puta!").isEmpty());
     }
 
