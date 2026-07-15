@@ -1,4 +1,11 @@
 [ {
+  "indice" : 18,
+  "estilo" : "Karaoke Simples",
+  "original" : "...puxa eles para perto de mim.",
+  "traduzido" : "Puxa-os para perto de mim.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
   "indice" : 273,
   "estilo" : "Karaoke Simples",
   "original" : "Tudo esse tempo que passou por mim.",

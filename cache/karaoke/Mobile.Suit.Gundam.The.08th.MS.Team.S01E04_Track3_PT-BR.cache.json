@@ -1,29 +1,43 @@
 [ {
-  "indice" : 8,
+  "indice" : 7,
   "estilo" : "Karaoke Simples",
-  "original" : "{\\i1}Conectando ao computador principal.",
-  "traduzido" : "{\\i1}Conectando ao computador principal.",
-  "idiomaOriginal" : "en",
-  "idiomaTraduzido" : "pt-br"
-}, {
-  "indice" : 10,
-  "estilo" : "Karaoke Simples",
-  "original" : "{\\i1}Sistema gerador, R.G.A.\\NAtivando todos os sistemas de controle.",
-  "traduzido" : "{\\i1}Sistema gerador, R.G.A.\\NAtivando todos os sistemas de controle.",
-  "idiomaOriginal" : "en",
-  "idiomaTraduzido" : "pt-br"
-}, {
-  "indice" : 12,
-  "estilo" : "Karaoke Simples",
-  "original" : "{\\i1}Aproximadamente 3% abaixo do normal.",
-  "traduzido" : "{\\i1}Aproximadamente 3% abaixo do normal.",
+  "original" : "...traga-os para perto de mim.",
+  "traduzido" : "Traga-os para perto de mim.",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
   "indice" : 347,
   "estilo" : "Karaoke Simples",
-  "original" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}...traga-os para perto de mim.",
-  "traduzido" : "{\\fad(100,100)\\blur2\\c&HE8E8E8&\\1a&HFF&}...traga-os perto de mim.",
+  "original" : "Todo esse tempo que passou por mim.",
+  "traduzido" : "Esse tempo todo passando por mim.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 351,
+  "estilo" : "Karaoke Simples",
+  "original" : "As vezes que chorei, as vezes que ri.",
+  "traduzido" : "Às vezes chorei, às vezes ri.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 352,
+  "estilo" : "Karaoke Simples",
+  "original" : "As vezes que lutei, as vezes que sonhei.",
+  "traduzido" : "Às vezes lutei, às vezes sonhei.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 358,
+  "estilo" : "Karaoke Simples",
+  "original" : "Aquele que eu amo.",
+  "traduzido" : "Aqueles que eu amo",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 364,
+  "estilo" : "Karaoke Simples",
+  "original" : "Fiquem juntos. Quando esse dia chegar...",
+  "traduzido" : "Junte-se a nós. Quando esse dia vier...",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 } ]
