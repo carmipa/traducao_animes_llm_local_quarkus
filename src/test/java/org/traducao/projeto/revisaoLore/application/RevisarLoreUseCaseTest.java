@@ -131,13 +131,44 @@ class RevisarLoreUseCaseTest {
     void detalheCanonicoIncluiStatusEPendencias(@TempDir Path tempDir) {
         String detalhe = RevisarLoreUseCase.montarDetalheTelemetria(
             tempDir, "Gundam NT", StatusRevisaoLore.CONCLUIDO_COM_PENDENCIAS,
-            3, 1, 2, 1);
+            4, 1, 2, 1, 1);
 
         assertTrue(detalhe.contains("status=CONCLUIDO_COM_PENDENCIAS"));
-        assertTrue(detalhe.contains("pendentes=3"));
+        assertTrue(detalhe.contains("pendentes=4"));
         assertTrue(detalhe.contains("semResposta=1"));
         assertTrue(detalhe.contains("descartadas=2"));
+        assertTrue(detalhe.contains("encaminhadasOpcao6=1"));
         assertTrue(detalhe.contains("erros=1"));
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: impede que fala ainda integralmente em inglês gaste
+     * uma chamada do LLM especializado em lore.
+     * <p>INVARIANTES DO DOMÍNIO: tags ASS e caixa não mudam a identidade visual;
+     * uma tradução efetiva não pode ser encaminhada à Opção 6.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: classificação divergente reprova o teste.
+     */
+    @Test
+    void identificaFalaIntegralmenteNaoTraduzida() {
+        assertTrue(RevisarLoreUseCase.ehFalaNaoTraduzida(
+            "{\\i1}A bridge, huh?", "{\\i1}a bridge, huh?"));
+        assertFalse(RevisarLoreUseCase.ehFalaNaoTraduzida(
+            "{\\i1}A bridge, huh?", "{\\i1}Uma ponte, hein?"));
+        assertFalse(RevisarLoreUseCase.ehFalaNaoTraduzida("", ""));
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: garante que o console mostre progresso global do
+     * lote sem reiniciar o denominador a cada arquivo.
+     * <p>INVARIANTES DO DOMÍNIO: marcador contém arquivo, fala global e evento.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: formato incompleto reprova o teste.
+     */
+    @Test
+    void marcadorExibeTotaisGlobaisDoLote() {
+        assertEquals(
+            "[Arquivo 2/13 | Fala 74/3598 | evento 5]",
+            RevisarLoreUseCase.formatarMarcadorProgresso(2, 13, 74, 3598, 5)
+        );
     }
 
     /**

@@ -150,8 +150,9 @@ public class RevisaoLoreController {
      * substituindo o "[SUCESSO]" incondicional que mentia quando havia problemas.
      *
      * <p>INVARIANTES DO DOMÍNIO: sempre imprime os contadores operacionais
-     * (corrigidas, sem-resposta, descartadas, pendentes, falhas) para que o
-     * operador saiba o que ficou por resolver. {@link StatusRevisaoLore#FALHOU}
+     * (corrigidas, sem-resposta, descartadas, encaminhadas à Opção 6,
+     * pendentes e falhas) para que o operador saiba o que ficou por resolver.
+     * {@link StatusRevisaoLore#FALHOU}
      * não chega aqui — é impresso por {@link #imprimirFalha(String)}.
      *
      * <p>COMPORTAMENTO EM CASO DE FALHA: só escreve em {@code System.out}; não
@@ -171,6 +172,8 @@ public class RevisaoLoreController {
         System.out.println(AnsiCores.GREEN + "  • Falas corrigidas     : " + r.falasCorrigidas() + AnsiCores.RESET);
         System.out.println(AnsiCores.YELLOW + "  • Falas sem resposta   : " + r.falasSemResposta() + AnsiCores.RESET);
         System.out.println(AnsiCores.YELLOW + "  • Falas descartadas    : " + r.falasDescartadas() + AnsiCores.RESET);
+        System.out.println(AnsiCores.YELLOW + "  • Encaminhadas Opção 6 : "
+            + r.falasEncaminhadasOpcao6() + AnsiCores.RESET);
         System.out.println(AnsiCores.YELLOW + "  • Falas pendentes      : " + r.falasPendentes() + AnsiCores.RESET);
         System.out.println(AnsiCores.RED + "  • Falhas (arquivos)    : " + r.totalErros() + AnsiCores.RESET);
         if (r.caminhoRelatorioJson() != null) {

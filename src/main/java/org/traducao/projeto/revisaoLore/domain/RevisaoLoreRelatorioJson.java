@@ -29,8 +29,8 @@ public record RevisaoLoreRelatorioJson(
     /**
      * PROPÓSITO DE NEGÓCIO: estrutura as métricas usadas para diagnóstico e
      * evolução futura do revisor.
-     * <p>INVARIANTES DO DOMÍNIO: pendentes correspondem a sem-resposta mais
-     * descartadas; concluído exige zero pendências e erros.
+     * <p>INVARIANTES DO DOMÍNIO: pendentes correspondem a sem-resposta,
+     * descartadas e encaminhadas à Opção 6; concluído exige zero pendências e erros.
      * <p>COMPORTAMENTO EM CASO DE FALHA: record imutável, sem efeitos colaterais.
      */
     public record MetricasRevisaoLore(
@@ -45,6 +45,7 @@ public record RevisaoLoreRelatorioJson(
         int falasSemAlteracao,
         int falasSemResposta,
         int falasDescartadas,
+        int falasEncaminhadasOpcao6,
         int falasPendentes,
         int totalErros
     ) {}

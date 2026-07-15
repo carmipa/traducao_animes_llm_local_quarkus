@@ -204,6 +204,7 @@ public class RevisarLoreUseCase {
         int[] falasSemAlteracao = {0};
         int[] falasSemResposta = {0};
         int[] falasDescartadas = {0};
+        int[] falasEncaminhadasOpcao6 = {0};
         boolean[] cancelado = {false};
         boolean semArquivos = false;
         List<String> erros = new ArrayList<>();
@@ -227,13 +228,18 @@ public class RevisarLoreUseCase {
                 sessao.out(AnsiCores.YELLOW + "  [Aviso] " + msg + AnsiCores.RESET);
             }
 
-            for (Path arqOriginal : originais) {
+            int totalFalasGlobais = contarDialogosAuditaveisNoLote(originais, pastaTraduzida);
+            sessao.out("Falas auditaveis no lote: " + totalFalasGlobais);
+
+            for (int indiceArquivo = 0; indiceArquivo < originais.size(); indiceArquivo++) {
+                Path arqOriginal = originais.get(indiceArquivo);
                 processarArquivo(
                     sessao, arqOriginal, pastaTraduzida, contextoId, nomePromptRevisao,
                     revisarTodasFalas, promptSistemaRevisaoLore, loreCanonica, pastaBackup,
+                    indiceArquivo + 1, originais.size(), totalFalasGlobais,
                     arquivosAnalisados, arquivosAlterados, falasAuditadas, falasSinalizadas,
                     falasCorrigidas, falasSemAlteracao, falasSemResposta, falasDescartadas,
-                    cancelado, erros
+                    falasEncaminhadasOpcao6, cancelado, erros
                 );
             }
         } catch (IOException e) {
@@ -245,7 +251,7 @@ public class RevisarLoreUseCase {
         // Pendentes = falas sinalizadas cujo problema NÃO foi resolvido (LLM sem
         // resposta ou correção proposta barrada por trava). Ficam como estavam,
         // ainda merecendo revisão humana — distinto de "conforme" e "corrigida".
-        int falasPendentes = falasSemResposta[0] + falasDescartadas[0];
+        int falasPendentes = falasSemResposta[0] + falasDescartadas[0] + falasEncaminhadasOpcao6[0];
         StatusRevisaoLore statusFinal = determinarStatus(semArquivos, cancelado[0], erros, falasPendentes);
 
         sessao.out("Arquivos analisados: " + arquivosAnalisados[0]);
@@ -256,6 +262,7 @@ public class RevisarLoreUseCase {
         sessao.out("Falas ja conformes: " + falasSemAlteracao[0]);
         sessao.out("Falas sem resposta do LLM: " + falasSemResposta[0]);
         sessao.out("Falas descartadas (travas): " + falasDescartadas[0]);
+        sessao.out("Falas encaminhadas para a Opção 6: " + falasEncaminhadasOpcao6[0]);
         sessao.out("Falas pendentes (sinalizadas sem correcao): " + falasPendentes);
         sessao.out("Status: " + statusFinal.rotulo());
 
@@ -280,6 +287,7 @@ public class RevisarLoreUseCase {
             arquivosAnalisados[0], arquivosAlterados[0],
             falasAuditadas[0], falasSinalizadas[0], falasCorrigidas[0],
             falasSemAlteracao[0], falasSemResposta[0], falasDescartadas[0],
+            falasEncaminhadasOpcao6[0],
             falasPendentes, erros
         );
 
@@ -297,6 +305,7 @@ public class RevisarLoreUseCase {
             falasSemAlteracao[0],
             falasSemResposta[0],
             falasDescartadas[0],
+            falasEncaminhadasOpcao6[0],
             falasPendentes,
             erros.size(),
             erros,
@@ -392,6 +401,9 @@ public class RevisarLoreUseCase {
         String promptSistemaRevisaoLore,
         String loreCanonica,
         Path pastaBackup,
+        int indiceArquivo,
+        int totalArquivos,
+        int totalFalasGlobais,
         int[] arquivosAnalisados,
         int[] arquivosAlterados,
         int[] falasAuditadas,
@@ -400,18 +412,12 @@ public class RevisarLoreUseCase {
         int[] falasSemAlteracao,
         int[] falasSemResposta,
         int[] falasDescartadas,
+        int[] falasEncaminhadasOpcao6,
         boolean[] cancelado,
         List<String> erros
     ) {
         String nomeOriginal = arqOriginal.getFileName().toString();
-        String nomeBase = nomeOriginal.substring(0, nomeOriginal.lastIndexOf('.'));
-        Path arqTraduzido = pastaTraduzida.resolve(nomeBase + "_PT-BR.ass");
-        if (!Files.exists(arqTraduzido)) {
-            arqTraduzido = pastaTraduzida.resolve(nomeBase + "_PTBR.ass");
-        }
-        if (!Files.exists(arqTraduzido)) {
-            arqTraduzido = pastaTraduzida.resolve(nomeOriginal);
-        }
+        Path arqTraduzido = localizarArquivoTraduzido(arqOriginal, pastaTraduzida);
         if (!Files.exists(arqTraduzido)) {
             String msg = "Sem par traduzido para: " + nomeOriginal;
             erros.add(msg);
@@ -485,13 +491,30 @@ public class RevisarLoreUseCase {
                 falasAuditadas[0]++;
                 dialogoAtual++;
 
-                String marcadorFala = "[Fala " + dialogoAtual + "/" + totalDialogos
-                    + " | evento " + (i + 1) + "]";
+                String marcadorFala = formatarMarcadorProgresso(
+                    indiceArquivo, totalArquivos, falasAuditadas[0], totalFalasGlobais, i + 1);
                 sessao.out(AnsiCores.DIM + marcadorFala + " auditando lore | EN: "
                     + trecho(textoEn) + " | PT: " + trecho(textoPt) + AnsiCores.RESET);
 
                 MascaradorTags.Mascarado mascaraEn = mascarador.mascarar(textoEn);
                 MascaradorTags.Mascarado mascaraPt = mascarador.mascarar(textoPt);
+
+                if (ehFalaNaoTraduzida(mascaraEn.texto(), mascaraPt.texto())) {
+                    falasSinalizadas[0]++;
+                    falasEncaminhadasOpcao6[0]++;
+                    sessao.out(AnsiCores.YELLOW + marcadorFala
+                        + " [FORA DO ESCOPO DE LORE] PT-BR está idêntico ao original EN; "
+                        + "nenhuma chamada ao LLM foi feita. Execute a Opção 6 antes da Opção 7."
+                        + AnsiCores.RESET);
+                    registrarAuditoria(
+                        contextoId, nomePromptRevisao, revisarTodasFalas, arqTraduzido, i + 1,
+                        dialogoAtual, totalDialogos, "ENCAMINHADA_OPCAO_6", List.of("Fala não traduzida"),
+                        textoEn, textoPt, null, textoPt,
+                        "Fala integralmente em inglês; correção linguística pertence à Opção 6"
+                    );
+                    novosEventos.add(evtTraduzido);
+                    continue;
+                }
 
                 // O prompt de lore da obra ativa contextualiza a heurística: regras
                 // de outra franquia (ex.: "freedom"→"liberdade" do SEED) não disparam.
@@ -758,6 +781,7 @@ public class RevisarLoreUseCase {
         int falasSemAlteracao,
         int falasSemResposta,
         int falasDescartadas,
+        int falasEncaminhadasOpcao6,
         int falasPendentes,
         List<String> erros
     ) {
@@ -768,6 +792,7 @@ public class RevisarLoreUseCase {
             falasPendentes,
             falasSemResposta,
             falasDescartadas,
+            falasEncaminhadasOpcao6,
             erros.size()
         );
 
@@ -804,6 +829,7 @@ public class RevisarLoreUseCase {
                 falasSemAlteracao,
                 falasSemResposta,
                 falasDescartadas,
+                falasEncaminhadasOpcao6,
                 falasPendentes,
                 erros.size()
             ),
@@ -854,6 +880,7 @@ public class RevisarLoreUseCase {
         int falasPendentes,
         int falasSemResposta,
         int falasDescartadas,
+        int falasEncaminhadasOpcao6,
         int totalErros
     ) {
         return String.valueOf(pastaTraduzida != null ? pastaTraduzida.toAbsolutePath() : null)
@@ -862,6 +889,7 @@ public class RevisarLoreUseCase {
             + " | pendentes=" + falasPendentes
             + " | semResposta=" + falasSemResposta
             + " | descartadas=" + falasDescartadas
+            + " | encaminhadasOpcao6=" + falasEncaminhadasOpcao6
             + " | erros=" + totalErros;
     }
 
@@ -916,6 +944,92 @@ public class RevisarLoreUseCase {
         return "%02d.%03ds".formatted(segundos, millis);
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: localiza a legenda PT-BR correspondente ao arquivo
+     * inglês respeitando as três convenções de nome aceitas pelo pipeline.
+     * <p>INVARIANTES DO DOMÍNIO: a prioridade é {@code _PT-BR}, depois
+     * {@code _PTBR} e por último o mesmo nome do original.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: devolve o último candidato mesmo que
+     * não exista, permitindo que o chamador produza o diagnóstico operacional.
+     */
+    private Path localizarArquivoTraduzido(Path arqOriginal, Path pastaTraduzida) {
+        String nomeOriginal = arqOriginal.getFileName().toString();
+        String nomeBase = nomeOriginal.substring(0, nomeOriginal.lastIndexOf('.'));
+        Path candidato = pastaTraduzida.resolve(nomeBase + "_PT-BR.ass");
+        if (Files.exists(candidato)) {
+            return candidato;
+        }
+        candidato = pastaTraduzida.resolve(nomeBase + "_PTBR.ass");
+        if (Files.exists(candidato)) {
+            return candidato;
+        }
+        return pastaTraduzida.resolve(nomeOriginal);
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: calcula antes do processamento o denominador global
+     * mostrado no console para o operador acompanhar o lote inteiro.
+     * <p>INVARIANTES DO DOMÍNIO: somente pares existentes, com mesma quantidade
+     * de eventos e alinhamento temporal válido entram no total.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: um par ilegível é ignorado na prévia e
+     * será diagnosticado normalmente quando chegar sua vez de processamento.
+     */
+    private int contarDialogosAuditaveisNoLote(List<Path> originais, Path pastaTraduzida) {
+        int total = 0;
+        for (Path arqOriginal : originais) {
+            Path arqTraduzido = localizarArquivoTraduzido(arqOriginal, pastaTraduzida);
+            if (!Files.exists(arqTraduzido)) {
+                continue;
+            }
+            try {
+                DocumentoLegenda original = leitor.ler(arqOriginal);
+                DocumentoLegenda traduzido = leitor.ler(arqTraduzido);
+                if (original.eventos().size() == traduzido.eventos().size()
+                    && primeiraDivergenciaEstrutural(
+                        original, traduzido, ALINHAMENTO_TOLERANCIA_MS).isEmpty()) {
+                    total += contarDialogosAuditaveis(original, traduzido);
+                }
+            } catch (Exception e) {
+                log.debug("Par ignorado na pré-contagem global de lore: {}", arqOriginal, e);
+            }
+        }
+        return total;
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: apresenta simultaneamente a posição do arquivo e da
+     * fala no lote completo, sem reiniciar a percepção de progresso a cada ASS.
+     * <p>INVARIANTES DO DOMÍNIO: posições nunca são exibidas abaixo de um e o
+     * denominador de falas nunca fica menor que a posição atual.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: totais ausentes ou zero são ajustados
+     * conservadoramente à posição corrente.
+     */
+    static String formatarMarcadorProgresso(
+        int indiceArquivo, int totalArquivos, int falaGlobal, int totalFalasGlobais, int indiceEvento) {
+        int arquivoAtualSeguro = Math.max(1, indiceArquivo);
+        int totalArquivosSeguro = Math.max(arquivoAtualSeguro, totalArquivos);
+        int falaAtualSegura = Math.max(1, falaGlobal);
+        int totalFalasSeguro = Math.max(falaAtualSegura, totalFalasGlobais);
+        return "[Arquivo " + arquivoAtualSeguro + "/" + totalArquivosSeguro
+            + " | Fala " + falaAtualSegura + "/" + totalFalasSeguro
+            + " | evento " + Math.max(1, indiceEvento) + "]";
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: separa tradução linguística pendente de revisão de
+     * lore para evitar chamadas caras ao modelo no módulo errado.
+     * <p>INVARIANTES DO DOMÍNIO: somente falas visivelmente idênticas entre EN
+     * e PT-BR são encaminhadas à Opção 6; tags ASS e diferenças de caixa não
+     * alteram essa decisão.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: texto vazio não é classificado como
+     * fala não traduzida e permanece sob as validações existentes.
+     */
+    static boolean ehFalaNaoTraduzida(String originalIngles, String traducaoPt) {
+        String originalVisivel = normalizarFalaVisivel(originalIngles);
+        String traducaoVisivel = normalizarFalaVisivel(traducaoPt);
+        return !originalVisivel.isBlank() && originalVisivel.equalsIgnoreCase(traducaoVisivel);
+    }
+
     private int contarDialogosAuditaveis(DocumentoLegenda docOriginal, DocumentoLegenda docTraduzido) {
         int total = 0;
         int limite = Math.min(docOriginal.eventos().size(), docTraduzido.eventos().size());
@@ -952,11 +1066,11 @@ public class RevisarLoreUseCase {
         return mascarador.contemTextoTraduzivel(textoOriginal);
     }
 
-    private boolean mesmaFalaVisivel(String revisada, String atual) {
+    private static boolean mesmaFalaVisivel(String revisada, String atual) {
         return normalizarFalaVisivel(revisada).equals(normalizarFalaVisivel(atual));
     }
 
-    private String normalizarFalaVisivel(String texto) {
+    private static String normalizarFalaVisivel(String texto) {
         if (texto == null) {
             return "";
         }
