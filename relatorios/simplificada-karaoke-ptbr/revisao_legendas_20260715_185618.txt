@@ -1,0 +1,166 @@
+REVISÃO DE LEGENDAS (.ass)
+==========================
+Pasta: C:\animes\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\simplificada-karaoke-ptbr
+Duração: 16s
+Arquivos analisados: 15
+Falas auditadas: 4404
+Falas sem original EN (ignoradas): 0
+Problemas detectados: 2151
+Falas corrigidas via Google: 3
+Falas pendentes: 2148
+
+DETALHES POR OCORRÊNCIA
+=======================
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S00E02_Track3_PT-BR.parcial.ass
+Evento: 3 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Fala não traduzida (idêntica ao original em inglês): {\i1}Que pesadelo persistente!{\i}
+Diagnóstico: Correção validada e persistida.
+EN: {\i1}Que pesadelo persistente!{\i}
+PT anterior: {\i1}Que pesadelo persistente!{\i}
+Proposta: {\i1}Que pesadelo persiste!{\i}
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S00E02_Track3_PT-BR.parcial.ass
+Evento: 14 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Fala não traduzida (idêntica ao original em inglês): {\i1}É tarde demais para arrependimentos!{\i}
+Diagnóstico: Correção validada e persistida.
+EN: {\i1}É tarde demais para arrependimentos!{\i}
+PT anterior: {\i1}É tarde demais para arrependimentos!{\i}
+Proposta: {\i1}É tarde demais para lamentações!{\i}
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S00E02_Track3_PT-BR.parcial.ass
+Evento: 15 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Fala não traduzida (idêntica ao original em inglês): {\i1}...o verdadeiro desejo dos espaciais...
+Diagnóstico: Correção validada e persistida.
+EN: {\i1}...o verdadeiro desejo dos espaciais...
+PT anterior: {\i1}...o verdadeiro desejo dos espaciais...
+Proposta: {\i1}...o verdadeiro desejo dos espaços espaciais...
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S00E03_Track2_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 41 de 90 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E01_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 146 de 344 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E02_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 170 de 356 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E03_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 140 de 327 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E04_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 189 de 368 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E05_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 191 de 388 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E06_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 136 de 301 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E07_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 163 de 350 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E08_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 202 de 408 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E09_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 182 de 319 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E10_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 158 de 283 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E11_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 174 de 342 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E12_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 142 de 271 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E13_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 112 de 235 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —

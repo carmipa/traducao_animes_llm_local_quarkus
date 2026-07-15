@@ -1,0 +1,13 @@
+CORREÇÃO ONLINE DO CACHE VIA GOOGLE
+===================================
+Pasta: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache
+Status: CONCLUIDO_COM_PENDENCIAS
+Arquivos analisados: 29
+Arquivos alterados: 15
+Entradas pendentes: 2163
+Entradas corrigidas: 1248
+Entradas pendentes: 915
+Entradas não corrigidas/ignoradas: 915
+Falhas: 0
+Cancelado: false
+Observação: execute novamente a Tradução Local para regenerar o ASS/SRT a partir do cache corrigido.
