@@ -32,9 +32,11 @@ public class FfprobeAdapter {
         try {
             JsonNode root = objectMapper.readTree(jsonString);
 
-            // Parsing do Container
+            // Parsing do Container. Duração de fallback vinda dos streams: o
+            // ffprobe às vezes reporta a duração nos streams mas não no format.
             JsonNode formatNode = root.get("format");
-            ContainerInfo container = parseContainer(formatNode);
+            double fallbackDuracao = maiorDuracaoDeStream(root.get("streams"));
+            ContainerInfo container = parseContainer(formatNode, fallbackDuracao);
 
             // Parsing das faixas (streams)
             List<VideoInfo> videos = new ArrayList<>();
@@ -184,14 +186,29 @@ public class FfprobeAdapter {
         return null;
     }
 
-    private ContainerInfo parseContainer(JsonNode formatNode) {
+    /**
+     * PROPÓSITO DE NEGÓCIO: mapeia o bloco {@code format} do ffprobe para o
+     * domínio, garantindo uma duração utilizável mesmo quando o container não a
+     * reporta (usa a maior duração de trilha como fallback estruturado).
+     *
+     * <p>INVARIANTES DO DOMÍNIO: nunca retorna {@code null}; a duração é a do
+     * container quando válida (&gt; 0) e, só então, o fallback das trilhas.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: {@code formatNode} nulo devolve um
+     * {@link ContainerInfo} com metadados "N/A" e apenas o fallback de duração;
+     * valores numéricos ausentes/ inválidos caem nos defaults (0), sem exceção.
+     */
+    private ContainerInfo parseContainer(JsonNode formatNode, double fallbackDuracaoSegundos) {
         if (formatNode == null) {
-            return new ContainerInfo("N/A", 0L, 0.0, 0L, "N/A");
+            return new ContainerInfo("N/A", 0L, Math.max(fallbackDuracaoSegundos, 0.0), 0L, "N/A");
         }
 
         String formato = formatNode.path("format_name").asText("N/A");
         long tamanhoBytes = formatNode.path("size").asLong(0L);
         double duracao = formatNode.path("duration").asDouble(0.0);
+        if (duracao <= 0.0 && fallbackDuracaoSegundos > 0.0) {
+            duracao = fallbackDuracaoSegundos;
+        }
         long bitrate = formatNode.path("bit_rate").asLong(0L);
         
         String encoder = "N/A";
@@ -201,6 +218,38 @@ public class FfprobeAdapter {
         }
 
         return new ContainerInfo(formato, tamanhoBytes, duracao, bitrate, encoder);
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: obtém uma duração de fallback a partir das trilhas
+     * quando o container não a reporta — o ffprobe frequentemente traz a duração
+     * apenas no stream de vídeo (campo {@code duration} ou tag {@code DURATION}).
+     *
+     * <p>INVARIANTES DO DOMÍNIO: usa a MAIOR duração encontrada entre as trilhas
+     * (a mais representativa do arquivo); ignora trilhas sem duração válida.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: {@code streamsNode} nulo/ não-array ou
+     * durações ausentes/ inválidas resultam em {@code 0.0}, sem exceção.
+     */
+    private double maiorDuracaoDeStream(JsonNode streamsNode) {
+        if (streamsNode == null || !streamsNode.isArray()) {
+            return 0.0;
+        }
+        double maior = 0.0;
+        for (JsonNode stream : streamsNode) {
+            double duracao = stream.path("duration").asDouble(0.0);
+            if (duracao <= 0.0) {
+                JsonNode tags = stream.path("tags");
+                String durTag = tags.path("DURATION").asText(tags.path("duration").asText(""));
+                if (!durTag.isBlank()) {
+                    duracao = converterDuracaoTagParaSegundos(durTag);
+                }
+            }
+            if (duracao > maior) {
+                maior = duracao;
+            }
+        }
+        return maior;
     }
 
     private VideoInfo parseVideo(JsonNode stream, int index) {

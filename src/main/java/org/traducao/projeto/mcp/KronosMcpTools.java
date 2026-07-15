@@ -11,6 +11,7 @@ import org.traducao.projeto.analisadorMidia.domain.ResultadoAnaliseLote;
 import org.traducao.projeto.core.execucao.FilaExecucaoPipeline;
 
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 
 /**
@@ -42,19 +43,30 @@ public class KronosMcpTools {
 
     @Tool(name = "analisar_midia",
           description = "Executa a auditoria tecnica (ffprobe) de um arquivo de video ou de uma pasta com videos: "
-                      + "container, faixas de video/audio/legenda e veredicto de sincronia das legendas. "
-                      + "Grava relatorios .txt/.json em uma subpasta 'relatorios' ao lado da entrada e retorna um resumo.")
+                      + "container, faixas de video/audio e classificacao de traduzibilidade das legendas "
+                      + "(texto vs bitmap). Retorna um resumo estruturado; nao grava relatorio em disco "
+                      + "(apenas a telemetria tecnica e persistida internamente).")
     public String analisarMidia(
-            @ToolArg(name = "caminho", description = "Caminho absoluto de um arquivo de video (.mkv/.mp4/...) ou de uma pasta contendo videos.")
+            @ToolArg(name = "caminho", description = "Caminho de um arquivo de video (.mkv/.mp4/...) ou de uma pasta contendo videos.")
             String caminho) {
 
         if (caminho == null || caminho.isBlank()) {
             return "ERRO: informe o caminho de um arquivo ou pasta.";
         }
 
-        Path entrada = Path.of(caminho.trim());
+        // Path.of pode lançar InvalidPathException em caminhos sintaticamente
+        // invalidos (ex.: caracteres reservados do SO); tratado como erro amigavel.
+        Path entrada;
+        try {
+            entrada = Path.of(caminho.trim());
+        } catch (InvalidPathException e) {
+            return "ERRO: caminho invalido: " + caminho.trim();
+        }
+
         if (!Files.exists(entrada)) {
-            return "ERRO: caminho nao encontrado: " + entrada.toAbsolutePath();
+            // Ecoa o caminho como informado, sem toAbsolutePath(), para nao
+            // expor o diretorio de trabalho privado do servidor.
+            return "ERRO: caminho nao encontrado: " + entrada;
         }
 
         // Recusa em vez de enfileirar atrás de um job possivelmente longo: o MCP

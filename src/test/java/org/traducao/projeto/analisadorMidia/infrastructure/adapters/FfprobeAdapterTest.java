@@ -153,4 +153,138 @@ class FfprobeAdapterTest {
 
         assertThrows(AnalisadorException.class, () -> adapter.analisarMidia(Path.of("x.mkv")));
     }
+
+    @Test
+    void duracaoAusenteNoContainerUsaFallbackDaTrilhaDeVideo() {
+        // Container sem "duration"; a trilha de vídeo traz a duração real.
+        String json = """
+            {"streams":[
+              {"index":0,"codec_type":"video","codec_name":"h264","width":1920,"height":1080,
+               "pix_fmt":"yuv420p","r_frame_rate":"24/1","duration":"1440.0"}
+            ],
+            "format":{"format_name":"matroska","size":"1"}}
+            """;
+
+        AuditoriaResultado r = comJson(json).analisarMidia(Path.of("semdur.mkv"));
+
+        assertEquals(1440.0, r.container().duracaoSegundos(), 0.001);
+    }
+
+    @Test
+    void duracaoDisponivelSomenteNaTagDurationDaTrilha() {
+        // ffprobe do MKV costuma trazer a duração só na tag DURATION do stream.
+        String json = """
+            {"streams":[
+              {"index":0,"codec_type":"video","codec_name":"h264","width":1280,"height":720,
+               "pix_fmt":"yuv420p","r_frame_rate":"24/1","tags":{"DURATION":"00:24:00.000000000"}}
+            ],
+            "format":{"format_name":"matroska","size":"1","duration":"0"}}
+            """;
+
+        AuditoriaResultado r = comJson(json).analisarMidia(Path.of("tagdur.mkv"));
+
+        assertEquals(1440.0, r.container().duracaoSegundos(), 0.001);
+    }
+
+    @Test
+    void containerComDuracaoValidaNaoEhSobrescritoPeloFallback() {
+        String json = """
+            {"streams":[
+              {"index":0,"codec_type":"video","codec_name":"h264","width":1280,"height":720,
+               "pix_fmt":"yuv420p","r_frame_rate":"24/1","duration":"10.0"}
+            ],
+            "format":{"format_name":"matroska","size":"1","duration":"1440.0"}}
+            """;
+
+        AuditoriaResultado r = comJson(json).analisarMidia(Path.of("dur.mkv"));
+
+        assertEquals(1440.0, r.container().duracaoSegundos(), 0.001);
+    }
+
+    @Test
+    void jsonIncompletoSemFormatNemStreamsNaoQuebra() {
+        AuditoriaResultado r = comJson("{}").analisarMidia(Path.of("vazio.mkv"));
+
+        assertEquals("N/A", r.container().formato());
+        assertEquals(0L, r.container().tamanhoBytes());
+        assertEquals(0.0, r.container().duracaoSegundos(), 0.001);
+        assertEquals(0, r.videos().size());
+        assertEquals(0, r.audios().size());
+        assertEquals(0, r.legendas().size());
+        assertEquals(0, r.capitulos().size());
+        assertEquals(0, r.anexos().size());
+    }
+
+    @Test
+    void streamsAusenteNaoQuebra() {
+        String json = """
+            {"format":{"format_name":"matroska","size":"100","duration":"60"}}
+            """;
+
+        AuditoriaResultado r = comJson(json).analisarMidia(Path.of("soformat.mkv"));
+
+        assertEquals("matroska", r.container().formato());
+        assertEquals(0, r.videos().size());
+        assertEquals(0, r.legendas().size());
+    }
+
+    @Test
+    void jsonMalformadoViraAnalisadorException() {
+        FfprobeAdapter adapter = comJson("{ isto nao e json valido");
+        assertThrows(AnalisadorException.class, () -> adapter.analisarMidia(Path.of("corrompido.mkv")));
+    }
+
+    @Test
+    void valoresNumericosAusentesOuInvalidosCaemEmDefaultSemNPE() {
+        // width/height/bit_rate como strings não-numéricas, r_frame_rate com
+        // denominador zero, sample_rate ausente: tudo deve virar default sem NPE.
+        String json = """
+            {"streams":[
+              {"index":0,"codec_type":"video","codec_name":"h264","width":"abc","height":"xyz",
+               "pix_fmt":"yuv420p","r_frame_rate":"24/0","bit_rate":"muito"},
+              {"index":1,"codec_type":"audio","codec_name":"aac"}
+            ],
+            "format":{"format_name":"mp4","size":"nao-numero","duration":"tambem-nao"}}
+            """;
+
+        AuditoriaResultado r = comJson(json).analisarMidia(Path.of("ruim.mp4"));
+
+        assertEquals(1, r.videos().size());
+        VideoInfo v = r.videos().get(0);
+        assertEquals(0, v.width());
+        assertEquals(0, v.height());
+        assertEquals(0.0, v.fps(), 0.001);
+        assertEquals(0L, r.container().tamanhoBytes());
+        assertEquals(0.0, r.container().duracaoSegundos(), 0.001);
+        assertEquals(1, r.audios().size());
+        assertEquals(0, r.audios().get(0).channels());
+    }
+
+    @Test
+    void mapeiaFormatoECodecDasTrilhasDeLegendaDeTextoEBitmap() {
+        String json = """
+            {"streams":[
+              {"index":0,"codec_type":"subtitle","codec_name":"ssa"},
+              {"index":1,"codec_type":"subtitle","codec_name":"subrip"},
+              {"index":2,"codec_type":"subtitle","codec_name":"webvtt"},
+              {"index":3,"codec_type":"subtitle","codec_name":"mov_text"},
+              {"index":4,"codec_type":"subtitle","codec_name":"dvd_subtitle"},
+              {"index":5,"codec_type":"subtitle","codec_name":"dvb_subtitle"}
+            ],
+            "format":{"format_name":"matroska","size":"1","duration":"1"}}
+            """;
+
+        AuditoriaResultado r = comJson(json).analisarMidia(Path.of("multi.mkv"));
+
+        assertEquals(6, r.legendas().size());
+        assertEquals("SSA", r.legendas().get(0).formato());
+        assertEquals("SUBRIP", r.legendas().get(1).formato());
+        assertEquals("WEBVTT", r.legendas().get(2).formato());
+        assertEquals("MOV_TEXT", r.legendas().get(3).formato());
+        assertEquals("DVD_SUBTITLE", r.legendas().get(4).formato());
+        assertEquals("DVB_SUBTITLE", r.legendas().get(5).formato());
+        // Índice relativo (para ffprobe select_streams s:<idx>) é sequencial.
+        assertEquals(0, r.legendas().get(0).indexRelativo());
+        assertEquals(5, r.legendas().get(5).indexRelativo());
+    }
 }

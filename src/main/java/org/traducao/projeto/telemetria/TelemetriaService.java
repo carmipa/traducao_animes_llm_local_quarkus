@@ -61,8 +61,9 @@ public class TelemetriaService {
 
     // Local canônico dentro do próprio projeto onde a telemetria é sempre
     // mesclada e persistida a cada registro, para sobreviver a restarts do
-    // servidor e não depender só do lote em memória (que é limpo a cada
-    // análise via limparLote()). É o que o painel web lê em gerarResumo().
+    // servidor. As mídias analisadas são um dataset permanente (acumulado e
+    // deduplicado por nome de arquivo), nunca zerado entre análises. É o que o
+    // painel web lê em gerarResumo().
     // Resolvido via DiretorioBaseKronos: em produção é logs/ na raiz do
     // projeto; sob a suíte de testes é redirecionado para uma árvore
     // descartável, evitando reescrever a telemetria canônica real.
@@ -329,19 +330,6 @@ public class TelemetriaService {
     }
 
     /**
-     * Zera apenas o lote de mídias em memória no início de uma nova análise.
-     * O histórico de traduções LLM e de operações NUNCA é limpo aqui: ele é o
-     * acumulado permanente do projeto (persistido em
-     * {@code logs/telemetria_compartilhada.json}) e limpá-lo — como já
-     * aconteceu — apagava todo o histórico do painel a cada análise de mídia.
-     */
-    public synchronized void limparLote() {
-        this.bancoMidia.clear();
-        persistirCanonico();
-        broadcast();
-    }
-
-    /**
      * Persiste a telemetria canônica em {@code logs/telemetria_compartilhada.json}.
      * Se {@code pastaRelatorios} for informada e diferente de {@code logs/}, copia
      * o arquivo unificado para lá (padrão usado pela análise de mídia).
@@ -410,10 +398,10 @@ public class TelemetriaService {
      * interface web. Lê o histórico canônico persistido em
      * {@code logs/telemetria_compartilhada.json} (mesclado a cada chamada de
      * {@link #registrarMidia} / {@link #registrarTraducao} / {@link #registrarOperacao}), por isso reflete
-     * o total acumulado do projeto e sobrevive a restarts do servidor — não
-     * só o lote em memória da sessão atual, que {@link #limparLote()} zera a
-     * cada nova análise de mídia. A contagem de arquivos de cache é sempre
-     * lida diretamente do diretório informado.
+     * o total acumulado do projeto e sobrevive a restarts do servidor — as
+     * mídias, traduções e operações são um dataset permanente, nunca zerado
+     * entre análises. A contagem de arquivos de cache é sempre lida diretamente
+     * do diretório informado.
      */
     public synchronized TelemetriaResumo gerarResumo(Path diretorioCache) {
         this.ultimoDiretorioCache = diretorioCache;

@@ -243,6 +243,16 @@ class WebInterfaceTest {
         );
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: garante que a opção 10 entregue o formulário e o console
+     * usados para acompanhar a tradução de karaokê em tempo real no navegador.
+     *
+     * INVARIANTES DO DOMÍNIO: o HTML deve conter o terminal dedicado e o orquestrador
+     * deve rotear o canal SSE {@code traducao-karaoke} exclusivamente para ele.
+     *
+     * COMPORTAMENTO EM CASO DE FALHA: qualquer recurso ausente, resposta HTTP inválida
+     * ou contrato de roteamento removido faz o teste falhar antes da publicação.
+     */
     @Test
     void traducaoKaraokeHtmlEJsDisponiveis() {
         given()
@@ -252,12 +262,21 @@ class WebInterfaceTest {
             .contentType(containsString("html"))
             .body(containsString("Tradução de Karaokê"))
             .body(containsString("id=\"traducao-karaoke-contexto\""))
-            .body(containsString("id=\"traducao-karaoke-entrada\""));
+            .body(containsString("id=\"traducao-karaoke-entrada\""))
+            .body(containsString("id=\"console-traducao-karaoke\""));
 
         given()
             .when().get("/traducaoKaraoke/traducaoKaraoke.js")
             .then()
             .statusCode(200)
             .contentType(containsString("javascript"));
+
+        given()
+            .when().get("/js/app.js")
+            .then()
+            .statusCode(200)
+            .contentType(containsString("javascript"))
+            .body(containsString("'traducao-karaoke': 'console-traducao-karaoke'"))
+            .body(containsString("traducao-karaoke:painel-carregado"));
     }
 }

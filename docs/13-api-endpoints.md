@@ -26,9 +26,9 @@ Health check simples.
 Auditoria técnica de mídia. Ver [Análise de Mídia](03-modulo-analise-midia.md).
 
 ```json
-{ "entrada": "C:/animes/DanMachi/Season 04", "saida": "C:/animes/DanMachi/relatorios" }
+{ "entrada": "C:/animes/DanMachi/Season 04", "saida": null }
 ```
-**Canal SSE:** `analise` (progresso) + evento dedicado `analise-relatorio` (conteúdo integral do relatório salvo)
+**Canal SSE:** `analise` (progresso) + evento dedicado `analise-relatorio` com o **JSON do `ResultadoAnaliseLote`** (resultado estruturado, **não** gravado em disco). A exportação TXT é manual no navegador; só a telemetria técnica é persistida (em `logs/`).
 
 ---
 
@@ -279,7 +279,7 @@ Conexão `EventSource` única para **todos** os logs em tempo real. Cada operaç
 | `remuxer` | `/api/remuxar` |
 | `console` | Fallback genérico — roteado para a aba ativa no navegador |
 | `sistema` | Mensagens de conexão/sistema |
-| `analise-relatorio` | Evento único com o conteúdo integral do relatório de análise salvo em disco |
+| `analise-relatorio` | Evento único com o JSON do `ResultadoAnaliseLote` (resultado estruturado; não salvo em disco — export TXT é manual) |
 
 ```javascript
 const es = new EventSource('/api/logs/stream');

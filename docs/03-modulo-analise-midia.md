@@ -6,9 +6,11 @@
 
 ## Para que serve
 
-Primeira etapa do pipeline: **auditoria técnica** de arquivos de vídeo antes de qualquer processamento. Usa `ffprobe` para extrair contêiner, codecs de vídeo/áudio, e **cada faixa de legenda embutida**, calculando um **veredito de sincronismo** por faixa — a funcionalidade mais importante do módulo, porque detecta legendas dessincronizadas *antes* de gastar tempo traduzindo um arquivo com problema na fonte.
+Primeira etapa do pipeline: **auditoria técnica** de arquivos de vídeo antes de qualquer processamento. Usa `ffprobe` para extrair contêiner, codecs de vídeo/áudio e **cada faixa de legenda embutida**, e classifica cada legenda por **traduzibilidade** — se é de **texto** (ASS, SSA, SRT, WebVTT, MOV_TEXT), extraível e traduzível, ou **bitmap** (PGS, VobSub, DVB), que exige OCR. Esse é o dado vital do módulo: decidir, antes de gastar tempo, se dá para extrair e traduzir a legenda de um arquivo.
 
-> 📖 Contexto real de uso desta funcionalidade: numa sessão de suporte, este módulo foi usado para diagnosticar por que a legenda de um filme (*Gundam Narrative*) chegava "adiantada" desde a primeira fala — a causa raiz era a legenda ter sido extraída de um release/encode diferente (grupo de fansub distinto) do vídeo usado no remux final. Ver [Solução de Problemas](15-solucao-problemas.md#legenda-dessincronizada-desde-o-inicio).
+> ⚠️ Este módulo **não** emite um veredito confiável de sincronismo. O `ffprobe` fornece apenas **metadados técnicos** (durações, codecs, flags). A duração de uma faixa de legenda quando comparada à do vídeo é reportada como **informação**, não como diagnóstico — e frequentemente é um placeholder (igual à do vídeo), não um valor real. Um atraso constante ou uma incompatibilidade entre releases (legenda de um fansub/encode diferente do vídeo) só pode ser confirmado analisando os **eventos temporais da própria legenda**, o que está fora do escopo atual. Qualquer diagnóstico futuro de sincronismo deve ser tratado como **heurística, não como certeza**.
+
+> 📖 Contexto real de uso: numa sessão de suporte, a legenda de um filme (*Gundam Narrative*) chegava "adiantada" desde a primeira fala — a causa raiz era a legenda ter sido extraída de um release/encode diferente (grupo de fansub distinto) do vídeo usado no remux. A análise técnica ajuda a levantar os metadados, mas a confirmação do desalinhamento exigiu inspecionar os tempos dos eventos da legenda. Ver [Solução de Problemas](15-solucao-problemas.md#legenda-dessincronizada-desde-o-inicio).
 
 ![Painel de Análise de Mídia](../src/main/resources/static/img/screenshots/analise-midia.webp)
 
@@ -18,10 +20,10 @@ Primeira etapa do pipeline: **auditoria técnica** de arquivos de vídeo antes d
 
 | Classe | Papel |
 |--------|-------|
-| `AnalisarMidiaUseCase` (`application`) | Orquestra o lote: varre vídeos, chama o adapter, monta o relatório de texto, salva em disco e registra telemetria |
+| `AnalisarMidiaUseCase` (`application`) | Orquestra o lote: varre vídeos, chama o adapter, classifica as legendas, coleta sucessos e falhas e registra telemetria. **Não grava relatório em disco.** |
 | `FfprobeAdapter` (`infrastructure/adapters`) | Executa `ffprobe -show_format -show_streams -print_format json` e mapeia o JSON para os records de domínio |
 | `AuditoriaResultado`, `ContainerInfo`, `VideoInfo`, `AudioInfo`, `LegendaInfo` (`domain`) | Records imutáveis do resultado da auditoria |
-| `ResultadoAnaliseLote` (`domain`) | Retorno do use case: lista de resultados + `Path` do relatório `.txt` efetivamente salvo em disco |
+| `ResultadoAnaliseLote` (`domain`) | Retorno do use case: **`resultados`** (análises bem-sucedidas) + **`falhas`** (arquivos que erraram). Não contém `Path` de relatório salvo. |
 | `ConsoleAnalisadorLogger` (`presentation/ui`) | Formatação colorida para a CLI legada |
 
 ---
@@ -35,27 +37,26 @@ sequenceDiagram
     participant API as ApiController
     participant UC as AnalisarMidiaUseCase
     participant FF as FfprobeAdapter
-    participant FS as Disco
+    participant TEL as Telemetria (logs/)
 
     Op->>UI: Informa pasta/arquivo de vídeo
-    UI->>API: POST /api/analisar {entrada, saida}
-    API-->>UI: 200 "Análise iniciada" (job assíncrono)
+    UI->>API: POST /api/analisar {entrada, saida?}
+    API-->>UI: 200 "Análise de mídia iniciada" (job assíncrono)
     API->>UC: executar(entrada, saida)
     UC->>UC: encontrarVideos() — varre recursivamente por extensão
     loop Para cada vídeo
         UC->>FF: analisarMidia(video)
         FF->>FF: ffprobe -show_streams -show_format
         FF-->>UC: AuditoriaResultado (container, vídeos, áudios, legendas)
-        UC->>FF: obterTimestampsLegenda() por faixa (se metadados suspeitos)
-        UC->>UC: calcula drift, classifica veredito
+        UC->>UC: classifica cada legenda (texto/bitmap, traduzível)
+        UC->>TEL: registrarMidia() — telemetria técnica anonimizada
     end
-    UC->>FS: salva .txt + .json em relatorios/
-    UC-->>API: ResultadoAnaliseLote {resultados, relatorioPrincipal}
-    API->>FS: lê de volta o .txt salvo
-    API-->>UI: SSE evento "analise-relatorio" com o conteúdo exato do arquivo
+    UC-->>API: ResultadoAnaliseLote {resultados, falhas}
+    API->>UI: SSE "analise-relatorio" com o JSON serializado do resultado
+    Op->>UI: (opcional) Exportar TXT — gerado no navegador sob demanda
 ```
 
-> O relatório exibido na tela **é o mesmo arquivo `.txt` gravado em disco**, lido de volta e transmitido via SSE — não uma reconstrução em memória. Isso garante que a tela sempre mostra exatamente o que foi persistido (fonte única de verdade).
+> O que a tela recebe é o **`ResultadoAnaliseLote` serializado diretamente em JSON** e transmitido via SSE no canal `analise-relatorio`. **Não** há gravação de `.txt`/`.json` da análise em disco, nem releitura de arquivo: a fonte da interface é o **domínio estruturado**. A exportação para TXT é **manual**, disparada pelo operador no navegador e produzida a partir dos mesmos dados estruturados. Apenas a **telemetria técnica** é persistida — separadamente, no destino canônico interno (`logs/telemetria_compartilhada.json`).
 
 ---
 
@@ -67,33 +68,27 @@ Codec, resolução, profundidade de cor, FPS, aspect ratio, bitrate.
 ### Áudio
 Idioma, codec, canais, taxa de amostragem, bitrate, título da faixa.
 
-### Legenda — a parte crítica: veredito de sincronismo
+### Legenda — classificação por traduzibilidade
 
-Para cada faixa de legenda, o módulo compara a **duração do vídeo** com a **duração real da legenda** (obtida via análise de pacotes do ffprobe quando os metadados são suspeitos — ex.: duração igual à do vídeo, que é um placeholder comum, não um valor real) e classifica:
+Para cada faixa, o módulo classifica o formato e deriva a traduzibilidade:
 
-| Veredito | Condição | Interpretação |
-|----------|----------|----------------|
-| **Legenda Parcial Muxed** | Duração da legenda < 50% da duração do vídeo | Normal para faixas de "signs/songs" — não precisa de sync global |
-| **Legenda Sincronizada!** | Diferença de fim ≤ 1.5s | Dentro da margem seguraç, nenhuma ação necessária |
-| **Desalinhada — FPS Mismatch** | Razão vídeo/legenda bate com um dos padrões conhecidos (25→23.976, 23.976→25, 24→23.976, 23.976→24) | A legenda foi timada para outro frame rate — precisa de **estiramento de tempo**, não só um offset fixo |
-| **Desalinhada — atraso constante** | Diferença de fim > 1.5s, sem padrão de FPS | Sugestão de **offset em ms** a aplicar (calculado automaticamente) no [Remuxer](08-modulo-remuxer.md) |
+| Categoria | Formatos | Traduzível | Observação |
+|-----------|----------|------------|------------|
+| **Texto** | ASS, SSA, SRT/SubRip, WebVTT, MOV_TEXT | Sim | Extraível para texto e apto ao pipeline de tradução |
+| **Bitmap** | PGS, VobSub, DVB | Não (exige OCR) | Legenda em imagem; **não** é hardsub — é uma faixa embutida, apenas não textual |
+| **Sem faixa de legenda** | — | — | Pode ser RAW **ou** hardsub; a **ausência de faixa softsub não prova** que há hardsub |
 
-```mermaid
-graph TD
-    A["Duração legenda vs vídeo"] --> B{"< 50% da<br/>duração do vídeo?"}
-    B -->|Sim| C["Parcial Muxed<br/>(signs/songs, OK)"]
-    B -->|Não| D{"Diferença ≤ 1.5s?"}
-    D -->|Sim| E["✅ Sincronizada"]
-    D -->|Não| F{"Razão bate com<br/>padrão de FPS conhecido?"}
-    F -->|Sim| G["⚠️ Desalinhada<br/>FPS Mismatch<br/>(precisa estiramento)"]
-    F -->|Não| H["⚠️ Desalinhada<br/>Offset constante<br/>(sugestão em ms)"]
-```
+**Indicadores temporais** (duração da legenda e diferença para a duração do vídeo) são exibidos apenas como **informação técnica**, sem veredito de sincronia.
 
 ---
 
-## Formato de legenda detectado (resumo no topo do relatório)
+## Formato de legenda detectado (resumo no topo do relatório em tela)
 
-O relatório sempre abre com uma seção **"FORMATO DE LEGENDA DETECTADO"**, listando o tipo de cada faixa (ASS, SRT, PGS, VobSub, DVB, WebVTT, MOV_TEXT, hardsub) antes de qualquer outro dado — informação que costuma ser a primeira coisa que o operador precisa saber ao decidir se vale a pena extrair aquele arquivo (ex.: legendas **PGS/VobSub são bitmap**, não extraíveis para texto sem OCR).
+O resultado sempre abre com uma seção **"FORMATO DE LEGENDA DETECTADO"**, listando o tipo de cada faixa (ASS, SSA, SRT, PGS, VobSub, DVB, WebVTT, MOV_TEXT) antes de qualquer outro dado — costuma ser a primeira coisa que o operador precisa saber ao decidir se vale extrair aquele arquivo. Atenção à terminologia:
+
+- **PGS** e **VobSub** são legendas **bitmap** (imagem), não extraíveis para texto sem OCR — **não** são hardsub.
+- **Hardsub** é conteúdo **queimado na imagem do vídeo**; não aparece como faixa de legenda.
+- **Nenhuma faixa de legenda** encontrada **não** confirma hardsub — o arquivo pode ser apenas RAW.
 
 ---
 
@@ -104,17 +99,18 @@ O relatório sempre abre com uma seção **"FORMATO DE LEGENDA DETECTADO"**, lis
 ```json
 {
   "entrada": "C:/animes/[Sokudo] DanMachi/Season 04",
-  "saida": "C:/animes/[Sokudo] DanMachi/relatorios"
+  "saida": null
 }
 ```
 
-`saida` é opcional — se omitido, os relatórios vão para uma subpasta `relatorios/` dentro de `entrada`.
+`entrada` é obrigatório (pasta ou arquivo de vídeo). `saida` é opcional.
 
-**Resposta imediata:** `200 OK` com mensagem de job iniciado. O progresso e o relatório final chegam via **SSE** no canal `analise` (ver [API REST — Referência](13-api-endpoints.md#sse-logsstream)).
+**Resposta imediata:** `200 OK` com `{"mensagem": "Análise de mídia iniciada no servidor."}`. O job roda em segundo plano; o resultado chega via **SSE** no canal `analise-relatorio` como o **JSON do `ResultadoAnaliseLote`** (ver [API REST — Referência](13-api-endpoints.md)).
 
 **Saída em disco:**
-- 1 arquivo de vídeo → `relatorios/<nome>_<timestamp>.txt` + `.json`
-- Vários arquivos → `relatorios/consolidado_<pasta>_<timestamp>.txt` (todos concatenados) + um `.json` individual por vídeo
+- **Nenhum relatório de análise é gravado automaticamente.** O resultado completo aparece no HTML a partir do JSON estruturado.
+- A **exportação para TXT é manual**, feita no navegador sob demanda, a partir dos mesmos dados estruturados.
+- A **telemetria técnica** (metadados anonimizados por mídia) é persistida separadamente no destino canônico interno (`logs/telemetria_compartilhada.json`), servindo tanto para diagnóstico quanto como dataset de melhoria futura.
 
 ---
 

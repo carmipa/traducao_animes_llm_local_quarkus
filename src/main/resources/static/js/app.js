@@ -20,7 +20,7 @@ import { initDocumentacao } from '../documentacao/documentacao.js?v=3.0';
 import { initSobre } from '../sobre/sobre.js?v=3.0';
 import { initRenomearArquivos } from '../renomearArquivos/renomearArquivos.js?v=3.0';
 import { initNovoKaraoke } from '../novoKaraoke/novoKaraoke.js?v=1.0';
-import { initTraducaoKaraoke } from '../traducaoKaraoke/traducaoKaraoke.js?v=1.0';
+import { initTraducaoKaraoke } from '../traducaoKaraoke/traducaoKaraoke.js?v=1.1';
 import { initInicio } from '../inicio/inicio.js?v=1.0';
 import { inicializarI18n } from '../i18n/i18n.js?v=2.1';
 
@@ -103,6 +103,12 @@ const CONFIG_SECOES = {
 let logsEventSource = null;
 let logsReconnectTimer = null;
 let seletorCaminhoEmAndamento = false;
+const logsPendentesPorConsole = new Map();
+const LIMITE_LOGS_PENDENTES = 1000;
+
+document.addEventListener('traducao-karaoke:painel-carregado', () => {
+    descarregarLogsPendentes('console-traducao-karaoke');
+});
 
 document.addEventListener('DOMContentLoaded', async () => {
     inicializarI18n();
@@ -229,7 +235,15 @@ async function inicializarModulos() {
 }
 
 /**
- * Conecta ao Server-Sent Events (SSE) para receber os logs do terminal em tempo real
+ * PROPÓSITO DE NEGÓCIO: conecta a interface ao fluxo SSE e encaminha cada etapa
+ * operacional ao console visual do módulo que iniciou o processamento.
+ *
+ * INVARIANTES DO DOMÍNIO: cada canal deve apontar para um único console; mensagens
+ * recebidas antes da montagem do painel devem permanecer disponíveis; só pode haver
+ * uma conexão SSE ativa por página.
+ *
+ * COMPORTAMENTO EM CASO DE FALHA: fecha a conexão defeituosa e agenda uma nova
+ * tentativa em cinco segundos, preservando no buffer as linhas já recebidas.
  */
 function conectarFluxoLugsSSE() {
     if (logsEventSource && logsEventSource.readyState !== EventSource.CLOSED) {
@@ -427,11 +441,28 @@ function ansiParaHtml(texto) {
 }
 
 /**
- * Auxiliar para formatar e exibir mensagens nos painéis de console (Padrão SSE)
+ * PROPÓSITO DE NEGÓCIO: apresenta no navegador uma linha produzida pelo CLI/backend,
+ * conservando horário, cores ANSI e a sequência original do processamento.
+ *
+ * INVARIANTES DO DOMÍNIO: conteúdo externo nunca é interpretado como HTML; cada
+ * console mantém no máximo mil linhas visíveis; uma linha não pode ser descartada
+ * apenas porque o painel dinâmico ainda não terminou de carregar.
+ *
+ * COMPORTAMENTO EM CASO DE FALHA: se o elemento visual ainda não existir, guarda a
+ * mensagem em memória para exibição posterior; mensagens excedentes mais antigas
+ * são removidas para impedir crescimento ilimitado.
  */
 function logNoConsoleFormatado(consoleId, rawMessage) {
     const consoleDiv = document.getElementById(consoleId);
-    if (!consoleDiv) return;
+    if (!consoleDiv) {
+        const pendentes = logsPendentesPorConsole.get(consoleId) || [];
+        pendentes.push(rawMessage);
+        if (pendentes.length > LIMITE_LOGS_PENDENTES) {
+            pendentes.splice(0, pendentes.length - LIMITE_LOGS_PENDENTES);
+        }
+        logsPendentesPorConsole.set(consoleId, pendentes);
+        return;
+    }
 
     // Remove mensagem "Aguardando..." se existir
     const sysMsg = consoleDiv.querySelector('.system-message');
@@ -454,6 +485,26 @@ function logNoConsoleFormatado(consoleId, rawMessage) {
     }
 
     consoleDiv.scrollTop = consoleDiv.scrollHeight;
+}
+
+/**
+ * PROPÓSITO DE NEGÓCIO: entrega ao terminal visual as linhas produzidas enquanto o
+ * fragmento HTML do módulo ainda estava sendo carregado pelo navegador.
+ *
+ * INVARIANTES DO DOMÍNIO: respeita a ordem de chegada e remove o lote do buffer antes
+ * de renderizar para impedir duplicação caso outro evento de montagem seja emitido.
+ *
+ * COMPORTAMENTO EM CASO DE FALHA: se o console ainda não existir ou não houver linhas
+ * pendentes, não altera o estado; uma nova montagem poderá tentar novamente.
+ */
+function descarregarLogsPendentes(consoleId) {
+    if (!document.getElementById(consoleId)) return;
+
+    const pendentes = logsPendentesPorConsole.get(consoleId);
+    if (!pendentes || pendentes.length === 0) return;
+
+    logsPendentesPorConsole.delete(consoleId);
+    pendentes.forEach(mensagem => logNoConsoleFormatado(consoleId, mensagem));
 }
 
 /**

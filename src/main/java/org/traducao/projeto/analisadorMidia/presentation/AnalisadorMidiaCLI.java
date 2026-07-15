@@ -71,7 +71,8 @@ public class AnalisadorMidiaCLI implements ExecucaoCli {
                 logger.imprimirResultado(res);
             }
 
-            logger.sucesso("Auditoria de mídia concluída! Todos os relatórios foram gravados no disco.");
+            logger.sucesso("Auditoria de mídia concluída! Resultado exibido na tela; "
+                + "a exportação TXT é manual e a telemetria técnica foi persistida internamente.");
 
         } catch (Exception e) {
             logger.erro("Falha durante o processamento da auditoria de mídias: " + e.getMessage());
