@@ -43,6 +43,30 @@ class KronosMcpToolsTest {
     }
 
     @Test
+    void caminhoNuloRetornaErroSemTocarNaFila() {
+        FakeAnalise fake = new FakeAnalise(loteVazio(), null);
+        KronosMcpTools mcp = new KronosMcpTools(fake, fila);
+
+        assertTrue(mcp.analisarMidia(null).startsWith("ERRO"));
+        assertEquals(0, fake.chamadas.get());
+    }
+
+    @Test
+    void caminhoSintaticamenteInvalidoRetornaErroDeCaminhoInvalido() {
+        FakeAnalise fake = new FakeAnalise(loteVazio(), null);
+        KronosMcpTools mcp = new KronosMcpTools(fake, fila);
+
+        // Caractere NUL torna o caminho sintaticamente invalido (InvalidPathException)
+        // tanto no Windows quanto em sistemas POSIX. Construido via (char) 0 para
+        // evitar ambiguidade de escape no fonte.
+        String caminhoInvalido = "caminho" + (char) 0 + "invalido";
+        String resposta = mcp.analisarMidia(caminhoInvalido);
+
+        assertTrue(resposta.startsWith("ERRO: caminho invalido"), resposta);
+        assertEquals(0, fake.chamadas.get(), "caminho invalido não deve acionar a fila");
+    }
+
+    @Test
     void caminhoInexistenteRetornaErro() {
         FakeAnalise fake = new FakeAnalise(loteVazio(), null);
         KronosMcpTools mcp = new KronosMcpTools(fake, fila);
