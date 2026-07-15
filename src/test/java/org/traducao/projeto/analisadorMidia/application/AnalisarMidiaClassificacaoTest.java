@@ -6,6 +6,7 @@ import org.traducao.projeto.analisadorMidia.domain.LegendaInfo;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -18,11 +19,31 @@ class AnalisarMidiaClassificacaoTest {
     @Test
     void classificaOsCodecsDeLegendaConhecidos() {
         assertEquals("ASS", tipoCurto("ass", "ASS"));
+        assertEquals("SSA", tipoCurto("ssa", "SSA"));
         assertEquals("SRT", tipoCurto("subrip", "SUBRIP"));
         assertEquals("PGS", tipoCurto("hdmv_pgs_subtitle", "HDMV_PGS_SUBTITLE"));
         assertEquals("VOBSUB", tipoCurto("dvd_subtitle", "DVD_SUBTITLE"));
+        assertEquals("DVB", tipoCurto("dvb_subtitle", "DVB_SUBTITLE"));
         assertEquals("WEBVTT", tipoCurto("webvtt", "WEBVTT"));
         assertEquals("MOV_TEXT", tipoCurto("mov_text", "MOV_TEXT"));
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: PGS e VobSub são legendas BITMAP (imagem), não
+     * hardsub — a terminologia importa para o operador não confundir uma faixa
+     * bitmap embutida (extraível via OCR) com conteúdo queimado no vídeo.
+     * INVARIANTES DO DOMÍNIO: o rótulo de PGS/VobSub cita "Bitmap" e NÃO "Hardsub".
+     * COMPORTAMENTO EM CASO DE FALHA: regressão de terminologia falha aqui.
+     */
+    @Test
+    void pgsEVobSubSaoRotuladosComoBitmapNaoHardsub() {
+        String[] pgs = AnalisarMidiaUseCase.classificarLegenda("hdmv_pgs_subtitle", "HDMV_PGS_SUBTITLE");
+        assertTrue(pgs[0].contains("Bitmap"), pgs[0]);
+        assertFalse(pgs[0].toLowerCase().contains("hardsub"), "PGS não deve ser rotulado como Hardsub: " + pgs[0]);
+
+        String[] vobsub = AnalisarMidiaUseCase.classificarLegenda("dvd_subtitle", "DVD_SUBTITLE");
+        assertTrue(vobsub[0].contains("Bitmap"), vobsub[0]);
+        assertFalse(vobsub[0].toLowerCase().contains("hardsub"), "VobSub não deve ser rotulado como Hardsub: " + vobsub[0]);
     }
 
     @Test

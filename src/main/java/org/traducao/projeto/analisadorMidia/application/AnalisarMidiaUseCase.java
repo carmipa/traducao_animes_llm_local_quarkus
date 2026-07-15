@@ -249,11 +249,9 @@ public class AnalisarMidiaUseCase {
         logs.add("FAIXAS DE LEGENDAS");
         logs.add("=".repeat(80));
 
+        // A duração do container já inclui, quando necessário, o fallback vindo
+        // das trilhas (resolvido no FfprobeAdapter). Aqui é só informação.
         double duracaoVideoSegundos = base.container().duracaoSegundos();
-        if (duracaoVideoSegundos <= 0.0 && !base.videos().isEmpty()) {
-            // Se duracao geral do container falhar, tenta pegar a duracao do primeiro stream de video
-            // ffprobe as vezes reporta duracao do stream mas nao do container
-        }
 
         if (base.legendas().isEmpty()) {
             logs.add("\n    NENHUMA FAIXA DE LEGENDA ENCONTRADA");
@@ -349,7 +347,7 @@ public class AnalisarMidiaUseCase {
             return new String[]{"SSA (Estilizada - SubStation Alpha)", "SSA"};
         }
         if (codecUpper.contains("PGS") || codecUpper.contains("HDMV") || formatoUpper.contains("PGS")) {
-            return new String[]{"PGS (Bitmap/Hardsub - Nao extraivel para texto)", "PGS"};
+            return new String[]{"PGS (Bitmap - imagem, nao extraivel para texto sem OCR)", "PGS"};
         }
         if (codecUpper.contains("VOBSUB") || formatoUpper.contains("VOBSUB") || formatoUpper.contains("DVD_SUBTITLE")) {
             return new String[]{"VobSub (Bitmap DVD - Nao extraivel para texto)", "VOBSUB"};
