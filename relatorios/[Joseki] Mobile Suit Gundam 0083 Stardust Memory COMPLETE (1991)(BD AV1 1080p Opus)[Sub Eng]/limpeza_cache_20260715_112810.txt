@@ -1,0 +1,12 @@
+LIMPEZA SEGURA DO CACHE
+=======================
+Pasta: D:\PROJETOS-OPEN\traducao_animes_llm_local_quarkus\cache\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]
+Status: CONCLUIDO
+Arquivos analisados: 15
+Arquivos alterados: 1
+Entradas problemáticas: 14
+Entradas invalidadas: 1
+Entradas ignoradas: 13
+Falhas: 0
+Cancelado: false
+Observação: execute novamente a Tradução Local para regenerar o ASS/SRT a partir do cache corrigido.

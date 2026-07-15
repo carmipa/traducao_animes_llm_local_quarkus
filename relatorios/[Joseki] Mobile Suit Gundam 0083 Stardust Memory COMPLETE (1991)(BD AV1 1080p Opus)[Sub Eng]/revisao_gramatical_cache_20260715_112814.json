@@ -1,0 +1,9 @@
+{
+  "tipo" : "Revisão Gramatical (cache LLM)",
+  "detalhe" : "status=CONCLUIDO; falhas=0",
+  "tempoTotalMs" : 2472,
+  "arquivosProcessados" : 15,
+  "itensDetectados" : 2,
+  "itensCorrigidos" : 0,
+  "registradoEm" : "2026-07-15T14:28:14.251307400Z"
+}
