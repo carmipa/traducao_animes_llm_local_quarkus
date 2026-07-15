@@ -6,6 +6,7 @@ import jakarta.ws.rs.sse.OutboundSseEvent;
 import jakarta.ws.rs.sse.Sse;
 import jakarta.ws.rs.sse.SseEventSink;
 import org.springframework.stereotype.Service;
+import org.traducao.projeto.core.io.DiretorioBaseKronos;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -24,7 +25,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @ApplicationScoped
 public class LogStreamService {
 
-    private static final Path ARQUIVO_LOG = Path.of("logs", "console-web.log");
+    // Resolvido via DiretorioBaseKronos: logs/console-web.log em produção,
+    // redirecionado para árvore descartável sob a suíte de testes.
+    private static final Path ARQUIVO_LOG = DiretorioBaseKronos.resolver("logs", "console-web.log");
     private static final char CHAR_ESC = (char) 27;
     private static final char CHAR_COLCHETE = (char) 91;
     private static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");

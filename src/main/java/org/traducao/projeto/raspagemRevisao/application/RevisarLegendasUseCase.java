@@ -8,6 +8,7 @@ import org.traducao.projeto.raspagemCorrecao.application.ProtetorTermosLoreServi
 import org.traducao.projeto.raspagemRevisao.domain.ResultadoDeteccaoConcordancia;
 import org.traducao.projeto.raspagemRevisao.domain.exceptions.RaspagemRevisaoException;
 import org.traducao.projeto.telemetria.OperacaoTelemetria;
+import org.traducao.projeto.core.io.DiretorioBaseKronos;
 import org.traducao.projeto.telemetria.TelemetriaService;
 import org.traducao.projeto.traducao.application.DetectorEfeitoKaraokeService;
 import org.traducao.projeto.traducao.application.ProtecaoLegendaAssService;
@@ -261,9 +262,9 @@ public class RevisarLegendasUseCase {
         }
 
         Path pastaEn = pastaLegendasEn != null ? pastaLegendasEn : pastaLegendasPt;
-        Path cacheDir = pastaCache != null ? pastaCache : Path.of("cache");
+        Path cacheDir = pastaCache != null ? pastaCache : DiretorioBaseKronos.resolver("cache");
         Path saidaDir = pastaSaida != null ? pastaSaida : pastaLegendasPt;
-        Path pastaBackup = Path.of("backups", "revisao-legendas",
+        Path pastaBackup = DiretorioBaseKronos.resolver("backups", "revisao-legendas",
             "revisao_" + LocalDateTime.now().format(TS_BACKUP)).toAbsolutePath().normalize();
 
         int[] arquivosProcessados = {0};

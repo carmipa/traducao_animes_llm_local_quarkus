@@ -2,9 +2,9 @@
  MAPA ESTRUTURAL DO PROJETO - TRACKER ANIMES
 ================================================================================
  Raiz do repositorio      : traducao_animes_llm_local_quarkus
- Pastas mapeadas          : 513
- Arquivos (na arvore)     : 1038
- Arquivos-fonte indexados : 380  (.java: 380 | .py: 0)
+ Pastas mapeadas          : 556
+ Arquivos (na arvore)     : 1140
+ Arquivos-fonte indexados : 388  (.java: 388 | .py: 0)
  Memoria viva do projeto  : CEREBRO_IA.md (na raiz do repositorio)
 
  Objetivo: mapa de contexto para LLMs navegarem os diretorios e
@@ -39,6 +39,24 @@ traducao_animes_llm_local_quarkus/
 │   │   ├── google_20260714_090743_353/
 │   │   │   └── Gundam Narrative NT/
 │   │   │       └── [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3.cache.json
+│   │   ├── google_20260714_093821_106/
+│   │   │   └── Gundam Narrative NT/
+│   │   │       └── [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3.cache.json
+│   │   ├── google_20260714_204024_579/
+│   │   │   └── [Joseki] Mobile Suit Gundam The 08th MS Team COMPLETE (1996)(BD AV1 1080p Opus)[Sub Eng]/
+│   │   │       └── Mobile.Suit.Gundam.The.08th.MS.Team.S00E02_Track2.cache.json
+│   │   ├── google_20260714_204945_160/
+│   │   │   └── [Joseki] Mobile Suit Gundam The 08th MS Team COMPLETE (1996)(BD AV1 1080p Opus)[Sub Eng]/
+│   │   │       └── Mobile.Suit.Gundam.The.08th.MS.Team.S00E02_Track2.cache.json
+│   │   ├── google_20260714_205108_270/
+│   │   │   └── [Joseki] Mobile Suit Gundam The 08th MS Team COMPLETE (1996)(BD AV1 1080p Opus)[Sub Eng]/
+│   │   │       └── Mobile.Suit.Gundam.The.08th.MS.Team.S00E02_Track2.cache.json
+│   │   ├── google_20260714_211730_872/
+│   │   │   └── [Joseki] Mobile Suit Gundam The 08th MS Team COMPLETE (1996)(BD AV1 1080p Opus)[Sub Eng]/
+│   │   │       └── Mobile.Suit.Gundam.The.08th.MS.Team.S00E02_Track2.cache.json
+│   │   ├── google_20260714_211846_263/
+│   │   │   └── [Joseki] Mobile Suit Gundam The 08th MS Team COMPLETE (1996)(BD AV1 1080p Opus)[Sub Eng]/
+│   │   │       └── Mobile.Suit.Gundam.The.08th.MS.Team.S00E02_Track2.cache.json
 │   │   ├── hotfix_opcao6_20260713_185403_591/
 │   │   │   └── [2ndfire]Mobile_Suit_Gundam_Narrative[BD][1080p][AV1][10bit][981A36A1]_Track3.cache.json
 │   │   ├── limpeza_20260713_194726_839/
@@ -70,7 +88,37 @@ traducao_animes_llm_local_quarkus/
 │   │   │   └── show_PT-BR.ass
 │   │   ├── revisao_20260714_090744_296/
 │   │   │   └── show_PT-BR.ass
-│   │   └── revisao_20260714_091955_271/
+│   │   ├── revisao_20260714_091955_271/
+│   │   │   └── show_PT-BR.ass
+│   │   ├── revisao_20260714_093822_243/
+│   │   │   └── show_PT-BR.ass
+│   │   ├── revisao_20260714_123212_698/
+│   │   │   └── show_PT-BR.ass
+│   │   ├── revisao_20260714_124015_552/
+│   │   │   └── show_PT-BR.ass
+│   │   ├── revisao_20260714_202102_751/
+│   │   │   └── show_PT-BR.ass
+│   │   ├── revisao_20260714_202118_865/
+│   │   │   └── show_PT-BR.ass
+│   │   ├── revisao_20260714_202154_393/
+│   │   │   └── show_PT-BR.ass
+│   │   ├── revisao_20260714_202359_085/
+│   │   │   └── show_PT-BR.ass
+│   │   ├── revisao_20260714_202755_032/
+│   │   │   └── show_PT-BR.ass
+│   │   ├── revisao_20260714_204002_173/
+│   │   │   └── show_PT-BR.ass
+│   │   ├── revisao_20260714_204026_058/
+│   │   │   └── show_PT-BR.ass
+│   │   ├── revisao_20260714_204922_425/
+│   │   │   └── show_PT-BR.ass
+│   │   ├── revisao_20260714_204946_994/
+│   │   │   └── show_PT-BR.ass
+│   │   ├── revisao_20260714_205109_934/
+│   │   │   └── show_PT-BR.ass
+│   │   ├── revisao_20260714_211732_819/
+│   │   │   └── show_PT-BR.ass
+│   │   └── revisao_20260714_211848_077/
 │   │       └── show_PT-BR.ass
 │   ├── revisao-lore/
 │   │   ├── rejeitadas/
@@ -90,10 +138,16 @@ traducao_animes_llm_local_quarkus/
 │       ├── gradle-wrapper.jar
 │       └── gradle-wrapper.properties
 ├── logs/
+│   ├── novo-karaoke/
+│   │   └── manifestos/
+│   │       └── kronos_novo_karaoke_20260714_213501.json
 │   ├── renomear-arquivos/
 │   │   └── undo/
 │   │       ├── kronos_undo_renomeacao_8c59cff6517db2ad.json
 │   │       └── kronos_undo_renomeacao_b8f1c8d05a1ef7d7.json
+│   ├── traducao-karaoke/
+│   │   └── manifestos/
+│   │       └── kronos_traducao_karaoke_20260714_215726.json
 │   ├── console-web.log
 │   └── telemetria_compartilhada.json
 ├── relatorios/
@@ -108,6 +162,12 @@ traducao_animes_llm_local_quarkus/
 │   │   ├── correcao_google_cache_20260713_221730.txt
 │   │   ├── correcao_google_cache_20260713_222601.json
 │   │   ├── correcao_google_cache_20260713_222601.txt
+│   │   ├── correcao_google_cache_20260714_200713.json
+│   │   ├── correcao_google_cache_20260714_200713.txt
+│   │   ├── correcao_google_cache_20260714_213613.json
+│   │   ├── correcao_google_cache_20260714_213613.txt
+│   │   ├── correcao_google_cache_20260714_215131.json
+│   │   ├── correcao_google_cache_20260714_215131.txt
 │   │   ├── limpeza_cache_20260713_214712.json
 │   │   ├── limpeza_cache_20260713_214712.txt
 │   │   ├── limpeza_cache_20260713_221236.json
@@ -120,12 +180,24 @@ traducao_animes_llm_local_quarkus/
 │   │   ├── limpeza_cache_20260713_221718.txt
 │   │   ├── limpeza_cache_20260713_222551.json
 │   │   ├── limpeza_cache_20260713_222551.txt
+│   │   ├── limpeza_cache_20260714_195413.json
+│   │   ├── limpeza_cache_20260714_195413.txt
+│   │   ├── limpeza_cache_20260714_213522.json
+│   │   ├── limpeza_cache_20260714_213522.txt
+│   │   ├── limpeza_cache_20260714_213624.json
+│   │   ├── limpeza_cache_20260714_213624.txt
+│   │   ├── limpeza_cache_20260714_215122.json
+│   │   ├── limpeza_cache_20260714_215122.txt
 │   │   ├── revisao_gramatical_cache_20260713_221448.json
 │   │   ├── revisao_gramatical_cache_20260713_221448.txt
 │   │   ├── revisao_gramatical_cache_20260713_221740.json
 │   │   ├── revisao_gramatical_cache_20260713_221740.txt
 │   │   ├── revisao_gramatical_cache_20260713_222611.json
 │   │   ├── revisao_gramatical_cache_20260713_222611.txt
+│   │   ├── revisao_gramatical_cache_20260714_195418.json
+│   │   ├── revisao_gramatical_cache_20260714_195418.txt
+│   │   ├── revisao_gramatical_cache_20260714_213540.json
+│   │   ├── revisao_gramatical_cache_20260714_213540.txt
 │   │   └── telemetria_compartilhada.json
 │   ├── junit-10227280303715500912/
 │   │   ├── auditoria_conteudo_20260714_063942.json
@@ -142,6 +214,7 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-1042979192828060966/
 │   │   ├── auditoria_conteudo_20260713_193505.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-10457145716067301430/
 │   ├── junit-10622487070481516830/
 │   │   ├── troca_fontes_20260713_223008.json
 │   │   └── troca_fontes_20260713_223008.md
@@ -403,6 +476,7 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-16780971241375691519/
 │   │   ├── auditoria_conteudo_20260714_064656.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-16977597639391591159/
 │   ├── junit-17002555909348050911/
 │   │   ├── auditoria_conteudo_20260714_090744.json
 │   │   └── telemetria_compartilhada.json
@@ -487,6 +561,7 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-2909319590784646655/
 │   │   ├── auditoria_conteudo_20260714_083845.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-2928355329511195125/
 │   ├── junit-2937194050174819637/
 │   │   ├── auditoria_conteudo_20260713_191144.json
 │   │   └── telemetria_compartilhada.json
@@ -526,6 +601,7 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-3638351952093609675/
 │   │   ├── auditoria_conteudo_20260713_223005.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-3736250052181505780/
 │   ├── junit-3774972592274155597/
 │   │   ├── troca_fontes_20260713_193506.json
 │   │   └── troca_fontes_20260713_193506.md
@@ -694,6 +770,9 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-7204380481212106540/
 │   │   ├── auditoria_conteudo_20260714_083845.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-7208780854592139103/
+│   │   ├── troca_fontes_20260714_093824.json
+│   │   └── troca_fontes_20260714_093824.md
 │   ├── junit-7260187239034368309/
 │   │   ├── auditoria_conteudo_20260713_184819.json
 │   │   └── telemetria_compartilhada.json
@@ -775,6 +854,9 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-886673865692128015/
 │   │   ├── auditoria_conteudo_20260714_064656.json
 │   │   └── telemetria_compartilhada.json
+│   ├── junit-8947674011627112228/
+│   │   ├── troca_fontes_20260714_093824.json
+│   │   └── troca_fontes_20260714_093824.md
 │   ├── junit-89741975207636719/
 │   │   ├── auditoria_conteudo_20260714_084638.json
 │   │   └── telemetria_compartilhada.json
@@ -817,6 +899,20 @@ traducao_animes_llm_local_quarkus/
 │   ├── junit-9973901432443234060/
 │   │   ├── auditoria_conteudo_20260713_200753.json
 │   │   └── telemetria_compartilhada.json
+│   ├── karaoke simples/
+│   │   ├── revisao_concordancia_legendas_20260714_215321.json
+│   │   ├── revisao_concordancia_legendas_20260714_215321.txt
+│   │   ├── revisao_concordancia_legendas_20260714_215514.json
+│   │   ├── revisao_concordancia_legendas_20260714_215514.txt
+│   │   ├── revisao_legendas_20260714_215457.json
+│   │   ├── revisao_legendas_20260714_215457.txt
+│   │   ├── revisao_lore_20260714_215536.json
+│   │   ├── telemetria_compartilhada.json
+│   │   ├── traducao_karaoke_20260714_215726.json
+│   │   └── traducao_karaoke_20260714_215726.txt
+│   ├── karaoke simples-karaoke-ptbr/
+│   │   ├── correcao_legendas_20260714_215754.json
+│   │   └── telemetria_compartilhada.json
 │   ├── legendas pt/
 │   │   ├── revisao_concordancia_legendas_20260713_184338.json
 │   │   ├── revisao_concordancia_legendas_20260713_184338.txt
@@ -847,10 +943,42 @@ traducao_animes_llm_local_quarkus/
 │   │   ├── revisao_concordancia_legendas_20260713_221514.txt
 │   │   ├── revisao_concordancia_legendas_20260713_221933.json
 │   │   ├── revisao_concordancia_legendas_20260713_221933.txt
+│   │   ├── revisao_concordancia_legendas_20260714_201504.json
+│   │   ├── revisao_concordancia_legendas_20260714_201504.txt
+│   │   ├── revisao_concordancia_legendas_20260714_202935.json
+│   │   ├── revisao_concordancia_legendas_20260714_202935.txt
+│   │   ├── revisao_concordancia_legendas_20260714_203014.json
+│   │   ├── revisao_concordancia_legendas_20260714_203014.txt
+│   │   ├── revisao_concordancia_legendas_20260714_203307.json
+│   │   ├── revisao_concordancia_legendas_20260714_203307.txt
+│   │   ├── revisao_concordancia_legendas_20260714_204504.json
+│   │   ├── revisao_concordancia_legendas_20260714_204504.txt
+│   │   ├── revisao_concordancia_legendas_20260714_205533.json
+│   │   ├── revisao_concordancia_legendas_20260714_205533.txt
+│   │   ├── revisao_concordancia_legendas_20260714_213940.json
+│   │   ├── revisao_concordancia_legendas_20260714_213940.txt
 │   │   ├── revisao_legendas_20260713_222039.json
 │   │   ├── revisao_legendas_20260713_222039.txt
+│   │   ├── revisao_legendas_20260714_201233.json
+│   │   ├── revisao_legendas_20260714_201233.txt
+│   │   ├── revisao_legendas_20260714_202621.json
+│   │   ├── revisao_legendas_20260714_202621.txt
+│   │   ├── revisao_legendas_20260714_202858.json
+│   │   ├── revisao_legendas_20260714_202858.txt
+│   │   ├── revisao_legendas_20260714_203003.json
+│   │   ├── revisao_legendas_20260714_203003.txt
+│   │   ├── revisao_legendas_20260714_204516.json
+│   │   ├── revisao_legendas_20260714_204516.txt
+│   │   ├── revisao_legendas_20260714_205546.json
+│   │   ├── revisao_legendas_20260714_205546.txt
+│   │   ├── revisao_legendas_20260714_214001.json
+│   │   ├── revisao_legendas_20260714_214001.txt
 │   │   ├── revisao_lore_20260713_222436.json
-│   │   └── telemetria_compartilhada.json
+│   │   ├── revisao_lore_20260714_210244.json
+│   │   ├── revisao_lore_20260714_212952.json
+│   │   ├── telemetria_compartilhada.json
+│   │   ├── troca_fontes_20260714_202542.json
+│   │   └── troca_fontes_20260714_202542.md
 │   └── pt/
 │       ├── revisao_legendas_20260714_090658.json
 │       ├── revisao_legendas_20260714_090658.txt
@@ -858,6 +986,8 @@ traducao_animes_llm_local_quarkus/
 │       ├── revisao_legendas_20260714_090744.txt
 │       ├── revisao_legendas_20260714_091955.json
 │       ├── revisao_legendas_20260714_091955.txt
+│       ├── revisao_legendas_20260714_093822.json
+│       ├── revisao_legendas_20260714_093822.txt
 │       └── telemetria_compartilhada.json
 ├── src/
 │   ├── main/
@@ -953,6 +1083,8 @@ traducao_animes_llm_local_quarkus/
 │   │   │               │   │   └── BasePipelineException.java
 │   │   │               │   ├── execucao/
 │   │   │               │   │   └── FilaExecucaoPipeline.java
+│   │   │               │   ├── io/
+│   │   │               │   │   └── DiretorioBaseKronos.java
 │   │   │               │   └── util/
 │   │   │               │       ├── ArquivoAtomicoUtil.java
 │   │   │               │       ├── DuracaoUtil.java
@@ -1041,6 +1173,7 @@ traducao_animes_llm_local_quarkus/
 │   │   │               ├── raspagemRevisao/
 │   │   │               │   ├── application/
 │   │   │               │   │   ├── AuditorProblemasLegendaService.java
+│   │   │               │   │   ├── CorretorDeterministicoConcordanciaService.java
 │   │   │               │   │   ├── DetectorConcordanciaService.java
 │   │   │               │   │   ├── LeitorCacheReferenciaService.java
 │   │   │               │   │   ├── ResultadoRevisaoLegendas.java
@@ -1346,6 +1479,10 @@ traducao_animes_llm_local_quarkus/
 │   │       │   │   ├── extracao.css
 │   │       │   │   └── extracao.js
 │   │       │   ├── i18n/
+│   │       │   │   ├── flags/
+│   │       │   │   │   ├── br.svg
+│   │       │   │   │   ├── es.svg
+│   │       │   │   │   └── us.svg
 │   │       │   │   ├── i18n.css
 │   │       │   │   └── i18n.js
 │   │       │   ├── img/
@@ -1459,8 +1596,10 @@ traducao_animes_llm_local_quarkus/
 │                       ├── core/
 │                       │   ├── exception/
 │                       │   │   └── BasePipelineExceptionTest.java
-│                       │   └── execucao/
-│                       │       └── FilaExecucaoPipelineTest.java
+│                       │   ├── execucao/
+│                       │   │   └── FilaExecucaoPipelineTest.java
+│                       │   └── io/
+│                       │       └── DiretorioBaseKronosTest.java
 │                       ├── correcaoLegendas/
 │                       │   └── application/
 │                       │       └── CorrigirLegendasUseCaseTest.java
@@ -1488,6 +1627,7 @@ traducao_animes_llm_local_quarkus/
 │                       │       └── GoogleTranslateScraperTest.java
 │                       ├── raspagemRevisao/
 │                       │   └── application/
+│                       │       ├── CorretorDeterministicoConcordanciaServiceTest.java
 │                       │       ├── DetectorConcordanciaServiceTest.java
 │                       │       ├── LeitorCacheReferenciaServiceTest.java
 │                       │       ├── ResultadoRevisaoLegendasTest.java
@@ -1517,6 +1657,7 @@ traducao_animes_llm_local_quarkus/
 │                       │   └── infrastructure/
 │                       │       └── RevisaoLoreAuditoriaCacheTest.java
 │                       ├── telemetria/
+│                       │   ├── IsolamentoArtefatosTest.java
 │                       │   ├── TelemetriaDatasetPropertiesTest.java
 │                       │   ├── TelemetriaDatasetServiceTest.java
 │                       │   ├── TelemetriaServiceCompactacaoTest.java
@@ -1524,14 +1665,18 @@ traducao_animes_llm_local_quarkus/
 │                       ├── traducao/
 │                       │   ├── application/
 │                       │   │   ├── DetectorEfeitoKaraokeServiceTest.java
+│                       │   │   ├── DetectorTraducaoIdenticaServiceTest.java
 │                       │   │   ├── ProcessarArquivoUseCaseGuardTest.java
 │                       │   │   └── ValidadorTraducaoServiceTest.java
 │                       │   ├── domain/
 │                       │   │   └── StatusLoteTraducaoTest.java
 │                       │   ├── infrastructure/
+│                       │   │   ├── adapters/
+│                       │   │   │   └── MistralClientAdapterRespostaRevisaoTest.java
 │                       │   │   └── legenda/
 │                       │   │       ├── EscritorLegendaAssTest.java
-│                       │   │       └── LeitorEscritorSrtTest.java
+│                       │   │       ├── LeitorEscritorSrtTest.java
+│                       │   │       └── MascaradorTagsTest.java
 │                       │   └── presentation/
 │                       │       └── web/
 │                       │           ├── ConsoleRedirectorTest.java
@@ -1918,6 +2063,33 @@ traducao_animes_llm_local_quarkus/
       podiam rodar em paralelo e um trocava a lore/modelo no meio do outro — além
       de disputarem a GPU do LM Studio, que atende uma inferência por vez.
 
+[PASTA] src/main/java/org/traducao/projeto/core/io/
+  - DiretorioBaseKronos.java
+      PROPÓSITO DE NEGÓCIO: ponto único de resolução da raiz onde o KRONOS grava
+      seus artefatos operacionais (telemetria em {@code logs/}, relatórios em
+      {@code relatorios/}, cache em {@code cache/}, backups em {@code backups/}).
+      Em produção a raiz é o próprio diretório de trabalho do processo, preservando
+      exatamente o comportamento local histórico do projeto. Durante a suíte de
+      testes a raiz é redirecionada (via system property {@code kronos.dir.base},
+      configurada no {@code build.gradle}) para uma árvore descartável em
+      {@code build/tmp/kronos-tests}, impedindo que os testes contaminem os
+      diretórios operacionais reais versionados pelo Git.
+      
+      <p>INVARIANTES DO DOMÍNIO:
+      <ul>
+      <li>Quando {@code kronos.dir.base} está ausente ou em branco, a raiz é o
+      diretório de trabalho corrente ({@code Path.of("")}), de modo que
+      {@code resolver("cache")} é idêntico a {@code Path.of("cache")} — o
+      comportamento de produção não muda.</li>
+      <li>A raiz é lida da system property a cada chamada, não capturada em campo
+      estático, para que o valor definido no lançamento da JVM de teste valha
+      inclusive para constantes resolvidas em tempo de carga de classe.</li>
+      </ul>
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: não lança exceção própria. Se a property
+      contiver um caminho sintaticamente inválido, a exceção de {@link Path#of}
+      propaga ao chamador; com property ausente/branca cai no diretório corrente.
+
 [PASTA] src/main/java/org/traducao/projeto/core/util/
   - ArquivoAtomicoUtil.java
       Substituição atômica de arquivo (temporário -&gt; destino) tolerante ao Windows.
@@ -2269,6 +2441,16 @@ traducao_animes_llm_local_quarkus/
   - AuditorProblemasLegendaService.java
       Agrega detecção de resíduo em inglês, falas não traduzidas e erros de
       concordância PT-BR.
+  - CorretorDeterministicoConcordanciaService.java
+      PROPÓSITO DE NEGÓCIO: corrige localmente contradições linguísticas inequívocas
+      antes de consultar um LLM, preservando tom, lore e restante da fala.
+      
+      <p>INVARIANTES DO DOMÍNIO: somente relações explícitas no original, expressões
+      canônicas e incidentes já comprovados recebem substituição determinística;
+      contexto ambíguo nunca é reescrito.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: entrada ausente ou regra não comprovada
+      devolve {@link Optional#empty()} e mantém a tradução atual.
   - DetectorConcordanciaService.java
       PROPÓSITO DE NEGÓCIO: detecta erros objetivos de gênero e concordância que
       tornam uma legenda em português incoerente com a fala original.
@@ -2547,7 +2729,8 @@ traducao_animes_llm_local_quarkus/
       PROPÓSITO DE NEGÓCIO: entrega ao controller o desfecho completo de uma
       revisão de lore para banner, logs e decisões operacionais.
       <p>INVARIANTES DO DOMÍNIO: status e contadores descrevem a mesma sessão;
-      pendentes incluem respostas ausentes e propostas descartadas.
+      pendentes incluem respostas ausentes, propostas descartadas e falas que
+      precisam voltar à revisão linguística da Opção 6.
       <p>COMPORTAMENTO EM CASO DE FALHA: o record é imutável; falhas totais são
       comunicadas por exceção antes de sua criação.
   - RevisaoLoreRelatorioJson.java
@@ -3410,6 +3593,19 @@ traducao_animes_llm_local_quarkus/
       invariante que garante que UI, MCP e CLI compartilhem a MESMA política de
       execução sequencial (um job pesado por vez).
 
+[PASTA] src/test/java/org/traducao/projeto/core/io/
+  - DiretorioBaseKronosTest.java
+      PROPÓSITO DE NEGÓCIO: garante que o resolver central de diretórios preserva o
+      comportamento de produção (raiz = diretório corrente) e redireciona quando a
+      system property {@code kronos.dir.base} está definida — o mecanismo que
+      impede a suíte de contaminar os diretórios operacionais reais.
+      
+      <p>INVARIANTES DO DOMÍNIO: salva e restaura o valor original da property para
+      não afetar os demais testes do mesmo JVM.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: asserções JUnit falham se a resolução
+      divergir do contrato.
+
 [PASTA] src/test/java/org/traducao/projeto/correcaoLegendas/application/
   - CorrigirLegendasUseCaseTest.java
       (sem cabecalho explicativo)
@@ -3483,6 +3679,11 @@ traducao_animes_llm_local_quarkus/
       {@link StatusRaspagem} e que só a falha transitória é retentada.
 
 [PASTA] src/test/java/org/traducao/projeto/raspagemRevisao/application/
+  - CorretorDeterministicoConcordanciaServiceTest.java
+      PROPÓSITO DE NEGÓCIO: comprova as correções locais que devem preceder o Nemo.
+      <p>INVARIANTES DO DOMÍNIO: somente o trecho objetivo muda; restante da fala e
+      pontuação permanecem intactos.
+      <p>COMPORTAMENTO EM CASO DE FALHA: proposta ausente ou ampla reprova o teste.
   - DetectorConcordanciaServiceTest.java
       PROPÓSITO DE NEGÓCIO: comprova que a revisão automática encontra divergências
       objetivas de gênero sem reescrever falas corretas por inferência do falante.
@@ -3598,6 +3799,22 @@ traducao_animes_llm_local_quarkus/
       (sem cabecalho explicativo)
 
 [PASTA] src/test/java/org/traducao/projeto/telemetria/
+  - IsolamentoArtefatosTest.java
+      PROPÓSITO DE NEGÓCIO: prova, exercitando o caminho real de persistência de
+      relatório e telemetria de operação (o mesmo usado por revisão, correção,
+      lore etc.), que uma execução sob o perfil de teste NÃO grava nos diretórios
+      operacionais versionados ({@code relatorios/}, {@code logs/}) e sim na árvore
+      descartável redirecionada por {@link DiretorioBaseKronos}. É o guard que
+      impede a reaparição dos resíduos {@code relatorios/junit-*}.
+      
+      <p>INVARIANTES DO DOMÍNIO: a suíte roda com {@code kronos.dir.base} apontando
+      para {@code build/tmp/kronos-tests} (ver build.gradle), portanto os caminhos
+      relativos crus ({@code Path.of("relatorios")}, {@code Path.of("logs")})
+      continuam apontando para os diretórios reais e servem de referência do que
+      NÃO pode ser tocado.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: qualquer escrita real dispara asserção
+      JUnit, sinalizando regressão do isolamento.
   - TelemetriaDatasetPropertiesTest.java
       PROPÓSITO DE NEGÓCIO: valida a configuração segura da publicação do dataset.
       
@@ -3659,6 +3876,12 @@ traducao_animes_llm_local_quarkus/
   - DetectorEfeitoKaraokeServiceTest.java
       Linha real que escapou da revisão: letra "I" afogada em transformações.
       Linha com \pos e fscx/fscy onde o texto visível é curto em relação às tags.
+  - DetectorTraducaoIdenticaServiceTest.java
+      PROPÓSITO DE NEGÓCIO: impede que nomes próprios legítimos sejam enviados ao
+      revisor apenas porque são idênticos no inglês e no PT-BR.
+      <p>INVARIANTES DO DOMÍNIO: hesitação e pontuação não descaracterizam nomes;
+      palavras conversacionais inglesas continuam pendentes.
+      <p>COMPORTAMENTO EM CASO DE FALHA: falso nome ou falso inglês reprova o teste.
   - ProcessarArquivoUseCaseGuardTest.java
       PROPÓSITO DE NEGÓCIO: protege por regressão as decisões que impedem o tradutor
       de publicar linhas ASS suspeitas ou substituir uma legenda sem autorização.
@@ -3677,6 +3900,17 @@ traducao_animes_llm_local_quarkus/
       Cobre a consolidação do status do lote a partir dos status por arquivo —
       o núcleo do fix "não mostrar sucesso quando houve falhas".
 
+[PASTA] src/test/java/org/traducao/projeto/traducao/infrastructure/adapters/
+  - MistralClientAdapterRespostaRevisaoTest.java
+      PROPÓSITO DE NEGÓCIO: garante que respostas do Tower/Mistral com raciocínio
+      ou formatação auxiliar entreguem somente a fala final à revisão de legendas.
+      
+      <p>INVARIANTES DO DOMÍNIO: todos os marcadores ASS esperados permanecem na
+      saída e explicações do modelo nunca entram na legenda.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: resposta incompatível produz texto vazio,
+      obrigando o cliente a tentar novamente em vez de publicar estrutura quebrada.
+
 [PASTA] src/test/java/org/traducao/projeto/traducao/infrastructure/legenda/
   - EscritorLegendaAssTest.java
       (sem cabecalho explicativo)
@@ -3684,6 +3918,15 @@ traducao_animes_llm_local_quarkus/
       Cobre a leitura/escrita nativa de SRT: preservação de índice e timestamps,
       quebra interna via \N, round-trip e troca apenas do texto (o pipeline traduz
       só o texto, mantendo tempos).
+  - MascaradorTagsTest.java
+      PROPÓSITO DE NEGÓCIO: garante que cache reutilizado não danifique estilo,
+      posicionamento nem quebras estruturais das legendas ASS/SSA.
+      
+      <p>INVARIANTES DO DOMÍNIO: somente o texto visível pode mudar; perda, criação,
+      alteração ou reordenação de tags invalida a tradução armazenada.
+      
+      <p>COMPORTAMENTO EM CASO DE FALHA: cada divergência produz uma asserção falsa
+      explícita, impedindo regressões que aceitariam cache estruturalmente corrompido.
 
 [PASTA] src/test/java/org/traducao/projeto/traducao/presentation/web/
   - ConsoleRedirectorTest.java

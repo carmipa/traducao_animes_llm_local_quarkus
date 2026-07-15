@@ -289,6 +289,41 @@ class RenomeadorUseCaseTest {
     }
 
     /**
+     * PROPÓSITO DE NEGÓCIO: permite usar diretamente títulos oficiais que trazem
+     * pontuação editorial incompatível com nomes de arquivo do Windows.
+     * INVARIANTES DO DOMÍNIO: dois-pontos e interrogação são normalizados, sem
+     * alterar episódio, extensão ou pasta de destino.
+     * COMPORTAMENTO EM CASO DE FALHA: regressão volta a lançar validação ou gera
+     * um nome contendo caractere proibido pelo Windows.
+     */
+    @Test
+    void normalizaPontuacaoWindowsDoNomePadrao() throws IOException {
+        Files.createFile(tempDir.resolve("[Grupo] Gundam - 01 [1080p].mkv"));
+
+        var resultado = renomeadorUseCase.simularComResultado(
+            tempDir, "Mobile Suit Gundam: The 08th MS Team?", 1);
+
+        assertEquals("Mobile Suit Gundam - The 08th MS Team - S01E01.mkv",
+            resultado.itens().getFirst().nomeNovo());
+    }
+
+    /**
+     * PROPÓSITO DE NEGÓCIO: aceita títulos oficiais com barra sem interpretar o
+     * título como subdiretório.
+     * INVARIANTES DO DOMÍNIO: o destino permanece filho direto da pasta escolhida.
+     * COMPORTAMENTO EM CASO DE FALHA: uma barra não normalizada criaria caminho
+     * aninhado ou seria rejeitada desnecessariamente.
+     */
+    @Test
+    void normalizaBarraEditorialSemCriarSubdiretorio() throws IOException {
+        Files.createFile(tempDir.resolve("[Grupo] Fate - 01 [1080p].mkv"));
+
+        var resultado = renomeadorUseCase.simularComResultado(tempDir, "Fate/stay night", 1);
+
+        assertEquals("Fate - stay night - S01E01.mkv", resultado.itens().getFirst().nomeNovo());
+    }
+
+    /**
      * PROPÓSITO DE NEGÓCIO: bloqueia traversal e caracteres que poderiam mover a
      * mídia para fora da pasta selecionada.
      * INVARIANTES DO DOMÍNIO: arquivo original permanece intacto.

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.traducao.projeto.core.io.DiretorioBaseKronos;
 import org.traducao.projeto.core.util.ArquivoAtomicoUtil;
 
 import jakarta.ws.rs.sse.OutboundSseEvent;
@@ -62,7 +63,14 @@ public class TelemetriaService {
     // mesclada e persistida a cada registro, para sobreviver a restarts do
     // servidor e não depender só do lote em memória (que é limpo a cada
     // análise via limparLote()). É o que o painel web lê em gerarResumo().
-    private static final Path PASTA_TELEMETRIA_PROJETO = Path.of("logs");
+    // Resolvido via DiretorioBaseKronos: em produção é logs/ na raiz do
+    // projeto; sob a suíte de testes é redirecionado para uma árvore
+    // descartável, evitando reescrever a telemetria canônica real.
+    private static final String SUBPASTA_TELEMETRIA = "logs";
+
+    private static Path pastaTelemetria() {
+        return DiretorioBaseKronos.resolver(SUBPASTA_TELEMETRIA);
+    }
     private static final String TIPO_REVISAO_LORE = "Revisao de Lore (.ass LLM)";
     private static final DateTimeFormatter TIMESTAMP_RELATORIO =
         DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
@@ -166,7 +174,7 @@ public class TelemetriaService {
 
     @jakarta.annotation.PostConstruct
     public void init() {
-        carregarBancoPersistido(PASTA_TELEMETRIA_PROJETO.resolve(NOME_ARQUIVO_TELEMETRIA), bancoMidia, bancoLlm, bancoOperacoes);
+        carregarBancoPersistido(pastaTelemetria().resolve(NOME_ARQUIVO_TELEMETRIA), bancoMidia, bancoLlm, bancoOperacoes);
 
         // Agendador daemon em segundo plano que envia atualizações contínuas de
         // CPU/Memória JVM aos clientes SSE. 5s é suficiente para os medidores da
@@ -280,17 +288,17 @@ public class TelemetriaService {
 
     public static Path resolverPastaRelatorios(Path entrada) {
         if (entrada == null) {
-            return Path.of("relatorios", "operacao").toAbsolutePath();
+            return DiretorioBaseKronos.resolver("relatorios", "operacao").toAbsolutePath();
         }
         String nomeDir = entrada.getFileName().toString();
         if (nomeDir.isBlank()) {
             nomeDir = "operacao";
         }
-        return Path.of("relatorios", nomeDir).toAbsolutePath();
+        return DiretorioBaseKronos.resolver("relatorios", nomeDir).toAbsolutePath();
     }
 
     public static Path resolverPastaTelemetriaProjeto() {
-        return PASTA_TELEMETRIA_PROJETO.toAbsolutePath();
+        return pastaTelemetria().toAbsolutePath();
     }
 
     public static Path resolverArquivoTelemetriaCanonico() {
@@ -344,7 +352,7 @@ public class TelemetriaService {
             return caminhoCanonico;
         }
         if (pastaRelatorios.normalize().toAbsolutePath()
-            .equals(PASTA_TELEMETRIA_PROJETO.normalize().toAbsolutePath())) {
+            .equals(pastaTelemetria().normalize().toAbsolutePath())) {
             return caminhoCanonico;
         }
         try {
@@ -361,11 +369,12 @@ public class TelemetriaService {
 
     private synchronized Path persistirCanonico() {
         try {
-            if (!Files.exists(PASTA_TELEMETRIA_PROJETO)) {
-                Files.createDirectories(PASTA_TELEMETRIA_PROJETO);
+            Path pastaTelemetria = pastaTelemetria();
+            if (!Files.exists(pastaTelemetria)) {
+                Files.createDirectories(pastaTelemetria);
             }
 
-            Path caminhoTelemetria = PASTA_TELEMETRIA_PROJETO.resolve(NOME_ARQUIVO_TELEMETRIA);
+            Path caminhoTelemetria = pastaTelemetria.resolve(NOME_ARQUIVO_TELEMETRIA);
 
             ObjectNode rootNode = objectMapper.createObjectNode();
             rootNode.set("midias", objectMapper.valueToTree(new ArrayList<>(this.bancoMidia.values())));
@@ -382,7 +391,7 @@ public class TelemetriaService {
             // deixe o JSON truncado e derrube o histórico inteiro no próximo boot.
             // O move usa retry: antivírus/indexador do Windows trava o destino por
             // milissegundos e causava AccessDeniedException sob registros em rajada.
-            Path arquivoTemp = PASTA_TELEMETRIA_PROJETO.resolve(NOME_ARQUIVO_TELEMETRIA + ".tmp");
+            Path arquivoTemp = pastaTelemetria.resolve(NOME_ARQUIVO_TELEMETRIA + ".tmp");
             objectMapper.writeValue(arquivoTemp.toFile(), rootNode);
             ArquivoAtomicoUtil.substituirAtomico(arquivoTemp, caminhoTelemetria);
 

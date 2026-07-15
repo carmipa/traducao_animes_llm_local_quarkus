@@ -3,6 +3,7 @@ package org.traducao.projeto.traducao.presentation.web;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
+import org.traducao.projeto.core.io.DiretorioBaseKronos;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -24,7 +25,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @QuarkusTest
 class LogStreamServiceTest {
 
-    private static final Path ARQUIVO_LOG = Path.of("logs", "console-web.log");
+    // Mesmo destino redirecionado que o LogStreamService usa sob a suíte
+    // (DiretorioBaseKronos), para não ler/reescrever o logs/console-web.log real.
+    private static final Path ARQUIVO_LOG = DiretorioBaseKronos.resolver("logs", "console-web.log");
     private static final char ESC = (char) 27;
 
     @Inject

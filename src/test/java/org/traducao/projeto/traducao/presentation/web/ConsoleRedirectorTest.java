@@ -2,6 +2,7 @@ package org.traducao.projeto.traducao.presentation.web;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
+import org.traducao.projeto.core.io.DiretorioBaseKronos;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -28,7 +29,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @QuarkusTest
 class ConsoleRedirectorTest {
 
-    private static final Path ARQUIVO_LOG = Path.of("logs", "console-web.log");
+    // Destino redirecionado sob a suíte (ver DiretorioBaseKronos), evitando
+    // leitura do logs/console-web.log real.
+    private static final Path ARQUIVO_LOG = DiretorioBaseKronos.resolver("logs", "console-web.log");
 
     @Test
     void systemOutEstaRedirecionadoParaOArquivoDeLogDoConsoleWeb() throws IOException {

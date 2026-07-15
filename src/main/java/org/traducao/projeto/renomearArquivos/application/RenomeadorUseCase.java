@@ -65,7 +65,10 @@ public class RenomeadorUseCase {
         "(?i)\\b(?:season|temporada|temp(?:orada)?|s)\\s*[-_. ]?(\\d{1,2})\\b");
     private static final Pattern CONTEUDO_ESPECIAL_PATTERN = Pattern.compile(
         "(?i)(?:^|[\\s._\\-\\[(])(?:NC(?:OP|ED)\\d*|OVA|OAD|SP\\d*|PV\\d*|Menu|Preview|Special)(?=$|[\\s._\\-\\])(])");
-    private static final Pattern CARACTER_INVALIDO_WINDOWS = Pattern.compile("[<>:\"/\\\\|?*\\p{Cc}]");
+    private static final Pattern CARACTERE_CONTROLE = Pattern.compile("[\\p{Cc}]");
+    private static final Pattern TRAVERSAL_CAMINHO = Pattern.compile("(?:^|[/\\\\])\\.\\.(?:[/\\\\]|$)");
+    private static final Pattern SEPARADOR_EDITORIAL_INVALIDO_WINDOWS = Pattern.compile("\\s*[:/\\\\|]+\\s*");
+    private static final Pattern PONTUACAO_INVALIDA_WINDOWS = Pattern.compile("[<>\"?*]");
     private static final Pattern NOME_RESERVADO_WINDOWS = Pattern.compile(
         "(?i)^(?:CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\\..*)?$");
     private static final Pattern DESCRITOR_TRACK = Pattern.compile("(?i)\\bTrack\\s*([0-9]+)\\b");
@@ -545,25 +548,37 @@ public class RenomeadorUseCase {
     }
 
     /**
-     * PROPÓSITO DE NEGÓCIO: impede nomes incompatíveis com Windows e tentativas
-     * de criar caminhos fora da coleção selecionada.
+     * PROPÓSITO DE NEGÓCIO: transforma títulos editoriais de obras em nomes
+     * compatíveis com Windows e impede tentativas de sair da coleção selecionada.
      *
-     * <p>INVARIANTES DO DOMÍNIO: o padrão é um nome simples, não reservado, com
-     * até 180 caracteres e sem ponto/espaço final.
+     * <p>INVARIANTES DO DOMÍNIO: pontuação comum de títulos, como dois-pontos,
+     * barra e interrogação, é normalizada sem mudar a pasta; traversal e caracteres
+     * de controle continuam proibidos; o resultado não é reservado, possui até
+     * 180 caracteres e não termina com ponto/espaço.
      *
-     * <p>COMPORTAMENTO EM CASO DE FALHA: lança erro didático e nenhum arquivo é
-     * analisado ou movido.
+     * <p>COMPORTAMENTO EM CASO DE FALHA: entrada vazia, traversal, controle ou
+     * resultado reservado/vazio lança erro didático antes de analisar ou mover.
      */
     private String validarNomePadrao(String nomePadrao) {
         if (nomePadrao == null || nomePadrao.trim().isEmpty()) {
             throw new IllegalArgumentException("Nome padrão não fornecido.");
         }
-        String nome = nomePadrao.trim();
+        String entrada = nomePadrao.trim();
+        if (CARACTERE_CONTROLE.matcher(entrada).find() || TRAVERSAL_CAMINHO.matcher(entrada).find()) {
+            throw new IllegalArgumentException("Nome padrão contém controle ou caminho inválido.");
+        }
+
+        String nome = SEPARADOR_EDITORIAL_INVALIDO_WINDOWS.matcher(entrada).replaceAll(" - ");
+        nome = PONTUACAO_INVALIDA_WINDOWS.matcher(nome).replaceAll("");
+        nome = nome.replaceAll("\\s+", " ")
+            .replaceAll("(?:\\s+-){2,}\\s*", " - ")
+            .replaceAll("[. ]+$", "")
+            .trim();
+        if (nome.isEmpty()) {
+            throw new IllegalArgumentException("Nome padrão ficou vazio após remover caracteres incompatíveis com Windows.");
+        }
         if (nome.length() > TAMANHO_MAXIMO_NOME_PADRAO) {
             throw new IllegalArgumentException("Nome padrão excede " + TAMANHO_MAXIMO_NOME_PADRAO + " caracteres.");
-        }
-        if (CARACTER_INVALIDO_WINDOWS.matcher(nome).find() || nome.endsWith(".") || nome.endsWith(" ")) {
-            throw new IllegalArgumentException("Nome padrão contém caractere inválido, barra, controle ou termina com ponto/espaço.");
         }
         if (NOME_RESERVADO_WINDOWS.matcher(nome).matches() || nome.equals(".") || nome.equals("..")) {
             throw new IllegalArgumentException("Nome padrão é reservado pelo Windows.");

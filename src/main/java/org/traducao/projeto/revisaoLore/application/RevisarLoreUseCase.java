@@ -13,6 +13,7 @@ import org.traducao.projeto.revisaoLore.domain.exceptions.RevisaoLoreException;
 import org.traducao.projeto.revisaoLore.infrastructure.RevisaoLoreAuditoriaCache;
 import org.traducao.projeto.revisaoLore.infrastructure.RevisaoLoreLogPersistencia;
 import org.traducao.projeto.telemetria.OperacaoTelemetria;
+import org.traducao.projeto.core.io.DiretorioBaseKronos;
 import org.traducao.projeto.telemetria.TelemetriaService;
 import org.traducao.projeto.traducao.application.DetectorEfeitoKaraokeService;
 import org.traducao.projeto.traducao.application.ProtecaoLegendaAssService;
@@ -211,7 +212,7 @@ public class RevisarLoreUseCase {
 
         // Toda sobrescrita cria backup (como as opções 5/6): uma correção
         // semanticamente errada nunca destrói a legenda anterior sem cópia.
-        Path pastaBackup = Path.of("backups", "revisao-lore",
+        Path pastaBackup = DiretorioBaseKronos.resolver("backups", "revisao-lore",
             "revisao_" + LocalDateTime.now().format(TS_BACKUP)).toAbsolutePath().normalize();
 
         try (Stream<Path> stream = Files.walk(pastaOriginal)) {

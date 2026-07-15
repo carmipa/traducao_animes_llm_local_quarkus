@@ -26,6 +26,7 @@ import org.traducao.projeto.traducao.domain.exceptions.TradutorException;
 import org.traducao.projeto.traducao.domain.ports.MistralPort;
 import org.traducao.projeto.traducao.infrastructure.config.LlmProperties;
 import org.traducao.projeto.traducao.infrastructure.config.TradutorProperties;
+import org.traducao.projeto.core.io.DiretorioBaseKronos;
 import org.traducao.projeto.core.util.DuracaoUtil;
 import org.traducao.projeto.traducao.infrastructure.contexto.GerenciadorContexto;
 import org.traducao.projeto.traducao.presentation.ui.AnsiCores;
@@ -967,7 +968,10 @@ public class ApiController {
      */
     @PostMapping("/mapa")
     public ResponseEntity<MapaResponse> gerarMapa() {
-        Path raiz = Path.of(System.getProperty("user.dir"));
+        // Raiz do projeto a mapear. Via DiretorioBaseKronos: em produção é o
+        // diretório de trabalho (raiz do repositório); sob a suíte de testes é
+        // a árvore descartável, evitando reescrever o mapa_projeto.md real.
+        Path raiz = DiretorioBaseKronos.base().toAbsolutePath();
         GeradorMapaProjetoUseCase.ResultadoMapa resultado = geradorMapaProjetoUseCase.executar(raiz);
         return ResponseEntity.ok(new MapaResponse(
             resultado.relatorio(), resultado.arvoreGithub(), resultado.nomeProjeto()));

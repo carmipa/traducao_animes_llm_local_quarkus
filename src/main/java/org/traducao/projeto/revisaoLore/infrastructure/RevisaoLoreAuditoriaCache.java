@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.traducao.projeto.core.io.DiretorioBaseKronos;
 import org.traducao.projeto.revisaoLore.domain.EntradaAuditoriaRevisaoLore;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ public class RevisaoLoreAuditoriaCache {
 
     private static final Logger log = LoggerFactory.getLogger(RevisaoLoreAuditoriaCache.class);
     private static final Path ARQUIVO_CANONICO =
-        Path.of("cache", "auditoria", "revisao_lore_correcoes.jsonl");
+        DiretorioBaseKronos.resolver("cache", "auditoria", "revisao_lore_correcoes.jsonl");
 
     private final ObjectMapper objectMapper;
 

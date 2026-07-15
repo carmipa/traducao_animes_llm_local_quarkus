@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.springframework.stereotype.Service;
+import org.traducao.projeto.core.io.DiretorioBaseKronos;
 import org.traducao.projeto.core.util.ArquivoAtomicoUtil;
 
 import java.io.IOException;
@@ -147,7 +148,7 @@ public class CacheManutencaoService {
         Path raiz = raizCache.toAbsolutePath().normalize();
         String nomeOperacao = operacao == null ? "manutencao" : operacao.toLowerCase(Locale.ROOT)
             .replaceAll("[^a-z0-9_-]+", "_");
-        Path backup = Path.of("backups", "correcao-cache", nomeOperacao + "_" + LocalDateTime.now().format(TS))
+        Path backup = DiretorioBaseKronos.resolver("backups", "correcao-cache", nomeOperacao + "_" + LocalDateTime.now().format(TS))
             .toAbsolutePath().normalize();
         return new Sessao(raiz, backup, nomeOperacao);
     }
