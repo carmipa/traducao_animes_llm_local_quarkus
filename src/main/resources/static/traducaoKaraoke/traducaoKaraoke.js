@@ -1,14 +1,24 @@
 import { mostrarAlerta, logNoConsole } from '../js/app.js';
 
-const PAINEL_HTML = 'traducaoKaraoke/traducaoKaraoke.html?v=1.0';
+const PAINEL_HTML = 'traducaoKaraoke/traducaoKaraoke.html?v=1.1';
 
+/**
+ * PROPÓSITO DE NEGÓCIO: monta o formulário e o terminal visual da Tradução de
+ * Karaokê dentro do painel da SPA.
+ *
+ * INVARIANTES DO DOMÍNIO: o fragmento deve ser carregado uma única vez por página
+ * e sempre representar a versão atual, incluindo o console de acompanhamento.
+ *
+ * COMPORTAMENTO EM CASO DE FALHA: lança um erro quando o servidor não entrega o
+ * fragmento; a inicialização converte essa falha em uma mensagem visível no painel.
+ */
 async function carregarPainelHtml() {
     const painel = document.getElementById('panel-traducao-karaoke');
     if (!painel || painel.dataset.moduloCarregado === 'true') {
         return painel;
     }
 
-    const resposta = await fetch(PAINEL_HTML);
+    const resposta = await fetch(PAINEL_HTML, { cache: 'no-store' });
     if (!resposta.ok) {
         throw new Error(`Falha ao carregar ${PAINEL_HTML}`);
     }
