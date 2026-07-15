@@ -43,6 +43,28 @@ public class AnalisarMidiaUseCase {
         this.telemetriaService = telemetriaService;
     }
 
+    /**
+     * PROPÓSITO DE NEGÓCIO: audita tecnicamente um lote de vídeos (Opção 1),
+     * classifica as legendas por traduzibilidade e alimenta o dataset permanente
+     * de telemetria. O resultado estruturado volta para a UI; NENHUM relatório é
+     * gravado em disco e NENHUMA pasta {@code relatorios/} é criada junto da
+     * mídia — a exportação TXT é manual no navegador.
+     *
+     * <p>INVARIANTES DO DOMÍNIO: a telemetria de mídia é um dataset permanente,
+     * acumulada e deduplicada por arquivo (reanalisar a mesma mídia atualiza a
+     * entrada, não duplica), e o histórico de mídias anteriores NUNCA é apagado
+     * ao analisar um novo lote. Uma falha em um arquivo não aborta o lote; falha
+     * cosmética da barra de progresso também não.
+     *
+     * <p>COMPORTAMENTO EM CASO DE FALHA: lote vazio lança
+     * {@link AnalisadorException}; falha por arquivo vira uma {@link FalhaAnalise}
+     * no resultado; falhas de persistência da telemetria são registradas sem
+     * interromper a análise.
+     *
+     * @param entrada pasta ou arquivo de vídeo a auditar
+     * @param saidaEfetiva reservado para compatibilidade; a análise não grava
+     *                     relatório em disco, portanto não é utilizado
+     */
     public ResultadoAnaliseLote executar(Path entrada, Path saidaEfetiva) {
         List<Path> arquivosAnalisar = encontrarVideos(entrada);
 
@@ -50,25 +72,13 @@ public class AnalisarMidiaUseCase {
             throw new AnalisadorException("Nenhum arquivo de vídeo suportado encontrado no caminho especificado.");
         }
 
-        // Pasta usada apenas para a telemetria — o relatório da análise NÃO é
-        // mais gravado em disco automaticamente (exportação é manual, via UI).
-        Path pastaTelemetria = saidaEfetiva;
-        if (pastaTelemetria == null) {
-            Path entradaAbsoluta = entrada.toAbsolutePath();
-            Path pastaPai = Files.isDirectory(entrada) ? entradaAbsoluta : entradaAbsoluta.getParent();
-            pastaTelemetria = (pastaPai != null) ? pastaPai.resolve("relatorios") : Path.of("relatorios").toAbsolutePath();
-        }
-        try {
-            Files.createDirectories(pastaTelemetria);
-        } catch (IOException e) {
-            throw new AnalisadorException("Não foi possível criar a pasta de telemetria: " + pastaTelemetria, e);
-        }
-
         log.info("Iniciando auditoria técnica para {} arquivo(s) de vídeo.", arquivosAnalisar.size());
 
         List<AuditoriaResultado> resultados = new ArrayList<>();
         List<FalhaAnalise> falhas = new ArrayList<>();
-        telemetriaService.limparLote();
+        // NÃO limpa o lote: a telemetria de mídia é um dataset permanente. Cada
+        // registrarMidia() deduplica por nome de arquivo (atualiza a entrada),
+        // preservando as mídias analisadas em lotes anteriores.
 
         // Barra de progresso para a análise do lote. É puramente cosmética: uma
         // falha de renderização dela (ex.: terminal incompatível) nunca deve
@@ -130,9 +140,9 @@ public class AnalisarMidiaUseCase {
             java.time.Instant.now().toString()
         ));
 
-        // Persiste apenas a telemetria (dados + falhas da análise).
-        telemetriaService.salvar(pastaTelemetria);
-
+        // A telemetria canônica já foi persistida por registrarMidia() e
+        // registrarOperacao() no destino interno (logs/); não há cópia para
+        // relatorios/ nem relatório gravado junto da mídia.
         return new ResultadoAnaliseLote(resultados, falhas);
     }
 
