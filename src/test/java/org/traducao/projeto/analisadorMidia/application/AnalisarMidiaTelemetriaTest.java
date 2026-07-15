@@ -66,7 +66,14 @@ class AnalisarMidiaTelemetriaTest {
         Files.createFile(pastaB.resolve("B.mkv"));
 
         TelemetriaService telemetria = new TelemetriaService();
-        AnalisarMidiaUseCase useCase = new AnalisarMidiaUseCase(ffprobeFake(), telemetria);
+        ClassificadorLegendaService classificador = new ClassificadorLegendaService();
+        AnalisarMidiaUseCase useCase = new AnalisarMidiaUseCase(
+            ffprobeFake(),
+            telemetria,
+            new LocalizadorVideosService(),
+            classificador,
+            new TelemetriaMidiaMapper(),
+            new RelatorioMidiaTextoFormatter(classificador));
 
         // Lote 1: mídia A.
         useCase.executar(pastaA, null);

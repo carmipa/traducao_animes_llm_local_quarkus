@@ -135,7 +135,7 @@ class KronosMcpToolsTest {
         private final RuntimeException erro;
 
         FakeAnalise(ResultadoAnaliseLote resultado, RuntimeException erro) {
-            super(null, null);
+            super(null, null, null, null, null, null);
             this.resultado = resultado;
             this.erro = erro;
         }

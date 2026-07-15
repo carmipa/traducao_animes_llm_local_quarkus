@@ -13,8 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Cobre o dado VITAL da análise: a classificação do tipo de legenda (codec →
  * tipo) e o veredicto de traduzibilidade (texto = traduzível; bitmap = OCR;
  * nenhuma = RAW/hardsub). Decide se um episódio segue no pipeline de tradução.
+ * A lógica vive em {@link ClassificadorLegendaService} (extraído do use case).
  */
 class AnalisarMidiaClassificacaoTest {
+
+    private final ClassificadorLegendaService classificador = new ClassificadorLegendaService();
 
     @Test
     void classificaOsCodecsDeLegendaConhecidos() {
@@ -37,11 +40,11 @@ class AnalisarMidiaClassificacaoTest {
      */
     @Test
     void pgsEVobSubSaoRotuladosComoBitmapNaoHardsub() {
-        String[] pgs = AnalisarMidiaUseCase.classificarLegenda("hdmv_pgs_subtitle", "HDMV_PGS_SUBTITLE");
+        String[] pgs = classificador.classificar("hdmv_pgs_subtitle", "HDMV_PGS_SUBTITLE");
         assertTrue(pgs[0].contains("Bitmap"), pgs[0]);
         assertFalse(pgs[0].toLowerCase().contains("hardsub"), "PGS não deve ser rotulado como Hardsub: " + pgs[0]);
 
-        String[] vobsub = AnalisarMidiaUseCase.classificarLegenda("dvd_subtitle", "DVD_SUBTITLE");
+        String[] vobsub = classificador.classificar("dvd_subtitle", "DVD_SUBTITLE");
         assertTrue(vobsub[0].contains("Bitmap"), vobsub[0]);
         assertFalse(vobsub[0].toLowerCase().contains("hardsub"), "VobSub não deve ser rotulado como Hardsub: " + vobsub[0]);
     }
@@ -53,30 +56,30 @@ class AnalisarMidiaClassificacaoTest {
 
     @Test
     void veredictoDeTextoEhTraduzivel() {
-        assertTrue(AnalisarMidiaUseCase.verdictTraducao(List.of(leg("ASS"))).startsWith("SIM"));
-        assertTrue(AnalisarMidiaUseCase.verdictTraducao(List.of(leg("SRT"))).startsWith("SIM"));
+        assertTrue(classificador.verdictTraducao(List.of(leg("ASS"))).startsWith("SIM"));
+        assertTrue(classificador.verdictTraducao(List.of(leg("SRT"))).startsWith("SIM"));
     }
 
     @Test
     void veredictoDeBitmapNaoEhTraduzivel() {
-        assertTrue(AnalisarMidiaUseCase.verdictTraducao(List.of(leg("PGS"))).startsWith("NAO"));
-        assertTrue(AnalisarMidiaUseCase.verdictTraducao(List.of(leg("VOBSUB"))).startsWith("NAO"));
+        assertTrue(classificador.verdictTraducao(List.of(leg("PGS"))).startsWith("NAO"));
+        assertTrue(classificador.verdictTraducao(List.of(leg("VOBSUB"))).startsWith("NAO"));
     }
 
     @Test
     void veredictoSemLegendaEhNaoAplicavel() {
-        assertTrue(AnalisarMidiaUseCase.verdictTraducao(List.of()).startsWith("N/A"));
+        assertTrue(classificador.verdictTraducao(List.of()).startsWith("N/A"));
     }
 
     @Test
     void faixaDeTextoTemPrioridadeSobreBitmap() {
         // Um arquivo com PGS + ASS ainda é traduzível pela faixa de texto.
-        String veredicto = AnalisarMidiaUseCase.verdictTraducao(List.of(leg("PGS"), leg("ASS")));
+        String veredicto = classificador.verdictTraducao(List.of(leg("PGS"), leg("ASS")));
         assertTrue(veredicto.startsWith("SIM"), veredicto);
     }
 
-    private static String tipoCurto(String codecId, String formato) {
-        return AnalisarMidiaUseCase.classificarLegenda(codecId, formato)[1];
+    private String tipoCurto(String codecId, String formato) {
+        return classificador.classificar(codecId, formato)[1];
     }
 
     private static LegendaInfo leg(String tipoCurto) {
