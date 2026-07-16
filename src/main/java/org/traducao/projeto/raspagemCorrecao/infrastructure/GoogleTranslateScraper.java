@@ -38,9 +38,9 @@ public class GoogleTranslateScraper {
     // Retry curado: só transitórios (FALHA_TRANSITORIA) são repetidos, no
     // máximo uma vez. Erro estrutural (RESPOSTA_INVALIDA/TAG_CORROMPIDA) morre
     // na primeira, sem gastar rede à toa nem arriscar intensificar bloqueio.
-    private static final int MAX_TENTATIVAS = 2;
-    private static final long BACKOFF_BASE_MS = 400;
-    private static final long JITTER_MAX_MS = 200;
+    private static final int MAX_TENTATIVAS = 5;
+    private static final long BACKOFF_BASE_MS = 1000;
+    private static final long JITTER_MAX_MS = 500;
 
     // Marcador [Tn]/[B] (com mutilações comuns de espaçamento/parênteses) que
     // sobrou depois da restauração das tags — sinal de resposta corrompida.
@@ -65,7 +65,7 @@ public class GoogleTranslateScraper {
             if (!transitoria || n >= MAX_TENTATIVAS) {
                 return tentativa.resultado();
             }
-            long espera = tentativa.esperaSugeridaMs() > 0 ? tentativa.esperaSugeridaMs() : backoffComJitter();
+            long espera = tentativa.esperaSugeridaMs() > 0 ? tentativa.esperaSugeridaMs() : (backoffComJitter() * n);
             log.info("Falha transitória do Google Translate; nova tentativa em {} ms ({}/{}).",
                 espera, n + 1, MAX_TENTATIVAS);
             dormir(espera);
@@ -114,8 +114,11 @@ public class GoogleTranslateScraper {
         if (resposta.statusCode() != 200) {
             log.warn("Erro HTTP na chamada do Google Translate: {}", resposta.statusCode());
             if (ehTransitorio(resposta.statusCode())) {
-                // Honra Retry-After (quando presente) na próxima tentativa.
-                return new Tentativa(ResultadoRaspagem.falhaTransitoria(textoOriginal), resposta.retryAfterMs());
+                long esperaCustomizada = resposta.retryAfterMs();
+                if (resposta.statusCode() == 429 && esperaCustomizada == 0) {
+                    esperaCustomizada = 30000; // Penalidade pesada para Too Many Requests
+                }
+                return new Tentativa(ResultadoRaspagem.falhaTransitoria(textoOriginal), esperaCustomizada);
             }
             return semEspera(ResultadoRaspagem.respostaInvalida(textoOriginal));
         }

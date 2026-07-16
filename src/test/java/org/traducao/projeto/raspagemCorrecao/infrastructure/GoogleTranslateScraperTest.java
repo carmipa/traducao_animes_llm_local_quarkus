@@ -123,10 +123,10 @@ class GoogleTranslateScraperTest {
     // ----- retry curado -----
 
     @Test
-    void retentaUmaVezEmFalhaTransitoria() {
+    void retentaAteLimiteEmFalhaTransitoria() {
         ScraperFalso s = sempre(503, "");
         assertEquals(StatusRaspagem.FALHA_TRANSITORIA, s.traduzir("Hello").status());
-        assertEquals(2, s.chamadas.get()); // 1 inicial + 1 retry
+        assertEquals(5, s.chamadas.get()); // 1 inicial + 4 retries
     }
 
     @Test

@@ -1,0 +1,319 @@
+REVISÃO DE LEGENDAS (.ass)
+==========================
+Pasta: C:\animes\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\legendas-ptbr
+Duração: 14s
+Arquivos analisados: 15
+Falas auditadas: 4406
+Falas sem original EN (ignoradas): 0
+Problemas detectados: 710
+Falas corrigidas via Google: 26
+Falas pendentes: 684
+
+DETALHES POR OCORRÊNCIA
+=======================
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E01_Track3_PT-BR.ass
+Evento: 200 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: Hmm... Looks like Jaburo's got\Na lot of money to play with. | Fala não traduzida (idêntica ao original em inglês): Hmm... Looks like Jaburo's got\Na lot of money to play with.
+Diagnóstico: Correção validada e persistida.
+EN: Hmm... Looks like Jaburo's got\Na lot of money to play with.
+PT anterior: Hmm... Looks like Jaburo's got\Na lot of money to play with.
+Proposta: Hmm... Parece que Jaburo tem muito dinheiro para brincar.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E01_Track3_PT-BR.ass
+Evento: 291 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: {\i1}This is Walfisch. | Fala não traduzida (idêntica ao original em inglês): {\i1}This is Walfisch.
+Diagnóstico: Correção validada e persistida.
+EN: {\i1}This is Walfisch.
+PT anterior: {\i1}This is Walfisch.
+Proposta: {\i1}Este é Walfisch.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E01_Track3_PT-BR.ass
+Evento: 384 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: I can see that. Come on.\NLet's go and drown my sorrows. | Fala não traduzida (idêntica ao original em inglês): I can see that. Come on.\NLet's go and drown my sorrows.
+Diagnóstico: Correção validada e persistida.
+EN: I can see that. Come on.\NLet's go and drown my sorrows.
+PT anterior: I can see that. Come on.\NLet's go and drown my sorrows.
+Proposta: Eu posso ver isso. Vamos.\NVamos afogar minhas mágoas.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E01_Track3_PT-BR.ass
+Evento: 450 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: {\i1}You're not going anywhere! | Fala não traduzida (idêntica ao original em inglês): {\i1}You're not going anywhere!
+Diagnóstico: Correção validada e persistida.
+EN: {\i1}You're not going anywhere!
+PT anterior: {\i1}You're not going anywhere!
+Proposta: {\i1}Você não vai a lugar nenhum!
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E01_Track3_PT-BR.ass
+Evento: 451 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: {\i1}In the desolate vastness of\NAustralia, the deadly battle... | Fala não traduzida (idêntica ao original em inglês): {\i1}In the desolate vastness of\NAustralia, the deadly battle...
+Diagnóstico: Correção validada e persistida.
+EN: {\i1}In the desolate vastness of\NAustralia, the deadly battle...
+PT anterior: {\i1}In the desolate vastness of\NAustralia, the deadly battle...
+Proposta: {\i1}Na vastidão desolada da\NAustrália, a batalha mortal...
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E01_Track3_PT-BR.ass
+Evento: 455 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: {\i1}The enemy pilot's awesome power. | Fala não traduzida (idêntica ao original em inglês): {\i1}The enemy pilot's awesome power.
+Diagnóstico: Correção validada e persistida.
+EN: {\i1}The enemy pilot's awesome power.
+PT anterior: {\i1}The enemy pilot's awesome power.
+Proposta: {\i1}O incrível poder do piloto inimigo.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E02_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 136 de 356 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 99 de 330 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E04_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 42 de 368 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E05_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 52 de 388 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.ass
+Evento: 2 | Estilo: Song ENG
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: {\fad(100,200)\be0\blur1\bord0}There's no winner of this fight as I collapse, now exhausted. | Fala não traduzida (idêntica ao original em inglês): {\fad(100,200)\be0\blur1\bord0}There's no winner of this fight as I collapse, now exhausted.
+Diagnóstico: Correção validada e persistida.
+EN: {\fad(100,200)\be0\blur1\bord0}There's no winner of this fight as I collapse, now exhausted.
+PT anterior: {\fad(100,200)\be0\blur1\bord0}There's no winner of this fight as I collapse, now exhausted.
+Proposta: {\fad(100,200)\be0\blur1\bord0}Não há vencedor nesta luta enquanto eu desmaio, agora exausto.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.ass
+Evento: 20 | Estilo: Song ENG
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: {\be0\blur1\bord0}I just wanna keep on running!\NJust chasing the thrill that's shooting through my heart! | Fala não traduzida (idêntica ao original em inglês): {\be0\blur1\bord0}I just wanna keep on running!\NJust chasing the thrill that's shooting through my heart!
+Diagnóstico: Correção validada e persistida.
+EN: {\be0\blur1\bord0}I just wanna keep on running!\NJust chasing the thrill that's shooting through my heart!
+PT anterior: {\be0\blur1\bord0}I just wanna keep on running!\NJust chasing the thrill that's shooting through my heart!
+Proposta: {\be0\blur1\bord0}Eu só quero continuar correndo!\NApenas perseguindo a emoção que está disparando no meu coração!
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.ass
+Evento: 24 | Estilo: Song ENG
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: {\fad(0,100)\be0\blur1\bord0}Feelings that you just can't describe with words... | Fala não traduzida (idêntica ao original em inglês): {\fad(0,100)\be0\blur1\bord0}Feelings that you just can't describe with words...
+Diagnóstico: Correção validada e persistida.
+EN: {\fad(0,100)\be0\blur1\bord0}Feelings that you just can't describe with words...
+PT anterior: {\fad(0,100)\be0\blur1\bord0}Feelings that you just can't describe with words...
+Proposta: {\fad(0,100)\be0\blur1\bord0}Sentimentos que você simplesmente não consegue descrever com palavras...
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.ass
+Evento: 34 | Estilo: Song ENG
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: {\be0\blur1\bord0}Burning with shining blue fire.\NFire that'll spread until it covers all the stars in the sky. | Fala não traduzida (idêntica ao original em inglês): {\be0\blur1\bord0}Burning with shining blue fire.\NFire that'll spread until it covers all the stars in the sky.
+Diagnóstico: Correção validada e persistida.
+EN: {\be0\blur1\bord0}Burning with shining blue fire.\NFire that'll spread until it covers all the stars in the sky.
+PT anterior: {\be0\blur1\bord0}Burning with shining blue fire.\NFire that'll spread until it covers all the stars in the sky.
+Proposta: {\be0\blur1\bord0}Queimando com fogo azul brilhante.\NFogo que se espalhará até cobrir todas as estrelas do céu.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.ass
+Evento: 136 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: {\i1}Pursuing Gundam Unit 02, the Albion\Nset sail info the sea of stars. | Fala não traduzida (idêntica ao original em inglês): {\i1}Pursuing Gundam Unit 02, the Albion\Nset sail info the sea of stars.
+Diagnóstico: Correção validada e persistida.
+EN: {\i1}Pursuing Gundam Unit 02, the Albion\Nset sail info the sea of stars.
+PT anterior: {\i1}Pursuing Gundam Unit 02, the Albion\Nset sail info the sea of stars.
+Proposta: {\i1}Perseguindo a Unidade Gundam 02, o Albion\Nnavegou em direção ao mar de estrelas.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.ass
+Evento: 157 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: {\i1}The Federation Forces are adopting a\Nconservative attitude towards this. | Fala não traduzida (idêntica ao original em inglês): {\i1}The Federation Forces are adopting a\Nconservative attitude towards this.
+Diagnóstico: Correção validada e persistida.
+EN: {\i1}The Federation Forces are adopting a\Nconservative attitude towards this.
+PT anterior: {\i1}The Federation Forces are adopting a\Nconservative attitude towards this.
+Proposta: {\i1}As Forças da Federação estão adotando uma atitude conservadora\Nem relação a isso.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.ass
+Evento: 159 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: {\i1}There are no more ships I can\Nuse my authority to send to you.{\i} | Fala não traduzida (idêntica ao original em inglês): {\i1}There are no more ships I can\Nuse my authority to send to you.{\i}
+Diagnóstico: Correção validada e persistida.
+EN: {\i1}There are no more ships I can\Nuse my authority to send to you.{\i}
+PT anterior: {\i1}There are no more ships I can\Nuse my authority to send to you.{\i}
+Proposta: {\i1}Não há mais navios que eu possa\Nusar minha autoridade para enviar a você.{\i}
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.ass
+Evento: 162 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: {\i1}Do your best.\NOver and out. | Fala não traduzida (idêntica ao original em inglês): {\i1}Do your best.\NOver and out.
+Diagnóstico: Correção validada e persistida.
+EN: {\i1}Do your best.\NOver and out.
+PT anterior: {\i1}Do your best.\NOver and out.
+Proposta: {\i1}Faça o seu melhor.\NCâmbio e fim.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.ass
+Evento: 241 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: Hmm, you're really\Nworking hard on this. | Fala não traduzida (idêntica ao original em inglês): Hmm, you're really\Nworking hard on this.
+Diagnóstico: Correção validada e persistida.
+EN: Hmm, you're really\Nworking hard on this.
+PT anterior: Hmm, you're really\Nworking hard on this.
+Proposta: Hmm, você está realmente\Ntrabalhando duro nisso.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.ass
+Evento: 247 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: I know you're Miss Career Woman\Nand everything, | Fala não traduzida (idêntica ao original em inglês): I know you're Miss Career Woman\Nand everything,
+Diagnóstico: Correção validada e persistida.
+EN: I know you're Miss Career Woman\Nand everything,
+PT anterior: I know you're Miss Career Woman\Nand everything,
+Proposta: Eu sei que você é Miss Career Woman\Ne tudo mais,
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.ass
+Evento: 261 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: I've been waiting for you.\NYou came sooner than expected. | Fala não traduzida (idêntica ao original em inglês): I've been waiting for you.\NYou came sooner than expected.
+Diagnóstico: Correção validada e persistida.
+EN: I've been waiting for you.\NYou came sooner than expected.
+PT anterior: I've been waiting for you.\NYou came sooner than expected.
+Proposta: Eu estive esperando por você.\NVocê chegou mais cedo do que o esperado.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.ass
+Evento: 327 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: {\i1}In response to the just\NSpacenoid desire for autonomy, | Fala não traduzida (idêntica ao original em inglês): {\i1}In response to the just\NSpacenoid desire for autonomy,
+Diagnóstico: Correção validada e persistida.
+EN: {\i1}In response to the just\NSpacenoid desire for autonomy,
+PT anterior: {\i1}In response to the just\NSpacenoid desire for autonomy,
+Proposta: {\i1}Em resposta ao justo\Ndesejo espacial de autonomia,
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.ass
+Evento: 328 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: {\i1}the Federation builds up\Nits crushing military might! | Fala não traduzida (idêntica ao original em inglês): {\i1}the Federation builds up\Nits crushing military might!
+Diagnóstico: Correção validada e persistida.
+EN: {\i1}the Federation builds up\Nits crushing military might!
+PT anterior: {\i1}the Federation builds up\Nits crushing military might!
+Proposta: {\i1}a Federação aumenta\Nseu poder militar esmagador!
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.ass
+Evento: 330 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: {\i1}I know this is true because\NI've seen the proof!{\i} | Fala não traduzida (idêntica ao original em inglês): {\i1}I know this is true because\NI've seen the proof!{\i}
+Diagnóstico: Correção validada e persistida.
+EN: {\i1}I know this is true because\NI've seen the proof!{\i}
+PT anterior: {\i1}I know this is true because\NI've seen the proof!{\i}
+Proposta: {\i1}Eu sei que isso é verdade porque\Neu vi a prova!{\i}
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.ass
+Evento: 332 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: {\i1}This Gundam was developed for\Nthe purpose of nuclear attack!{\i} | Fala não traduzida (idêntica ao original em inglês): {\i1}This Gundam was developed for\Nthe purpose of nuclear attack!{\i}
+Diagnóstico: Correção validada e persistida.
+EN: {\i1}This Gundam was developed for\Nthe purpose of nuclear attack!{\i}
+PT anterior: {\i1}This Gundam was developed for\Nthe purpose of nuclear attack!{\i}
+Proposta: {\i1}Este Gundam foi desenvolvido para\Ncom o propósito de ataque nuclear!{\i}
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.ass
+Evento: 334 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: {\i1}is clear evidence of the accursed\NFederation's evil intentions!{\i} | Fala não traduzida (idêntica ao original em inglês): {\i1}is clear evidence of the accursed\NFederation's evil intentions!{\i}
+Diagnóstico: Correção validada e persistida.
+EN: {\i1}is clear evidence of the accursed\NFederation's evil intentions!{\i}
+PT anterior: {\i1}is clear evidence of the accursed\NFederation's evil intentions!{\i}
+Proposta: {\i1}é uma evidência clara das más intenções da maldita Federação\N!{\i}
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.ass
+Evento: 409 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: {\i1}Gundam Unit 01 has been reborn\Nas the Full Burnern. | Fala não traduzida (idêntica ao original em inglês): {\i1}Gundam Unit 01 has been reborn\Nas the Full Burnern.
+Diagnóstico: Correção validada e persistida.
+EN: {\i1}Gundam Unit 01 has been reborn\Nas the Full Burnern.
+PT anterior: {\i1}Gundam Unit 01 has been reborn\Nas the Full Burnern.
+Proposta: {\i1}Gundam Unit 01 renasceu\Ncomo Full Burnern.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E07_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 43 de 348 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E08_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 56 de 409 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E09_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 61 de 319 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E10_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 57 de 284 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E11_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 51 de 342 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E12_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 47 de 271 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E13_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 37 de 234 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —

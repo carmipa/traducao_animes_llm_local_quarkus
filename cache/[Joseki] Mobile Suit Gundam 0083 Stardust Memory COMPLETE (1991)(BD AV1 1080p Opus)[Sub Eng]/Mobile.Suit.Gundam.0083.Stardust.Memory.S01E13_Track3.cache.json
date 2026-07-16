@@ -326,7 +326,7 @@
     "indice" : 112,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Lieutenant Uraki! They're about\\Nto attack with the Solar System!{\\i}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Tenente Uraki! Eles estão prestes a atacar com o Sistema Solar!{\\i}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -907,7 +907,7 @@
     "indice" : 195,
     "estilo" : "Dialogue",
     "original" : "And that we will attack\\Nthem the second it expires!",
-    "traduzido" : "",
+    "traduzido" : "E que iremos atacá-los assim que expirar!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {

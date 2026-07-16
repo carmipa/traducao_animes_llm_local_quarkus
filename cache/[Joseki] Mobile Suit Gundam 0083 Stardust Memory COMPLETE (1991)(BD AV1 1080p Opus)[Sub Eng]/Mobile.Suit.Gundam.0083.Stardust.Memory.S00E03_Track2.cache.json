@@ -46,7 +46,7 @@
     "indice" : 5,
     "estilo" : "Default",
     "original" : "{\\i1}Eles estão recuando rapidamente! Eles estão recuando rapidamente! Atacar o flanco deles!{\\i0}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Eles estão se recuperando rapidamente! Eles estão se recuperando rapidamente! Atacar o flanco deles!{\\i0}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
