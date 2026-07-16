@@ -48,27 +48,20 @@ public class BrowserLauncher {
     }
 
     private void abrirNavegador(String url) {
-        try {
-            if (java.awt.Desktop.isDesktopSupported()) {
-                java.awt.Desktop.getDesktop().browse(new java.net.URI(url));
-                log.info("Navegador aberto automaticamente via Desktop API: {}", url);
-                return;
-            }
-        } catch (Exception e) {
-            log.warn("Erro ao abrir navegador via Desktop API: {}. Tentando comando nativo...", e.getMessage());
-        }
-
-        // Fallback nativo
         String os = System.getProperty("os.name").toLowerCase();
         try {
             if (os.contains("win")) {
-                new ProcessBuilder("cmd.exe", "/c", "start", "", url).start();
+                // rundll32 é o meio nativo mais resiliente no ecossistema Java para Windows,
+                // acionando o FileProtocolHandler diretamente sem envolver subprocessos de shell bloqueados do cmd.
+                Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + url);
+                log.info("Navegador aberto automaticamente via rundll32: {}", url);
             } else if (os.contains("mac")) {
                 Runtime.getRuntime().exec(new String[]{"open", url});
+                log.info("Navegador aberto automaticamente via open: {}", url);
             } else {
                 Runtime.getRuntime().exec(new String[]{"xdg-open", url});
+                log.info("Navegador aberto automaticamente via xdg-open: {}", url);
             }
-            log.info("Navegador aberto automaticamente na URL via fallback nativo: {}", url);
         } catch (IOException e) {
             log.warn("Nao foi possivel abrir o navegador automaticamente: {}", e.getMessage());
         }
