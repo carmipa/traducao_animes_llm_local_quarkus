@@ -151,7 +151,7 @@
     "indice" : 45,
     "estilo" : "Titles",
     "original" : "{\\blur1\\c&H141316&\\pos(720,680)}GUNDAM,\\N PARA O MAR DE ESTRELAS!",
-    "traduzido" : "",
+    "traduzido" : "{\\blur1\\c&H141316&\\pos(720,680)}GUNDAM,\\NPARA O MAR DE ESTRELAS!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -165,7 +165,7 @@
     "indice" : 79,
     "estilo" : "Titles",
     "original" : "{\\blur1\\c&H141316&\\pos(720,680)}O GUERREIRO \\NDE VON BRAUN",
-    "traduzido" : "",
+    "traduzido" : "{\\blur1\\c&H141316&\\pos(720,680)}O GUERREIRO\\NDE VON BRAUN",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -207,7 +207,7 @@
     "indice" : 85,
     "estilo" : "Dialogue",
     "original" : "Não seja ridículo. A Unidade 01 ainda não foi \\Nequipada para uso no espaço.",
-    "traduzido" : "",
+    "traduzido" : "Não seja ridículo. A Unidade 01 ainda não foi\\Nequipada para uso no espaço.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -347,7 +347,7 @@
     "indice" : 105,
     "estilo" : "Dialogue",
     "original" : "Qualquer tempo livre que eu tiver, \\Neu vou passar trabalhando nisso!",
-    "traduzido" : "",
+    "traduzido" : "Qualquer tempo livre que eu tiver,\\Neu vou passar trabalhando nisso!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -389,7 +389,7 @@
     "indice" : 111,
     "estilo" : "Dialogue",
     "original" : "Não falei que você precisa estar verificando \\N360 graus ao seu redor no espaço?!",
-    "traduzido" : "",
+    "traduzido" : "Não falei que você precisa estar verificando\\N360 graus ao seu redor no espaço?!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -487,7 +487,7 @@
     "indice" : 125,
     "estilo" : "Dialogue",
     "original" : "Parece que o Almirante Kowen é o único \\N em quem podemos confiar para nos ajudar.",
-    "traduzido" : "",
+    "traduzido" : "Parece que o Almirante Kowen é o único\\Nem quem podemos confiar para nos ajudar.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -508,7 +508,7 @@
     "indice" : 128,
     "estilo" : "Dialogue",
     "original" : "O Almirante Delaz deve estar impaciente \\N depois de toda essa espera.",
-    "traduzido" : "",
+    "traduzido" : "O Almirante Delaz deve estar impaciente\\Ndepois de toda essa espera.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -522,7 +522,7 @@
     "indice" : 130,
     "estilo" : "Dialogue",
     "original" : "Excelente. Tenho que admitir, é \\Nótimo para um traje da Federação.",
-    "traduzido" : "",
+    "traduzido" : "Excelente. Tenho que admitir, é\\Nótimo para um traje da Federação.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -606,7 +606,7 @@
     "indice" : 142,
     "estilo" : "Dialogue",
     "original" : "{\\i1}No entanto, parece que é \\Ntarde demais para mudar de direção.",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}No entanto, parece que é\\Ntarde demais para mudar de direção.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -683,7 +683,7 @@
     "indice" : 153,
     "estilo" : "Dialogue",
     "original" : "\"Você levaria isso como um cumprimento \\N dos novos membros aqui?\"",
-    "traduzido" : "",
+    "traduzido" : "\"Você levaria isso como um cumprimento\\Ndos novos membros aqui?\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -781,14 +781,14 @@
     "indice" : 167,
     "estilo" : "Dialogue",
     "original" : "Me desculpe por ter deixado Cima\\N para trás enquanto você estava fora.",
-    "traduzido" : "",
+    "traduzido" : "Me desculpe por ter deixado Cima\\Npara trás enquanto você estava fora.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 168,
     "estilo" : "Dialogue",
     "original" : "Mas, se você estivesse aqui, \\Nvocê teria objetado.",
-    "traduzido" : "",
+    "traduzido" : "Mas, se você estivesse aqui,\\Nvocê teria objetado.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -886,7 +886,7 @@
     "indice" : 182,
     "estilo" : "Dialogue",
     "original" : "Mas também para que nossa frota seja \\Ntão forte quanto possível!",
-    "traduzido" : "",
+    "traduzido" : "Mas também para que nossa frota seja\\Ntão forte quanto possível!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1152,7 +1152,7 @@
     "indice" : 220,
     "estilo" : "Dialogue",
     "original" : "O Gundam ou o Alferes Uraki, \\Nqual você prefere mais?",
-    "traduzido" : "",
+    "traduzido" : "O Gundam ou o Alferes Uraki,\\Nqual você prefere mais?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1194,7 +1194,7 @@
     "indice" : 226,
     "estilo" : "Dialogue",
     "original" : "e ele começa a ficar \\Nencantado por você.",
-    "traduzido" : "",
+    "traduzido" : "e ele começa a ficar\\Nencantado por você.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1334,7 +1334,7 @@
     "indice" : 246,
     "estilo" : "Dialogue",
     "original" : "Aqui é onde eu cometi o erro \\Nantes, certo? Aqui!",
-    "traduzido" : "",
+    "traduzido" : "Aqui é onde eu cometi o erro\\Nantes, certo? Aqui!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1362,7 +1362,7 @@
     "indice" : 250,
     "estilo" : "Dialogue",
     "original" : "Bem, Srta. Nina! \\N Aqui está onde você está.",
-    "traduzido" : "",
+    "traduzido" : "Bem, Srta. Nina!\\NAqui está onde você está.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1579,7 +1579,7 @@
     "indice" : 281,
     "estilo" : "Dialogue",
     "original" : "Qualquer um pode ver que o Tenente Monsha tem mais \\N experiência e habilidade do que você!",
-    "traduzido" : "",
+    "traduzido" : "Qualquer um pode ver que o Tenente Monsha tem mais\\Nexperiência e habilidade do que você!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1677,7 +1677,7 @@
     "indice" : 295,
     "estilo" : "Dialogue",
     "original" : "Estou ansioso para enviar você \\N ao seu descanso eterno.",
-    "traduzido" : "",
+    "traduzido" : "Estou ansioso para enviar você\\Nao seu descanso eterno.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1943,7 +1943,7 @@
     "indice" : 333,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Dia após dia, sua \\Nmemória nunca me deixou. {\\i}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Dia após dia, sua\\Nmemória nunca me deixou.{\\i}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1978,7 +1978,7 @@
     "indice" : 338,
     "estilo" : "Dialogue",
     "original" : "{\\i1}E aqueles jovens que agora \\Nousadamente voam para aquela chama mais uma vez!{\\i}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}E aqueles jovens que agora\\Nousadamente voam para aquela chama mais uma vez!{\\i}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2489,7 +2489,7 @@
     "indice" : 411,
     "estilo" : "Dialogue",
     "original" : "Idiota! Você tinha que ter tirado isso \\Nnessas condições!",
-    "traduzido" : "",
+    "traduzido" : "Idiota! Você tinha que ter tirado isso\\Nnessas condições!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2503,7 +2503,7 @@
     "indice" : 413,
     "estilo" : "Dialogue",
     "original" : "Por que...? Por que eu te dei o \\NGundam?",
-    "traduzido" : "",
+    "traduzido" : "Por que...? Por que eu te dei o\\NGundam?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {

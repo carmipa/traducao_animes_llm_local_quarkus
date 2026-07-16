@@ -130,7 +130,7 @@
     "indice" : 127,
     "estilo" : "Dialogue",
     "original" : "Nosso Comandante Supremo, \\NGihren, também foi perdido.",
-    "traduzido" : "",
+    "traduzido" : "Nosso Comandante Supremo,\\NGihren, também foi perdido.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -200,7 +200,7 @@
     "indice" : 137,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Após isso, um armistício foi assinado entre \\Na Federação Terrestre e a República de Zeon.",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Após isso, um armistício foi assinado entre\\Na Federação Terrestre e a República de Zeon.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -326,7 +326,7 @@
     "indice" : 155,
     "estilo" : "Dialogue",
     "original" : "Tenente Burning, a unidade de Keith está presa \\Nnas ruínas e não pode se mover.",
-    "traduzido" : "",
+    "traduzido" : "Tenente Burning, a unidade de Keith está presa\\Nnas ruínas e não pode se mover.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -354,7 +354,7 @@
     "indice" : 159,
     "estilo" : "Dialogue",
     "original" : "Mandaremos alguém \\N para buscá-lo mais tarde.",
-    "traduzido" : "",
+    "traduzido" : "Mandaremos alguém\\Npara buscá-lo mais tarde.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -417,7 +417,7 @@
     "indice" : 168,
     "estilo" : "Dialogue",
     "original" : "Desculpe-me por subir sem \\Npermissão, Capitão Synapse.",
-    "traduzido" : "",
+    "traduzido" : "Desculpe-me por subir sem\\Npermissão, Capitão Synapse.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -543,7 +543,7 @@
     "indice" : 186,
     "estilo" : "Dialogue",
     "original" : "Eles podem chamar isso de custo da guerra, \\Nmas é um preço muito alto a pagar.",
-    "traduzido" : "",
+    "traduzido" : "Eles podem chamar isso de custo da guerra,\\Nmas é um preço muito alto a pagar.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -669,7 +669,7 @@
     "indice" : 204,
     "estilo" : "Dialogue",
     "original" : "Acredita que há \\N Mobile Suits Gundam a bordo?!",
-    "traduzido" : "",
+    "traduzido" : "Acredita que há\\NMobile Suits Gundam a bordo?!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -683,7 +683,7 @@
     "indice" : 206,
     "estilo" : "Dialogue",
     "original" : "Nesta tradução, mantemos o sentido da fala original, usamos português brasileiro natural e fluido, e preservamos o marcador \\N exatamente como está na fala original.",
-    "traduzido" : "",
+    "traduzido" : "Nesta tradução, mantemos o sentido da fala original, usamos português brasileiro natural e fluido, e preservamos o marcador\\Nexatamente como está na fala original.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -837,7 +837,7 @@
     "indice" : 228,
     "estilo" : "Dialogue",
     "original" : "Here's the authorization from Jaburo and\\Nthe test schedule we'll be starting tomorrow.",
-    "traduzido" : "",
+    "traduzido" : "Aqui está a autorização do Jaburo e\\No cronograma de testes que iniciaremos amanhã.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1047,7 +1047,7 @@
     "indice" : 258,
     "estilo" : "Dialogue",
     "original" : "Ele é tímido, especialmente perto de \\Nmulheres bonitas.",
-    "traduzido" : "",
+    "traduzido" : "Ele é tímido, especialmente perto de\\Nmulheres bonitas.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1138,7 +1138,7 @@
     "indice" : 271,
     "estilo" : "Dialogue",
     "original" : "Se você não precisa de mim, \\N eu gostaria de dar uma volta.",
-    "traduzido" : "",
+    "traduzido" : "Se você não precisa de mim,\\Neu gostaria de dar uma volta.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1166,7 +1166,7 @@
     "indice" : 275,
     "estilo" : "Dialogue",
     "original" : "...é novo para pessoas como nós \\N que nasceram no espaço.",
-    "traduzido" : "",
+    "traduzido" : "...é novo para pessoas como nós\\Nque nasceram no espaço.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1187,7 +1187,7 @@
     "indice" : 278,
     "estilo" : "Dialogue",
     "original" : "Eu posso levar você ao melhor lugar para \\Nassistir o pôr do sol.",
-    "traduzido" : "",
+    "traduzido" : "Eu posso levar você ao melhor lugar para\\Nassistir o pôr do sol.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1222,7 +1222,7 @@
     "indice" : 283,
     "estilo" : "Dialogue",
     "original" : "Ninguém gosta de um cara que \\Nse impõe demais, rapaz.",
-    "traduzido" : "",
+    "traduzido" : "Ninguém gosta de um cara que\\Nse impõe demais, rapaz.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1327,7 +1327,7 @@
     "indice" : 298,
     "estilo" : "Dialogue",
     "original" : "\"Mas pilotos de teste podem ser \\Nos mais habilidosos.\"",
-    "traduzido" : "",
+    "traduzido" : "\"Mas pilotos de teste podem ser\\Nos mais habilidosos.\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1341,7 +1341,7 @@
     "indice" : 300,
     "estilo" : "Dialogue",
     "original" : "O senhor é o pivô aqui, \\NComandante. Cuidado.",
-    "traduzido" : "",
+    "traduzido" : "O senhor é o pivô aqui,\\NComandante. Cuidado.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1404,7 +1404,7 @@
     "indice" : 309,
     "estilo" : "Dialogue",
     "original" : "O que você quer dizer que não pode esperar para \\Ntestá-lo nos novos trajes?!",
-    "traduzido" : "",
+    "traduzido" : "O que você quer dizer que não pode esperar para\\Ntestá-lo nos novos trajes?!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1530,7 +1530,7 @@
     "indice" : 327,
     "estilo" : "Dialogue",
     "original" : "Espero que não seja muito \\Ndifícil para mim, Tenente!",
-    "traduzido" : "",
+    "traduzido" : "Espero que não seja muito\\Ndifícil para mim, Tenente!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1579,7 +1579,7 @@
     "indice" : 334,
     "estilo" : "Dialogue",
     "original" : "Por falar nisso, ouvimos que você vai escolher \\Npilares de teste desta base para aqueles novos trajes.",
-    "traduzido" : "",
+    "traduzido" : "Por falar nisso, ouvimos que você vai escolher\\Npilares de teste desta base para aqueles novos trajes.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1656,7 +1656,7 @@
     "indice" : 345,
     "estilo" : "Dialogue",
     "original" : "...provavelmente não seria capaz de \\N explorar o potencial dos protótipos.",
-    "traduzido" : "",
+    "traduzido" : "...provavelmente não seria capaz de\\Nexplorar o potencial dos protótipos.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1845,7 +1845,7 @@
     "indice" : 372,
     "estilo" : "Dialogue",
     "original" : "Hã? Parece que eles estão \\Nfazendo alguma coisa.",
-    "traduzido" : "",
+    "traduzido" : "Hã? Parece que eles estão\\Nfazendo alguma coisa.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1908,7 +1908,7 @@
     "indice" : 381,
     "estilo" : "Dialogue",
     "original" : "Se ela apenas perdesse essa atitude ruim, \\Nela seria perfeita.",
-    "traduzido" : "",
+    "traduzido" : "Se ela apenas perdesse essa atitude ruim,\\Nela seria perfeita.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2300,7 +2300,7 @@
     "indice" : 437,
     "estilo" : "Dialogue",
     "original" : "Eles simplesmente roubaram a Unidade 02, \\Ne ela está armada com uma bomba nuclear!",
-    "traduzido" : "",
+    "traduzido" : "Eles simplesmente roubaram a Unidade 02,\\Ne ela está armada com uma bomba nuclear!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {

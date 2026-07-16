@@ -242,7 +242,7 @@
     "indice" : 90,
     "estilo" : "Dialogue",
     "original" : "Eu não tinha desculpa para pegar \\NUnidade 01 sem permissão...",
-    "traduzido" : "",
+    "traduzido" : "Eu não tinha desculpa para pegar\\NUnidade 01 sem permissão...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -473,7 +473,7 @@
     "indice" : 123,
     "estilo" : "Dialogue",
     "original" : "Eu não consegui cumprir minha promessa \\N de recuperar a Unidade 02.",
-    "traduzido" : "",
+    "traduzido" : "Eu não consegui cumprir minha promessa\\Nde recuperar a Unidade 02.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -697,7 +697,7 @@
     "indice" : 155,
     "estilo" : "Dialogue",
     "original" : "Como é que fica, algum de vocês \\Nlivem hoje à noite?!",
-    "traduzido" : "",
+    "traduzido" : "Como é que fica, algum de vocês\\Nlivem hoje à noite?!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1082,21 +1082,21 @@
     "indice" : 210,
     "estilo" : "Dialogue",
     "original" : "Ainda assim, não consigo acreditar que aquele novo Mobile Suit\\N foi roubado tão facilmente.",
-    "traduzido" : "",
+    "traduzido" : "Ainda assim, não consigo acreditar que aquele novo Mobile Suit\\Nfoi roubado tão facilmente.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 211,
     "estilo" : "Dialogue",
     "original" : "\"E ouvi dizer que alguém levou o \\NUnidade 01 para persegui-lo,\"",
-    "traduzido" : "",
+    "traduzido" : "\"E ouvi dizer que alguém levou o\\NUnidade 01 para persegui-lo,\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 212,
     "estilo" : "Dialogue",
     "original" : "E eles ainda não conseguiram pará-lo \\N de escapar!",
-    "traduzido" : "",
+    "traduzido" : "E eles ainda não conseguiram pará-lo\\Nde escapar!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1159,7 +1159,7 @@
     "indice" : 221,
     "estilo" : "Dialogue",
     "original" : "Dois ainda são \\Nrecém-chegados, não são?",
-    "traduzido" : "",
+    "traduzido" : "Dois ainda são\\Nrecém-chegados, não são?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1222,7 +1222,7 @@
     "indice" : 230,
     "estilo" : "Dialogue",
     "original" : "Ele sempre precisa de tempo \\N para superar as coisas...",
-    "traduzido" : "",
+    "traduzido" : "Ele sempre precisa de tempo\\Npara superar as coisas...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1306,7 +1306,7 @@
     "indice" : 242,
     "estilo" : "Dialogue",
     "original" : "Eu nunca imaginei que teríamos que usar aquilo... \\N",
-    "traduzido" : "",
+    "traduzido" : "Eu nunca imaginei que teríamos que usar aquilo...\\N",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1327,7 +1327,7 @@
     "indice" : 245,
     "estilo" : "Dialogue",
     "original" : "Não posso apenas ficar aqui \\Nbrincando de dedilhar!",
-    "traduzido" : "",
+    "traduzido" : "Não posso apenas ficar aqui\\Nbrincando de dedilhar!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1495,7 +1495,7 @@
     "indice" : 269,
     "estilo" : "Dialogue",
     "original" : "Não há como eles vão \\Ndar isso para esse piloto iniciante!",
-    "traduzido" : "",
+    "traduzido" : "Não há como eles vão\\Ndar isso para esse piloto iniciante!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1523,7 +1523,7 @@
     "indice" : 273,
     "estilo" : "Dialogue",
     "original" : "Ele é um dos homens do Tenente \\N Burning, lembra?",
-    "traduzido" : "",
+    "traduzido" : "Ele é um dos homens do Tenente\\NBurning, lembra?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1670,7 +1670,7 @@
     "indice" : 294,
     "estilo" : "Dialogue",
     "original" : "Eu quero recuperar a Unidade 02, \\Ncuste o que custar.",
-    "traduzido" : "",
+    "traduzido" : "Eu quero recuperar a Unidade 02,\\Ncuste o que custar.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1775,7 +1775,7 @@
     "indice" : 309,
     "estilo" : "Dialogue",
     "original" : "Se balançarmos demais, \\N suas feridas vão reabrir!",
-    "traduzido" : "",
+    "traduzido" : "Se balançarmos demais,\\Nsuas feridas vão reabrir!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2097,7 +2097,7 @@
     "indice" : 355,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Então, Nina e Orville querem \\Nficar no navio?",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Então, Nina e Orville querem\\Nficar no navio?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {

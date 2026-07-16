@@ -151,7 +151,7 @@
     "indice" : 45,
     "estilo" : "Titles",
     "original" : "{\\blur1\\c&H141316&\\pos(720,680)}O GUERREIRO \\NDE VON BRAUN",
-    "traduzido" : "",
+    "traduzido" : "{\\blur1\\c&H141316&\\pos(720,680)}O GUERREIRO\\NDE VON BRAUN",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -193,14 +193,14 @@
     "indice" : 139,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Mas os esperando havia um \\Ninimigo novo e poderoso.",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Mas os esperando havia um\\Ninimigo novo e poderoso.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 140,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Rancores antigos da Guerra de Um Ano \\Nafloraram como ondas para atingir Uraki",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Rancores antigos da Guerra de Um Ano\\Nafloraram como ondas para atingir Uraki",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -256,7 +256,7 @@
     "indice" : 148,
     "estilo" : "Dialogue",
     "original" : "Uau, ele realmente \\Ndestruiu aquilo!",
-    "traduzido" : "",
+    "traduzido" : "Uau, ele realmente\\Ndestruiu aquilo!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -347,7 +347,7 @@
     "indice" : 161,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Capitão Synapse, você é o \\Núnico em quem posso confiar agora.",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Capitão Synapse, você é o\\Núnico em quem posso confiar agora.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -375,7 +375,7 @@
     "indice" : 165,
     "estilo" : "Dialogue",
     "original" : "Estamos recebendo uma mensagem do \\NAutoridade do Porto de Von Braun.",
-    "traduzido" : "",
+    "traduzido" : "Estamos recebendo uma mensagem do\\NAutoridade do Porto de Von Braun.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -424,7 +424,7 @@
     "indice" : 172,
     "estilo" : "Dialogue",
     "original" : "Nina tem trabalho, \\Nvocê sabe?! Trabalho!",
-    "traduzido" : "",
+    "traduzido" : "Nina tem trabalho,\\Nvocê sabe?! Trabalho!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -529,7 +529,7 @@
     "indice" : 187,
     "estilo" : "Dialogue",
     "original" : "...antes de ser equipado para \\Nuso em gravidade zero, não foi?",
-    "traduzido" : "",
+    "traduzido" : "...antes de ser equipado para\\Nuso em gravidade zero, não foi?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -690,7 +690,7 @@
     "indice" : 210,
     "estilo" : "Dialogue",
     "original" : "E foi então que eu, Monsha, \\Naceitei da Federação, cheguei na cena!",
-    "traduzido" : "",
+    "traduzido" : "E foi então que eu, Monsha,\\Naceitei da Federação, cheguei na cena!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -893,7 +893,7 @@
     "indice" : 239,
     "estilo" : "Dialogue",
     "original" : "A menos que a frota Delaz\\N te devore vivo.",
-    "traduzido" : "",
+    "traduzido" : "A menos que a frota Delaz\\Nte devore vivo.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -970,7 +970,7 @@
     "indice" : 250,
     "estilo" : "Dialogue",
     "original" : "Não está deixando que o que aconteceu no passado \\Nafete você agora, certo?",
-    "traduzido" : "",
+    "traduzido" : "Não está deixando que o que aconteceu no passado\\Nafete você agora, certo?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -984,14 +984,14 @@
     "indice" : 252,
     "estilo" : "Dialogue",
     "original" : "Você deveria permitir-se \\Nse apaixonar novamente.",
-    "traduzido" : "",
+    "traduzido" : "Você deveria permitir-se\\Nse apaixonar novamente.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 253,
     "estilo" : "Dialogue",
     "original" : "Você pode equilibrar sua carreira \\N e um relacionamento desta vez.",
-    "traduzido" : "",
+    "traduzido" : "Você pode equilibrar sua carreira\\Ne um relacionamento desta vez.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1061,7 +1061,7 @@
     "indice" : 263,
     "estilo" : "Dialogue",
     "original" : "Você colocou seus grandes clientes da Federação \\N para cima no porto espacial um...",
-    "traduzido" : "",
+    "traduzido" : "Você colocou seus grandes clientes da Federação\\Npara cima no porto espacial um...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1145,7 +1145,7 @@
     "indice" : 275,
     "estilo" : "Dialogue",
     "original" : "\"Não se preocupe com meu café. \\N Nos vemos à noite.\"",
-    "traduzido" : "",
+    "traduzido" : "\"Não se preocupe com meu café.\\NNos vemos à noite.\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1194,7 +1194,7 @@
     "indice" : 282,
     "estilo" : "Dialogue",
     "original" : "Se é assim que você se sente, \\Nfaça o mais rápido possível.",
-    "traduzido" : "",
+    "traduzido" : "Se é assim que você se sente,\\Nfaça o mais rápido possível.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1278,7 +1278,7 @@
     "indice" : 294,
     "estilo" : "Dialogue",
     "original" : "Hmm, segundo isso, \\Né dividido em vários níveis.",
-    "traduzido" : "",
+    "traduzido" : "Hmm, segundo isso,\\Né dividido em vários níveis.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1292,7 +1292,7 @@
     "indice" : 296,
     "estilo" : "Dialogue",
     "original" : "Mas os níveis mais baixos são apenas as \\Nfábricas e ferro-velhos.",
-    "traduzido" : "",
+    "traduzido" : "Mas os níveis mais baixos são apenas as\\Nfábricas e ferro-velhos.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1327,7 +1327,7 @@
     "indice" : 301,
     "estilo" : "Dialogue",
     "original" : "Está bem assim. Só deixe-me \\N ficar aqui por um pouco.",
-    "traduzido" : "",
+    "traduzido" : "Está bem assim. Só deixe-me ficar aqui por um pouco.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1348,7 +1348,7 @@
     "indice" : 304,
     "estilo" : "Dialogue",
     "original" : "Eu nem percebi que eu tinha \\Ndesertado até você mencionar isso.",
-    "traduzido" : "",
+    "traduzido" : "Eu nem percebi que eu tinha\\Ndesertado até você mencionar isso.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1460,7 +1460,7 @@
     "indice" : 320,
     "estilo" : "Dialogue",
     "original" : "Kelley perdeu o braço \\N durante a Guerra de Um Ano!",
-    "traduzido" : "",
+    "traduzido" : "Kelley perdeu o braço\\Ndurante a Guerra de Um Ano!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1495,7 +1495,7 @@
     "indice" : 325,
     "estilo" : "Dialogue",
     "original" : "Por favor, conecte-me àquele \\Nnavio das Forças da Federação no porto.",
-    "traduzido" : "",
+    "traduzido" : "Por favor, conecte-me àquele\\Nnavio das Forças da Federação no porto.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1565,7 +1565,7 @@
     "indice" : 335,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Kou, onde você foi?! \\N Você realmente é tão fraco assim?! {\\i}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Kou, onde você foi?!\\NVocê realmente é tão fraco assim?!{\\i}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1614,7 +1614,7 @@
     "indice" : 342,
     "estilo" : "Dialogue",
     "original" : "Tendo isso para a Operação Estardusto \\Nvirá a calhar.",
-    "traduzido" : "",
+    "traduzido" : "Tendo isso para a Operação Estardusto\\Nvirá a calhar.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1642,7 +1642,7 @@
     "indice" : 346,
     "estilo" : "Dialogue",
     "original" : "Se você não conseguir, \\Nestará fora da operação.",
-    "traduzido" : "",
+    "traduzido" : "Se você não conseguir,\\Nestará fora da operação.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1726,7 +1726,7 @@
     "indice" : 358,
     "estilo" : "Dialogue",
     "original" : "Um covarde como você não tem \\Ndireito de me dar lições!",
-    "traduzido" : "",
+    "traduzido" : "Um covarde como você não tem direito de me dar lições!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1971,7 +1971,7 @@
     "indice" : 393,
     "estilo" : "Dialogue",
     "original" : "Eu poderia viver \\Ncomo um técnico, mas...",
-    "traduzido" : "",
+    "traduzido" : "Eu poderia viver\\Ncomo um técnico, mas...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2104,7 +2104,7 @@
     "indice" : 412,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Mas o destino não cessa \\Nde atormentar as pessoas.",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Mas o destino não cessa\\Nde atormentar as pessoas.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2125,7 +2125,7 @@
     "indice" : 415,
     "estilo" : "Dialogue",
     "original" : "{\\i1}na superfície lunar, \\No pano se ergue para uma batalha.",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}na superfície lunar,\\No pano se ergue para uma batalha.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   } ]
