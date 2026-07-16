@@ -83,6 +83,11 @@ public class CorrigirLegendasUseCase {
         return corrigirPasta(pastaBase, pastaBase, contextoId);
     }
 
+    /**
+     * Propósito de negócio: Executa a correção estrutural e de tags das legendas traduzidas comparando-as com suas originais.
+     * Invariantes do domínio: Garante que as legendas de destino tenham exatamente a mesma contagem de eventos das de referência.
+     * Comportamento em caso de falha: Retorna um ResultadoCorrecaoLegendas com status de erro e contagem zerada de modificações se as pastas de origem/destino forem inválidas.
+     */
     public ResultadoCorrecaoLegendas corrigirPasta(Path pastaOriginal, Path pastaTraduzida, String contextoId) {
         Instant inicio = Instant.now();
         List<LogEventoCorrecaoLegendas> eventos = new ArrayList<>();
@@ -121,7 +126,15 @@ public class CorrigirLegendasUseCase {
             // inflar o contador "sem par" com ruído.
             List<Path> originais = stream.filter(Files::isRegularFile)
                     .filter(p -> p.toString().toLowerCase().endsWith(".ass"))
-                    .filter(p -> !ehLegendaTraduzida(p))
+                    .filter(p -> {
+                        if (!pastaOriginal.equals(pastaTraduzida) && p.startsWith(pastaTraduzida)) {
+                            return false;
+                        }
+                        if (pastaOriginal.equals(pastaTraduzida)) {
+                            return !ehLegendaTraduzida(p);
+                        }
+                        return true;
+                    })
                     .toList();
 
             // Os originais são varridos recursivamente; o par traduzido também
@@ -400,6 +413,11 @@ public class CorrigirLegendasUseCase {
         return false;
     }
 
+    /**
+     * Propósito de negócio: Localiza o caminho correspondente do arquivo traduzido (PT-BR) associado a um arquivo original.
+     * Invariantes do domínio: Prioriza correspondências exatas de nomes e mapeamentos estruturados com sufixos regionais (ex: PT-BR/PTBR).
+     * Comportamento em caso de falha: Caso nenhum par de arquivo seja resolvido pelo índice ou pastas físicas, estima um caminho padrão sob a pasta traduzida.
+     */
     private Path localizarArquivoTraduzido(
         Path arqOriginal, Path pastaTraduzida, Map<String, List<Path>> indiceTraduzidas
     ) {
@@ -407,6 +425,9 @@ public class CorrigirLegendasUseCase {
         String nomeBase = nomeOriginal.substring(0, nomeOriginal.lastIndexOf("."));
         Set<String> candidatos = new LinkedHashSet<>();
 
+        if (ehLegendaTraduzida(arqOriginal)) {
+            candidatos.add(nomeOriginal);
+        }
         candidatos.add(nomeBase + "_PT-BR.ass");
         candidatos.add(nomeBase + "_PTBR.ass");
         candidatos.add(nomeBase.replace("_ENG", "_PT-BR") + ".ass");
@@ -421,18 +442,22 @@ public class CorrigirLegendasUseCase {
         for (String candidato : candidatos) {
             // 1. Ao lado do próprio original (pastas mistas EN+PT).
             Path aoLado = arqOriginal.resolveSibling(candidato);
-            if (Files.exists(aoLado)) {
+            if (Files.exists(aoLado) && !aoLado.equals(arqOriginal)) {
                 return aoLado;
             }
             // 2. Raiz da pasta traduzida (layout plano, comportamento original).
             Path naRaiz = pastaTraduzida.resolve(candidato);
-            if (Files.exists(naRaiz)) {
+            if (Files.exists(naRaiz) && !naRaiz.equals(arqOriginal)) {
                 return naRaiz;
             }
             // 3. Qualquer subpasta da pasta traduzida, via índice pré-computado.
             List<Path> nomeIgual = indiceTraduzidas.get(candidato.toLowerCase());
-            if (nomeIgual != null && !nomeIgual.isEmpty()) {
-                return nomeIgual.get(0);
+            if (nomeIgual != null) {
+                for (Path p : nomeIgual) {
+                    if (!p.equals(arqOriginal)) {
+                        return p;
+                    }
+                }
             }
         }
 
