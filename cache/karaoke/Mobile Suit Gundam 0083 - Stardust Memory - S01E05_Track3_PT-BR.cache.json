@@ -1,50 +1,113 @@
 [ {
-  "indice" : 2,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,200)\\be0\\blur1\\bord0}There's no winner of this fight as I collapse, now exhausted.",
-  "traduzido" : "{\\fad(100,200)\\be0\\blur1\\bord0}Não há vencedor nessa luta enquanto eu desabo, agora exaurido.",
+  "indice" : 10,
+  "estilo" : "Karaoke Simples",
+  "original" : "I got a burning heart!",
+  "traduzido" : "Tenho um coração em chamas!",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 3,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,200)\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}There's no winner of this fight as I collapse, now exhausted.",
-  "traduzido" : "{\\fad(100,200)\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}Não há vencedor nessa luta enquanto eu desabo, agora exaurido.",
+  "indice" : 14,
+  "estilo" : "Karaoke Simples",
+  "original" : "I got a burning love!",
+  "traduzido" : "Tenho um amor ardente!",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 25,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(0,100)\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}Feelings that you just can't describe with words...",
-  "traduzido" : "{\\fad(0,100)\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}Sentimentos que você não consegue descrever com palavras...",
+  "indice" : 376,
+  "estilo" : "Karaoke Simples",
+  "original" : "Don't come to me just 'cause you're lonely tonight...",
+  "traduzido" : "Não venha até mim só porque você está solitário hoje à noite...",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 28,
-  "estilo" : "Song ENG",
-  "original" : "{\\be0\\blur1\\bord0}...are enough to ignite even a frozen heart!",
-  "traduzido" : "{\\be0\\blur1\\bord0}...suficientes para fazer até um coração gelado entrar em ebulição!",
+  "indice" : 377,
+  "estilo" : "Karaoke Simples",
+  "original" : "Lonely's only part of your game...",
+  "traduzido" : "\"Sozinho... isso é apenas parte do seu jogo...\"",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 29,
-  "estilo" : "Song ENG",
-  "original" : "{\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}...are enough to ignite even a frozen heart!",
-  "traduzido" : "{\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}...são suficientes para acender até um coração gelado!",
+  "indice" : 378,
+  "estilo" : "Karaoke Simples",
+  "original" : "As long as you live, you must remember one thing...",
+  "traduzido" : "Lembre-se de uma coisa enquanto viver...",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 34,
-  "estilo" : "Song ENG",
-  "original" : "{\\be0\\blur1\\bord0}Burning with shining blue fire.\\NFire that'll spread until it covers all the stars in the sky.",
-  "traduzido" : "{\\be0\\blur1\\bord0}Queimando com fogo azul brilhante. \\NFogo que se espalhará até cobrir todas as estrelas do céu.",
+  "indice" : 379,
+  "estilo" : "Karaoke Simples",
+  "original" : "Give and take are one and the same...",
+  "traduzido" : "Dar e receber são a mesma coisa...",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 35,
-  "estilo" : "Song ENG",
-  "original" : "{\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}Burning with shining blue fire.\\NFire that'll spread until it covers all the stars in the sky.",
-  "traduzido" : "{\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}Queimando com fogo azul brilhante.\\NFogo que se espalhará até cobrir todas as estrelas do céu.",
+  "indice" : 380,
+  "estilo" : "Karaoke Simples",
+  "original" : "So tell me are you ready?",
+  "traduzido" : "Estou pronto? Diga-me apenas isso.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 381,
+  "estilo" : "Karaoke Simples",
+  "original" : "Really, really ready?",
+  "traduzido" : "Pronto mesmo?",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 382,
+  "estilo" : "Karaoke Simples",
+  "original" : "I don't want your love for one night!",
+  "traduzido" : "Eu não quero seu amor por uma noite!",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 383,
+  "estilo" : "Karaoke Simples",
+  "original" : "'Cause I'm not lookin' for a love affair...",
+  "traduzido" : "\"Porque eu não procuro um romance...\"",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 384,
+  "estilo" : "Karaoke Simples",
+  "original" : "I need the magic when I hold you near...",
+  "traduzido" : "Preciso da magia quando te seguro perto...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 385,
+  "estilo" : "Karaoke Simples",
+  "original" : "It's more important than a one-night stand...",
+  "traduzido" : "É mais importante do que um caso de uma noite...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 386,
+  "estilo" : "Karaoke Simples",
+  "original" : "I need the magic when I touch your hand!",
+  "traduzido" : "Eu preciso da mágica quando tocar sua mão!",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 387,
+  "estilo" : "Karaoke Simples",
+  "original" : "I'm not lookin' for a love affair...",
+  "traduzido" : "Eu não estou procurando um romance...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 388,
+  "estilo" : "Karaoke Simples",
+  "original" : "I need the magic when I hold you near!",
+  "traduzido" : "Eu preciso da magia quando te seguro perto!",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 390,
+  "estilo" : "Karaoke Simples",
+  "original" : "I need the magic when I touch...touch your hand...",
+  "traduzido" : "Eu preciso da mágica quando eu tocar...toque sua mão...",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 } ]

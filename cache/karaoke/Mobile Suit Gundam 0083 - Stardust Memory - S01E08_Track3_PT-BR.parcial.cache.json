@@ -1,57 +1,64 @@
 [ {
+  "indice" : 1,
+  "estilo" : "Karaoke Simples",
+  "original" : "Olhos vazios.",
+  "traduzido" : "Olhos vazios.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 2,
+  "estilo" : "Karaoke Simples",
+  "original" : "As chamas que eles olham.",
+  "traduzido" : "As chamas que eles observam.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 6,
+  "estilo" : "Karaoke Simples",
+  "original" : "Mesmo que vidas sejam reduzidas a cinzas hoje...",
+  "traduzido" : "Mesmo que vidas sejam reduzidas a cinzas hoje...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
   "indice" : 8,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,100)\\blur1\\bord0}Olhos sem vida.",
-  "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Olhos vazios.",
+  "estilo" : "Karaoke Simples",
+  "original" : "Talvez seja o destino, mas",
+  "traduzido" : "Eu não sei se é o destino.",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
   "indice" : 9,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Olhos sem vida.",
-  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Olhos vazios.",
+  "estilo" : "Karaoke Simples",
+  "original" : "I wanna get the chance!",
+  "traduzido" : "Eu quero ter essa chance!",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
   "indice" : 11,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}As chamas que eles olham.",
-  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}As chamas que eles fitam.",
+  "estilo" : "Karaoke Simples",
+  "original" : "Para quem existe o futuro agora?",
+  "traduzido" : "Quem existe agora tem um futuro?",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 18,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,100)\\blur1\\bord0}Mesmo que vidas sejam reduzidas a cinzas hoje...",
-  "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Mesmo que vidas sejam reduzidas a cinzas hoje...",
+  "indice" : 13,
+  "estilo" : "Karaoke Simples",
+  "original" : "...com uma tempestade forte.",
+  "traduzido" : "Com uma tempestade forte.",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 19,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Mesmo que vidas sejam reduzidas a cinzas hoje...",
-  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Mesmo que vidas sejam reduzidas a cinzas hoje...",
+  "indice" : 15,
+  "estilo" : "Karaoke Simples",
+  "original" : "Men of destiny!",
+  "traduzido" : "Homens do destino!",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 26,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,100)\\blur1\\bord0}Para quem existe o futuro agora?",
-  "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Para quem existe o futuro agora?",
-  "idiomaOriginal" : "en",
-  "idiomaTraduzido" : "pt-br"
-}, {
-  "indice" : 27,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Para quem existe o futuro agora?",
-  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Para quem existe o futuro agora?",
-  "idiomaOriginal" : "en",
-  "idiomaTraduzido" : "pt-br"
-}, {
-  "indice" : 31,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}...com uma tempestade forte.",
-  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}...com uma tempestade forte.",
+  "indice" : 374,
+  "estilo" : "Karaoke Simples",
+  "original" : "Numa noite que engole a estrada.",
+  "traduzido" : "Na noite que devora a estrada.",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 } ]

@@ -1,0 +1,122 @@
+{
+  "operacao" : {
+    "tipo" : "Correcao de Legendas (.ass original->traduzida)",
+    "detalhe" : "Original: C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\legendas_extraidas_ass | Traduzida: C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificadas-karaoke-ptbr",
+    "tempoTotalMs" : 53,
+    "arquivosProcessados" : 15,
+    "itensDetectados" : 1,
+    "itensCorrigidos" : 1,
+    "registradoEm" : "2026-07-16T20:33:37.007419700Z"
+  },
+  "pastaOriginal" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\legendas_extraidas_ass",
+  "pastaTraduzida" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificadas-karaoke-ptbr",
+  "llmHabilitado" : true,
+  "contexto" : "Mobile Suit Gundam 0083: Stardust Memory",
+  "resultado" : {
+    "curados" : 1,
+    "falasCuradas" : 1,
+    "corrigidosLlm" : 0,
+    "semAlteracao" : 0,
+    "semPar" : 0,
+    "traducaoAusente" : 0,
+    "totalErros" : 14,
+    "erros" : [ "Mobile Suit Gundam 0083 - Stardust Memory - S01E01_Track3_PT-BR.ass: contagem de eventos não corresponde (456 no original vs 382 na tradução) — arquivo pulado, nenhuma alteração feita.", "Mobile Suit Gundam 0083 - Stardust Memory - S01E02_Track3_PT-BR.ass: contagem de eventos não corresponde (415 no original vs 370 na tradução) — arquivo pulado, nenhuma alteração feita.", "Mobile Suit Gundam 0083 - Stardust Memory - S01E03-5_Track2_PT-BR.ass: contagem de eventos não corresponde (94 no original vs 91 na tradução) — arquivo pulado, nenhuma alteração feita.", "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass: contagem de eventos não corresponde (386 no original vs 341 na tradução) — arquivo pulado, nenhuma alteração feita.", "Mobile Suit Gundam 0083 - Stardust Memory - S01E04_Track3_PT-BR.ass: contagem de eventos não corresponde (427 no original vs 382 na tradução) — arquivo pulado, nenhuma alteração feita.", "Mobile Suit Gundam 0083 - Stardust Memory - S01E05_Track3_PT-BR.ass: contagem de eventos não corresponde (447 no original vs 402 na tradução) — arquivo pulado, nenhuma alteração feita.", "Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.ass: contagem de eventos não corresponde (416 no original vs 340 na tradução) — arquivo pulado, nenhuma alteração feita.", "Mobile Suit Gundam 0083 - Stardust Memory - S01E07_Track3_PT-BR.ass: contagem de eventos não corresponde (409 no original vs 364 na tradução) — arquivo pulado, nenhuma alteração feita.", "Mobile Suit Gundam 0083 - Stardust Memory - S01E08_Track3_PT-BR.ass: contagem de eventos não corresponde (468 no original vs 396 na tradução) — arquivo pulado, nenhuma alteração feita.", "Mobile Suit Gundam 0083 - Stardust Memory - S01E09_Track3_PT-BR.ass: contagem de eventos não corresponde (381 no original vs 309 na tradução) — arquivo pulado, nenhuma alteração feita.", "Mobile Suit Gundam 0083 - Stardust Memory - S01E10_Track3_PT-BR.ass: contagem de eventos não corresponde (343 no original vs 271 na tradução) — arquivo pulado, nenhuma alteração feita.", "Mobile Suit Gundam 0083 - Stardust Memory - S01E11_Track3_PT-BR.ass: contagem de eventos não corresponde (402 no original vs 330 na tradução) — arquivo pulado, nenhuma alteração feita.", "Mobile Suit Gundam 0083 - Stardust Memory - S01E12_Track3_PT-BR.ass: contagem de eventos não corresponde (330 no original vs 258 na tradução) — arquivo pulado, nenhuma alteração feita.", "Mobile Suit Gundam 0083 - Stardust Memory - S01E13_Track3_PT-BR.ass: contagem de eventos não corresponde (308 no original vs 243 na tradução) — arquivo pulado, nenhuma alteração feita." ],
+    "relatorioJson" : null
+  },
+  "eventosSessao" : [ {
+    "timestampUtc" : "2026-07-16T20:33:36.954929300Z",
+    "nivel" : "INFO",
+    "arquivo" : null,
+    "mensagem" : "=== Iniciando Correcao de Legendas ==="
+  }, {
+    "timestampUtc" : "2026-07-16T20:33:36.955943Z",
+    "nivel" : "INFO",
+    "arquivo" : null,
+    "mensagem" : "Pasta original/ref: C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\legendas_extraidas_ass"
+  }, {
+    "timestampUtc" : "2026-07-16T20:33:36.956929500Z",
+    "nivel" : "INFO",
+    "arquivo" : null,
+    "mensagem" : "Pasta traduzida/alvo: C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificadas-karaoke-ptbr"
+  }, {
+    "timestampUtc" : "2026-07-16T20:33:36.956929500Z",
+    "nivel" : "INFO",
+    "arquivo" : null,
+    "mensagem" : "Correcao de traducao via LLM ativa (contexto: Mobile Suit Gundam 0083: Stardust Memory)"
+  }, {
+    "timestampUtc" : "2026-07-16T20:33:36.965243800Z",
+    "nivel" : "WARN",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E01_Track3_PT-BR.ass",
+    "mensagem" : "[Pulado] Mobile Suit Gundam 0083 - Stardust Memory - S01E01_Track3_PT-BR.ass: contagem de eventos não corresponde (456 no original vs 382 na tradução) — arquivo pulado, nenhuma alteração feita."
+  }, {
+    "timestampUtc" : "2026-07-16T20:33:36.969108600Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E02_5_Track3_PT-BR.ass",
+    "mensagem" : "[Corrigido] Mobile Suit Gundam 0083 - Stardust Memory - S01E02_5_Track3_PT-BR.ass (1 tags restauradas, 0 corrigidas via LLM)"
+  }, {
+    "timestampUtc" : "2026-07-16T20:33:36.973108Z",
+    "nivel" : "WARN",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E02_Track3_PT-BR.ass",
+    "mensagem" : "[Pulado] Mobile Suit Gundam 0083 - Stardust Memory - S01E02_Track3_PT-BR.ass: contagem de eventos não corresponde (415 no original vs 370 na tradução) — arquivo pulado, nenhuma alteração feita."
+  }, {
+    "timestampUtc" : "2026-07-16T20:33:36.975619900Z",
+    "nivel" : "WARN",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03-5_Track2_PT-BR.ass",
+    "mensagem" : "[Pulado] Mobile Suit Gundam 0083 - Stardust Memory - S01E03-5_Track2_PT-BR.ass: contagem de eventos não corresponde (94 no original vs 91 na tradução) — arquivo pulado, nenhuma alteração feita."
+  }, {
+    "timestampUtc" : "2026-07-16T20:33:36.978618200Z",
+    "nivel" : "WARN",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "[Pulado] Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass: contagem de eventos não corresponde (386 no original vs 341 na tradução) — arquivo pulado, nenhuma alteração feita."
+  }, {
+    "timestampUtc" : "2026-07-16T20:33:36.982003800Z",
+    "nivel" : "WARN",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E04_Track3_PT-BR.ass",
+    "mensagem" : "[Pulado] Mobile Suit Gundam 0083 - Stardust Memory - S01E04_Track3_PT-BR.ass: contagem de eventos não corresponde (427 no original vs 382 na tradução) — arquivo pulado, nenhuma alteração feita."
+  }, {
+    "timestampUtc" : "2026-07-16T20:33:36.985011900Z",
+    "nivel" : "WARN",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E05_Track3_PT-BR.ass",
+    "mensagem" : "[Pulado] Mobile Suit Gundam 0083 - Stardust Memory - S01E05_Track3_PT-BR.ass: contagem de eventos não corresponde (447 no original vs 402 na tradução) — arquivo pulado, nenhuma alteração feita."
+  }, {
+    "timestampUtc" : "2026-07-16T20:33:36.988511400Z",
+    "nivel" : "WARN",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.ass",
+    "mensagem" : "[Pulado] Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.ass: contagem de eventos não corresponde (416 no original vs 340 na tradução) — arquivo pulado, nenhuma alteração feita."
+  }, {
+    "timestampUtc" : "2026-07-16T20:33:36.990510200Z",
+    "nivel" : "WARN",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E07_Track3_PT-BR.ass",
+    "mensagem" : "[Pulado] Mobile Suit Gundam 0083 - Stardust Memory - S01E07_Track3_PT-BR.ass: contagem de eventos não corresponde (409 no original vs 364 na tradução) — arquivo pulado, nenhuma alteração feita."
+  }, {
+    "timestampUtc" : "2026-07-16T20:33:36.994549200Z",
+    "nivel" : "WARN",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E08_Track3_PT-BR.ass",
+    "mensagem" : "[Pulado] Mobile Suit Gundam 0083 - Stardust Memory - S01E08_Track3_PT-BR.ass: contagem de eventos não corresponde (468 no original vs 396 na tradução) — arquivo pulado, nenhuma alteração feita."
+  }, {
+    "timestampUtc" : "2026-07-16T20:33:36.996658800Z",
+    "nivel" : "WARN",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E09_Track3_PT-BR.ass",
+    "mensagem" : "[Pulado] Mobile Suit Gundam 0083 - Stardust Memory - S01E09_Track3_PT-BR.ass: contagem de eventos não corresponde (381 no original vs 309 na tradução) — arquivo pulado, nenhuma alteração feita."
+  }, {
+    "timestampUtc" : "2026-07-16T20:33:36.998659Z",
+    "nivel" : "WARN",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E10_Track3_PT-BR.ass",
+    "mensagem" : "[Pulado] Mobile Suit Gundam 0083 - Stardust Memory - S01E10_Track3_PT-BR.ass: contagem de eventos não corresponde (343 no original vs 271 na tradução) — arquivo pulado, nenhuma alteração feita."
+  }, {
+    "timestampUtc" : "2026-07-16T20:33:37.002175300Z",
+    "nivel" : "WARN",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E11_Track3_PT-BR.ass",
+    "mensagem" : "[Pulado] Mobile Suit Gundam 0083 - Stardust Memory - S01E11_Track3_PT-BR.ass: contagem de eventos não corresponde (402 no original vs 330 na tradução) — arquivo pulado, nenhuma alteração feita."
+  }, {
+    "timestampUtc" : "2026-07-16T20:33:37.005167Z",
+    "nivel" : "WARN",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E12_Track3_PT-BR.ass",
+    "mensagem" : "[Pulado] Mobile Suit Gundam 0083 - Stardust Memory - S01E12_Track3_PT-BR.ass: contagem de eventos não corresponde (330 no original vs 258 na tradução) — arquivo pulado, nenhuma alteração feita."
+  }, {
+    "timestampUtc" : "2026-07-16T20:33:37.007419700Z",
+    "nivel" : "WARN",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E13_Track3_PT-BR.ass",
+    "mensagem" : "[Pulado] Mobile Suit Gundam 0083 - Stardust Memory - S01E13_Track3_PT-BR.ass: contagem de eventos não corresponde (308 no original vs 243 na tradução) — arquivo pulado, nenhuma alteração feita."
+  } ]
+}

@@ -1,50 +1,50 @@
 [ {
-  "indice" : 2,
-  "estilo" : "Song ENG",
-  "original" : "A Baoa Qu.",
-  "traduzido" : "Entendido",
+  "indice" : 13,
+  "estilo" : "Karaoke Simples",
+  "original" : "I got a burning heart!",
+  "traduzido" : "Tenho um coração em chamas!",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 11,
-  "estilo" : "Song ENG",
-  "original" : "{\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}I just wanna keep on running!\\NJust chasing the thrill that's shooting through my heart!",
-  "traduzido" : "{\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}Eu só quero continuar correndo!\\NSó atrás da emoção que está disparando no meu coração!",
+  "indice" : 315,
+  "estilo" : "Karaoke Simples",
+  "original" : "Trying anyway.",
+  "traduzido" : "Tentando mesmo assim.",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 12,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(0,100)\\be0\\blur1\\bord0}Feelings that you just can't describe with words...",
-  "traduzido" : "{\\fad(0,100)\\be0\\blur1\\bord0}Sentimentos que você nem consegue descrever com palavras...",
+  "indice" : 317,
+  "estilo" : "Karaoke Simples",
+  "original" : "As long as you live, you must remember one thing...",
+  "traduzido" : "Lembre-se de uma coisa enquanto viver...",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 16,
-  "estilo" : "Song ENG",
-  "original" : "{\\be0\\blur1\\bord0}Burning with shining blue fire.\\NFire that'll spread until it covers all the stars in the sky.",
-  "traduzido" : "{\\be0\\blur1\\bord0}Queimando com fogo azul brilhante.\\NFogo que se espalhará até cobrir todas as estrelas do céu.",
+  "indice" : 318,
+  "estilo" : "Karaoke Simples",
+  "original" : "Give and take are one and the same...",
+  "traduzido" : "Dar e receber são a mesma coisa...",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 17,
-  "estilo" : "Song ENG",
-  "original" : "{\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}Burning with shining blue fire.\\NFire that'll spread until it covers all the stars in the sky.",
-  "traduzido" : "{\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}Queimando com fogo azul brilhante.\\NFogo que se espalhará até cobrir todas as estrelas do céu.",
+  "indice" : 319,
+  "estilo" : "Karaoke Simples",
+  "original" : "Devemos nos reunir novamente!",
+  "traduzido" : "Devemos nos encontrar novamente!",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 18,
-  "estilo" : "Song ENG",
-  "original" : "Posso ver isso, Gradoll.",
-  "traduzido" : "Eu posso ver isso, Gradoll.",
+  "indice" : 322,
+  "estilo" : "Karaoke Simples",
+  "original" : "'Cause I'm not lookin' for a love affair...",
+  "traduzido" : "\"Porque eu não procuro um romance...\"",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 19,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(0,500)\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}Love is such a lonely battle.\\NBut is it one that will consume the world in flames?",
-  "traduzido" : "{\\fad(0,500)\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}O amor é uma batalha tão solitária.\\NMas é uma que consumirá o mundo em chamas?",
+  "indice" : 323,
+  "estilo" : "Karaoke Simples",
+  "original" : "I need the magic when I hold you near...",
+  "traduzido" : "Eu preciso da mágica quando te seguro perto...",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 } ]

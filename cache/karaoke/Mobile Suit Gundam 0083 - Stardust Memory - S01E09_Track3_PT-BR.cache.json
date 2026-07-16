@@ -1,85 +1,71 @@
 [ {
-  "indice" : 1,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,100)\\blur1\\bord0}Eyes drained of their life.",
-  "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Seus olhos sem vida.",
+  "indice" : 11,
+  "estilo" : "Karaoke Simples",
+  "original" : "Olhos sem vida.",
+  "traduzido" : "Olhos vazios.",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 2,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Eyes drained of their life.",
-  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Olhos vazios de vida.",
+  "indice" : 12,
+  "estilo" : "Karaoke Simples",
+  "original" : "As chamas que eles olham.",
+  "traduzido" : "As chamas que eles observam.",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 17,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,100)\\blur1\\bord0}You can't look back at them, and the battle rages on.",
-  "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Você não pode olhar para trás e a batalha continua.",
+  "indice" : 16,
+  "estilo" : "Karaoke Simples",
+  "original" : "Mesmo que vidas sejam reduzidas a cinzas hoje...",
+  "traduzido" : "Mesmo que vidas sejam reduzidas a cinzas hoje...",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
   "indice" : 18,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}You can't look back at them, and the battle rages on.",
-  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Você não pode olhar para eles e a batalha continua feroz.",
+  "estilo" : "Karaoke Simples",
+  "original" : "Pode ser o destino, mas",
+  "traduzido" : "Entendido",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 22,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Even if lives are burnt to ashes today...",
-  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Mesmo que vidas sejam reduzidas a cinzas hoje...",
+  "indice" : 19,
+  "estilo" : "Karaoke Simples",
+  "original" : "I wanna get the chance!",
+  "traduzido" : "Eu quero essa chance!",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 36,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}In the skies of despair there rages now a storm.",
-  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}No céu do desespero agora uma tempestade enfurece-se.",
+  "indice" : 21,
+  "estilo" : "Karaoke Simples",
+  "original" : "Para quem existe o futuro agora?",
+  "traduzido" : "Para quem existe o futuro agora?",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 52,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}The ones who have been chosen are...",
-  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Os escolhidos são...",
+  "indice" : 23,
+  "estilo" : "Karaoke Simples",
+  "original" : "...com uma tempestade forte.",
+  "traduzido" : "Com uma tempestade forte.",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 68,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Procurando sem fim pelo\\Nmemorial da aurora brilhante.",
-  "traduzido" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Procurando sem fim pelo\\Nmemorial da aurora brilhante.",
+  "indice" : 25,
+  "estilo" : "Karaoke Simples",
+  "original" : "Men of destiny!",
+  "traduzido" : "Homens do destino!",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 75,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(200,500)\\blur1\\3c&HAB7129&\\bord0}...is a wind that tests your heart.",
-  "traduzido" : "{\\fad(200,500)\\blur1\\3c&HAB7129&\\bord0}...é um vento que testa seu coração.",
+  "indice" : 289,
+  "estilo" : "Karaoke Simples",
+  "original" : "\"Em uma noite que engole a estrada.\" --",
+  "traduzido" : "\"Em uma noite que devora a estrada.\"",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 76,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(200,500)\\blur2\\\\1a&HFF&\\bord0.5}...is a wind that tests your heart.",
-  "traduzido" : "{\\fad(200,500)\\blur2\\\\1a&HFF&\\bord0.5}... é um vento que testa seu coração.",
-  "idiomaOriginal" : "en",
-  "idiomaTraduzido" : "pt-br"
-}, {
-  "indice" : 80,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(200,500)\\blur2\\\\1a&HFF&\\bord0.5}Love is a sky that embraces everything.",
-  "traduzido" : "{\\fad(200,500)\\blur2\\\\1a&HFF&\\bord0.5}O amor é um céu que abraça tudo.",
-  "idiomaOriginal" : "en",
-  "idiomaTraduzido" : "pt-br"
-}, {
-  "indice" : 96,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(200,500)\\blur2\\\\1a&HFF&\\bord0.5}That frozen dream has begun to shine again.",
-  "traduzido" : "{\\fad(200,500)\\blur2\\\\1a&HFF&\\bord0.5}Aquele sonho congelado começou a brilhar novamente.",
+  "indice" : 290,
+  "estilo" : "Karaoke Simples",
+  "original" : "Procurando sem fim pelo memorial da aurora brilhante.",
+  "traduzido" : "Procurando sem fim pelo memorial da aurora brilhante.",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 } ]

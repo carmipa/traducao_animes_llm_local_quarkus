@@ -1,8 +1,57 @@
 [ {
-  "indice" : 60,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}...com quem podem compartilhar uma vida.",
-  "traduzido" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}...com quem podemos compartilhar uma vida.",
+  "indice" : 220,
+  "estilo" : "Karaoke Simples",
+  "original" : "All alone in the deep darkness.",
+  "traduzido" : "Sozinho no fundo escuro.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 221,
+  "estilo" : "Karaoke Simples",
+  "original" : "On a night that swallows up the road.",
+  "traduzido" : "Em uma noite que engole a estrada.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 222,
+  "estilo" : "Karaoke Simples",
+  "original" : "Searching on and on for the memory of the brilliant dawn.",
+  "traduzido" : "Procurando incessantemente pela memória da brilhante alvorada.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 224,
+  "estilo" : "Karaoke Simples",
+  "original" : "There are times when destiny...",
+  "traduzido" : "Destino é algo que às vezes nos prega peças.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 225,
+  "estilo" : "Karaoke Simples",
+  "original" : "...is a wind that tests your heart.",
+  "traduzido" : "\"Isso é um vento que testa seu coração.\"",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 227,
+  "estilo" : "Karaoke Simples",
+  "original" : "Love is a sky that embraces everything.",
+  "traduzido" : "O amor é um céu que abraça tudo.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 228,
+  "estilo" : "Karaoke Simples",
+  "original" : "And in it is the vision of the new day.",
+  "traduzido" : "E nela está a visão do novo dia.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 236,
+  "estilo" : "Karaoke Simples",
+  "original" : "...com quem podem compartilhar uma vida.",
+  "traduzido" : "Com quem poderiam compartilhar uma vida.",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 } ]

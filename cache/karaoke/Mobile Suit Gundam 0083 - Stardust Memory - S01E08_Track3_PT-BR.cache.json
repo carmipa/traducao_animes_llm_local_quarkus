@@ -1,57 +1,71 @@
 [ {
+  "indice" : 1,
+  "estilo" : "Karaoke Simples",
+  "original" : "Olhos sem vida.",
+  "traduzido" : "Olhos vazios.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 2,
+  "estilo" : "Karaoke Simples",
+  "original" : "As chamas que eles olham.",
+  "traduzido" : "As chamas que eles observam.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 6,
+  "estilo" : "Karaoke Simples",
+  "original" : "Mesmo que vidas sejam reduzidas a cinzas hoje...",
+  "traduzido" : "Mesmo que vidas sejam reduzidas a cinzas hoje...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
   "indice" : 8,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,100)\\blur1\\bord0}Eyes drained of their life.",
-  "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Olhos sem vida.",
+  "estilo" : "Karaoke Simples",
+  "original" : "Talvez seja o destino, mas",
+  "traduzido" : "Eu não sei.",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
   "indice" : 9,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Eyes drained of their life.",
-  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Olhos desprovidos de vida.",
+  "estilo" : "Karaoke Simples",
+  "original" : "I wanna get the chance!",
+  "traduzido" : "Eu quero essa chance!",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 17,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}You can't look back at them, and the battle rages on.",
-  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Voce não pode olhar para trás e a batalha continua.",
+  "indice" : 11,
+  "estilo" : "Karaoke Simples",
+  "original" : "Para quem existe o futuro agora?",
+  "traduzido" : "Para quem existe o futuro agora?",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 18,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,100)\\blur1\\bord0}Even if lives are burnt to ashes today...",
-  "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Mesmo que vidas sejam reduzidas a cinzas hoje...",
+  "indice" : 13,
+  "estilo" : "Karaoke Simples",
+  "original" : "...com uma tempestade forte.",
+  "traduzido" : "Com uma tempestade forte.",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 25,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}In the skies of despair there rages now a storm.",
-  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}No céu do desespero agora enfurece-se uma tempestade.",
+  "indice" : 15,
+  "estilo" : "Karaoke Simples",
+  "original" : "Men of destiny!",
+  "traduzido" : "Homens do destino!",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 32,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,100)\\blur1\\bord0}The ones who have been chosen are...",
-  "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Os escolhidos são...",
+  "indice" : 374,
+  "estilo" : "Karaoke Simples",
+  "original" : "Numa noite que engole a estrada.",
+  "traduzido" : "Na estrada, engolida pela noite.",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 }, {
-  "indice" : 33,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}The ones who have been chosen are...",
-  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Os escolhidos são...",
-  "idiomaOriginal" : "en",
-  "idiomaTraduzido" : "pt-br"
-}, {
-  "indice" : 83,
-  "estilo" : "Song ENG",
-  "original" : "{\\fad(200,500)\\blur2\\\\1a&HFF&\\bord0.5}...is a wind that tests your heart.",
-  "traduzido" : "{\\fad(200,500)\\blur2\\\\1a&HFF&\\bord0.5}... é um vento que testa seu coração.",
+  "indice" : 375,
+  "estilo" : "Karaoke Simples",
+  "original" : "Procurando sem descanso pelo lembrete da aurora brilhante.",
+  "traduzido" : "Procurando sem descanso pelo lembrete da aurora brilhante.",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
 } ]
