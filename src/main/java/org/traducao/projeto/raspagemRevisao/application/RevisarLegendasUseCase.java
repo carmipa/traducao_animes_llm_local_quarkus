@@ -1178,13 +1178,10 @@ public class RevisarLegendasUseCase {
         if (!mascaradorTags.contemTextoTraduzivel(texto)) {
             return true;
         }
-        if (evento.estilo() != null
-            && propriedades.estiloIgnorado(evento.estilo())
-            && !detectorKaraoke.eKaraokeOuMusicaTraduzivel(evento.estilo(), texto)) {
+        if (evento.estilo() != null && propriedades.estiloIgnorado(evento.estilo())) {
             return true;
         }
-        if (detectorKaraoke.eEfeitoKaraoke(texto)
-            && !detectorKaraoke.eKaraokeOuMusicaTraduzivel(evento.estilo(), texto)) {
+        if (detectorKaraoke.eEfeitoKaraoke(texto)) {
             return true;
         }
         if (protecaoAss.deveIgnorarIntervencaoIa(evento.estilo(), texto)) {

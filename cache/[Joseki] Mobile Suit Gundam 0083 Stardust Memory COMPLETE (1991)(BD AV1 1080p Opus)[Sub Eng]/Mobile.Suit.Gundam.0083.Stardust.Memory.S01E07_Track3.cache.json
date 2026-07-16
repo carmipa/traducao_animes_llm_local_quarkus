@@ -179,7 +179,7 @@
     "indice" : 81,
     "estilo" : "Dialogue",
     "original" : "{\\i1}A unidade Gundam 01, gravemente danificada, \\Nretorna à sua pátria...{\\i}",
-    "traduzido" : "{\\i1}A unidade Gundam 01, gravemente danificada,\\Nretorna à sua pátria...{\\i}",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -403,7 +403,7 @@
     "indice" : 113,
     "estilo" : "Dialogue",
     "original" : "Eu nem mesmo seria capaz \\Nde tomar um banho depois disso.",
-    "traduzido" : "Eu nem mesmo seria capaz\\Nde tomar um banho depois disso.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -529,7 +529,7 @@
     "indice" : 131,
     "estilo" : "Dialogue",
     "original" : "Se você não se controlar, \\N vai acabar sozinho.",
-    "traduzido" : "Se você não se controlar,\\Nvai acabar sozinho.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -620,7 +620,7 @@
     "indice" : 144,
     "estilo" : "Dialogue",
     "original" : "Significando que você não se importa com nenhum \\Nproblema que aconteça fora da Lua.",
-    "traduzido" : "Significando que você não se importa com nenhum\\Nproblema que aconteça fora da Lua.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -725,7 +725,7 @@
     "indice" : 159,
     "estilo" : "Dialogue",
     "original" : "Precisamos de dados sobre o \\NGundam atualizado, não precisamos?",
-    "traduzido" : "Precisamos de dados sobre o\\NGundam atualizado, não precisamos?",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -823,14 +823,14 @@
     "indice" : 173,
     "estilo" : "Dialogue",
     "original" : "Os chefões parecem querer aquele \\Nnavio fora daqui agora mesmo.",
-    "traduzido" : "Os chefões parecem querer aquele\\Nnavio fora daqui agora mesmo.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 174,
     "estilo" : "Dialogue",
     "original" : "Não posso ter um pouco de tempo \\N para pensar sobre isso?",
-    "traduzido" : "Não posso ter um pouco de tempo\\Npara pensar sobre isso?",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -956,7 +956,7 @@
     "indice" : 192,
     "estilo" : "Dialogue",
     "original" : "Ninguém seria tão estúpido \\Na ponto de confiar em uma arma móvel...",
-    "traduzido" : "Ninguém seria tão estúpido\\Na ponto de confiar em uma arma móvel...",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1005,7 +1005,7 @@
     "indice" : 199,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Só para você posso dizer isto...\\N Em breve estarei indo para a Terra.{\\i}",
-    "traduzido" : "{\\i1}Só para você posso dizer isto...\\NEm breve estarei indo para a Terra.{\\i}",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1026,7 +1026,7 @@
     "indice" : 202,
     "estilo" : "Dialogue",
     "original" : "{\\i1}E então lutaremos lado \\Na lado, como fizemos em Solomon.",
-    "traduzido" : "{\\i1}E então lutaremos lado\\Na lado, como fizemos em Solomon.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1138,7 +1138,7 @@
     "indice" : 218,
     "estilo" : "Dialogue",
     "original" : "{\\i1}...tiveram algum efeito na \\Nelaboração dessas ordens.",
-    "traduzido" : "{\\i1}...tiveram algum efeito na\\Nelaboração dessas ordens.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1166,7 +1166,7 @@
     "indice" : 222,
     "estilo" : "Dialogue",
     "original" : "Nina não é assim! \\N Como ela é diferente de mim?!",
-    "traduzido" : "Nina não é assim!\\NComo ela é diferente de mim?!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1180,7 +1180,7 @@
     "indice" : 224,
     "estilo" : "Dialogue",
     "original" : "Vire cinco graus para bombordo e \\Nmude para navegação manual!",
-    "traduzido" : "Vire cinco graus para bombordo e\\Nmude para navegação manual!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1257,7 +1257,7 @@
     "indice" : 235,
     "estilo" : "Dialogue",
     "original" : "Você parece chateado. \\N Tem algum problema?",
-    "traduzido" : "Você parece chateado.\\NTem algum problema?",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1390,7 +1390,7 @@
     "indice" : 254,
     "estilo" : "Dialogue",
     "original" : "A tradução correta para o texto em português, preservando os marcadores \\N, seria:",
-    "traduzido" : "A tradução correta para o texto em português, preservando os marcadores\\N, seria:",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1488,7 +1488,7 @@
     "indice" : 268,
     "estilo" : "Dialogue",
     "original" : "Se eu tiver sucesso em destruir um Gundam, \\N eles terão que aceitar isso.",
-    "traduzido" : "Se eu tiver sucesso em destruir um Gundam,\\Neles terão que aceitar isso.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1600,7 +1600,7 @@
     "indice" : 284,
     "estilo" : "Dialogue",
     "original" : "Eu odeio homens que se intrometem \\N onde não deveriam!",
-    "traduzido" : "Eu odeio homens que se intrometem\\Nonde não deveriam!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1698,7 +1698,7 @@
     "indice" : 298,
     "estilo" : "Dialogue",
     "original" : "Agora que ele sabe\\N eu não o levarei.",
-    "traduzido" : "Agora que ele sabe\\Neu não o levarei.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1712,14 +1712,14 @@
     "indice" : 300,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Você espera que eu pare um móvel \\Narmadura com apenas um Zaku?!",
-    "traduzido" : "{\\i1}Você espera que eu pare um móvel\\Narmadura com apenas um Zaku?!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 301,
     "estilo" : "Dialogue",
     "original" : "Assuma a responsabilidade por suas ações, \\N mesmo que isso o mate.",
-    "traduzido" : "Assuma a responsabilidade por suas ações,\\Nmesmo que isso o mate.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1740,7 +1740,7 @@
     "indice" : 304,
     "estilo" : "Dialogue",
     "original" : "Você atiraria em um dos seus próprios homens? \\N Um dos seus próprios homens?!",
-    "traduzido" : "Você atiraria em um dos seus próprios homens?\\NUm dos seus próprios homens?!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1866,7 +1866,7 @@
     "indice" : 322,
     "estilo" : "Dialogue",
     "original" : "Este cara é louco? O que ele quer? \\NOs Mobile Suits já estão prontos?!",
-    "traduzido" : "Este cara é louco? O que ele quer?\\NOs Mobile Suits já estão prontos?!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1894,7 +1894,7 @@
     "indice" : 326,
     "estilo" : "Dialogue",
     "original" : "Ele está atrás do Gundam? \\N O que está acontecendo aqui?",
-    "traduzido" : "Ele está atrás do Gundam?\\NO que está acontecendo aqui?",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2146,7 +2146,7 @@
     "indice" : 362,
     "estilo" : "Dialogue",
     "original" : "Podemos resolver as coisas \\N se todos nós apenas tivermos um pouco de paciência!",
-    "traduzido" : "Podemos resolver as coisas\\Nse todos nós apenas tivermos um pouco de paciência!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {

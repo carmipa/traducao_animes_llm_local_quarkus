@@ -242,14 +242,14 @@
     "indice" : 68,
     "estilo" : "Song ENG",
     "original" : "{\\fad(200,500)\\blur1\\bord0}Procurando sem fim pelo \\Nmemorial da aurora brilhante",
-    "traduzido" : "{\\fad(200,500)\\blur1\\bord0}Procurando sem fim pelo\\Nmemorial da aurora brilhante",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 69,
     "estilo" : "Song ENG",
     "original" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Procurando sem fim pelo \\Nmemorial da aurora brilhante",
-    "traduzido" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Procurando sem fim pelo\\Nmemorial da aurora brilhante",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -354,7 +354,7 @@
     "indice" : 106,
     "estilo" : "Dialogue",
     "original" : "{\\i1}O Albion chegou em \\NLa Vie en Rose.",
-    "traduzido" : "{\\i1}O Albion chegou em\\NLa Vie en Rose.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -368,7 +368,7 @@
     "indice" : 108,
     "estilo" : "Dialogue",
     "original" : "{\\i1}No entanto, a unidade de segurança do Tenente Comandante Nakato \\Nestava esperando por eles lá.",
-    "traduzido" : "{\\i1}No entanto, a unidade de segurança do Tenente Comandante Nakato\\Nestava esperando por eles lá.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -515,14 +515,14 @@
     "indice" : 129,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Com tão poucos navios, \\Nestou executando uma operação...",
-    "traduzido" : "{\\i1}Com tão poucos navios,\\Nestou executando uma operação...",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 130,
     "estilo" : "Dialogue",
     "original" : "{\\i1}...que teria exigido \\Nmetade da frota inteira de Zeon.",
-    "traduzido" : "{\\i1}...que teria exigido\\Nmetade da frota inteira de Zeon.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -557,14 +557,14 @@
     "indice" : 135,
     "estilo" : "Dialogue",
     "original" : "A unidade protótipo Gundam 03\\N entrou em contato com eles.",
-    "traduzido" : "A unidade protótipo Gundam 03\\Nentrou em contato com eles.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 136,
     "estilo" : "Dialogue",
     "original" : "A frota neutra do Eixo está \\N se retirando para os fundos.",
-    "traduzido" : "A frota neutra do Eixo está\\Nse retirando para os fundos.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -585,7 +585,7 @@
     "indice" : 139,
     "estilo" : "Dialogue",
     "original" : "A Unidade Gundam 03\\N não pode lidar com isso sozinha!",
-    "traduzido" : "A Unidade Gundam 03\\Nnão pode lidar com isso sozinha!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -634,14 +634,14 @@
     "indice" : 146,
     "estilo" : "Dialogue",
     "original" : "Não há maneira de nós \\Nparar tamanha massa.",
-    "traduzido" : "Não há maneira de nós\\Nparar tamanha massa.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 147,
     "estilo" : "Dialogue",
     "original" : "Temos que recuperar aquela colônia e \\Nmudar seu curso antes disso.",
-    "traduzido" : "Temos que recuperar aquela colônia e\\Nmudar seu curso antes disso.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -683,7 +683,7 @@
     "indice" : 153,
     "estilo" : "Dialogue",
     "original" : "...o ponto de não retorno para \\Ninterceptá-los.",
-    "traduzido" : "...o ponto de não retorno para\\Ninterceptá-los.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -760,7 +760,7 @@
     "indice" : 164,
     "estilo" : "Dialogue",
     "original" : "São 8 horas e 22 minutos \\Ndo ponto de não retorno!",
-    "traduzido" : "São 8 horas e 22 minutos\\Ndo ponto de não retorno!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -788,7 +788,7 @@
     "indice" : 168,
     "estilo" : "Dialogue",
     "original" : "A questão é saber se \\No tenente Uraki aguentará.",
-    "traduzido" : "A questão é saber se\\No tenente Uraki aguentará.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -935,14 +935,14 @@
     "indice" : 189,
     "estilo" : "Dialogue",
     "original" : "Mas você não esperava que eles \\Natingissem nosso ponto fraco, não é mesmo?",
-    "traduzido" : "Mas você não esperava que eles\\Natingissem nosso ponto fraco, não é mesmo?",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 190,
     "estilo" : "Dialogue",
     "original" : "O inesperado às vezes acontece.\\N Gato está lidando bem com isso.",
-    "traduzido" : "O inesperado às vezes acontece.\\NGato está lidando bem com isso.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -963,7 +963,7 @@
     "indice" : 193,
     "estilo" : "Dialogue",
     "original" : "Almirante, senhor! A frota está \\Nvoltando à perseguição agora, senhor!",
-    "traduzido" : "Almirante, senhor! A frota está\\Nvoltando à perseguição agora, senhor!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1040,7 +1040,7 @@
     "indice" : 204,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Não! Você quer lutar nesse estado? \\N",
-    "traduzido" : "{\\i1}Não! Você quer lutar nesse estado?\\N",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1096,14 +1096,14 @@
     "indice" : 212,
     "estilo" : "Dialogue",
     "original" : "Não, quer dizer, o que você está tentando \\Nfazer nessa situação?",
-    "traduzido" : "Não, quer dizer, o que você está tentando\\Nfazer nessa situação?",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 213,
     "estilo" : "Dialogue",
     "original" : "Você precisa enviar a Frota Orbital da Terra \\N para a frente agora mesmo!",
-    "traduzido" : "Você precisa enviar a Frota Orbital da Terra\\Npara a frente agora mesmo!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1152,7 +1152,7 @@
     "indice" : 220,
     "estilo" : "Dialogue",
     "original" : "Nós daremos conta de tudo... \\N Com as nossas próprias mãos!",
-    "traduzido" : "Nós daremos conta de tudo...\\NCom as nossas próprias mãos!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1180,7 +1180,7 @@
     "indice" : 224,
     "estilo" : "Dialogue",
     "original" : "\"Já olhei para a Terra com \\Ntanta emoção no coração?\"",
-    "traduzido" : "\"Já olhei para a Terra com\\Ntanta emoção no coração?\"",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1271,7 +1271,7 @@
     "indice" : 237,
     "estilo" : "Dialogue",
     "original" : "Não espere que o exército \\N pague seu salário, então.",
-    "traduzido" : "Não espere que o exército\\Npague seu salário, então.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1376,7 +1376,7 @@
     "indice" : 252,
     "estilo" : "Dialogue",
     "original" : "Aquela nave não está recuando. \\N Eles têm coragem!",
-    "traduzido" : "Aquela nave não está recuando.\\NEles têm coragem!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1418,7 +1418,7 @@
     "indice" : 258,
     "estilo" : "Dialogue",
     "original" : "Ao cruzarmos isso, aqueles irritantes \\Ninimigos finalmente vão calar.",
-    "traduzido" : "Ao cruzarmos isso, aqueles irritantes\\Ninimigos finalmente vão calar.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1453,7 +1453,7 @@
     "indice" : 263,
     "estilo" : "Dialogue",
     "original" : "O inimigo rompeu nossas linhas de frente!\\N Eles estão se aproximando!",
-    "traduzido" : "O inimigo rompeu nossas linhas de frente!\\NEles estão se aproximando!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1635,7 +1635,7 @@
     "indice" : 289,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Este é o G21. A fileira superior do \\NSistema Solar II está completa. {\\i}",
-    "traduzido" : "{\\i1}Este é o G21. A fileira superior do\\NSistema Solar II está completa.{\\i}",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1754,7 +1754,7 @@
     "indice" : 306,
     "estilo" : "Dialogue",
     "original" : "O dia em que sou guiado para \\Num lugar esquecido como o Eixo...",
-    "traduzido" : "O dia em que sou guiado para\\Num lugar esquecido como o Eixo...",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1824,14 +1824,14 @@
     "indice" : 316,
     "estilo" : "Dialogue",
     "original" : "Você está louco?! \\N O que você está fazendo?!",
-    "traduzido" : "Você está louco?!\\NO que você está fazendo?!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 317,
     "estilo" : "Dialogue",
     "original" : "Vá em frente! Pise no meu \\Ncadáver e continue!",
-    "traduzido" : "Vá em frente! Pise no meu\\Ncadáver e continue!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1845,7 +1845,7 @@
     "indice" : 319,
     "estilo" : "Dialogue",
     "original" : "\"Você vai deixar que ela me torne o \\Nbobo do espaço, Gato?!\"",
-    "traduzido" : "\"Você vai deixar que ela me torne o\\Nbobo do espaço, Gato?!\"",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1915,7 +1915,7 @@
     "indice" : 329,
     "estilo" : "Dialogue",
     "original" : "{\\i1}O tempo passa enquanto o \\Npano cai no ano 0083.",
-    "traduzido" : "{\\i1}O tempo passa enquanto o\\Npano cai no ano 0083.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   } ]
