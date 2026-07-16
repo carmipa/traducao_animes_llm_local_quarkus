@@ -242,7 +242,7 @@
     "indice" : 72,
     "estilo" : "Song ENG",
     "original" : "{\\fad(200,500)\\blur1\\bord0}Procurando sem descanso pelo \\Nlembrete da aurora brilhante.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(200,500)\\blur1\\bord0}Procurando sem descanso pelo\\Nlembrete da aurora brilhante.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -270,7 +270,7 @@
     "indice" : 76,
     "estilo" : "Song ENG",
     "original" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Procurando sem descanso pelo \\Nlembrete da aurora brilhante.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Procurando sem descanso pelo\\Nlembrete da aurora brilhante.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -354,7 +354,7 @@
     "indice" : 106,
     "estilo" : "Dialogue",
     "original" : "Ainda rastreando o código IFF, \\Nmas é definitivamente um dos nossos.",
-    "traduzido" : "",
+    "traduzido" : "Ainda rastreando o código IFF,\\Nmas é definitivamente um dos nossos.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -466,14 +466,14 @@
     "indice" : 122,
     "estilo" : "Dialogue",
     "original" : "O navio de inspeção, \\Nestá aqui sem escolta!",
-    "traduzido" : "",
+    "traduzido" : "O navio de inspeção,\\Nestá aqui sem escolta!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 123,
     "estilo" : "Dialogue",
     "original" : "O Inspetor Geral é \\NAlmirante Green Wyatt, não é mesmo?",
-    "traduzido" : "",
+    "traduzido" : "O Inspetor Geral é\\NAlmirante Green Wyatt, não é mesmo?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -487,7 +487,7 @@
     "indice" : 125,
     "estilo" : "Dialogue",
     "original" : "Eu acredito que eles eram \\Ndo Albion, senhor.",
-    "traduzido" : "",
+    "traduzido" : "Eu acredito que eles eram\\Ndo Albion, senhor.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -578,14 +578,14 @@
     "indice" : 138,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Ei, nós derrotamos o \\Ntenente, certo?",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Ei, nós derrotamos o\\Ntenente, certo?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 139,
     "estilo" : "Dialogue",
     "original" : "Keith, se isso fosse uma luta de verdade, \\Nvocê estaria morto!",
-    "traduzido" : "",
+    "traduzido" : "Keith, se isso fosse uma luta de verdade,\\Nvocê estaria morto!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -627,7 +627,7 @@
     "indice" : 145,
     "estilo" : "Dialogue",
     "original" : "Significa que você sabe como \\Npilotar agora, certo?",
-    "traduzido" : "",
+    "traduzido" : "Significa que você sabe como\\Npilotar agora, certo?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -655,14 +655,14 @@
     "indice" : 149,
     "estilo" : "Dialogue",
     "original" : "Por quanto tempo mais eu posso continuar \\N pilotando essas coisas?",
-    "traduzido" : "",
+    "traduzido" : "Por quanto tempo mais eu posso continuar\\Npilotando essas coisas?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 150,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Tenente, há um \\Nobjeto preto à frente de nós!",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Tenente, há um\\Nobjeto preto à frente de nós!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -802,7 +802,7 @@
     "indice" : 170,
     "estilo" : "Dialogue",
     "original" : "Me desculpe.\\N É o nosso Gundam, certo?",
-    "traduzido" : "",
+    "traduzido" : "Me desculpe.\\NÉ o nosso Gundam, certo?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -816,7 +816,7 @@
     "indice" : 172,
     "estilo" : "Dialogue",
     "original" : "Kou, quando você começou \\Na falar como um adulto?",
-    "traduzido" : "",
+    "traduzido" : "Kou, quando você começou\\Na falar como um adulto?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -844,7 +844,7 @@
     "indice" : 176,
     "estilo" : "Dialogue",
     "original" : "Você pode dizer isso uma vez \\N que comece a comer cenouras!",
-    "traduzido" : "",
+    "traduzido" : "Você pode dizer isso uma vez\\Nque comece a comer cenouras!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -879,7 +879,7 @@
     "indice" : 181,
     "estilo" : "Dialogue",
     "original" : "Não, obrigado. Pelo que você diz, \\N eu não preciso realmente deles.",
-    "traduzido" : "",
+    "traduzido" : "Não, obrigado. Pelo que você diz,\\Neu não preciso realmente deles.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -907,7 +907,7 @@
     "indice" : 185,
     "estilo" : "Dialogue",
     "original" : "Minha perna sempre me dizia \\N\"Corra! Corra!\", então...",
-    "traduzido" : "",
+    "traduzido" : "Minha perna sempre me dizia\\N\"Corra! Corra!\", então...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -949,7 +949,7 @@
     "indice" : 191,
     "estilo" : "Dialogue",
     "original" : "Oh, tenho um limite de quanto \\Nálcool posso beber.",
-    "traduzido" : "",
+    "traduzido" : "Oh, tenho um limite de quanto\\Nálcool posso beber.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1054,7 +1054,7 @@
     "indice" : 206,
     "estilo" : "Dialogue",
     "original" : "Provavelmente porque, dentre todos os \\Ndireitos e retos em Nijmegen,",
-    "traduzido" : "",
+    "traduzido" : "Provavelmente porque, dentre todos os\\Ndireitos e retos em Nijmegen,",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1145,7 +1145,7 @@
     "indice" : 219,
     "estilo" : "Dialogue",
     "original" : "Kou, tudo o que você tem agora é um \\NMobile Suit chamado Gundam.",
-    "traduzido" : "",
+    "traduzido" : "Kou, tudo o que você tem agora é um\\NMobile Suit chamado Gundam.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1173,7 +1173,7 @@
     "indice" : 223,
     "estilo" : "Dialogue",
     "original" : "Você pode assumir o comando \\N desta relação?",
-    "traduzido" : "",
+    "traduzido" : "Você pode assumir o comando\\Ndesta relação?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1264,7 +1264,7 @@
     "indice" : 236,
     "estilo" : "Dialogue",
     "original" : "Sem isso também, ele tem muito \\Na seu favor.",
-    "traduzido" : "",
+    "traduzido" : "Sem isso também, ele tem muito\\Na seu favor.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1306,7 +1306,7 @@
     "indice" : 242,
     "estilo" : "Dialogue",
     "original" : "Por falar nisso, Burning, você tem uma esposa \\N na Terra, não é mesmo?",
-    "traduzido" : "",
+    "traduzido" : "Por falar nisso, Burning, você tem uma esposa\\Nna Terra, não é mesmo?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1348,7 +1348,7 @@
     "indice" : 248,
     "estilo" : "Dialogue",
     "original" : "Bem, se você sente fortemente o suficiente \\N para colocar assim...",
-    "traduzido" : "",
+    "traduzido" : "Bem, se você sente fortemente o suficiente\\Npara colocar assim...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1390,14 +1390,14 @@
     "indice" : 254,
     "estilo" : "Dialogue",
     "original" : "Mesmo que esta batalha contra Delaz\\N seja minha última como piloto,",
-    "traduzido" : "",
+    "traduzido" : "Mesmo que esta batalha contra Delaz\\Nseja minha última como piloto,",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 255,
     "estilo" : "Dialogue",
     "original" : "Eu não quero encerrar minha carreira \\N com nenhum arrependimento.",
-    "traduzido" : "",
+    "traduzido" : "Eu não quero encerrar minha carreira\\Ncom nenhum arrependimento.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1516,7 +1516,7 @@
     "indice" : 272,
     "estilo" : "Dialogue",
     "original" : "Eu pensei que ela não estava \\Nnessa missão.",
-    "traduzido" : "",
+    "traduzido" : "Eu pensei que ela não estava\\Nnessa missão.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1656,7 +1656,7 @@
     "indice" : 292,
     "estilo" : "Dialogue",
     "original" : "Quanto você vendeu aquelas \\Nfotos de voyeur?",
-    "traduzido" : "",
+    "traduzido" : "Quanto você vendeu aquelas\\Nfotos de voyeur?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1754,7 +1754,7 @@
     "indice" : 306,
     "estilo" : "Dialogue",
     "original" : "Se ele ainda está lendo esse tipo de \\Nlivros, provavelmente fez isso mesmo.",
-    "traduzido" : "",
+    "traduzido" : "Se ele ainda está lendo esse tipo de\\Nlivros, provavelmente fez isso mesmo.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1824,7 +1824,7 @@
     "indice" : 316,
     "estilo" : "Dialogue",
     "original" : "Você faz isso e este navio \\N vai acabar destruído!",
-    "traduzido" : "",
+    "traduzido" : "Você faz isso e este navio\\Nvai acabar destruído!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1971,7 +1971,7 @@
     "indice" : 337,
     "estilo" : "Dialogue",
     "original" : "Almirante, tenho um despacho de emergência \\N do Albion.",
-    "traduzido" : "",
+    "traduzido" : "Almirante, tenho um despacho de emergência\\Ndo Albion.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2041,7 +2041,7 @@
     "indice" : 347,
     "estilo" : "Dialogue",
     "original" : "Eles estão virando as costas. O \\N Birmingham está virando as costas!",
-    "traduzido" : "",
+    "traduzido" : "Eles estão virando as costas. O\\NBirmingham está virando as costas!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2153,7 +2153,7 @@
     "indice" : 363,
     "estilo" : "Dialogue",
     "original" : "Nossa missão é proteger o \\NBirmingham enquanto ele se retira!",
-    "traduzido" : "",
+    "traduzido" : "Nossa missão é proteger o\\NBirmingham enquanto ele se retira!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2272,7 +2272,7 @@
     "indice" : 380,
     "estilo" : "Dialogue",
     "original" : "Isso pode nos dar informações sobre \\Na força do inimigo.",
-    "traduzido" : "",
+    "traduzido" : "Isso pode nos dar informações sobre\\Na força do inimigo.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2489,7 +2489,7 @@
     "indice" : 411,
     "estilo" : "Dialogue",
     "original" : "Eu os destruí!\\N Eu realmente fiz isso!",
-    "traduzido" : "",
+    "traduzido" : "Eu os destruí!\\NEu realmente fiz isso!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2545,7 +2545,7 @@
     "indice" : 419,
     "estilo" : "Dialogue",
     "original" : "Eu lembro de termos tido essa espécie de conversa \\Ncom você naquela noite na Austrália.",
-    "traduzido" : "",
+    "traduzido" : "Eu lembro de termos tido essa espécie de conversa\\Ncom você naquela noite na Austrália.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2615,7 +2615,7 @@
     "indice" : 429,
     "estilo" : "Dialogue",
     "original" : "...realizado no Setor do Mar de Salomão\\N sob as seguintes condições...",
-    "traduzido" : "",
+    "traduzido" : "...realizado no Setor do Mar de Salomão\\Nsob as seguintes condições...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2790,7 +2790,7 @@
     "indice" : 454,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Hoje, na defesa do \\Nnavio de guerra Birmingham,",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Hoje, na defesa do\\Nnavio de guerra Birmingham,",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {

@@ -1,0 +1,43 @@
+[ {
+  "indice" : 1,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,200)\\be0\\blur1\\bord0}There's no winner of this fight as I collapse, now exhausted.",
+  "traduzido" : "{\\fad(100,200)\\be0\\blur1\\bord0}Não há vencedor nesta luta enquanto eu desabo, agora exausto.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 2,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,200)\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}There's no winner of this fight as I collapse, now exhausted.",
+  "traduzido" : "{\\fad(100,200)\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}Não há vencedor nessa luta enquanto eu desabo, agora exausto.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 27,
+  "estilo" : "Song ENG",
+  "original" : "{\\be0\\blur1\\bord0}...are enough to ignite even a frozen heart!",
+  "traduzido" : "{\\be0\\blur1\\bord0}...bastam para acender até um coração congelado!",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 28,
+  "estilo" : "Song ENG",
+  "original" : "{\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}...are enough to ignite even a frozen heart!",
+  "traduzido" : "{\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}...são suficientes para acender mesmo um coração congelado!",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 33,
+  "estilo" : "Song ENG",
+  "original" : "{\\be0\\blur1\\bord0}Burning with shining blue fire.\\NFire that'll spread until it covers all the stars in the sky.",
+  "traduzido" : "{\\be0\\blur1\\bord0}Queimando com fogo azul brilhante.\\NFogo que se espalhará até cobrir todas as estrelas do céu.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 34,
+  "estilo" : "Song ENG",
+  "original" : "{\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}Burning with shining blue fire.\\NFire that'll spread until it covers all the stars in the sky.",
+  "traduzido" : "{\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}Queimando com fogo azul brilhante.\\NFogo que se espalhará até cobrir todas as estrelas do céu.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+} ]

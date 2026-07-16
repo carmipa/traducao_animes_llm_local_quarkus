@@ -1,0 +1,57 @@
+[ {
+  "indice" : 8,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\blur1\\bord0}Olhos sem vida.",
+  "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Olhos vazios.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 9,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Olhos sem vida.",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Olhos vazios.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 11,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}As chamas que eles olham.",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}As chamas que eles fitam.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 18,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\blur1\\bord0}Mesmo que vidas sejam reduzidas a cinzas hoje...",
+  "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Mesmo que vidas sejam reduzidas a cinzas hoje...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 19,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Mesmo que vidas sejam reduzidas a cinzas hoje...",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Mesmo que vidas sejam reduzidas a cinzas hoje...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 26,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\blur1\\bord0}Para quem existe o futuro agora?",
+  "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Para quem existe o futuro agora?",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 27,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Para quem existe o futuro agora?",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Para quem existe o futuro agora?",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 31,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}...com uma tempestade forte.",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}...com uma tempestade forte.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+} ]

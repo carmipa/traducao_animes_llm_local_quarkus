@@ -1,0 +1,85 @@
+[ {
+  "indice" : 2,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\blur1\\bord0}Olhos sem vida.",
+  "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Olhos vazios.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 3,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Olhos sem vida.",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Olhos vazios.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 23,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Mesmo que vidas sejam reduzidas a cinzas hoje...",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Mesmo que vidas sejam reduzidas a cinzas hoje...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 40,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\blur1\\bord0}Para quem existe o futuro agora?",
+  "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Para quem existe o futuro agora?",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 41,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Para quem o futuro existe agora?",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Para quem o futuro existe agora?",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 49,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}...com uma tempestade forte.",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}...com uma tempestade forte.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 60,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(200,500)\\blur1\\bord0} Sozinho nas trevas profundas.",
+  "traduzido" : "{\\fad(200,500)\\blur1\\bord0} Sozinho nas trevas profundas.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 64,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(200,500)\\blur1\\bord0}Numa noite que engole a estrada.",
+  "traduzido" : "{\\fad(200,500)\\blur1\\bord0}Em uma noite que devora a estrada.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 65,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Numa noite que engole a estrada.",
+  "traduzido" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Em uma noite que devora a estrada.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 68,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(200,500)\\blur1\\bord0}Procurando sem fim pelo\\Nmemorial da aurora brilhante",
+  "traduzido" : "{\\fad(200,500)\\blur1\\bord0}Procurando sem fim pelo\\Nmemorial da aurora brilhante",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 69,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Procurando sem fim pelo\\Nmemorial da aurora brilhante",
+  "traduzido" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Procurando sem fim pelo\\Nmemorial da aurora brilhante",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 72,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(200,500)\\blur1\\bord0\\t(500,4960,\\3c&HAB7129&)}Existem momentos em que o destino...",
+  "traduzido" : "{\\fad(200,500)\\blur1\\bord0\\t(500,4960,\\3c&HAB7129&)}Há momentos em que o destino...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+} ]

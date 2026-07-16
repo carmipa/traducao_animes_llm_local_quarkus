@@ -1,0 +1,50 @@
+[ {
+  "indice" : 2,
+  "estilo" : "Song ENG",
+  "original" : "A Baoa Qu.",
+  "traduzido" : "Entendido",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 11,
+  "estilo" : "Song ENG",
+  "original" : "{\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}I just wanna keep on running!\\NJust chasing the thrill that's shooting through my heart!",
+  "traduzido" : "{\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}Eu só quero continuar correndo!\\NSó atrás da emoção que está disparando no meu coração!",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 12,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(0,100)\\be0\\blur1\\bord0}Feelings that you just can't describe with words...",
+  "traduzido" : "{\\fad(0,100)\\be0\\blur1\\bord0}Sentimentos que você nem consegue descrever com palavras...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 16,
+  "estilo" : "Song ENG",
+  "original" : "{\\be0\\blur1\\bord0}Burning with shining blue fire.\\NFire that'll spread until it covers all the stars in the sky.",
+  "traduzido" : "{\\be0\\blur1\\bord0}Queimando com fogo azul brilhante.\\NFogo que se espalhará até cobrir todas as estrelas do céu.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 17,
+  "estilo" : "Song ENG",
+  "original" : "{\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}Burning with shining blue fire.\\NFire that'll spread until it covers all the stars in the sky.",
+  "traduzido" : "{\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}Queimando com fogo azul brilhante.\\NFogo que se espalhará até cobrir todas as estrelas do céu.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 18,
+  "estilo" : "Song ENG",
+  "original" : "Posso ver isso, Gradoll.",
+  "traduzido" : "Eu posso ver isso, Gradoll.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 19,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(0,500)\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}Love is such a lonely battle.\\NBut is it one that will consume the world in flames?",
+  "traduzido" : "{\\fad(0,500)\\be0\\c&HFFFFFF&\\1a&HFF&\\blur2\\bord0.5}O amor é uma batalha tão solitária.\\NMas é uma que consumirá o mundo em chamas?",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+} ]

@@ -235,14 +235,14 @@
     "indice" : 67,
     "estilo" : "Song ENG",
     "original" : "{\\fad(200,500)\\blur1\\bord0}Procurando sem fim pelo \\Nmemorial da aurora brilhante.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(200,500)\\blur1\\bord0}Procurando sem fim pelo\\Nmemorial da aurora brilhante.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 68,
     "estilo" : "Song ENG",
     "original" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Procurando sem fim pelo \\Nmemorial da aurora brilhante.",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Procurando sem fim pelo\\Nmemorial da aurora brilhante.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -368,7 +368,7 @@
     "indice" : 108,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Tenente Burning, que obteve o \\Nplano de batalha do inimigo,",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Tenente Burning, que obteve o\\Nplano de batalha do inimigo,",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -410,7 +410,7 @@
     "indice" : 114,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Chegou o dia fatal da \\Ninspeção naval.",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Chegou o dia fatal da\\Ninspeção naval.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -431,7 +431,7 @@
     "indice" : 117,
     "estilo" : "Dialogue",
     "original" : "A revolta de Delaz é o único caminho \\Nque podemos evitar isso!",
-    "traduzido" : "",
+    "traduzido" : "A revolta de Delaz é o único caminho\\Nque podemos evitar isso!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -480,7 +480,7 @@
     "indice" : 124,
     "estilo" : "Dialogue",
     "original" : "...para o ponto de encontro \\N com a frota Delaz.",
-    "traduzido" : "",
+    "traduzido" : "...para o ponto de encontro\\Ncom a frota Delaz.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -508,7 +508,7 @@
     "indice" : 128,
     "estilo" : "Dialogue",
     "original" : "Quantos mais anos \\Ndevemos esperar aqui?",
-    "traduzido" : "",
+    "traduzido" : "Quantos mais anos\\Ndevemos esperar aqui?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -522,7 +522,7 @@
     "indice" : 130,
     "estilo" : "Dialogue",
     "original" : "Tenente, tenho uma mensagem \\N do Almirante Delaz.",
-    "traduzido" : "",
+    "traduzido" : "Tenente, tenho uma mensagem\\Ndo Almirante Delaz.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -543,7 +543,7 @@
     "indice" : 133,
     "estilo" : "Dialogue",
     "original" : "Ele entrou em contato conosco diretamente, \\N mesmo com o delay de tempo.",
-    "traduzido" : "",
+    "traduzido" : "Ele entrou em contato conosco diretamente,\\Nmesmo com o delay de tempo.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -627,7 +627,7 @@
     "indice" : 145,
     "estilo" : "Dialogue",
     "original" : "Eles não são as forças regulares, \\Nmas continuam chegando e chegando!",
-    "traduzido" : "",
+    "traduzido" : "Eles não são as forças regulares,\\Nmas continuam chegando e chegando!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -648,7 +648,7 @@
     "indice" : 148,
     "estilo" : "Dialogue",
     "original" : "Ele está por aqui... \\N No Setor de Salomão.",
-    "traduzido" : "",
+    "traduzido" : "Ele está por aqui...\\NNo Setor de Salomão.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -690,7 +690,7 @@
     "indice" : 154,
     "estilo" : "Dialogue",
     "original" : "Ao apostar todas as nossas forças nessa operação, \\Ncorremos o risco de sofrer uma grande baixa em nossa capacidade de luta.",
-    "traduzido" : "",
+    "traduzido" : "Ao apostar todas as nossas forças nessa operação,\\Ncorremos o risco de sofrer uma grande baixa em nossa capacidade de luta.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -718,7 +718,7 @@
     "indice" : 158,
     "estilo" : "Dialogue",
     "original" : "Se o pior acontecer, \\N eu cancelo a operação...",
-    "traduzido" : "",
+    "traduzido" : "Se o pior acontecer,\\Neu cancelo a operação...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -872,7 +872,7 @@
     "indice" : 180,
     "estilo" : "Dialogue",
     "original" : "Não estou eu apenas em pé sobre os \\N sacrifícios de tantos outros?",
-    "traduzido" : "",
+    "traduzido" : "Não estou eu apenas em pé sobre os\\Nsacrifícios de tantos outros?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -900,7 +900,7 @@
     "indice" : 184,
     "estilo" : "Dialogue",
     "original" : "Lembre-se de preservar os marcadores \\N exatamente como estão na mesma posição.",
-    "traduzido" : "",
+    "traduzido" : "Lembre-se de preservar os marcadores\\Nexatamente como estão na mesma posição.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -963,7 +963,7 @@
     "indice" : 193,
     "estilo" : "Dialogue",
     "original" : "Quantas unidades inimigas \\Nhá lá agora?",
-    "traduzido" : "",
+    "traduzido" : "Quantas unidades inimigas\\Nhá lá agora?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -984,7 +984,7 @@
     "indice" : 196,
     "estilo" : "Dialogue",
     "original" : "Setor de Vella Lavella está comprometido \\N.",
-    "traduzido" : "",
+    "traduzido" : "Setor de Vella Lavella está comprometido\\N.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1285,7 +1285,7 @@
     "indice" : 239,
     "estilo" : "Dialogue",
     "original" : "\"Então, você gosta de como \\Nsilencioso Confeito é?\"",
-    "traduzido" : "",
+    "traduzido" : "\"Então, você gosta de como\\Nsilencioso Confeito é?\"",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1306,14 +1306,14 @@
     "indice" : 242,
     "estilo" : "Dialogue",
     "original" : "Até agora, destruímos 37 \\N dos seus Mobile Suits.",
-    "traduzido" : "",
+    "traduzido" : "Até agora, destruímos 37\\Ndos seus Mobile Suits.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 243,
     "estilo" : "Dialogue",
     "original" : "Deixem que venham se ousarem. \\NO que pode fazer um ataque tão disperso?",
-    "traduzido" : "",
+    "traduzido" : "Deixem que venham se ousarem.\\NO que pode fazer um ataque tão disperso?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1411,7 +1411,7 @@
     "indice" : 257,
     "estilo" : "Dialogue",
     "original" : "Se eu falhar por causa de algo tão pequeno, \\Nsignifica que o céu não está do meu lado.",
-    "traduzido" : "",
+    "traduzido" : "Se eu falhar por causa de algo tão pequeno,\\Nsignifica que o céu não está do meu lado.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1565,7 +1565,7 @@
     "indice" : 279,
     "estilo" : "Dialogue",
     "original" : "{\\i1}...o glorioso presente do \\Nimenso cosmo que todos compartilhamos —",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}...o glorioso presente do\\Nimenso cosmo que todos compartilhamos —",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1607,7 +1607,7 @@
     "indice" : 285,
     "estilo" : "Dialogue",
     "original" : "Isso é uma blasfêmia contra \\Nos nossos companheiros que caíram aqui.",
-    "traduzido" : "",
+    "traduzido" : "Isso é uma blasfêmia contra\\Nos nossos companheiros que caíram aqui.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1691,14 +1691,14 @@
     "indice" : 297,
     "estilo" : "Dialogue",
     "original" : "Não neste campo tampouco! \\N Qual é o certo?!",
-    "traduzido" : "",
+    "traduzido" : "Não neste campo tampouco!\\NQual é o certo?!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 298,
     "estilo" : "Dialogue",
     "original" : "Mesmo que Gato tenha apenas um Mobile Suit, \\Nele está carregando uma ogiva nuclear.",
-    "traduzido" : "",
+    "traduzido" : "Mesmo que Gato tenha apenas um Mobile Suit,\\Nele está carregando uma ogiva nuclear.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1719,7 +1719,7 @@
     "indice" : 301,
     "estilo" : "Dialogue",
     "original" : "Você acha que alguém é tão estúpido a ponto de \\Nse anunciar assim?",
-    "traduzido" : "",
+    "traduzido" : "Você acha que alguém é tão estúpido a ponto de\\Nse anunciar assim?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1733,7 +1733,7 @@
     "indice" : 303,
     "estilo" : "Dialogue",
     "original" : "O alvo de Delaz é definitivamente \\Na revista naval.",
-    "traduzido" : "",
+    "traduzido" : "O alvo de Delaz é definitivamente\\Na revista naval.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2223,7 +2223,7 @@
     "indice" : 373,
     "estilo" : "Dialogue",
     "original" : "Para o sucesso de \\N Operation Stardust!",
-    "traduzido" : "",
+    "traduzido" : "Para o sucesso de\\NOperation Stardust!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2244,14 +2244,14 @@
     "indice" : 376,
     "estilo" : "Dialogue",
     "original" : "{\\i1}O plano da frota Delaz \\Navança rumo ao sucesso.",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}O plano da frota Delaz\\Navança rumo ao sucesso.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 377,
     "estilo" : "Dialogue",
     "original" : "{\\i1}O sentido de uma vergonha \\NKou Uraki nunca poderá apagar.",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}O sentido de uma vergonha\\NKou Uraki nunca poderá apagar.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {

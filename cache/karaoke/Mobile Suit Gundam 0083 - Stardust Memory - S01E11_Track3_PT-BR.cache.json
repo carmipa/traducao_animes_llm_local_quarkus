@@ -1,0 +1,99 @@
+[ {
+  "indice" : 1,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\blur1\\bord0}Eyes drained of their life.",
+  "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Olhos sem vida.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 2,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Eyes drained of their life.",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Seus olhos sem vida.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 14,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}All those memories and the pain of the past.",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Todas aquelas memórias e a dor do passado.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 17,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\blur1\\bord0}You can't look back at them, and the battle rages on.",
+  "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Você não pode olhar para eles e a batalha continua.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 18,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}You can't look back at them, and the battle rages on.",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Você não pode olhar para eles e a batalha continua.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 22,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Even if lives are burnt to ashes today...",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Mesmo que vidas sejam reduzidas a cinzas hoje...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 25,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,500)\\blur1\\bord0}...will people still dream about tomorrow?",
+  "traduzido" : "{\\fad(100,500)\\blur1\\bord0}...as pessoas ainda sonharão com o amanhã?",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 44,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}A world on the path of destruction...",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Um mundo caminhando para a destruição...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 52,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}The ones who have been chosen are...",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Os escolhidos são...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 64,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Numa noite que engole a estrada.",
+  "traduzido" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Em uma noite que devora a estrada.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 72,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5\\t(500,4960,\\)}Existem momentos em que o destino...",
+  "traduzido" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5\\t(500,4960,\\)}Há momentos em que o destino...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 75,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(200,500)\\blur1\\3c&HAB7129&\\bord0}...is a wind that tests your heart.",
+  "traduzido" : "{\\fad(200,500)\\blur1\\3c&HAB7129&\\bord0}...é um vento que testa seu coração.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 79,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(200,500)\\blur1\\3c&HAB7129&\\bord0}Love is a sky that embraces everything.",
+  "traduzido" : "{\\fad(200,500)\\blur1\\3c&HAB7129&\\bord0}O amor é um céu que abraça tudo.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 84,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(200,500)\\blur2\\\\1a&HFF&\\bord0.5}And in it is the vision of the new day.",
+  "traduzido" : "{\\fad(200,500)\\blur2\\\\1a&HFF&\\bord0.5}E nela está a visão do novo dia.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+} ]

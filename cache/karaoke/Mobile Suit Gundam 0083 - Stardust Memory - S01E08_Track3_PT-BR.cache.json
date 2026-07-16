@@ -1,0 +1,57 @@
+[ {
+  "indice" : 8,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\blur1\\bord0}Eyes drained of their life.",
+  "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Olhos sem vida.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 9,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Eyes drained of their life.",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Olhos desprovidos de vida.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 17,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}You can't look back at them, and the battle rages on.",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Voce não pode olhar para trás e a batalha continua.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 18,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\blur1\\bord0}Even if lives are burnt to ashes today...",
+  "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Mesmo que vidas sejam reduzidas a cinzas hoje...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 25,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}In the skies of despair there rages now a storm.",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}No céu do desespero agora enfurece-se uma tempestade.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 32,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\blur1\\bord0}The ones who have been chosen are...",
+  "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Os escolhidos são...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 33,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}The ones who have been chosen are...",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Os escolhidos são...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 83,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(200,500)\\blur2\\\\1a&HFF&\\bord0.5}...is a wind that tests your heart.",
+  "traduzido" : "{\\fad(200,500)\\blur2\\\\1a&HFF&\\bord0.5}... é um vento que testa seu coração.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+} ]

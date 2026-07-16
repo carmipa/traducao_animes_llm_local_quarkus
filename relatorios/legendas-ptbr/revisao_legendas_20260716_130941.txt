@@ -1,0 +1,301 @@
+REVISÃO DE LEGENDAS (.ass)
+==========================
+Pasta: C:\animes\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\legendas-ptbr
+Duração: 16s
+Arquivos analisados: 27
+Falas auditadas: 7535
+Falas sem original EN (ignoradas): 630
+Problemas detectados: 604
+Falas corrigidas via Google: 22
+Falas pendentes: 582
+
+DETALHES POR OCORRÊNCIA
+=======================
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E02_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 136 de 356 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 99 de 330 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E04_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 42 de 368 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E04_Track3_PT-BR.parcial.ass
+Evento: 108 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: I'll make sure he pinches\Nyour ass, too, next time. | Fala não traduzida (idêntica ao original em inglês): I'll make sure he pinches\Nyour ass, too, next time.
+Diagnóstico: Correção validada e persistida.
+EN: I'll make sure he pinches\Nyour ass, too, next time.
+PT anterior: I'll make sure he pinches\Nyour ass, too, next time.
+Proposta: Vou garantir que ele belisque sua bunda também, da próxima vez.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E04_Track3_PT-BR.parcial.ass
+Evento: 125 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: Don't they understand I want to\Ncut loose as much as they do?! | Fala não traduzida (idêntica ao original em inglês): Don't they understand I want to\Ncut loose as much as they do?!
+Diagnóstico: Correção validada e persistida.
+EN: Don't they understand I want to\Ncut loose as much as they do?!
+PT anterior: Don't they understand I want to\Ncut loose as much as they do?!
+Proposta: Eles não entendem que eu quero me soltar tanto quanto eles?!
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E04_Track3_PT-BR.parcial.ass
+Evento: 198 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: I just had a little too\Nmuch to drink that time. | Fala não traduzida (idêntica ao original em inglês): I just had a little too\Nmuch to drink that time.
+Diagnóstico: Correção validada e persistida.
+EN: I just had a little too\Nmuch to drink that time.
+PT anterior: I just had a little too\Nmuch to drink that time.
+Proposta: Eu só bebi um pouco demais daquela vez.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E04_Track3_PT-BR.parcial.ass
+Evento: 206 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: Lieutenant, you'll just piss\Nher off even more... | Fala não traduzida (idêntica ao original em inglês): Lieutenant, you'll just piss\Nher off even more...
+Diagnóstico: Correção validada e persistida.
+EN: Lieutenant, you'll just piss\Nher off even more...
+PT anterior: Lieutenant, you'll just piss\Nher off even more...
+Proposta: Tenente, você só vai irritá-la ainda mais...
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E04_Track3_PT-BR.parcial.ass
+Evento: 291 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: Lieutenant Monsha, we'll follow\Nyou with diapers ready. | Fala não traduzida (idêntica ao original em inglês): Lieutenant Monsha, we'll follow\Nyou with diapers ready.
+Diagnóstico: Correção validada e persistida.
+EN: Lieutenant Monsha, we'll follow\Nyou with diapers ready.
+PT anterior: Lieutenant Monsha, we'll follow\Nyou with diapers ready.
+Proposta: Tenente Monsha, iremos segui-lo com as fraldas prontas.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E04_Track3_PT-BR.parcial.ass
+Evento: 310 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: Don't get cocky just\N'cuz you beat me once! | Fala não traduzida (idêntica ao original em inglês): Don't get cocky just\N'cuz you beat me once!
+Diagnóstico: Correção validada e persistida.
+EN: Don't get cocky just\N'cuz you beat me once!
+PT anterior: Don't get cocky just\N'cuz you beat me once!
+Proposta: Não fique arrogante só porque você me venceu uma vez!
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E05_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 52 de 388 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E05_Track3_PT-BR.parcial.ass
+Evento: 90 | Estilo: Dialogue
+Resultado: GOOGLE_REJEITADO_SEM_MELHORIA
+Problemas: Resíduo gringo detectado: I can't wait till we upgrade it to\NFull Burnern on the Moon. | Fala não traduzida (idêntica ao original em inglês): I can't wait till we upgrade it to\NFull Burnern on the Moon.
+Diagnóstico: Correção descartada: resposta Google inválida ou sem melhoria.
+EN: I can't wait till we upgrade it to\NFull Burnern on the Moon.
+PT anterior: I can't wait till we upgrade it to\NFull Burnern on the Moon.
+Proposta: Mal posso esperar até atualizá-lo para\NFull Burnern on the Moon.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.parcial.ass
+Evento: 248 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: but if you don't relax once in a\Nwhile, you'll burn out. | Fala não traduzida (idêntica ao original em inglês): but if you don't relax once in a\Nwhile, you'll burn out.
+Diagnóstico: Correção validada e persistida.
+EN: but if you don't relax once in a\Nwhile, you'll burn out.
+PT anterior: but if you don't relax once in a\Nwhile, you'll burn out.
+Proposta: mas se você não relaxar de vez em quando, você vai se esgotar.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.parcial.ass
+Evento: 358 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: A coward like you has\Nno right to lecture me! | Fala não traduzida (idêntica ao original em inglês): A coward like you has\Nno right to lecture me!
+Diagnóstico: Correção validada e persistida.
+EN: A coward like you has\Nno right to lecture me!
+PT anterior: A coward like you has\Nno right to lecture me!
+Proposta: Um covarde como você não tem o direito de me dar um sermão!
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.parcial.ass
+Evento: 379 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: I need to find what's bothering\Nme deep inside. | Fala não traduzida (idêntica ao original em inglês): I need to find what's bothering\Nme deep inside.
+Diagnóstico: Correção validada e persistida.
+EN: I need to find what's bothering\Nme deep inside.
+PT anterior: I need to find what's bothering\Nme deep inside.
+Proposta: Preciso descobrir o que está me incomodando lá no fundo.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E07_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 43 de 348 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E08_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 56 de 409 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E08_Track3_PT-BR.parcial.ass
+Evento: 110 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: Guess the Federation top brass are\Nfinally getting off their lazy backsides. | Fala não traduzida (idêntica ao original em inglês): Guess the Federation top brass are\Nfinally getting off their lazy backsides.
+Diagnóstico: Correção validada e persistida.
+EN: Guess the Federation top brass are\Nfinally getting off their lazy backsides.
+PT anterior: Guess the Federation top brass are\Nfinally getting off their lazy backsides.
+Proposta: Acho que os altos escalões da Federação estão finalmente saindo de suas costas preguiçosas.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E08_Track3_PT-BR.parcial.ass
+Evento: 216 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: Still, Nina's sexiness just leaps\Nout when you catch her off guard. | Fala não traduzida (idêntica ao original em inglês): Still, Nina's sexiness just leaps\Nout when you catch her off guard.
+Diagnóstico: Correção validada e persistida.
+EN: Still, Nina's sexiness just leaps\Nout when you catch her off guard.
+PT anterior: Still, Nina's sexiness just leaps\Nout when you catch her off guard.
+Proposta: Ainda assim, a sensualidade de Nina simplesmente salta quando você a pega desprevenida.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E08_Track3_PT-BR.parcial.ass
+Evento: 251 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: The truth is, my wife and I have\Nbeen separated for a while now. | Fala não traduzida (idêntica ao original em inglês): The truth is, my wife and I have\Nbeen separated for a while now.
+Diagnóstico: Correção validada e persistida.
+EN: The truth is, my wife and I have\Nbeen separated for a while now.
+PT anterior: The truth is, my wife and I have\Nbeen separated for a while now.
+Proposta: A verdade é que minha esposa e eu estamos separados há algum tempo.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E08_Track3_PT-BR.parcial.ass
+Evento: 270 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Fala não traduzida (idêntica ao original em inglês): We nearly landed on\Nher fleet by mistake.
+Diagnóstico: Correção validada e persistida.
+EN: We nearly landed on\Nher fleet by mistake.
+PT anterior: We nearly landed on\Nher fleet by mistake.
+Proposta: Quase pousamos na frota dela por engano.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E08_Track3_PT-BR.parcial.ass
+Evento: 364 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: Him again? Didn't I teach you\Na lesson last time? | Fala não traduzida (idêntica ao original em inglês): Him again? Didn't I teach you\Na lesson last time?
+Diagnóstico: Correção validada e persistida.
+EN: Him again? Didn't I teach you\Na lesson last time?
+PT anterior: Him again? Didn't I teach you\Na lesson last time?
+Proposta: Ele de novo? Eu não te ensinei uma lição da última vez?
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E08_Track3_PT-BR.parcial.ass
+Evento: 376 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: How could I be beaten\Nby only three mobile suits?! | Fala não traduzida (idêntica ao original em inglês): How could I be beaten\Nby only three mobile suits?!
+Diagnóstico: Correção validada e persistida.
+EN: How could I be beaten\Nby only three mobile suits?!
+PT anterior: How could I be beaten\Nby only three mobile suits?!
+Proposta: Como eu poderia ser derrotado por apenas três mobile suit?!
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E09_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 61 de 319 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E09_Track3_PT-BR.parcial.ass
+Evento: 179 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: Coming back to where so\Nmany souls wander? | Fala não traduzida (idêntica ao original em inglês): Coming back to where so\Nmany souls wander?
+Diagnóstico: Correção validada e persistida.
+EN: Coming back to where so\Nmany souls wander?
+PT anterior: Coming back to where so\Nmany souls wander?
+Proposta: Voltando para onde tantas almas vagam?
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E09_Track3_PT-BR.parcial.ass
+Evento: 182 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: This sea is still young, and it will\Ntake time for its waves to calm. | Fala não traduzida (idêntica ao original em inglês): This sea is still young, and it will\Ntake time for its waves to calm.
+Diagnóstico: Correção validada e persistida.
+EN: This sea is still young, and it will\Ntake time for its waves to calm.
+PT anterior: This sea is still young, and it will\Ntake time for its waves to calm.
+Proposta: Este mar ainda é jovem e levará algum tempo para que suas ondas se acalmem.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E09_Track3_PT-BR.parcial.ass
+Evento: 291 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: That speech is giving us\Na good signal to follow. | Fala não traduzida (idêntica ao original em inglês): That speech is giving us\Na good signal to follow.
+Diagnóstico: Correção validada e persistida.
+EN: That speech is giving us\Na good signal to follow.
+PT anterior: That speech is giving us\Na good signal to follow.
+Proposta: Esse discurso está nos dando um bom sinal para seguirmos.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E11_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 51 de 342 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E11_Track3_PT-BR.parcial.ass
+Evento: 134 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: If they stay neutral, we should let\Nthem stay for a limited time. | Fala não traduzida (idêntica ao original em inglês): If they stay neutral, we should let\Nthem stay for a limited time.
+Diagnóstico: Correção validada e persistida.
+EN: If they stay neutral, we should let\Nthem stay for a limited time.
+PT anterior: If they stay neutral, we should let\Nthem stay for a limited time.
+Proposta: Se eles permanecerem neutros, deveríamos deixá-los permanecer por um tempo limitado.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E11_Track3_PT-BR.parcial.ass
+Evento: 193 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: As the Gundam pilot, I will inform\Nyou of this as well. | Fala não traduzida (idêntica ao original em inglês): As the Gundam pilot, I will inform\Nyou of this as well.
+Diagnóstico: Correção validada e persistida.
+EN: As the Gundam pilot, I will inform\Nyou of this as well.
+PT anterior: As the Gundam pilot, I will inform\Nyou of this as well.
+Proposta: Como piloto do Gundam, irei informá-lo sobre isso também.
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E13_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 37 de 234 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E13_Track3_PT-BR.parcial.ass
+Evento: 112 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: {\i1}Lieutenant Uraki! They're about\Nto attack with the Solar System!{\i} | Fala não traduzida (idêntica ao original em inglês): {\i1}Lieutenant Uraki! They're about\Nto attack with the Solar System!{\i}
+Diagnóstico: Correção validada e persistida.
+EN: {\i1}Lieutenant Uraki! They're about\Nto attack with the Solar System!{\i}
+PT anterior: {\i1}Lieutenant Uraki! They're about\Nto attack with the Solar System!{\i}
+Proposta: {\i1}Tenente Uraki! Eles estão prestes a atacar com o Sistema Solar!{\i}
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E13_Track3_PT-BR.parcial.ass
+Evento: 195 | Estilo: Dialogue
+Resultado: CORRIGIDA_GOOGLE
+Problemas: Resíduo gringo detectado: And that we will attack\Nthem the second it expires! | Fala não traduzida (idêntica ao original em inglês): And that we will attack\Nthem the second it expires!
+Diagnóstico: Correção validada e persistida.
+EN: And that we will attack\Nthem the second it expires!
+PT anterior: And that we will attack\Nthem the second it expires!
+Proposta: E que iremos atacá-los assim que expirar!

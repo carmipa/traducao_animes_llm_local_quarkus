@@ -263,7 +263,7 @@
     "indice" : 103,
     "estilo" : "Dialogue",
     "original" : "Comprem-nos algum tempo até \\Npodermos nos concentrar no Sistema Solar!",
-    "traduzido" : "",
+    "traduzido" : "Comprem-nos algum tempo até\\Npodermos nos concentrar no Sistema Solar!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -501,7 +501,7 @@
     "indice" : 137,
     "estilo" : "Dialogue",
     "original" : "Onde sugere que eu recue \\N?",
-    "traduzido" : "",
+    "traduzido" : "Onde sugere que eu recue\\N?",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -592,7 +592,7 @@
     "indice" : 150,
     "estilo" : "Dialogue",
     "original" : "Nada pode deter esta colônia\\N de atingir a Terra agora!",
-    "traduzido" : "",
+    "traduzido" : "Nada pode deter esta colônia\\Nde atingir a Terra agora!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -627,14 +627,14 @@
     "indice" : 155,
     "estilo" : "Dialogue",
     "original" : "Desde aquele dia você \\N desapareceu de repente.",
-    "traduzido" : "",
+    "traduzido" : "Desde aquele dia você\\Ndesapareceu de repente.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 156,
     "estilo" : "Dialogue",
     "original" : "Eu queria que você \\Nesquecesse tudo...",
-    "traduzido" : "",
+    "traduzido" : "Eu queria que você\\Nesquecesse tudo...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -648,7 +648,7 @@
     "indice" : 158,
     "estilo" : "Dialogue",
     "original" : "...esses dias que passei vivendo uma vida falsa \\Nna Lua, esperando até o momento certo.",
-    "traduzido" : "",
+    "traduzido" : "...esses dias que passei vivendo uma vida falsa\\Nna Lua, esperando até o momento certo.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -669,7 +669,7 @@
     "indice" : 161,
     "estilo" : "Dialogue",
     "original" : "Eu me dediquei apenas \\Nà ressurreição de Zeon.",
-    "traduzido" : "",
+    "traduzido" : "Eu me dediquei apenas\\Nà ressurreição de Zeon.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -732,7 +732,7 @@
     "indice" : 170,
     "estilo" : "Dialogue",
     "original" : "Eu tive que assistir \\Nvocês dois lutando um contra o outro...",
-    "traduzido" : "",
+    "traduzido" : "Eu tive que assistir\\Nvocês dois lutando um contra o outro...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -858,7 +858,7 @@
     "indice" : 188,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Abandonem quaisquer unidades \\Nmuito danificadas!",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Abandonem quaisquer unidades\\Nmuito danificadas!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -991,7 +991,7 @@
     "indice" : 207,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Tenente Uraki, a colônia \\Nestá começando a se desintegrar. {\\i}",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Tenente Uraki, a colônia\\Nestá começando a se desintegrar.{\\i}",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1068,14 +1068,14 @@
     "indice" : 218,
     "estilo" : "Dialogue",
     "original" : "Se você não fosse membro\\N daquela Federação podre,",
-    "traduzido" : "",
+    "traduzido" : "Se você não fosse membro\\Ndaquela Federação podre,",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 219,
     "estilo" : "Dialogue",
     "original" : "Talvez você pudesse ter evitado \\Ntoda essa dor.",
-    "traduzido" : "",
+    "traduzido" : "Talvez você pudesse ter evitado\\Ntoda essa dor.",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1250,7 +1250,7 @@
     "indice" : 244,
     "estilo" : "Dialogue",
     "original" : "A vanguarda da nossa frota \\N está à frente do foco!",
-    "traduzido" : "",
+    "traduzido" : "A vanguarda da nossa frota\\Nestá à frente do foco!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1383,7 +1383,7 @@
     "indice" : 263,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Sabemos que você não tem \\Nnada mais para lutar!",
-    "traduzido" : "",
+    "traduzido" : "{\\i1}Sabemos que você não tem\\Nnada mais para lutar!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1411,7 +1411,7 @@
     "indice" : 267,
     "estilo" : "Dialogue",
     "original" : "Para que as gerações futuras conheçam \\Na verdade da batalha que lutamos!",
-    "traduzido" : "",
+    "traduzido" : "Para que as gerações futuras conheçam\\Na verdade da batalha que lutamos!",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1642,7 +1642,7 @@
     "indice" : 303,
     "estilo" : "EG",
     "original" : "{\\fad(0,2022)\\an7\\blur1\\fs65\\bord0\\c&HDDE8E8&\\pos(308.13,444.07)}Como resultado, todas as acusações contra \\NTenente Kou Uraki foram arquivadas...",
-    "traduzido" : "",
+    "traduzido" : "{\\fad(0,2022)\\an7\\blur1\\fs65\\bord0\\c&HDDE8E8&\\pos(308.13,444.07)}Como resultado, todas as acusações contra\\NTenente Kou Uraki foram arquivadas...",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {

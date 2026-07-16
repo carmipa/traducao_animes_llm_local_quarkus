@@ -1,0 +1,85 @@
+[ {
+  "indice" : 1,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\blur1\\bord0}Eyes drained of their life.",
+  "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Seus olhos sem vida.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 2,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Eyes drained of their life.",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Olhos vazios de vida.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 17,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\blur1\\bord0}You can't look back at them, and the battle rages on.",
+  "traduzido" : "{\\fad(100,100)\\blur1\\bord0}Você não pode olhar para trás e a batalha continua.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 18,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}You can't look back at them, and the battle rages on.",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Você não pode olhar para eles e a batalha continua feroz.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 22,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Even if lives are burnt to ashes today...",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Mesmo que vidas sejam reduzidas a cinzas hoje...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 36,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}In the skies of despair there rages now a storm.",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}No céu do desespero agora uma tempestade enfurece-se.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 52,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}The ones who have been chosen are...",
+  "traduzido" : "{\\fad(100,100)\\1a&HFF&\\blur2\\bord0.5}Os escolhidos são...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 68,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Procurando sem fim pelo\\Nmemorial da aurora brilhante.",
+  "traduzido" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Procurando sem fim pelo\\Nmemorial da aurora brilhante.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 75,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(200,500)\\blur1\\3c&HAB7129&\\bord0}...is a wind that tests your heart.",
+  "traduzido" : "{\\fad(200,500)\\blur1\\3c&HAB7129&\\bord0}...é um vento que testa seu coração.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 76,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(200,500)\\blur2\\\\1a&HFF&\\bord0.5}...is a wind that tests your heart.",
+  "traduzido" : "{\\fad(200,500)\\blur2\\\\1a&HFF&\\bord0.5}... é um vento que testa seu coração.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 80,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(200,500)\\blur2\\\\1a&HFF&\\bord0.5}Love is a sky that embraces everything.",
+  "traduzido" : "{\\fad(200,500)\\blur2\\\\1a&HFF&\\bord0.5}O amor é um céu que abraça tudo.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 96,
+  "estilo" : "Song ENG",
+  "original" : "{\\fad(200,500)\\blur2\\\\1a&HFF&\\bord0.5}That frozen dream has begun to shine again.",
+  "traduzido" : "{\\fad(200,500)\\blur2\\\\1a&HFF&\\bord0.5}Aquele sonho congelado começou a brilhar novamente.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+} ]
