@@ -4,10 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntFunction;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Cobre o contrato tipado e o retry curado sem tocar na rede: substitui o
@@ -158,5 +163,41 @@ class GoogleTranslateScraperTest {
         ResultadoRaspagem r = s.traduzir("Hello");
         assertEquals(StatusRaspagem.SUCESSO, r.status());
         assertEquals(5000L, s.ultimaEsperaMs); // usou o Retry-After, não o backoff
+    }
+
+    // ----- Testes do Parser de Retry-After -----
+
+    @Test
+    void parseRetryAfterSegundos() {
+        long ms = GoogleTranslateScraper.parseRetryAfter("120");
+        assertEquals(120000L, ms);
+    }
+
+    @Test
+    void parseRetryAfterHttpDateFuturo() {
+        ZonedDateTime futuro = ZonedDateTime.now(java.time.ZoneId.of("GMT")).plusMinutes(2);
+        String httpDate = futuro.format(DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'", Locale.ENGLISH));
+        
+        long ms = GoogleTranslateScraper.parseRetryAfter(httpDate);
+        // Deve ser aproximadamente 2 minutos (120000 ms), com margem de erro pequena para o tempo de CPU
+        assertTrue(ms > 110000L && ms <= 120000L, "Espera aproximada de 2 minutos. Recebido: " + ms);
+    }
+
+    @Test
+    void parseRetryAfterHttpDatePassado() {
+        ZonedDateTime passado = ZonedDateTime.now(java.time.ZoneId.of("GMT")).minusMinutes(5);
+        String httpDate = passado.format(DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'", Locale.ENGLISH));
+        
+        long ms = GoogleTranslateScraper.parseRetryAfter(httpDate);
+        assertEquals(0L, ms);
+    }
+
+    @Test
+    void parseRetryAfterInvalido() {
+        assertEquals(0L, GoogleTranslateScraper.parseRetryAfter(""));
+        assertEquals(0L, GoogleTranslateScraper.parseRetryAfter("   "));
+        assertEquals(0L, GoogleTranslateScraper.parseRetryAfter(null));
+        assertEquals(0L, GoogleTranslateScraper.parseRetryAfter("texto aleatorio"));
+        assertEquals(0L, GoogleTranslateScraper.parseRetryAfter("12a"));
     }
 }

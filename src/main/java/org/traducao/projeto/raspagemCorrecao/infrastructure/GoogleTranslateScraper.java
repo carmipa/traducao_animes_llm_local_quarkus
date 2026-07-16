@@ -14,8 +14,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -222,15 +226,29 @@ public class GoogleTranslateScraper {
         return BACKOFF_BASE_MS + ThreadLocalRandom.current().nextLong(JITTER_MAX_MS);
     }
 
-    /** Retry-After no formato de segundos (o formato de data HTTP é ignorado). Retorna ms; 0 se ausente. */
-    private static long parseRetryAfter(String header) {
+    private static final DateTimeFormatter HTTP_DATE_FORMATTER = DateTimeFormatter
+        .ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'", Locale.ENGLISH)
+        .withZone(java.time.ZoneId.of("GMT"));
+
+    /** Retry-After no formato de segundos ou HTTP-date. Retorna ms; 0 se ausente ou inválido. */
+    static long parseRetryAfter(String header) {
         if (header == null || header.isBlank()) {
             return 0;
         }
+        String limpo = header.trim();
         try {
-            return Long.parseLong(header.trim()) * 1000L;
+            // Tenta segundos
+            return Long.parseLong(limpo) * 1000L;
         } catch (NumberFormatException e) {
-            return 0;
+            // Tenta data HTTP
+            try {
+                ZonedDateTime dataEspera = ZonedDateTime.parse(limpo, HTTP_DATE_FORMATTER);
+                long diffMs = dataEspera.toInstant().toEpochMilli() - Instant.now().toEpochMilli();
+                return Math.max(0, diffMs);
+            } catch (Exception ex) {
+                log.warn("Falha ao analisar cabeçalho Retry-After em formato HTTP-date ({}): {}", limpo, ex.getMessage());
+                return 0;
+            }
         }
     }
 
