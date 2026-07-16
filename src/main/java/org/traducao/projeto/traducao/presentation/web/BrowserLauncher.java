@@ -48,16 +48,27 @@ public class BrowserLauncher {
     }
 
     private void abrirNavegador(String url) {
+        try {
+            if (java.awt.Desktop.isDesktopSupported()) {
+                java.awt.Desktop.getDesktop().browse(new java.net.URI(url));
+                log.info("Navegador aberto automaticamente via Desktop API: {}", url);
+                return;
+            }
+        } catch (Exception e) {
+            log.warn("Erro ao abrir navegador via Desktop API: {}. Tentando comando nativo...", e.getMessage());
+        }
+
+        // Fallback nativo
         String os = System.getProperty("os.name").toLowerCase();
         try {
             if (os.contains("win")) {
-                Runtime.getRuntime().exec(new String[]{"cmd.exe", "/c", "start", url});
+                new ProcessBuilder("cmd.exe", "/c", "start", "", url).start();
             } else if (os.contains("mac")) {
                 Runtime.getRuntime().exec(new String[]{"open", url});
             } else {
                 Runtime.getRuntime().exec(new String[]{"xdg-open", url});
             }
-            log.info("Navegador aberto automaticamente na URL: {}", url);
+            log.info("Navegador aberto automaticamente na URL via fallback nativo: {}", url);
         } catch (IOException e) {
             log.warn("Nao foi possivel abrir o navegador automaticamente: {}", e.getMessage());
         }
