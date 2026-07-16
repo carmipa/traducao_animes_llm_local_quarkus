@@ -73,6 +73,7 @@ public class RevisarLegendasUseCase {
     private static final int DIVISOR_PROPORCAO_RETRADUCAO_EM_MASSA = 10;
     private static final Pattern CODIGO_EPISODIO = Pattern.compile("(?i)(S\\d{1,2}E\\d{1,3})");
     private static final Pattern SUFIXO_PTBR_TRACK = Pattern.compile("(?i)_PT-?BR(_Track\\d+)?$");
+    private static final Pattern SUFIXO_TRACK = Pattern.compile("(?i)(_Track\\d+)");
     private static final DateTimeFormatter TS_BACKUP = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss_SSS");
 
     private final LeitorLegendaAss leitor;
@@ -1294,11 +1295,24 @@ public class RevisarLegendasUseCase {
         }
 
         if (Files.isDirectory(cacheDir)) {
+            Matcher trackMatcher = SUFIXO_TRACK.matcher(baseLegenda);
+            String trackSuffix = trackMatcher.find() ? trackMatcher.group(1).toUpperCase() : "";
+
             try (Stream<Path> stream = Files.walk(cacheDir)) {
                 return stream
                     .filter(Files::isRegularFile)
                     .filter(p -> correspondeCache(p.getFileName().toString(), baseMidia, codigoEpisodio))
-                    .sorted()
+                    .sorted((p1, p2) -> {
+                        String n1 = p1.getFileName().toString().toUpperCase();
+                        String n2 = p2.getFileName().toString().toUpperCase();
+                        if (!trackSuffix.isEmpty()) {
+                            boolean c1 = n1.contains(trackSuffix);
+                            boolean c2 = n2.contains(trackSuffix);
+                            if (c1 && !c2) return -1;
+                            if (!c1 && c2) return 1;
+                        }
+                        return n1.compareTo(n2);
+                    })
                     .findFirst()
                     .orElse(cacheDir.resolve(baseMidia + "_ENG.cache.json"));
             } catch (IOException e) {
@@ -1311,10 +1325,13 @@ public class RevisarLegendasUseCase {
 
     private List<String> candidatosNomeCache(String baseLegenda, String baseMidia) {
         Set<String> candidatos = new LinkedHashSet<>();
+        String baseSemIdioma = baseLegenda.replaceFirst("(?i)_PT-?BR$", "");
+        candidatos.add(baseSemIdioma + "_ENG.cache.json");
+        candidatos.add(baseSemIdioma + ".cache.json");
+        candidatos.add(baseLegenda + "_ENG.cache.json");
+        candidatos.add(baseLegenda + ".cache.json");
         candidatos.add(baseMidia + "_ENG.cache.json");
         candidatos.add(baseMidia + ".cache.json");
-        candidatos.add(baseLegenda + ".cache.json");
-        candidatos.add(baseLegenda + "_ENG.cache.json");
         return List.copyOf(candidatos);
     }
 

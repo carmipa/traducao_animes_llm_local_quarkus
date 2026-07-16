@@ -183,4 +183,37 @@ class RevisarLegendasCacheIntegracaoTest {
         assertEquals(0, resultado.falasComProblema());
         assertEquals(0, resultado.falasPendentes());
     }
+
+    @Test
+    void priorizaCacheComMesmoTrack(@TempDir Path tempDir) throws IOException {
+        Path pastaPt = Files.createDirectory(tempDir.resolve("pt"));
+        Path pastaCache = Files.createDirectory(tempDir.resolve("cache"));
+
+        Path ass = pastaPt.resolve("show_S01E02_Track3_PT-BR.ass");
+        escreverAss(ass, "Good morning");
+
+        // Cache sem track suffix (dummy/rascunho parcial)
+        Path cacheDummy = pastaCache.resolve("show_S01E02.cache.json");
+        escreverCache(cacheDummy, "danmachi", List.of(
+            new EntradaCache(0, "Default", "Good morning", "Dia dummy", "en", "pt")));
+        tornarCacheMaisNovo(cacheDummy, ass);
+
+        // Cache com track suffix correspondente (completo)
+        Path cacheCorreto = pastaCache.resolve("show_S01E02_Track3.cache.json");
+        escreverCache(cacheCorreto, "danmachi", List.of(
+            new EntradaCache(0, "Default", "Good morning", "Bom dia correto", "en", "pt")));
+        tornarCacheMaisNovo(cacheCorreto, ass);
+
+        ResultadoRevisaoLegendas resultado = useCase.executar(
+            pastaPt, null, pastaCache, null,
+            RevisarLegendasUseCase.ModoRevisaoLegendas.GOOGLE, "danmachi",
+            RevisarLegendasUseCase.ModoReferenciaRevisao.CACHE);
+
+        assertEquals(1, resultado.arquivosAnalisados());
+        assertEquals("CONCLUIDO", resultado.status());
+        
+        String conteudo = Files.readString(ass, StandardCharsets.UTF_8);
+        assertTrue(conteudo.contains("Bom dia correto"), "deveria carregar o cache com Track3");
+        assertFalse(conteudo.contains("Dia dummy"), "não deveria carregar o cache sem track");
+    }
 }

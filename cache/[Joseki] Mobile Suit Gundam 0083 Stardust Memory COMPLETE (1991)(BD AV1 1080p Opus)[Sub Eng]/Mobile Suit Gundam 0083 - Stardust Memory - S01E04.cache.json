@@ -165,7 +165,7 @@
     "indice" : 79,
     "estilo" : "Titles",
     "original" : "{\\blur1\\c&H141316&\\pos(720,680)}GUNDAM, \\NPARA O MAR DAS ESTRELAS",
-    "traduzido" : "{\\blur1\\c&H141316&\\pos(720,680)}GUNDAM,\\NPARA O MAR DAS ESTRELAS",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -193,7 +193,7 @@
     "indice" : 83,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Novos pilotos foram designados para o navio de desembarque de assalto \\NAlbion,",
-    "traduzido" : "{\\i1}Novos pilotos foram designados para o navio de desembarque de assalto\\NAlbion,",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -312,7 +312,7 @@
     "indice" : 100,
     "estilo" : "Dialogue",
     "original" : "Mas não podemos apenas deixar você \\N bater no nosso amigo por diversão.",
-    "traduzido" : "Mas não podemos apenas deixar você\\Nbater no nosso amigo por diversão.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -459,7 +459,7 @@
     "indice" : 121,
     "estilo" : "Dialogue",
     "original" : "Estes pequenos distúrbios \\N não estão ajudando.",
-    "traduzido" : "Estes pequenos distúrbios\\Nnão estão ajudando.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -536,14 +536,14 @@
     "indice" : 132,
     "estilo" : "Dialogue",
     "original" : "Todo mundo está cansado de \\Nolhar a paisagem africana.",
-    "traduzido" : "Todo mundo está cansado de\\Nolhar a paisagem africana.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 133,
     "estilo" : "Dialogue",
     "original" : "Capitão, recebemos outra \\Nmensagem de Jaburo.",
-    "traduzido" : "Capitão, recebemos outra\\Nmensagem de Jaburo.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -683,7 +683,7 @@
     "indice" : 153,
     "estilo" : "Dialogue",
     "original" : "{\\i1}E que se dane o que esse \\NLunariano a bordo contigo pensa!",
-    "traduzido" : "{\\i1}E que se dane o que esse\\NLunariano a bordo contigo pensa!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -893,7 +893,7 @@
     "indice" : 183,
     "estilo" : "Dialogue",
     "original" : "Meio mês de salário que \\NKou não pode fazer isso.",
-    "traduzido" : "Meio mês de salário que\\NKou não pode fazer isso.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -977,7 +977,7 @@
     "indice" : 195,
     "estilo" : "Dialogue",
     "original" : "...Sem alguém \\N segurando sua mão?!",
-    "traduzido" : "...Sem alguém\\Nsegurando sua mão?!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1215,7 +1215,7 @@
     "indice" : 229,
     "estilo" : "Dialogue",
     "original" : "Você fez bem em manter esta \\Nbase subterrânea por três anos.",
-    "traduzido" : "Você fez bem em manter esta\\Nbase subterrânea por três anos.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1243,7 +1243,7 @@
     "indice" : 233,
     "estilo" : "Dialogue",
     "original" : "Foi realmente \\Ntão difícil de construir.",
-    "traduzido" : "Foi realmente\\Ntão difícil de construir.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1271,7 +1271,7 @@
     "indice" : 237,
     "estilo" : "Dialogue",
     "original" : "Pelo menos, manter aquele último HLV\\N acabou valendo a pena.",
-    "traduzido" : "Pelo menos, manter aquele último HLV\\Nacabou valendo a pena.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1460,7 +1460,7 @@
     "indice" : 264,
     "estilo" : "Dialogue",
     "original" : "Excelente! Não há maneira de eu \\Nagradecer você por isso, senhor.",
-    "traduzido" : "Excelente! Não há maneira de eu\\Nagradecer você por isso, senhor.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1551,7 +1551,7 @@
     "indice" : 277,
     "estilo" : "Dialogue",
     "original" : "Tenente Queimando, você me ouve? \\N Mande-os embora!",
-    "traduzido" : "Tenente Queimando, você me ouve?\\NMande-os embora!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1621,7 +1621,7 @@
     "indice" : 287,
     "estilo" : "Dialogue",
     "original" : "Capitão, ele pode fazer um \\Ndesvio assim?",
-    "traduzido" : "Capitão, ele pode fazer um\\Ndesvio assim?",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1873,14 +1873,14 @@
     "indice" : 323,
     "estilo" : "Dialogue",
     "original" : "Bom. Se tivermos sorte, \\N podemos abater aquele navio inimigo.",
-    "traduzido" : "Bom. Se tivermos sorte,\\Npodemos abater aquele navio inimigo.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 324,
     "estilo" : "Dialogue",
     "original" : "Ao menos isso nos dará tempo até lançarmos o HLV \\N.",
-    "traduzido" : "Ao menos isso nos dará tempo até lançarmos o HLV\\N.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1908,7 +1908,7 @@
     "indice" : 328,
     "estilo" : "Dialogue",
     "original" : "Após eu lançar, você ficará \\Nno comando desta base.",
-    "traduzido" : "Após eu lançar, você ficará\\Nno comando desta base.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1936,7 +1936,7 @@
     "indice" : 332,
     "estilo" : "Dialogue",
     "original" : "Se perdermos nossos Mobile Suits \\N nesta batalha...",
-    "traduzido" : "Se perdermos nossos Mobile Suits\\Nnesta batalha...",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2055,7 +2055,7 @@
     "indice" : 349,
     "estilo" : "Dialogue",
     "original" : "Eles levaram Monsha e \\Nos outros embora...",
-    "traduzido" : "Eles levaram Monsha e\\Nos outros embora...",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2132,7 +2132,7 @@
     "indice" : 360,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Além disso, o Tenente Burning está \\Nmuito irritado com você.",
-    "traduzido" : "{\\i1}Além disso, o Tenente Burning está\\Nmuito irritado com você.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2202,7 +2202,7 @@
     "indice" : 370,
     "estilo" : "Dialogue",
     "original" : "Aquele blefe foi claramente \\Nplanejado para ganhar tempo.",
-    "traduzido" : "Aquele blefe foi claramente\\Nplanejado para ganhar tempo.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2272,7 +2272,7 @@
     "indice" : 380,
     "estilo" : "Dialogue",
     "original" : "Uraki! Não temos escolha! \\N Você precisa romper as linhas inimigas!",
-    "traduzido" : "Uraki! Não temos escolha!\\NVocê precisa romper as linhas inimigas!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2468,7 +2468,7 @@
     "indice" : 408,
     "estilo" : "Dialogue",
     "original" : "Chegamos a tempo, \\NTenente Monsha.",
-    "traduzido" : "Chegamos a tempo,\\NTenente Monsha.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2503,7 +2503,7 @@
     "indice" : 413,
     "estilo" : "Dialogue",
     "original" : "Vencemos. Glória a \\NOperação Estardust.",
-    "traduzido" : "Vencemos. Glória a\\NOperação Estardust.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2559,7 +2559,7 @@
     "indice" : 421,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Ondas que se espalham \\Natravés da galáxia.",
-    "traduzido" : "{\\i1}Ondas que se espalham\\Natravés da galáxia.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2580,7 +2580,7 @@
     "indice" : 424,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Um novo e poderoso inimigo surge para \\Nencontrar a unidade Gundam 01 de Uraki.",
-    "traduzido" : "{\\i1}Um novo e poderoso inimigo surge para\\Nencontrar a unidade Gundam 01 de Uraki.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2594,7 +2594,7 @@
     "indice" : 426,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Kou Uraki sofre com sua situação, \\Nas ondas do destino envolvem Nina.",
-    "traduzido" : "{\\i1}Kou Uraki sofre com sua situação,\\Nas ondas do destino envolvem Nina.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   } ]

@@ -235,14 +235,14 @@
     "indice" : 67,
     "estilo" : "Song ENG",
     "original" : "{\\fad(200,500)\\blur1\\bord0}Procurando sem descanso pelo \\Nlembrete da aurora brilhante.",
-    "traduzido" : "{\\fad(200,500)\\blur1\\bord0}Procurando sem descanso pelo\\Nlembrete da aurora brilhante.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 68,
     "estilo" : "Song ENG",
     "original" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Procurando sem descanso pelo \\Nlembrete da aurora brilhante.",
-    "traduzido" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Procurando sem descanso pelo\\Nlembrete da aurora brilhante.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -438,7 +438,7 @@
     "indice" : 118,
     "estilo" : "Dialogue",
     "original" : "Eu posso apenas imaginar o \\Npânico agora em Jaburo.",
-    "traduzido" : "Eu posso apenas imaginar o\\Npânico agora em Jaburo.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -543,7 +543,7 @@
     "indice" : 133,
     "estilo" : "Dialogue",
     "original" : "...Aquele novo intrometido, \\Na frota de Eixo?",
-    "traduzido" : "...Aquele novo intrometido,\\Na frota de Eixo?",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -655,7 +655,7 @@
     "indice" : 149,
     "estilo" : "Dialogue",
     "original" : "Não há nada como \\Nter os céus em silêncio.",
-    "traduzido" : "Não há nada como\\Nter os céus em silêncio.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -823,7 +823,7 @@
     "indice" : 173,
     "estilo" : "Dialogue",
     "original" : "Com que cara de triste você está? \\N Estamos prestes a chegar!",
-    "traduzido" : "Com que cara de triste você está?\\NEstamos prestes a chegar!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -956,7 +956,7 @@
     "indice" : 192,
     "estilo" : "Dialogue",
     "original" : "Eu sou o Tenente-Comandante Nakahha Nakato, \\N Companhia de Segurança 401.",
-    "traduzido" : "Eu sou o Tenente-Comandante Nakahha Nakato,\\NCompanhia de Segurança 401.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -984,7 +984,7 @@
     "indice" : 196,
     "estilo" : "Dialogue",
     "original" : "Sua nova missão é proteger o \\NLa Vie en Rose e a Unidade Gundam 03.",
-    "traduzido" : "Sua nova missão é proteger o\\NLa Vie en Rose e a Unidade Gundam 03.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -998,7 +998,7 @@
     "indice" : 198,
     "estilo" : "Dialogue",
     "original" : "Se não pegarmos agora a Unidade 03\\N e impedirmos essa colônia de cair...!",
-    "traduzido" : "Se não pegarmos agora a Unidade 03\\Ne impedirmos essa colônia de cair...!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1019,7 +1019,7 @@
     "indice" : 201,
     "estilo" : "Dialogue",
     "original" : "Almirante Kowen não está mais à frente do Projeto de Desenvolvimento do Gundam \\N.",
-    "traduzido" : "Almirante Kowen não está mais à frente do Projeto de Desenvolvimento do Gundam\\N.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1040,14 +1040,14 @@
     "indice" : 204,
     "estilo" : "Dialogue",
     "original" : "...causando a revisão naval \\Na ser destruída, bem como—",
-    "traduzido" : "...causando a revisão naval\\Na ser destruída, bem como—",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 205,
     "estilo" : "Dialogue",
     "original" : "Tenente Comandante! Gostaria que o Tenente Uraki \\N embarcasse no La Vie en Rose...",
-    "traduzido" : "Tenente Comandante! Gostaria que o Tenente Uraki\\Nembarcasse no La Vie en Rose...",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1180,7 +1180,7 @@
     "indice" : 224,
     "estilo" : "Dialogue",
     "original" : "Essa jovem senhora é responsável pelo desenvolvimento da \\NUnidade 03.",
-    "traduzido" : "Essa jovem senhora é responsável pelo desenvolvimento da\\NUnidade 03.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1236,7 +1236,7 @@
     "indice" : 232,
     "estilo" : "Dialogue",
     "original" : "Você sabe muitos detalhes sobre \\Nteoria de mobile suit.",
-    "traduzido" : "Você sabe muitos detalhes sobre\\Nteoria de mobile suit.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1264,7 +1264,7 @@
     "indice" : 236,
     "estilo" : "Dialogue",
     "original" : "Por que não?! \\N A Unidade 03 está completa!",
-    "traduzido" : "Por que não?!\\NA Unidade 03 está completa!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1278,7 +1278,7 @@
     "indice" : 238,
     "estilo" : "Dialogue",
     "original" : "Eu sou um soldado.\\N Eu tenho que seguir ordens.",
-    "traduzido" : "Eu sou um soldado.\\NEu tenho que seguir ordens.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1334,7 +1334,7 @@
     "indice" : 246,
     "estilo" : "Dialogue",
     "original" : "Sem um piloto de teste, \\Na pesquisa não pode continuar.",
-    "traduzido" : "Sem um piloto de teste,\\Na pesquisa não pode continuar.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1537,7 +1537,7 @@
     "indice" : 275,
     "estilo" : "Dialogue",
     "original" : "Infelizmente, o Tenente Comandante Nakato\\N classificou a maioria dos dados.",
-    "traduzido" : "Infelizmente, o Tenente Comandante Nakato\\Nclassificou a maioria dos dados.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1670,7 +1670,7 @@
     "indice" : 294,
     "estilo" : "Dialogue",
     "original" : "Enquanto estamos aqui, \\N Gato e seus homens estão...!",
-    "traduzido" : "Enquanto estamos aqui,\\NGato e seus homens estão...!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1733,7 +1733,7 @@
     "indice" : 303,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Não queremos mesmo \\Njogar essa colônia na Lua.",
-    "traduzido" : "{\\i1}Não queremos mesmo\\Njogar essa colônia na Lua.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1747,14 +1747,14 @@
     "indice" : 305,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Vamos, agora você só tem \\Ndois caminhos a seguir.",
-    "traduzido" : "{\\i1}Vamos, agora você só tem\\Ndois caminhos a seguir.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 306,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Ou deixe que a colônia \\Nbata e morra, ou...",
-    "traduzido" : "{\\i1}Ou deixe que a colônia\\Nbata e morra, ou...",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1845,7 +1845,7 @@
     "indice" : 319,
     "estilo" : "Dialogue",
     "original" : "De acordo, para fazer a frota de perseguição \\Ngastar todo o seu combustível!",
-    "traduzido" : "De acordo, para fazer a frota de perseguição\\Ngastar todo o seu combustível!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -1859,7 +1859,7 @@
     "indice" : 321,
     "estilo" : "Dialogue",
     "original" : "{\\i1}Este é o Madras! Estamos sem \\Npropulsão e não podemos continuar.",
-    "traduzido" : "{\\i1}Este é o Madras! Estamos sem\\Npropulsão e não podemos continuar.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2097,14 +2097,14 @@
     "indice" : 355,
     "estilo" : "Dialogue",
     "original" : "Roubo da Unidade 03 e \\N assassinato de um civil!",
-    "traduzido" : "Roubo da Unidade 03 e\\Nassassinato de um civil!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
     "indice" : 356,
     "estilo" : "Dialogue",
     "original" : "Eles geralmente realizariam um \\Nconselho de guerra para você.",
-    "traduzido" : "Eles geralmente realizariam um\\Nconselho de guerra para você.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2139,7 +2139,7 @@
     "indice" : 361,
     "estilo" : "Dialogue",
     "original" : "Diga aos seus homens para recuarem, \\NTenente-Comandante Nakato.",
-    "traduzido" : "Diga aos seus homens para recuarem,\\NTenente-Comandante Nakato.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2321,7 +2321,7 @@
     "indice" : 387,
     "estilo" : "Dialogue",
     "original" : "Meu timing quando \\N eu troco para automático é...!",
-    "traduzido" : "Meu timing quando\\Neu troco para automático é...!",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
@@ -2370,7 +2370,7 @@
     "indice" : 394,
     "estilo" : "Dialogue",
     "original" : "{\\i1}O último ponto onde a \\Nqueda da colônia pode ser parada.",
-    "traduzido" : "{\\i1}O último ponto onde a\\Nqueda da colônia pode ser parada.",
+    "traduzido" : "",
     "idiomaOriginal" : "en",
     "idiomaTraduzido" : "pt-br"
   }, {
