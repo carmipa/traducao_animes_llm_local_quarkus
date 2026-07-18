@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "tipo" : "revisao_lore",
   "operacao" : {
@@ -236,4 +237,244 @@
     "nivel" : "INFO",
     "mensagem" : "[UTC 2026-07-15T16:44:56.677964800Z | +00.077s]   - Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E13_Track3.ass"
   } ]
+=======
+{
+  "tipo" : "revisao_lore",
+  "operacao" : {
+    "tipo" : "Revisao de Lore (.ass LLM)",
+    "detalhe" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\legendas-ptbr | promptRevisaoLore=Mobile Suit Gundam 0083: Stardust Memory - Revisao de Lore | status=CONCLUIDO_COM_PENDENCIAS | pendentes=0 | semResposta=0 | descartadas=0 | encaminhadasOpcao6=0 | erros=15",
+    "tempoTotalMs" : 56,
+    "arquivosProcessados" : 0,
+    "itensDetectados" : 0,
+    "itensCorrigidos" : 0,
+    "registradoEm" : "2026-07-15T16:44:56.678964800Z"
+  },
+  "contexto" : {
+    "id" : "gundam_0083",
+    "nome" : "Mobile Suit Gundam 0083: Stardust Memory - Revisao de Lore"
+  },
+  "pastas" : {
+    "originalEn" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\legendas_extraidas_ass",
+    "traduzidaPtBr" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\legendas-ptbr"
+  },
+  "modo" : "todas_as_falas",
+  "metricas" : {
+    "status" : "CONCLUIDO_COM_PENDENCIAS",
+    "duracaoMs" : 56,
+    "duracaoFormatada" : "0s",
+    "arquivosAnalisados" : 0,
+    "arquivosAlterados" : 0,
+    "falasAuditadas" : 0,
+    "falasSinalizadas" : 0,
+    "falasCorrigidas" : 0,
+    "falasSemAlteracao" : 0,
+    "falasSemResposta" : 0,
+    "falasDescartadas" : 0,
+    "falasEncaminhadasOpcao6" : 0,
+    "falasPendentes" : 0,
+    "totalErros" : 15
+  },
+  "erros" : [ "Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S00E02_Track3.ass", "Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S00E03_Track2.ass", "Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E01_Track3.ass", "Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E02_Track3.ass", "Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E03_Track3.ass", "Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E04_Track3.ass", "Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E05_Track3.ass", "Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E06_Track3.ass", "Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E07_Track3.ass", "Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E08_Track3.ass", "Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E09_Track3.ass", "Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E10_Track3.ass", "Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E11_Track3.ass", "Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E12_Track3.ass", "Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E13_Track3.ass" ],
+  "eventos" : [ {
+    "instante" : "2026-07-15T16:44:56.608206100Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.604215400Z | +00.004s] \n=== Revisao de Lore (nomes, locais e terminologia) ==="
+  }, {
+    "instante" : "2026-07-15T16:44:56.610727600Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.608206100Z | +00.008s] Inicio UTC: 2026-07-15T16:44:56.608206100Z"
+  }, {
+    "instante" : "2026-07-15T16:44:56.613737600Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.610727600Z | +00.010s] Pasta original (EN): C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\legendas_extraidas_ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.614743200Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.613737600Z | +00.013s] Pasta traduzida (PT-BR): C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\legendas-ptbr"
+  }, {
+    "instante" : "2026-07-15T16:44:56.615745900Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.614743200Z | +00.014s] Prompt de revisao de lore ativo: Mobile Suit Gundam 0083: Stardust Memory - Revisao de Lore (gundam_0083)"
+  }, {
+    "instante" : "2026-07-15T16:44:56.616738400Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.615745900Z | +00.015s] Modo: revisar TODAS as falas com dialogo"
+  }, {
+    "instante" : "2026-07-15T16:44:56.620254Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.618241800Z | +00.018s] Arquivos .ass encontrados na pasta original: 15"
+  }, {
+    "instante" : "2026-07-15T16:44:56.630790500Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.629784600Z | +00.029s] Falas auditaveis no lote: 0"
+  }, {
+    "instante" : "2026-07-15T16:44:56.632790Z",
+    "nivel" : "WARN",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.631790200Z | +00.031s]   [Pulado] Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S00E02_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.635287400Z",
+    "nivel" : "WARN",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.633790200Z | +00.033s]   [Pulado] Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S00E03_Track2.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.637285600Z",
+    "nivel" : "WARN",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.636293800Z | +00.036s]   [Pulado] Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E01_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.638294500Z",
+    "nivel" : "WARN",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.637285600Z | +00.037s]   [Pulado] Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E02_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.639289600Z",
+    "nivel" : "WARN",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.638294500Z | +00.038s]   [Pulado] Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E03_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.641612400Z",
+    "nivel" : "WARN",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.639289600Z | +00.039s]   [Pulado] Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E04_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.642612Z",
+    "nivel" : "WARN",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.641612400Z | +00.041s]   [Pulado] Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E05_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.644776400Z",
+    "nivel" : "WARN",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.642612Z | +00.042s]   [Pulado] Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E06_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.646948500Z",
+    "nivel" : "WARN",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.644776400Z | +00.044s]   [Pulado] Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E07_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.648952800Z",
+    "nivel" : "WARN",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.646948500Z | +00.046s]   [Pulado] Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E08_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.649964800Z",
+    "nivel" : "WARN",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.648952800Z | +00.048s]   [Pulado] Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E09_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.652161100Z",
+    "nivel" : "WARN",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.651161100Z | +00.051s]   [Pulado] Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E10_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.654167600Z",
+    "nivel" : "WARN",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.653164200Z | +00.053s]   [Pulado] Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E11_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.655161200Z",
+    "nivel" : "WARN",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.654167600Z | +00.054s]   [Pulado] Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E12_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.656310600Z",
+    "nivel" : "WARN",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.655161200Z | +00.055s]   [Pulado] Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E13_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.657825Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.656310600Z | +00.056s] Arquivos analisados: 0"
+  }, {
+    "instante" : "2026-07-15T16:44:56.658832400Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.657825Z | +00.057s] Arquivos alterados: 0"
+  }, {
+    "instante" : "2026-07-15T16:44:56.659844800Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.658832400Z | +00.058s] Falas auditadas: 0"
+  }, {
+    "instante" : "2026-07-15T16:44:56.661002Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.659844800Z | +00.059s] Falas sinalizadas (heuristica/LLM): 0"
+  }, {
+    "instante" : "2026-07-15T16:44:56.662002400Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.661002Z | +00.061s] Falas corrigidas: 0"
+  }, {
+    "instante" : "2026-07-15T16:44:56.663002400Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.662002400Z | +00.062s] Falas ja conformes: 0"
+  }, {
+    "instante" : "2026-07-15T16:44:56.664001100Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.663002400Z | +00.063s] Falas sem resposta do LLM: 0"
+  }, {
+    "instante" : "2026-07-15T16:44:56.664001100Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.664001100Z | +00.064s] Falas descartadas (travas): 0"
+  }, {
+    "instante" : "2026-07-15T16:44:56.665000900Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.664001100Z | +00.064s] Falas encaminhadas para a Opção 6: 0"
+  }, {
+    "instante" : "2026-07-15T16:44:56.666014200Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.665000900Z | +00.065s] Falas pendentes (sinalizadas sem correcao): 0"
+  }, {
+    "instante" : "2026-07-15T16:44:56.666536900Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.666014200Z | +00.066s] Status: Concluído com pendências"
+  }, {
+    "instante" : "2026-07-15T16:44:56.666536900Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.666536900Z | +00.066s] \nRevisao de lore concluida com 0 fala(s) pendente(s) e 15 aviso(s)/erro(s)."
+  }, {
+    "instante" : "2026-07-15T16:44:56.667748500Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.666536900Z | +00.066s]   - Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S00E02_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.668752900Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.667748500Z | +00.067s]   - Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S00E03_Track2.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.669759600Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.668752900Z | +00.068s]   - Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E01_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.669759600Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.669759600Z | +00.069s]   - Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E02_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.670761200Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.669759600Z | +00.069s]   - Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E03_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.671759600Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.670761200Z | +00.070s]   - Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E04_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.672751600Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.671759600Z | +00.071s]   - Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E05_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.672751600Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.672751600Z | +00.072s]   - Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E06_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.673943500Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.672751600Z | +00.072s]   - Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E07_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.674956Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.674956Z | +00.074s]   - Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E08_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.675965500Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.674956Z | +00.074s]   - Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E09_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.675965500Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.675965500Z | +00.075s]   - Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E10_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.676965400Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.675965500Z | +00.075s]   - Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E11_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.677964800Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.676965400Z | +00.076s]   - Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E12_Track3.ass"
+  }, {
+    "instante" : "2026-07-15T16:44:56.677964800Z",
+    "nivel" : "INFO",
+    "mensagem" : "[UTC 2026-07-15T16:44:56.677964800Z | +00.077s]   - Sem par traduzido para: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E13_Track3.ass"
+  } ]
+>>>>>>> 09afbdc6badb58ee1b9937f910bc63d3a6e8fd1b
 }

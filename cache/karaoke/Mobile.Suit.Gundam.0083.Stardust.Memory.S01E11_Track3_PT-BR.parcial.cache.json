@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [ {
   "indice" : 10,
   "estilo" : "Karaoke Simples",
@@ -145,4 +146,153 @@
   "traduzido" : "Esse sonho congelado começou a brilhar novamente.",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
+=======
+[ {
+  "indice" : 10,
+  "estilo" : "Karaoke Simples",
+  "original" : "Olhos vazios de vida.",
+  "traduzido" : "Olhos vazios de vida.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 11,
+  "estilo" : "Karaoke Simples",
+  "original" : "The flames at which they gaze.",
+  "traduzido" : "As chamas que eles observam.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 12,
+  "estilo" : "Karaoke Simples",
+  "original" : "Now the time has come to leave everything behind.",
+  "traduzido" : "Agora chegou a hora de deixar tudo para trás.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 14,
+  "estilo" : "Karaoke Simples",
+  "original" : "You can't look back at them, and the battle rages on.",
+  "traduzido" : "A batalha continua sem que se possa olhar para trás.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 15,
+  "estilo" : "Karaoke Simples",
+  "original" : "Even if lives are burnt to ashes today...",
+  "traduzido" : "Mesmo que vidas sejam reduzidas a cinzas hoje...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 16,
+  "estilo" : "Karaoke Simples",
+  "original" : "...will people still dream about tomorrow?",
+  "traduzido" : "As pessoas ainda sonharão com o amanhã?",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 17,
+  "estilo" : "Karaoke Simples",
+  "original" : "It may be destiny, but",
+  "traduzido" : "Pode ser destino.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 18,
+  "estilo" : "Karaoke Simples",
+  "original" : "I wanna get the chance!",
+  "traduzido" : "Eu quero essa chance!",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 19,
+  "estilo" : "Karaoke Simples",
+  "original" : "In the skies of despair there rages now a storm.",
+  "traduzido" : "Em meio ao céu do desespero agora se ergue uma tempestade.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 20,
+  "estilo" : "Karaoke Simples",
+  "original" : "For whom does the future exist now?",
+  "traduzido" : "Para quem o futuro existe agora?",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 21,
+  "estilo" : "Karaoke Simples",
+  "original" : "A world on the path of destruction...",
+  "traduzido" : "Um mundo no caminho da destruição...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 22,
+  "estilo" : "Karaoke Simples",
+  "original" : "...with a storm raging through.",
+  "traduzido" : "Com uma tempestade rugindo ao fundo.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 24,
+  "estilo" : "Karaoke Simples",
+  "original" : "Men of destiny!",
+  "traduzido" : "Homens do destino!",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 306,
+  "estilo" : "Karaoke Simples",
+  "original" : "All alone in the deep darkness.",
+  "traduzido" : "Sozinho no escuro profundo.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 307,
+  "estilo" : "Karaoke Simples",
+  "original" : "On a night that swallows up the road.",
+  "traduzido" : "Em uma noite que engole a estrada.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 308,
+  "estilo" : "Karaoke Simples",
+  "original" : "Searching on and on for the memory of the brilliant dawn.",
+  "traduzido" : "Procurando incessantemente pela lembrança da brilhante alvorada.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 309,
+  "estilo" : "Karaoke Simples",
+  "original" : "There are times when destiny...",
+  "traduzido" : "Destino é algo que nem sempre podemos controlar.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 311,
+  "estilo" : "Karaoke Simples",
+  "original" : "Love is a sky that embraces everything.",
+  "traduzido" : "O amor é um céu que abraça tudo.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 312,
+  "estilo" : "Karaoke Simples",
+  "original" : "And in it is the vision of the new day.",
+  "traduzido" : "No seu interior está a visão do novo dia.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 313,
+  "estilo" : "Karaoke Simples",
+  "original" : "I should revive that warm heartbeat inside me.",
+  "traduzido" : "Eu deveria reviver aquele batimento cardíaco quente dentro de mim.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 314,
+  "estilo" : "Karaoke Simples",
+  "original" : "That frozen dream has begun to shine again.",
+  "traduzido" : "Esse sonho congelado começou a brilhar novamente.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+>>>>>>> 09afbdc6badb58ee1b9937f910bc63d3a6e8fd1b
 } ]

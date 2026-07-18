@@ -1,0 +1,1677 @@
+{
+  "proveniencia" : {
+    "schemaVersion" : 1,
+    "contextoId" : "gundam_0083",
+    "contextoHash" : "d71bc7fb948d5f819ee56be46ff370f68c3dc3459f7e521319191a7be6457476",
+    "modeloLlm" : "current",
+    "idiomaOrigem" : "en",
+    "idiomaDestino" : "pt-br"
+  },
+  "entradas" : [ {
+    "indice" : 0,
+    "estilo" : "EG",
+    "original" : "{\\blur1\\fade(518,0)\\c&H353DA2&\\1a&H00&\\pos(677.16,308.73)}MOBILE SUIT GUNDAM",
+    "traduzido" : "{\\blur1\\fade(518,0)\\c&H353DA2&\\1a&H00&\\pos(677.16,308.73)}MOBILE SUIT GUNDAM",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 2,
+    "estilo" : "Titles",
+    "original" : "{\\pos(720,680)\\blur1\\c&H141316&}A STORM RAGING\\NTHROUGH",
+    "traduzido" : "{\\pos(720,680)\\blur1\\c&H141316&}A STORM RAGING\\NTHROUGH",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 34,
+    "estilo" : "Song ENG",
+    "original" : "{\\fad(200,500)\\blur1\\bord0}Eu deveria reviver aquele batimento cardíaco quente dentro de mim.",
+    "traduzido" : "{\\fad(200,500)\\blur1\\bord0}Eu deveria reviver aquele coração cardíaco quente dentro de mim.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 36,
+    "estilo" : "Song ENG",
+    "original" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Eu deveria reviver aquele batimento cardíaco quente dentro de mim.",
+    "traduzido" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Eu deveria reviver aquele coração cardíaco quente dentro de mim.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 40,
+    "estilo" : "Song ENG",
+    "original" : "{\\fad(200,500)\\blur1\\bord0}O sonho congelado começou a brilhar novamente.",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 42,
+    "estilo" : "Song ENG",
+    "original" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}O sonho congelado começou a brilhar novamente.",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 46,
+    "estilo" : "Song ENG",
+    "original" : "{\\fad(200,500)\\blur1\\bord0}Agora esses meus braços vazios...",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 48,
+    "estilo" : "Song ENG",
+    "original" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Agora esses meus braços vazios...",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 50,
+    "estilo" : "Song ENG",
+    "original" : "{\\fad(200,500)\\blur1\\bord0}...estão procurando sem fim.",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 52,
+    "estilo" : "Song ENG",
+    "original" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}...estão procurando sem fim.",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 54,
+    "estilo" : "Song ENG",
+    "original" : "{\\fad(200,500)\\blur1\\bord0}Searching on for a person...",
+    "traduzido" : "{\\fad(200,500)\\blur1\\bord0}Procurando por alguém...",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 56,
+    "estilo" : "Song ENG",
+    "original" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Searching on for a person...",
+    "traduzido" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Procurando por uma pessoa...",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 58,
+    "estilo" : "Song ENG",
+    "original" : "{\\fad(200,500)\\blur1\\bord0}...com quem eles possam compartilhar uma vida.",
+    "traduzido" : "{\\fad(200,500)\\blur1\\bord0}...com quem eles podem compartilhar uma vida.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 60,
+    "estilo" : "Song ENG",
+    "original" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}...com quem eles possam compartilhar uma vida.",
+    "traduzido" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}...com quem eles podem compartilhar uma vida.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 64,
+    "estilo" : "Song ENG",
+    "original" : "{\\fad(200,500)\\blur1\\bord0}Eu deveria ir além do fardo do tempo.",
+    "traduzido" : "{\\fad(200,500)\\blur1\\bord0}Eu deveria ultrapassar o peso do tempo.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 66,
+    "estilo" : "Song ENG",
+    "original" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Eu deveria ir além do fardo do tempo.",
+    "traduzido" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Eu deveria ir além do peso do tempo.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 70,
+    "estilo" : "Song ENG",
+    "original" : "{\\fad(200,500)\\blur1\\3c&HAB7129&\\bord0}O sonho congelado começou a brilhar novamente.",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 72,
+    "estilo" : "Song ENG",
+    "original" : "{\\fad(200,500)\\blur2\\\\1a&HFF&\\bord0.5}O sonho congelado começou a brilhar novamente.",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 78,
+    "estilo" : "Song ENG",
+    "original" : "{\\fad(200,500)\\blur1\\bord0}Eu deveria reviver aquele batimento cardíaco quente dentro de mim.",
+    "traduzido" : "{\\fad(200,500)\\blur1\\bord0}Eu deveria reviver aquele coração cardíaco quente dentro de mim.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 80,
+    "estilo" : "Song ENG",
+    "original" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Eu deveria reviver aquele batimento cardíaco quente dentro de mim.",
+    "traduzido" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Eu deveria reviver aquele coração cardíaco quente dentro de mim.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 84,
+    "estilo" : "Song ENG",
+    "original" : "{\\fad(200,500)\\blur1\\bord0}Eu deveria ir além do fardo do tempo.",
+    "traduzido" : "{\\fad(200,500)\\blur1\\bord0}Eu deveria ultrapassar o peso do tempo.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 86,
+    "estilo" : "Song ENG",
+    "original" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Eu deveria ir além do fardo do tempo.",
+    "traduzido" : "{\\fad(200,500)\\blur2\\1a&HFF&\\bord0.5}Eu deveria ir além do peso do tempo.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 89,
+    "estilo" : "Dialogue",
+    "original" : "O que é isso?!",
+    "traduzido" : "Isso é um Gundam!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 90,
+    "estilo" : "Dialogue",
+    "original" : "You want us to defend\\Nthe Solar System with them?!",
+    "traduzido" : "Você quer que defendamos\\No Sistema Solar com eles?!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 91,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Isso mesmo.",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 92,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}The Cima Fleet is\\Ncurrently working with us.",
+    "traduzido" : "{\\i1}A Frota Cima está\\Natualmente trabalhando conosco.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 93,
+    "estilo" : "Dialogue",
+    "original" : "You're acting like this is a\\Nmilitary dictatorship!",
+    "traduzido" : "Você está agindo como se isso fosse uma ditadura militar\\N!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 94,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Você está rejeitando essas ordens?",
+    "traduzido" : "{\\i1}Voce esta rejeitando essas ordens?",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 95,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Lieutenant Uraki, you can't\\Ncatch up with Gato from there!",
+    "traduzido" : "{\\i1}Tenente Uraki, você não pode\\Nalcançar Gato daí!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 96,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Retorne ao navio imediatamente!\\NTenente Uraki!{\\i}",
+    "traduzido" : "{\\i1}Volte para o navio agora mesmo!\\NTenente Uraki!{\\i}",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 97,
+    "estilo" : "Dialogue",
+    "original" : "Qual foi o ponto de \\NTenente Burning's morte?",
+    "traduzido" : "Qual foi o ponto da morte de\\NTenente Burning?",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 98,
+    "estilo" : "Dialogue",
+    "original" : "E do Sr. Kelley...!",
+    "traduzido" : "Sr. Kelley...!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 99,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Tenente Uraki!\\NAonde você está indo?!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 100,
+    "estilo" : "Dialogue",
+    "original" : "Justos 210 minutos para ir!\\NUm maldito espelho não vai nos deter!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 101,
+    "estilo" : "Dialogue",
+    "original" : "Enemy mobile armor, closing!\\NRange 12000!",
+    "traduzido" : "Inimiga armadura móvel, se aproximando!\\NDistância 12000!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 102,
+    "estilo" : "Dialogue",
+    "original" : "Damn Cima, she failed!",
+    "traduzido" : "Maldita Cima, ela falhou!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 103,
+    "estilo" : "Dialogue",
+    "original" : "Comprem-nos algum tempo até \\Npodermos nos concentrar no Sistema Solar!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 104,
+    "estilo" : "Dialogue",
+    "original" : "Como ousa estragar meu blefe!",
+    "traduzido" : "Com a sua audácia, estragou meu blefe!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 105,
+    "estilo" : "Dialogue",
+    "original" : "Deployment at 81 percent. Send it!",
+    "traduzido" : "Deployamento em 81 por cento. Mande-o!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 106,
+    "estilo" : "Dialogue",
+    "original" : "F4, F5, F6! Stand by to focus!",
+    "traduzido" : "F4, F5, F6! Aguardem para focar!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 107,
+    "estilo" : "Dialogue",
+    "original" : "L15! Apressem-se com a verificação da matriz!",
+    "traduzido" : "Apressem-se com a verificação da matriz!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 108,
+    "estilo" : "Dialogue",
+    "original" : "Se eu puder apenas eliminar o navio de comando...!",
+    "traduzido" : "Se eu puder apenas eliminar a nave de comando...!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 109,
+    "estilo" : "Dialogue",
+    "original" : "Não mande o sinal de guia! \\N Quer morrer?!",
+    "traduzido" : "Não mande o sinal! \\N Quer morrer?",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 110,
+    "estilo" : "Dialogue",
+    "original" : "Lendo... Acima de mim!",
+    "traduzido" : "Acima de mim!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 111,
+    "estilo" : "Dialogue",
+    "original" : "Bem, eu avisei você!",
+    "traduzido" : "Então eu te avisei!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 112,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Lieutenant Uraki! They're about\\Nto attack with the Solar System!{\\i}",
+    "traduzido" : "{\\i1}Tenente Uraki! Eles estão prestes a atacar com o Sistema Solar!{\\i}",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 113,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Lieutenant Uraki!",
+    "traduzido" : "{\\i1}Lieutenant Uraki!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 114,
+    "estilo" : "Dialogue",
+    "original" : "Out of my way!",
+    "traduzido" : "Fora do meu caminho!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 115,
+    "estilo" : "Dialogue",
+    "original" : "Distance to space colony 4000!\\N70 seconds to Solar System II focus!",
+    "traduzido" : "Distância para a colônia espacial: 4000! \\N 70 segundos até o foco em Solar System II!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 116,
+    "estilo" : "Dialogue",
+    "original" : "Eu posso ver a colônia com os meus próprios olhos!",
+    "traduzido" : "Posso ver a colônia com os meus próprios olhos!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 117,
+    "estilo" : "Dialogue",
+    "original" : "Chega disso! Concentre-se!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 118,
+    "estilo" : "Dialogue",
+    "original" : "30 more seconds, Sir!",
+    "traduzido" : "30 segundos, senhor!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 119,
+    "estilo" : "Dialogue",
+    "original" : "Não me importo! Faça isso!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 120,
+    "estilo" : "Dialogue",
+    "original" : "Is that it?",
+    "traduzido" : "Isso é tudo?",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 121,
+    "estilo" : "Dialogue",
+    "original" : "Pelo céu!",
+    "traduzido" : "Entendido",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 122,
+    "estilo" : "Dialogue",
+    "original" : "Capitão! O navio de comando!",
+    "traduzido" : "Capitão! Ó navio de comando!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 123,
+    "estilo" : "Dialogue",
+    "original" : "O que é isso?!",
+    "traduzido" : "Isso é um Gundam!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 124,
+    "estilo" : "Dialogue",
+    "original" : "It survived...",
+    "traduzido" : "Surviveu...",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 125,
+    "estilo" : "Dialogue",
+    "original" : "O que você está fazendo?! \\N Evite! Tome medidas evasivas agora!",
+    "traduzido" : "Estou fazendo o que é necessário. \\N Cuidado! Tome medidas evasivas agora mesmo!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 126,
+    "estilo" : "Dialogue",
+    "original" : "Turn to port!\\NTurn to port!",
+    "traduzido" : "Vire para o porto!\\NVire para bombordo!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 127,
+    "estilo" : "Dialogue",
+    "original" : "No one can stop it now.",
+    "traduzido" : "Ninguém pode pará-lo agora.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 128,
+    "estilo" : "Dialogue",
+    "original" : "Agora...!",
+    "traduzido" : "Agora...!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 129,
+    "estilo" : "Dialogue",
+    "original" : "Colony is now on\\Nfinal deceleration course.",
+    "traduzido" : "A colônia está agora no curso de desaceleração final\\N.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 130,
+    "estilo" : "Dialogue",
+    "original" : "Impact in 151 minutes!",
+    "traduzido" : "Impacto em 151 minutos!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 131,
+    "estilo" : "Dialogue",
+    "original" : "Onde está o Uraki?! Ele ainda não voltou?!",
+    "traduzido" : "Onde está o Kou?! Ele ainda não voltou?!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 132,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Captain! Nina's leaving from\\Nthe sealed-off port side deck!",
+    "traduzido" : "{\\i1}Capitão! Nina está saindo do\\Nconvés fechado de bombordo!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 133,
+    "estilo" : "Dialogue",
+    "original" : "O que?",
+    "traduzido" : "Entendido",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 134,
+    "estilo" : "Dialogue",
+    "original" : "\"Miss Nina? Ela está indo \\Npara a colônia?!\"",
+    "traduzido" : "\"Senhorita Nina? Ela está indo\\Npara a colônia?!\"",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 135,
+    "estilo" : "Dialogue",
+    "original" : "Malditos sejam todos...!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 136,
+    "estilo" : "Dialogue",
+    "original" : "Mestra Cima, recue por favor!",
+    "traduzido" : "Cima Garahau, recue por favor!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 137,
+    "estilo" : "Dialogue",
+    "original" : "Onde sugere que eu recue \\N?",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 138,
+    "estilo" : "Dialogue",
+    "original" : "Explosive cable...",
+    "traduzido" : "Explosivo detonante...",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 139,
+    "estilo" : "Dialogue",
+    "original" : "Ele parou de se mover?",
+    "traduzido" : "Não tenho informações sobre o contexto desta linha. Por favor, forneça mais detalhes para que eu possa ajudar melhor.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 140,
+    "estilo" : "Dialogue",
+    "original" : "Qual lado você está apoiando?!",
+    "traduzido" : "Eu não apoio nenhum lado!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 141,
+    "estilo" : "Dialogue",
+    "original" : "Wha...?!",
+    "traduzido" : "Wha...?!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 142,
+    "estilo" : "Dialogue",
+    "original" : "Gato...",
+    "traduzido" : "Gato...",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 143,
+    "estilo" : "Dialogue",
+    "original" : "Uma vez que algo é realizado, outros seguirão o caminho.\\N",
+    "traduzido" : "Outros seguirão após algo ser realizado.\\N",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 144,
+    "estilo" : "Dialogue",
+    "original" : "Com esta correção de curso final...",
+    "traduzido" : "Com esta correção final no curso...",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 145,
+    "estilo" : "Dialogue",
+    "original" : "Nina Purpleton...",
+    "traduzido" : "Nina Purpleton",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 146,
+    "estilo" : "Dialogue",
+    "original" : "Por favor, Gato!",
+    "traduzido" : "Gato, por favor!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 147,
+    "estilo" : "Dialogue",
+    "original" : "Não é suficiente?! Pare com isso!",
+    "traduzido" : "Não é o bastante?! Pare com isso!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 148,
+    "estilo" : "Dialogue",
+    "original" : "Ainda não acabou!",
+    "traduzido" : "Ainda não acabei!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 149,
+    "estilo" : "Dialogue",
+    "original" : "Eu completarei a Operação Estardusto!",
+    "traduzido" : "Completarei a Operação Stardust!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 150,
+    "estilo" : "Dialogue",
+    "original" : "Nada pode deter esta colônia\\N de atingir a Terra agora!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 151,
+    "estilo" : "Dialogue",
+    "original" : "Não precisa atingir Jaburo!",
+    "traduzido" : "Entendido",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 152,
+    "estilo" : "Dialogue",
+    "original" : "Jaburo não é o alvo!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 153,
+    "estilo" : "Dialogue",
+    "original" : "Você nunca vai entender.",
+    "traduzido" : "Eu nunca vou entender.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 154,
+    "estilo" : "Dialogue",
+    "original" : "Por que? Por que você teve que \\Naparecer na minha frente de novo?",
+    "traduzido" : "Por quê? Por que você teve que\\Naparecer na minha frente de novo?",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 155,
+    "estilo" : "Dialogue",
+    "original" : "Desde aquele dia você \\N desapareceu de repente.",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 156,
+    "estilo" : "Dialogue",
+    "original" : "Eu queria que você \\Nesquecesse tudo...",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 157,
+    "estilo" : "Dialogue",
+    "original" : "Eu queria que você esquecesse.",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 158,
+    "estilo" : "Dialogue",
+    "original" : "...esses dias que passei vivendo uma vida falsa \\Nna Lua, esperando até o momento certo.",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 159,
+    "estilo" : "Dialogue",
+    "original" : "I tried to forget...",
+    "traduzido" : "Eu tentei esquecer...",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 160,
+    "estilo" : "Dialogue",
+    "original" : "Não! Eu tinha me esquecido!",
+    "traduzido" : "Desculpe, preciso de mais contexto para traduzir essa linha corretamente. Por favor, pode me fornecer o contexto da cena ou a fala anterior?",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 161,
+    "estilo" : "Dialogue",
+    "original" : "Eu me dediquei apenas \\Nà ressurreição de Zeon.",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 162,
+    "estilo" : "Dialogue",
+    "original" : "Perhaps it is you who is the\\Ntrue witness to Operation Stardust.",
+    "traduzido" : "Talvez seja você a verdadeira testemunha\\Nda Operação Stardust.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 163,
+    "estilo" : "Dialogue",
+    "original" : "Gato!",
+    "traduzido" : "Gato!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 164,
+    "estilo" : "Dialogue",
+    "original" : "Hang on!",
+    "traduzido" : "Aguenta aí!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 165,
+    "estilo" : "Dialogue",
+    "original" : "Nina!",
+    "traduzido" : "Nina!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 166,
+    "estilo" : "Dialogue",
+    "original" : "Stop it, Kou!",
+    "traduzido" : "Pare com isso, Kou!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 167,
+    "estilo" : "Dialogue",
+    "original" : "Não há mais razão para lutar!",
+    "traduzido" : "Não há mais razão para lutarmos!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 168,
+    "estilo" : "Dialogue",
+    "original" : "Saia do caminho!",
+    "traduzido" : "Saiam do caminho!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 169,
+    "estilo" : "Dialogue",
+    "original" : "Você sabe o que ele fez!",
+    "traduzido" : "Sim, eu sei o que ele fez.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 170,
+    "estilo" : "Dialogue",
+    "original" : "Eu tive que assistir \\Nvocês dois lutando um contra o outro...",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 171,
+    "estilo" : "Dialogue",
+    "original" : "Até que um de vocês acabe morto...",
+    "traduzido" : "Até que um de vocês esteja morto...",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 172,
+    "estilo" : "Dialogue",
+    "original" : "You've no idea how I prayed\\Nfor this not to happen, but now...!",
+    "traduzido" : "Você não tem ideia de como eu orei\\Npara que isso não acontecesse, mas agora...!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 173,
+    "estilo" : "Dialogue",
+    "original" : "Nina!",
+    "traduzido" : "Nina!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 174,
+    "estilo" : "Dialogue",
+    "original" : "Todas as suas emoções por mim eram mentira?!",
+    "traduzido" : "Mentiram todas as suas emoções por mim?!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 175,
+    "estilo" : "Dialogue",
+    "original" : "Tell me!",
+    "traduzido" : "Me fale!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 176,
+    "estilo" : "Dialogue",
+    "original" : "No...!",
+    "traduzido" : "Entendido",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 177,
+    "estilo" : "Dialogue",
+    "original" : "Gato!",
+    "traduzido" : "Gato!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 178,
+    "estilo" : "Dialogue",
+    "original" : "Kou, stop it.",
+    "traduzido" : "Kou, pare com isso.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 179,
+    "estilo" : "Dialogue",
+    "original" : "Nina...",
+    "traduzido" : "Nina: \"Estou preocupada com Kou.\"",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 180,
+    "estilo" : "Dialogue",
+    "original" : "Não pode fazer isso, Nina!",
+    "traduzido" : "Nina, você não pode fazer isso!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 181,
+    "estilo" : "Dialogue",
+    "original" : "Ele roubou a colônia...!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 182,
+    "estilo" : "Dialogue",
+    "original" : "Gundam Unidade 02...!",
+    "traduzido" : "Unidade Gundam 02...!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 183,
+    "estilo" : "Dialogue",
+    "original" : "Kou... Não é sobre isso.",
+    "traduzido" : "Kou... Isso não é importante agora.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 184,
+    "estilo" : "Dialogue",
+    "original" : "Nina, come back! Come back!",
+    "traduzido" : "Nina, volta! Volta!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 185,
+    "estilo" : "Axis",
+    "original" : "{\\pos(730.667,860)\\fad(0,0)\\c&HD5DCD8&\\be0\\blur0.8\\bord0\\b0}Axis Advance Fleet",
+    "traduzido" : "{\\pos(730.667,860)\\fad(0,0)\\c&HD5DCD8&\\be0\\blur0.8\\bord0\\b0}Axis Advance Fleet",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 186,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Salvar os soldados é prioridade!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 187,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Acelere a recuperação!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 188,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Abandonem quaisquer unidades \\Nmuito danificadas!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 189,
+    "estilo" : "Dialogue",
+    "original" : "The colony has completed\\Nfinal course corrections.",
+    "traduzido" : "A colônia completou\\Nas correções finais de curso.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 190,
+    "estilo" : "Dialogue",
+    "original" : "Em alvo.",
+    "traduzido" : "Alvo adquirido.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 191,
+    "estilo" : "Dialogue",
+    "original" : "Delaz! A Operação Estardusto é um sucesso!",
+    "traduzido" : "Delaz! A Operação Stardust foi um sucesso!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 192,
+    "estilo" : "Dialogue",
+    "original" : "Para pensar que você chegou tão longe...!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 193,
+    "estilo" : "Dialogue",
+    "original" : "Sir, it's the Federation\\Npursuit fleet from the Moon.",
+    "traduzido" : "Senhor, é a frota de perseguição da Federação\\Nvinda da Lua.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 194,
+    "estilo" : "Dialogue",
+    "original" : "Remind them of the time limit we\\Nagreed for them to remain here!",
+    "traduzido" : "Lembre-os do prazo que nós\\Ncombinamos para que eles permanecessem aqui!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 195,
+    "estilo" : "Dialogue",
+    "original" : "And that we will attack\\Nthem the second it expires!",
+    "traduzido" : "E que iremos atacá-los assim que expirar!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 196,
+    "estilo" : "Dialogue",
+    "original" : "I have a pretty good idea\\Nof what's going on here.",
+    "traduzido" : "Tenho uma boa ideia\\Ndo que está acontecendo aqui.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 197,
+    "estilo" : "Dialogue",
+    "original" : "In that case, I want you to forget\\Nabout me more than ever.",
+    "traduzido" : "Nesse caso, quero que você esqueça\\Nde mim mais do que nunca.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 198,
+    "estilo" : "Dialogue",
+    "original" : "Não importa.",
+    "traduzido" : "Entendido",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 199,
+    "estilo" : "Dialogue",
+    "original" : "Eu não tive outra opção senão fazer isso.",
+    "traduzido" : "Não tive outra escolha a não ser fazer isso.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 200,
+    "estilo" : "Dialogue",
+    "original" : "Nina...",
+    "traduzido" : "Nina: \"Estou preocupada com Kou.\"",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 201,
+    "estilo" : "Dialogue",
+    "original" : "Forgive me.",
+    "traduzido" : "Me perdoe.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 202,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Lt. Commander!",
+    "traduzido" : "{\\i1}Lt. Commander!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 203,
+    "estilo" : "Dialogue",
+    "original" : "Vamos ser flanqueados\\Npela frota vinda da Lua!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 204,
+    "estilo" : "Dialogue",
+    "original" : "Fujam conosco!",
+    "traduzido" : "Fuja conosco!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 205,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Não há tempo!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 206,
+    "estilo" : "Dialogue",
+    "original" : "Karius...",
+    "traduzido" : "Karius",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 207,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Tenente Uraki, a colônia \\Nestá começando a se desintegrar. {\\i}",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 208,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Por favor, saia dali agora!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 209,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Me escuta?",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 210,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}We gave it our best shot.",
+    "traduzido" : "{\\i1}Demos o nosso melhor.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 211,
+    "estilo" : "Dialogue",
+    "original" : "Este é o Uraki.",
+    "traduzido" : "Este é o Kou.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 212,
+    "estilo" : "Dialogue",
+    "original" : "Eu acabei de deixar a colônia.",
+    "traduzido" : "Acabei de sair da colônia.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 213,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Tenente, está tudo bem!",
+    "traduzido" : "{\\i1}Tudo bem, tenente!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 214,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Reintegre-se imediatamente ao Albion!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 215,
+    "estilo" : "Dialogue",
+    "original" : "O que?!",
+    "traduzido" : "Entendido",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 216,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}A Albion está atrás da \\Ncolônia em 8000, marca 771!",
+    "traduzido" : "{\\i1}A Albion está atrás da \\Ncolônia em 8.000, marca 771!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 217,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Não podemos ficar aqui\\Npor muito mais tempo! Rápido!{\\i}",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 218,
+    "estilo" : "Dialogue",
+    "original" : "Se você não fosse membro\\N daquela Federação podre,",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 219,
+    "estilo" : "Dialogue",
+    "original" : "Talvez você pudesse ter evitado \\Ntoda essa dor.",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 220,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Tenente?! O que foi?!\\NTenente—",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 221,
+    "estilo" : "Dialogue",
+    "original" : "Você esperou por mim?",
+    "traduzido" : "Sim, eu esperei por você.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 222,
+    "estilo" : "Dialogue",
+    "original" : "Ela também é vítima do destino...?",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 223,
+    "estilo" : "Dialogue",
+    "original" : "O que é aquela luz?!",
+    "traduzido" : "Aquilo é uma luz?",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 224,
+    "estilo" : "Dialogue",
+    "original" : "The enemy mobile armor is about to\\Ncomplete its orbit around the Earth!",
+    "traduzido" : "A armadura móvel inimiga está prestes a\\Ncompletar sua órbita ao redor da Terra!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 225,
+    "estilo" : "Dialogue",
+    "original" : "Aparecerá do outro lado!",
+    "traduzido" : "Entendido",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 226,
+    "estilo" : "Dialogue",
+    "original" : "Without the control ship, our next\\Nattack will be below 25 percent efficiency.",
+    "traduzido" : "Sem a nave de controle, nosso próximo ataque\\Nterá menos de 25% de eficiência.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 227,
+    "estilo" : "Dialogue",
+    "original" : "Captain, the enemy is being engaged\\Nby Gundam Unit 03—",
+    "traduzido" : "Capitão, o inimigo está sendo atacado\\Npela Unidade Gundam 03—",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 228,
+    "estilo" : "Dialogue",
+    "original" : "Quiet!",
+    "traduzido" : "Silêncio!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 229,
+    "estilo" : "Dialogue",
+    "original" : "Eu tenho que dar outra chance a eles \\N, aconteça o que acontecer!",
+    "traduzido" : "Eu preciso dar mais uma chance a eles \\N, aconteça o que acontecer!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 230,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Saída do motor caindo!\\NTanques de propulsão auxiliares não abrem!{\\i}",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 231,
+    "estilo" : "Dialogue",
+    "original" : "Direct hit!",
+    "traduzido" : "Direto no alvo!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 232,
+    "estilo" : "Dialogue",
+    "original" : "Starboard main gun, out of action!",
+    "traduzido" : "Arma principal do lado direito, fora de ação!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 233,
+    "estilo" : "Dialogue",
+    "original" : "{\\an8}Velocidade do navio reduzida para 25! Alerta de estol!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 234,
+    "estilo" : "Dialogue",
+    "original" : "Pagamos um alto preço...",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 235,
+    "estilo" : "Dialogue",
+    "original" : "{\\an8}É o bloco quatro — Corrija isso, bloco cinco!",
+    "traduzido" : "{\\an8}É o bloco quatro — Correção, bloco cinco!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 236,
+    "estilo" : "Dialogue",
+    "original" : "Isso é tudo para nós!",
+    "traduzido" : "Então isso é tudo para nós!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 237,
+    "estilo" : "Dialogue",
+    "original" : "Retirada da zona de batalha!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 238,
+    "estilo" : "Dialogue",
+    "original" : "Faltam munições!",
+    "traduzido" : "Municao acabou!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 239,
+    "estilo" : "Dialogue",
+    "original" : "Atrás de mim!",
+    "traduzido" : "[Tag0]",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 240,
+    "estilo" : "Dialogue",
+    "original" : "Too slow!",
+    "traduzido" : "Demais!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 241,
+    "estilo" : "Dialogue",
+    "original" : "Agora você não pode separar também!",
+    "traduzido" : "Entendido",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 242,
+    "estilo" : "Dialogue",
+    "original" : "O que?!",
+    "traduzido" : "Entendido",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 243,
+    "estilo" : "Dialogue",
+    "original" : "Por favor, aguarde!",
+    "traduzido" : "Entendido",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 244,
+    "estilo" : "Dialogue",
+    "original" : "A vanguarda da nossa frota \\N está à frente do foco!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 245,
+    "estilo" : "Dialogue",
+    "original" : "Captain!",
+    "traduzido" : "Capitão!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 246,
+    "estilo" : "Dialogue",
+    "original" : "A evacuação foi cancelada!",
+    "traduzido" : "Evacuação cancelada!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 247,
+    "estilo" : "Dialogue",
+    "original" : "A colônia não vai atingir aqui!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 248,
+    "estilo" : "Dialogue",
+    "original" : "O que diabos...?!",
+    "traduzido" : "Meu Deus! O que é isso?",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 249,
+    "estilo" : "Dialogue",
+    "original" : "Com este golpe, a história é mudada.",
+    "traduzido" : "Com este golpe, a história é alterada.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 250,
+    "estilo" : "Dialogue",
+    "original" : "Gato...",
+    "traduzido" : "Gato...",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 251,
+    "estilo" : "Dialogue",
+    "original" : "Ele foi embora sem me matar primeiro...",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 252,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Walfisch!",
+    "traduzido" : "{\\i1}Walfisch!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 253,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Leitura confirmada? Walfisch!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 254,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Comandante Gato, não há mais tempo!{\\i}",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 255,
+    "estilo" : "Dialogue",
+    "original" : "Você é a Srta. Nina, não é?",
+    "traduzido" : "Sim, sou eu.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 256,
+    "estilo" : "Dialogue",
+    "original" : "Look.",
+    "traduzido" : "Olha aí.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 257,
+    "estilo" : "Dialogue",
+    "original" : "A colônia... Ela caiu.",
+    "traduzido" : "Colônia... Ela caiu.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 258,
+    "estilo" : "Dialogue",
+    "original" : "A luz das almas daqueles homens",
+    "traduzido" : "Luz das almas daqueles homens",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 259,
+    "estilo" : "Dialogue",
+    "original" : "Bem... Vamos embora?",
+    "traduzido" : "Vamos embora então...",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 260,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}A todos sobreviventes\\Nda frota Delaz",
+    "traduzido" : "{\\i1}A todos os sobreviventes\\Nda frota Delaz",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 261,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Não lhe resta nenhum lugar para onde ir.{\\i}",
+    "traduzido" : "{\\i1}Não lhe resta nenhum lugar para onde fugir.{\\i}",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 262,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Surrender at once!",
+    "traduzido" : "{\\i1}Rendam-se agora mesmo!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 263,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Sabemos que você não tem \\Nnada mais para lutar!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 264,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Não desperdicem suas vidas!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 265,
+    "estilo" : "Dialogue",
+    "original" : "Entende isso? Mesmo que\\Napenas um homem consiga passar...",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 266,
+    "estilo" : "Dialogue",
+    "original" : "...Dirija-se para a Frota Eixo!",
+    "traduzido" : "Entendido",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 267,
+    "estilo" : "Dialogue",
+    "original" : "Para que as gerações futuras conheçam \\Na verdade da batalha que lutamos!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 268,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Your fleet is here past the\\Ntime limit we granted to you.",
+    "traduzido" : "{\\i1}Sua frota chegou além do prazo\\Nque concedemos a você.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 269,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Withdraw at once!",
+    "traduzido" : "{\\i1}Retirada imediata!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 270,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Está pronto para lutar também?",
+    "traduzido" : "{\\i1}Pronto para lutar também?",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 271,
+    "estilo" : "Dialogue",
+    "original" : "Cease recovery operations.",
+    "traduzido" : "\"Interrompam as operações de recuperação.\"",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 272,
+    "estilo" : "Dialogue",
+    "original" : "Five minutes...",
+    "traduzido" : "Cinco minutos...",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 273,
+    "estilo" : "Dialogue",
+    "original" : "Just wait five more minutes!",
+    "traduzido" : "Aguarde cinco minutos a mais!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 274,
+    "estilo" : "Dialogue",
+    "original" : "Todas as embarcações, viram de bordo.\\NDefinam curso para Eixo.",
+    "traduzido" : "Embarcações, mudem de bordo.\\NDefinam curso para o Eixo.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 275,
+    "estilo" : "Dialogue",
+    "original" : "I want you to decide of\\Nyour own free will.",
+    "traduzido" : "Quero que você decida\\Npor sua própria vontade.",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 276,
+    "estilo" : "Dialogue",
+    "original" : "Estou implorando para você!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 277,
+    "estilo" : "Dialogue",
+    "original" : "Não ficar calado não vai ajudar!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 278,
+    "estilo" : "Dialogue",
+    "original" : "\\NMe escuta?!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 279,
+    "estilo" : "Dialogue",
+    "original" : "Ensign Kou Uraki!",
+    "traduzido" : "Tenente Kou Uraki!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 280,
+    "estilo" : "Dialogue",
+    "original" : "Imprisonment for one year!",
+    "traduzido" : "Prisão por um ano!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 281,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Look back!",
+    "traduzido" : "{\\i1}Olhe para trás!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 282,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Este incidente foi\\Ncausado pelos idealistas...",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 283,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}...que sonhou com a paz\\Nna Esfera Terrestre!",
+    "traduzido" : "{\\i1}...que sonhou com a paz\\Nna Terra!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 284,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}A revolta da frota Delaz\\Né apenas um exemplo!{\\i}",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 285,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Basta apenas olhar para o\\Ndesabamento da colônia espacial...",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 286,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}...três dias atrás, que devastou\\Na região do pão da América do Norte...{\\i}",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 287,
+    "estilo" : "Dialogue",
+    "original" : "... para perceber que nosso planeta Terra está \\Nexposto a muitas ameaças diferentes!",
+    "traduzido" : "Nosso planeta Terra \\Nestá exposto a muitas ameaças diferentes!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 288,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}A Terra!",
+    "traduzido" : "{\\i1}A Terra!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 289,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Para garantir que esse símbolo do universo nunca seja abalado novamente, nascemos!",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 290,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}A Terra! Para devolver\\No verdadeiro poder a suas mãos,{\\i}",
+    "traduzido" : "{\\i1}Uma Terra! Para devolver\\No verdadeiro poder a suas mãos,{\\i}",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 291,
+    "estilo" : "Dialogue",
+    "original" : "{\\i1}Agora os Titans surgem!",
+    "traduzido" : "{\\i1}Agora os Titans aparecem!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 293,
+    "estilo" : "EG",
+    "original" : "{\\an7\\blur1\\fs70\\bord0\\c&HD9EDE7&\\pos(384.01,386.67)}0084 • 03 •10",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 294,
+    "estilo" : "EG",
+    "original" : "{\\an7\\blur1\\fs40\\bord0\\c&HD9EDE7&\\pos(312.4,522.47)}All data on the Gundam Development \\NProject under Admiral Kowen's \\Nadministration was deleted...",
+    "traduzido" : "{\\an7\\blur1\\fs40\\bord0\\c&HD9EDE7&\\pos(312.4,522.47)}Todos os dados sobre o Projeto Gundam Development\\Nsob a administração do Almirante Kowen\\Nforam excluídos...",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 296,
+    "estilo" : "EG",
+    "original" : "{\\fs80\\pos(616,404.8)\\c&HE9EBE5&\\blur1}RX-78 Gundam",
+    "traduzido" : "{\\fs80\\pos(616,404.8)\\c&HE9EBE5&\\blur1}RX-78 Gundam",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 297,
+    "estilo" : "EG",
+    "original" : "{\\an7\\pos(570,450)\\c&HE9EBE5&\\blur1}GP01/Fb",
+    "traduzido" : "{\\an7\\pos(570,450)\\c&HE9EBE5&\\blur1}GP01/Fb",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 298,
+    "estilo" : "EG",
+    "original" : "{\\an7\\pos(570,514)\\c&HE9EBE5&\\blur1}GP02A",
+    "traduzido" : "{\\an7\\pos(570,514)\\c&HE9EBE5&\\blur1}GP02A",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 299,
+    "estilo" : "EG",
+    "original" : "{\\an7\\pos(570,573)\\c&HE9EBE5&\\blur1}GP03",
+    "traduzido" : "{\\an7\\pos(570,573)\\c&HE9EBE5&\\blur1}GP03",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 300,
+    "estilo" : "EG",
+    "original" : "{\\an7\\pos(570,630)\\c&HE9EBE5&\\blur1}GP04",
+    "traduzido" : "{\\an7\\pos(570,630)\\c&HE9EBE5&\\blur1}GP04",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 301,
+    "estilo" : "EG",
+    "original" : "{\\pos(729.33,762)\\c&HE9EBE5&\\blur1}- All Records Destroyed -",
+    "traduzido" : "{\\pos(729.33,762)\\c&HE9EBE5&\\blur1}- All Records Destroyed -",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 303,
+    "estilo" : "EG",
+    "original" : "{\\fad(0,2022)\\an7\\blur1\\fs65\\bord0\\c&HDDE8E8&\\pos(308.13,444.07)}Como resultado, todas as acusações contra \\NTenente Kou Uraki foram arquivadas...",
+    "traduzido" : "",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 304,
+    "estilo" : "Dialogue",
+    "original" : "Gato...",
+    "traduzido" : "Gato...",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 305,
+    "estilo" : "Axis",
+    "original" : "{\\blur0.7\\fs40\\pos(737.6,872)\\c&HD5DCE2&}Earth Federation - North America Oakley Base",
+    "traduzido" : "{\\blur0.7\\fs40\\pos(737.6,872)\\c&HD5DCE2&}Base Oakley da Federação Earth",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 306,
+    "estilo" : "Dialogue",
+    "original" : "Keith!",
+    "traduzido" : "Keith!",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  }, {
+    "indice" : 307,
+    "estilo" : "Dialogue",
+    "original" : "Nina...",
+    "traduzido" : "Nina: \"Estou preocupada com Kou.\"",
+    "idiomaOriginal" : "en",
+    "idiomaTraduzido" : "pt-br"
+  } ]
+}

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "operacao" : {
     "tipo" : "Correcao de Legendas (.ass original->traduzida)",
@@ -44,4 +45,52 @@
     "arquivo" : null,
     "mensagem" : "Correcao de traducao via LLM ativa (contexto: Mobile Suit Gundam 0083: Stardust Memory)"
   } ]
+=======
+{
+  "operacao" : {
+    "tipo" : "Correcao de Legendas (.ass original->traduzida)",
+    "detalhe" : "Original: C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificadas | Traduzida: C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificadas-karaoke-ptbr",
+    "tempoTotalMs" : 5,
+    "arquivosProcessados" : 0,
+    "itensDetectados" : 0,
+    "itensCorrigidos" : 0,
+    "registradoEm" : "2026-07-16T20:38:50.166592600Z"
+  },
+  "pastaOriginal" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificadas",
+  "pastaTraduzida" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificadas-karaoke-ptbr",
+  "llmHabilitado" : true,
+  "contexto" : "Mobile Suit Gundam 0083: Stardust Memory",
+  "resultado" : {
+    "curados" : 0,
+    "falasCuradas" : 0,
+    "corrigidosLlm" : 0,
+    "semAlteracao" : 0,
+    "semPar" : 0,
+    "traducaoAusente" : 0,
+    "totalErros" : 0,
+    "erros" : [ ],
+    "relatorioJson" : null
+  },
+  "eventosSessao" : [ {
+    "timestampUtc" : "2026-07-16T20:38:50.162588600Z",
+    "nivel" : "INFO",
+    "arquivo" : null,
+    "mensagem" : "=== Iniciando Correcao de Legendas ==="
+  }, {
+    "timestampUtc" : "2026-07-16T20:38:50.163593900Z",
+    "nivel" : "INFO",
+    "arquivo" : null,
+    "mensagem" : "Pasta original/ref: C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificadas"
+  }, {
+    "timestampUtc" : "2026-07-16T20:38:50.163593900Z",
+    "nivel" : "INFO",
+    "arquivo" : null,
+    "mensagem" : "Pasta traduzida/alvo: C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificadas-karaoke-ptbr"
+  }, {
+    "timestampUtc" : "2026-07-16T20:38:50.163593900Z",
+    "nivel" : "INFO",
+    "arquivo" : null,
+    "mensagem" : "Correcao de traducao via LLM ativa (contexto: Mobile Suit Gundam 0083: Stardust Memory)"
+  } ]
+>>>>>>> 09afbdc6badb58ee1b9937f910bc63d3a6e8fd1b
 }

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [ {
   "indice" : 1,
   "estilo" : "Karaoke Simples",
@@ -61,4 +62,69 @@
   "traduzido" : "Na noite que devora a estrada.",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
+=======
+[ {
+  "indice" : 1,
+  "estilo" : "Karaoke Simples",
+  "original" : "Olhos vazios.",
+  "traduzido" : "Olhos vazios.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 2,
+  "estilo" : "Karaoke Simples",
+  "original" : "As chamas que eles olham.",
+  "traduzido" : "As chamas que eles observam.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 6,
+  "estilo" : "Karaoke Simples",
+  "original" : "Mesmo que vidas sejam reduzidas a cinzas hoje...",
+  "traduzido" : "Mesmo que vidas sejam reduzidas a cinzas hoje...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 8,
+  "estilo" : "Karaoke Simples",
+  "original" : "Talvez seja o destino, mas",
+  "traduzido" : "Eu não sei se é o destino.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 9,
+  "estilo" : "Karaoke Simples",
+  "original" : "I wanna get the chance!",
+  "traduzido" : "Eu quero ter essa chance!",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 11,
+  "estilo" : "Karaoke Simples",
+  "original" : "Para quem existe o futuro agora?",
+  "traduzido" : "Quem existe agora tem um futuro?",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 13,
+  "estilo" : "Karaoke Simples",
+  "original" : "...com uma tempestade forte.",
+  "traduzido" : "Com uma tempestade forte.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 15,
+  "estilo" : "Karaoke Simples",
+  "original" : "Men of destiny!",
+  "traduzido" : "Homens do destino!",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 374,
+  "estilo" : "Karaoke Simples",
+  "original" : "Numa noite que engole a estrada.",
+  "traduzido" : "Na noite que devora a estrada.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+>>>>>>> 09afbdc6badb58ee1b9937f910bc63d3a6e8fd1b
 } ]

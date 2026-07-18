@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "tipo" : "Revisão Gramatical (cache LLM)",
   "detalhe" : "status=CONCLUIDO_COM_PENDENCIAS; falhas=0",
@@ -6,4 +7,14 @@
   "itensDetectados" : 4,
   "itensCorrigidos" : 2,
   "registradoEm" : "2026-07-16T03:08:27.638803700Z"
+=======
+{
+  "tipo" : "Revisão Gramatical (cache LLM)",
+  "detalhe" : "status=CONCLUIDO_COM_PENDENCIAS; falhas=0",
+  "tempoTotalMs" : 11191,
+  "arquivosProcessados" : 45,
+  "itensDetectados" : 4,
+  "itensCorrigidos" : 2,
+  "registradoEm" : "2026-07-16T03:08:27.638803700Z"
+>>>>>>> 09afbdc6badb58ee1b9937f910bc63d3a6e8fd1b
 }

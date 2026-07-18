@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [ {
   "indice" : 11,
   "estilo" : "Karaoke Simples",
@@ -215,4 +216,223 @@
   "traduzido" : "Eu preciso da magia ao tocar...toque sua mão...",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
+=======
+[ {
+  "indice" : 11,
+  "estilo" : "Karaoke Simples",
+  "original" : "I look up to the stars above... and don't even have the strength to cry",
+  "traduzido" : "Eu olho para as estrelas lá em cima... e nem tenho forças para chorar",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 12,
+  "estilo" : "Karaoke Simples",
+  "original" : "I don't need, don't need yesterday anymore.",
+  "traduzido" : "Não preciso mais do ontem.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 13,
+  "estilo" : "Karaoke Simples",
+  "original" : "I don't need dreams that have crumbled away.",
+  "traduzido" : "Não preciso de sonhos que já desabaram.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 14,
+  "estilo" : "Karaoke Simples",
+  "original" : "I got a burning heart!",
+  "traduzido" : "Tenho um coração em chamas!",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 16,
+  "estilo" : "Karaoke Simples",
+  "original" : "Feelings that you just can't describe with words...",
+  "traduzido" : "Sentimentos que você simplesmente não consegue descrever com palavras...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 18,
+  "estilo" : "Karaoke Simples",
+  "original" : "I got a burning love!",
+  "traduzido" : "Tenho um amor ardente!",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 273,
+  "estilo" : "Karaoke Simples",
+  "original" : "Don't come to me just 'cause you're lonely tonight...",
+  "traduzido" : "Não venha até mim só porque você está solitário hoje à noite...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 275,
+  "estilo" : "Karaoke Simples",
+  "original" : "Lonely's only part of your game...",
+  "traduzido" : "Sozinho é apenas parte do seu jogo...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 277,
+  "estilo" : "Karaoke Simples",
+  "original" : "As long as you live, you must remember one thing...",
+  "traduzido" : "Lembre-se de uma coisa enquanto viver...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 279,
+  "estilo" : "Karaoke Simples",
+  "original" : "Give and take are one and the same...",
+  "traduzido" : "Dar e receber são a mesma coisa...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 282,
+  "estilo" : "Karaoke Simples",
+  "original" : "So tell me are you ready?",
+  "traduzido" : "Estou pronto?",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 284,
+  "estilo" : "Karaoke Simples",
+  "original" : "Really, really ready?",
+  "traduzido" : "Pronto mesmo?",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 286,
+  "estilo" : "Karaoke Simples",
+  "original" : "I don't want your love for one night!",
+  "traduzido" : "Eu não quero seu amor por uma noite!",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 288,
+  "estilo" : "Karaoke Simples",
+  "original" : "'Cause I'm not lookin' for a love affair...",
+  "traduzido" : "\"Porque eu não procuro um romance...\"",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 291,
+  "estilo" : "Karaoke Simples",
+  "original" : "I need the magic when I hold you near...",
+  "traduzido" : "Preciso da magia quando te seguro perto...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 294,
+  "estilo" : "Karaoke Simples",
+  "original" : "It's more important than a one-night stand...",
+  "traduzido" : "É mais importante do que um caso de uma noite...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 295,
+  "estilo" : "Karaoke Simples",
+  "original" : "I need the magic when I touch your hand!",
+  "traduzido" : "Eu preciso da mágica quando tocar sua mão!",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 296,
+  "estilo" : "Karaoke Simples",
+  "original" : "I need you oh so close to my heart.",
+  "traduzido" : "Eu preciso tanto que você esteja perto do meu coração.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 297,
+  "estilo" : "Karaoke Simples",
+  "original" : "Come into my world we can, share everything there.",
+  "traduzido" : "Entra no meu mundo, podemos compartilhar tudo ali.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 298,
+  "estilo" : "Karaoke Simples",
+  "original" : "I need the magic light from the start.",
+  "traduzido" : "Eu preciso da luz mágica desde o início.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 299,
+  "estilo" : "Karaoke Simples",
+  "original" : "Cause then you'll be lover, magic undercover.",
+  "traduzido" : "Então você será meu amor, mágica em cobertura.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 300,
+  "estilo" : "Karaoke Simples",
+  "original" : "No one will be stopping us now.",
+  "traduzido" : "Ninguém vai nos deter agora.",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 307,
+  "estilo" : "Karaoke Simples",
+  "original" : "All alone here in no man's land",
+  "traduzido" : "Sozinho aqui em terra de ninguém",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 309,
+  "estilo" : "Karaoke Simples",
+  "original" : "Got a devil walkin' right beside me",
+  "traduzido" : "\"Tem um diabo caminhando bem ao meu lado\"",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 310,
+  "estilo" : "Karaoke Simples",
+  "original" : "Angel come and take me by the hand",
+  "traduzido" : "Anjo venha e pegue minha mão",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 311,
+  "estilo" : "Karaoke Simples",
+  "original" : "Take me to a place far behind me",
+  "traduzido" : "Leve-me a um lugar muito além de mim",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 312,
+  "estilo" : "Karaoke Simples",
+  "original" : "I just wanna go back where I belong",
+  "traduzido" : "Eu só quero voltar para onde pertenço",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 313,
+  "estilo" : "Karaoke Simples",
+  "original" : "Back to paradise",
+  "traduzido" : "De volta ao paraíso",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 325,
+  "estilo" : "Karaoke Simples",
+  "original" : "I'm not lookin' for a love affair...",
+  "traduzido" : "Estou procurando algo mais sério do que um caso amoroso...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 326,
+  "estilo" : "Karaoke Simples",
+  "original" : "I need the magic when I hold you near!",
+  "traduzido" : "Preciso da magia quando te seguro perto de mim!",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 328,
+  "estilo" : "Karaoke Simples",
+  "original" : "I need the magic when I touch...touch your hand...",
+  "traduzido" : "Eu preciso da magia ao tocar...toque sua mão...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+>>>>>>> 09afbdc6badb58ee1b9937f910bc63d3a6e8fd1b
 } ]

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "tipo" : "Revisão Legendas (.ass Google)",
   "detalhe" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\legendas-ptbr",
@@ -6,4 +7,14 @@
   "itensDetectados" : 101,
   "itensCorrigidos" : 0,
   "registradoEm" : "2026-07-16T19:57:36.494379700Z"
+=======
+{
+  "tipo" : "Revisão Legendas (.ass Google)",
+  "detalhe" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\legendas-ptbr",
+  "tempoTotalMs" : 40160,
+  "arquivosProcessados" : 27,
+  "itensDetectados" : 101,
+  "itensCorrigidos" : 0,
+  "registradoEm" : "2026-07-16T19:57:36.494379700Z"
+>>>>>>> 09afbdc6badb58ee1b9937f910bc63d3a6e8fd1b
 }

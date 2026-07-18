@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [ {
   "indice" : 85,
   "estilo" : "Karaoke Simples",
@@ -33,4 +34,41 @@
   "traduzido" : "Estrela brilhante...",
   "idiomaOriginal" : "en",
   "idiomaTraduzido" : "pt-br"
+=======
+[ {
+  "indice" : 85,
+  "estilo" : "Karaoke Simples",
+  "original" : "Enquanto ele persegue todos os seus sonhos mais loucos...",
+  "traduzido" : "Enquanto ele persegue todos os seus sonhos mais loucos...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 86,
+  "estilo" : "Karaoke Simples",
+  "original" : "Ele alguma vez sonha comigo?",
+  "traduzido" : "Ela alguma vez sonha comigo?",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 87,
+  "estilo" : "Karaoke Simples",
+  "original" : "Como eu gostaria que ele pudesse me ouvir...",
+  "traduzido" : "Como eu gostaria que ele pudesse me escutar...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 89,
+  "estilo" : "Karaoke Simples",
+  "original" : "Realize todos os meus desejos esta noite...",
+  "traduzido" : "Minha resposta é: \"Realize todos os meus desejos esta noite...\"",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+}, {
+  "indice" : 90,
+  "estilo" : "Karaoke Simples",
+  "original" : "Estrela brilhante...",
+  "traduzido" : "Estrela brilhante...",
+  "idiomaOriginal" : "en",
+  "idiomaTraduzido" : "pt-br"
+>>>>>>> 09afbdc6badb58ee1b9937f910bc63d3a6e8fd1b
 } ]

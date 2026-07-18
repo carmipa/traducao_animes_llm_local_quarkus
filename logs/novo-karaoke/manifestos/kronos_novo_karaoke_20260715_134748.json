@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "executadoEm" : "2026-07-15T13:47:48.541969500",
   "pastaOrigem" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\legendas-ptbr",
@@ -2398,4 +2399,2406 @@
       "variantesTexto" : 1
     } ]
   } ]
+=======
+{
+  "executadoEm" : "2026-07-15T13:47:48.541969500",
+  "pastaOrigem" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\legendas-ptbr",
+  "pastaDestino" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificada",
+  "duracaoMs" : 499,
+  "arquivos" : [ {
+    "arquivoOrigem" : "Mobile.Suit.Gundam.0083.Stardust.Memory.S00E02_Track3_PT-BR.parcial.ass",
+    "arquivoDestino" : null,
+    "eventosTotais" : 24,
+    "eventosDialogoPreservados" : 24,
+    "eventosKaraokeRemovidos" : 0,
+    "eventosPreservadosPorSeguranca" : 0,
+    "tamanhoOriginalBytes" : 4172,
+    "tamanhoNovoBytes" : 4172,
+    "percentualReducao" : 0,
+    "avisos" : [ ],
+    "linhasCriadas" : [ ]
+  }, {
+    "arquivoOrigem" : "Mobile.Suit.Gundam.0083.Stardust.Memory.S00E03_Track2_PT-BR.parcial.ass",
+    "arquivoDestino" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificada\\Mobile.Suit.Gundam.0083.Stardust.Memory.S00E03_Track2_PT-BR.parcial.ass",
+    "eventosTotais" : 94,
+    "eventosDialogoPreservados" : 79,
+    "eventosKaraokeRemovidos" : 15,
+    "eventosPreservadosPorSeguranca" : 0,
+    "tamanhoOriginalBytes" : 11939,
+    "tamanhoNovoBytes" : 11392,
+    "percentualReducao" : 5,
+    "avisos" : [ "2 linha(s) simultânea(s) de karaokê foram removidas por deduplicação romaji/PT-BR." ],
+    "linhasCriadas" : [ {
+      "inicio" : "0:10:02.21",
+      "fim" : "0:10:07.42",
+      "texto" : "Somewhere in the Milky Way...",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:10:08.67",
+      "fim" : "0:10:14.26",
+      "texto" : "Somewhere deep in outer space...",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:10:14.84",
+      "fim" : "0:10:19.77",
+      "texto" : "As he travels all the galaxy...",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:10:21.89",
+      "fim" : "0:10:27.02",
+      "texto" : "Does he feel as lonely as me?",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:10:28.44",
+      "fim" : "0:10:33.70",
+      "texto" : "Out there where the comets fly...",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:10:34.99",
+      "fim" : "0:10:39.95",
+      "texto" : "Out there where worlds collide...",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:10:41.04",
+      "fim" : "0:10:47.04",
+      "texto" : "As he chases all his wildest dreams...",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:10:48.17",
+      "fim" : "0:10:53.84",
+      "texto" : "Does he ever dream of me?",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:11:06.65",
+      "fim" : "0:11:11.07",
+      "texto" : "Ah, como eu gostaria que ele pudesse me ouvir...",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:11:14.40",
+      "fim" : "0:11:18.53",
+      "texto" : "Send me the one I love...",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:11:19.74",
+      "fim" : "0:11:26.71",
+      "texto" : "Make my wishes all come true tonight...",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:11:30.09",
+      "fim" : "0:11:34.13",
+      "texto" : "Star bright...",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    } ]
+  }, {
+    "arquivoOrigem" : "Mobile.Suit.Gundam.0083.Stardust.Memory.S01E01_Track3_PT-BR.parcial.ass",
+    "arquivoDestino" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificada\\Mobile.Suit.Gundam.0083.Stardust.Memory.S01E01_Track3_PT-BR.parcial.ass",
+    "eventosTotais" : 456,
+    "eventosDialogoPreservados" : 349,
+    "eventosKaraokeRemovidos" : 107,
+    "eventosPreservadosPorSeguranca" : 0,
+    "tamanhoOriginalBytes" : 47141,
+    "tamanhoNovoBytes" : 36677,
+    "percentualReducao" : 22,
+    "avisos" : [ "15 linha(s) simultânea(s) de karaokê foram removidas por deduplicação romaji/PT-BR." ],
+    "linhasCriadas" : [ {
+      "inicio" : "0:02:51.82",
+      "fim" : "0:02:54.95",
+      "texto" : "All alone here in no man's land",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:02:54.95",
+      "fim" : "0:02:57.95",
+      "texto" : "Got a devil walkin' right beside me",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:02:58.28",
+      "fim" : "0:03:01.12",
+      "texto" : "Angel come and take me by the hand",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:03:01.37",
+      "fim" : "0:03:04.46",
+      "texto" : "Take me to a place far behind me",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:03:07.13",
+      "fim" : "0:03:10.84",
+      "texto" : "I just wanna go back where I belong",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:03:13.67",
+      "fim" : "0:03:18.26",
+      "texto" : "Back to paradise",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:03:21.43",
+      "fim" : "0:03:24.48",
+      "texto" : "Got a dream that calls in the night",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:03:24.48",
+      "fim" : "0:03:27.65",
+      "texto" : "Got a feelin' keeps growin' stronger",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:03:27.65",
+      "fim" : "0:03:31.07",
+      "texto" : "Gotta hold on till the time is right",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:03:31.07",
+      "fim" : "0:03:33.99",
+      "texto" : "Don't know if I can wait much longer",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:03:36.74",
+      "fim" : "0:03:40.24",
+      "texto" : "Keeps on callin' me back where I belong",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:03:43.12",
+      "fim" : "0:03:46.75",
+      "texto" : "Back to paradise forever",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:03:46.75",
+      "fim" : "0:03:49.13",
+      "texto" : "I gotta fly like the wind",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:03:49.00",
+      "fim" : "0:03:50.21",
+      "texto" : "Fly like the wind",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:03:50.21",
+      "fim" : "0:03:53.17",
+      "texto" : "I gotta cry like a wounded eagle",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:03:53.17",
+      "fim" : "0:03:55.55",
+      "texto" : "Goin' back to paradise",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:03:55.55",
+      "fim" : "0:03:58.68",
+      "texto" : "Got a long long way to go",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:03:59.64",
+      "fim" : "0:04:02.56",
+      "texto" : "I got a race with the tide",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:04:03.35",
+      "fim" : "0:04:06.48",
+      "texto" : "I gotta face every kind of danger",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:04:06.48",
+      "fim" : "0:04:08.44",
+      "texto" : "Goin' back to paradise",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:04:08.44",
+      "fim" : "0:04:13.15",
+      "texto" : "Running all the way back home",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:04:17.08",
+      "fim" : "0:04:20.08",
+      "texto" : "There's a battle I should have won",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:04:20.08",
+      "fim" : "0:04:23.25",
+      "texto" : "Words of wisdom I should have spoken",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:04:23.25",
+      "fim" : "0:04:27.09",
+      "texto" : "Gotta right the wrongs I have done",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:04:27.09",
+      "fim" : "0:04:30.01",
+      "texto" : "Gotta mend the hearts I have broken",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:04:32.51",
+      "fim" : "0:04:36.35",
+      "texto" : "Will I ever get back where I belong",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:04:38.94",
+      "fim" : "0:04:42.40",
+      "texto" : "Back to paradise forever",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:04:42.40",
+      "fim" : "0:04:44.69",
+      "texto" : "I gotta fly like the wind",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:04:44.69",
+      "fim" : "0:04:45.98",
+      "texto" : "Fly like the wind",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:04:45.98",
+      "fim" : "0:04:49.15",
+      "texto" : "I got cry like a wounded eagle",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:04:49.15",
+      "fim" : "0:04:51.16",
+      "texto" : "Goin' back to paradise",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:04:51.16",
+      "fim" : "0:04:56.04",
+      "texto" : "Got a long long way to go",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:04.60",
+      "fim" : "0:25:10.02",
+      "texto" : "As long as you live, you must remember one thing...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    } ]
+  }, {
+    "arquivoOrigem" : "Mobile.Suit.Gundam.0083.Stardust.Memory.S01E02_Track3_PT-BR.parcial.ass",
+    "arquivoDestino" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificada\\Mobile.Suit.Gundam.0083.Stardust.Memory.S01E02_Track3_PT-BR.parcial.ass",
+    "eventosTotais" : 415,
+    "eventosDialogoPreservados" : 343,
+    "eventosKaraokeRemovidos" : 72,
+    "eventosPreservadosPorSeguranca" : 0,
+    "tamanhoOriginalBytes" : 41917,
+    "tamanhoNovoBytes" : 35468,
+    "percentualReducao" : 15,
+    "avisos" : [ "10 linha(s) simultânea(s) de karaokê foram removidas por deduplicação romaji/PT-BR." ],
+    "linhasCriadas" : [ {
+      "inicio" : "0:00:52.15",
+      "fim" : "0:00:58.41",
+      "texto" : "Não há vencedor nessa luta enquanto eu desabo, agora exaurido.",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 2
+    }, {
+      "inicio" : "0:00:58.28",
+      "fim" : "0:01:04.12",
+      "texto" : "I look up to the stars above... and don't even have the strength to cry",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:04.12",
+      "fim" : "0:01:09.50",
+      "texto" : "I don't need, don't need yesterday anymore.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:10.09",
+      "fim" : "0:01:15.63",
+      "texto" : "I don't need dreams that have crumbled away.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:15.63",
+      "fim" : "0:01:18.72",
+      "texto" : "I got a burning heart!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:18.72",
+      "fim" : "0:01:27.64",
+      "texto" : "I just wanna keep on running! Just chasing the thrill that's shooting through my heart!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:28.56",
+      "fim" : "0:01:32.61",
+      "texto" : "Feelings that you just can't describe with words...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:34.61",
+      "fim" : "0:01:39.91",
+      "texto" : "...are enough to ignite even a frozen heart!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:40.74",
+      "fim" : "0:01:42.99",
+      "texto" : "I got a burning love!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:43.74",
+      "fim" : "0:01:51.88",
+      "texto" : "Queimando com fogo azul brilhante. Fogo que se espalhará até cobrir todas as estrelas do céu.",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 2
+    }, {
+      "inicio" : "0:01:52.84",
+      "fim" : "0:01:55.51",
+      "texto" : "I got a burning heart!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:55.92",
+      "fim" : "0:02:05.22",
+      "texto" : "O amor é uma batalha tão solitária. Mas será que ela consumirá o mundo em chamas?",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:16.20",
+      "fim" : "0:25:21.24",
+      "texto" : "Don't come to me just 'cause you're lonely tonight...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:21.24",
+      "fim" : "0:25:25.87",
+      "texto" : "Lonely's only part of your game...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:26.25",
+      "fim" : "0:25:31.67",
+      "texto" : "As long as you live, you must remember one thing...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:31.67",
+      "fim" : "0:25:36.45",
+      "texto" : "Give and take are one and the same...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:36.45",
+      "fim" : "0:25:39.02",
+      "texto" : "So tell me are you ready?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:39.02",
+      "fim" : "0:25:41.69",
+      "texto" : "Really, really ready?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:41.69",
+      "fim" : "0:25:46.20",
+      "texto" : "I don't want your love for one night!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:46.20",
+      "fim" : "0:25:51.99",
+      "texto" : "'Cause I'm not lookin' for a love affair...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:51.99",
+      "fim" : "0:25:56.85",
+      "texto" : "I need the magic when I hold you near...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:57.19",
+      "fim" : "0:26:02.34",
+      "texto" : "It's more important than a one-night stand...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:02.34",
+      "fim" : "0:26:07.51",
+      "texto" : "I need the magic when I touch your hand!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:07.51",
+      "fim" : "0:26:12.67",
+      "texto" : "I'm not lookin' for a love affair...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:12.67",
+      "fim" : "0:26:17.84",
+      "texto" : "I need the magic when I hold you near!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:17.84",
+      "fim" : "0:26:23.02",
+      "texto" : "It's more important than a one-night stand...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:23.02",
+      "fim" : "0:26:30.47",
+      "texto" : "I need the magic when I touch...touch your hand...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    } ]
+  }, {
+    "arquivoOrigem" : "Mobile.Suit.Gundam.0083.Stardust.Memory.S01E03_Track3_PT-BR.parcial.ass",
+    "arquivoDestino" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificada\\Mobile.Suit.Gundam.0083.Stardust.Memory.S01E03_Track3_PT-BR.parcial.ass",
+    "eventosTotais" : 386,
+    "eventosDialogoPreservados" : 314,
+    "eventosKaraokeRemovidos" : 72,
+    "eventosPreservadosPorSeguranca" : 0,
+    "tamanhoOriginalBytes" : 39546,
+    "tamanhoNovoBytes" : 33090,
+    "percentualReducao" : 16,
+    "avisos" : [ "12 linha(s) simultânea(s) de karaokê foram removidas por deduplicação romaji/PT-BR." ],
+    "linhasCriadas" : [ {
+      "inicio" : "0:01:02.54",
+      "fim" : "0:01:08.80",
+      "texto" : "Não há vencedor nessa luta enquanto eu desabo, agora exaurido.",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 2
+    }, {
+      "inicio" : "0:01:08.67",
+      "fim" : "0:01:14.51",
+      "texto" : "I look up to the stars above... and don't even have the strength to cry",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:14.51",
+      "fim" : "0:01:19.89",
+      "texto" : "I don't need, don't need yesterday anymore.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:20.48",
+      "fim" : "0:01:26.02",
+      "texto" : "I don't need dreams that have crumbled away.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:26.02",
+      "fim" : "0:01:29.11",
+      "texto" : "I got a burning heart!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:29.11",
+      "fim" : "0:01:38.03",
+      "texto" : "I just wanna keep on running! Just chasing the thrill that's shooting through my heart!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:38.95",
+      "fim" : "0:01:43.00",
+      "texto" : "Sentimentos que não dá para descrever com palavras...",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:45.00",
+      "fim" : "0:01:50.30",
+      "texto" : "...suficientes para acender até mesmo um coração congelado!",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:51.13",
+      "fim" : "0:01:53.38",
+      "texto" : "I got a burning love!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:54.13",
+      "fim" : "0:02:02.27",
+      "texto" : "Queimando com fogo azul brilhante. Fogo que se espalhará até cobrir todas as estrelas do céu.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:02:03.23",
+      "fim" : "0:02:05.90",
+      "texto" : "I got a burning heart!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:02:06.31",
+      "fim" : "0:02:15.61",
+      "texto" : "O amor é uma batalha tão solitária. Mas é uma que consumirá o mundo em chamas?",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:12.41",
+      "fim" : "0:25:17.45",
+      "texto" : "Don't come to me just 'cause you're lonely tonight...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:17.45",
+      "fim" : "0:25:22.08",
+      "texto" : "Lonely's only part of your game...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:22.46",
+      "fim" : "0:25:27.88",
+      "texto" : "As long as you live, you must remember one thing...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:27.88",
+      "fim" : "0:25:32.66",
+      "texto" : "Give and take are one and the same...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:32.66",
+      "fim" : "0:25:35.23",
+      "texto" : "So tell me are you ready?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:35.23",
+      "fim" : "0:25:37.90",
+      "texto" : "Really, really ready?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:37.90",
+      "fim" : "0:25:42.41",
+      "texto" : "I don't want your love for one night!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:42.41",
+      "fim" : "0:25:48.20",
+      "texto" : "'Cause I'm not lookin' for a love affair...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:48.20",
+      "fim" : "0:25:53.06",
+      "texto" : "I need the magic when I hold you near...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:53.40",
+      "fim" : "0:25:58.55",
+      "texto" : "It's more important than a one-night stand...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:58.55",
+      "fim" : "0:26:03.72",
+      "texto" : "I need the magic when I touch your hand!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:03.72",
+      "fim" : "0:26:08.88",
+      "texto" : "I'm not lookin' for a love affair...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:08.88",
+      "fim" : "0:26:14.05",
+      "texto" : "I need the magic when I hold you near!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:14.05",
+      "fim" : "0:26:19.23",
+      "texto" : "It's more important than a one-night stand...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:19.23",
+      "fim" : "0:26:26.68",
+      "texto" : "I need the magic when I touch...touch your hand...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    } ]
+  }, {
+    "arquivoOrigem" : "Mobile.Suit.Gundam.0083.Stardust.Memory.S01E04_Track3_PT-BR.parcial.ass",
+    "arquivoDestino" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificada\\Mobile.Suit.Gundam.0083.Stardust.Memory.S01E04_Track3_PT-BR.parcial.ass",
+    "eventosTotais" : 427,
+    "eventosDialogoPreservados" : 355,
+    "eventosKaraokeRemovidos" : 72,
+    "eventosPreservadosPorSeguranca" : 0,
+    "tamanhoOriginalBytes" : 43421,
+    "tamanhoNovoBytes" : 36934,
+    "percentualReducao" : 15,
+    "avisos" : [ "12 linha(s) simultânea(s) de karaokê foram removidas por deduplicação romaji/PT-BR." ],
+    "linhasCriadas" : [ {
+      "inicio" : "0:01:02.33",
+      "fim" : "0:01:08.59",
+      "texto" : "Não há vencedor nessa luta enquanto eu desabo, agora exausto.",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 2
+    }, {
+      "inicio" : "0:01:08.46",
+      "fim" : "0:01:14.30",
+      "texto" : "I look up to the stars above... and don't even have the strength to cry",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:14.30",
+      "fim" : "0:01:19.68",
+      "texto" : "I don't need, don't need yesterday anymore.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:20.27",
+      "fim" : "0:01:25.82",
+      "texto" : "I don't need dreams that have crumbled away.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:25.82",
+      "fim" : "0:01:28.90",
+      "texto" : "I got a burning heart!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:28.90",
+      "fim" : "0:01:37.83",
+      "texto" : "Eu só quero continuar correndo! Só atrás da emoção que está disparando no meu coração!",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:38.74",
+      "fim" : "0:01:42.79",
+      "texto" : "Feelings that you just can't describe with words...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:44.79",
+      "fim" : "0:01:50.09",
+      "texto" : "...suficientes para acender até um coração congelado!",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 2
+    }, {
+      "inicio" : "0:01:50.92",
+      "fim" : "0:01:53.18",
+      "texto" : "I got a burning love!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:53.93",
+      "fim" : "0:02:02.06",
+      "texto" : "Queimando com fogo brilhante azul. Fogo que se espalhara ate cobrir todas as estrelas do ceu.",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:02:03.02",
+      "fim" : "0:02:05.69",
+      "texto" : "I got a burning heart!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:02:06.11",
+      "fim" : "0:02:15.41",
+      "texto" : "O amor é uma batalha tão solitária. Mas é uma que consumirá o mundo em chamas?",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:18.57",
+      "fim" : "0:27:23.62",
+      "texto" : "Don't come to me just 'cause you're lonely tonight...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:23.62",
+      "fim" : "0:27:28.25",
+      "texto" : "Lonely's only part of your game...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:28.63",
+      "fim" : "0:27:34.05",
+      "texto" : "As long as you live, you must remember one thing...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:34.05",
+      "fim" : "0:27:38.84",
+      "texto" : "Give and take are one and the same...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:38.84",
+      "fim" : "0:27:41.39",
+      "texto" : "So tell me are you ready?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:41.39",
+      "fim" : "0:27:44.06",
+      "texto" : "Really, really ready?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:44.06",
+      "fim" : "0:27:48.56",
+      "texto" : "I don't want your love for one night!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:48.56",
+      "fim" : "0:27:54.36",
+      "texto" : "'Cause I'm not lookin' for a love affair...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:54.36",
+      "fim" : "0:27:59.24",
+      "texto" : "I need the magic when I hold you near...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:59.57",
+      "fim" : "0:28:04.70",
+      "texto" : "It's more important than a one-night stand...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:28:04.70",
+      "fim" : "0:28:09.88",
+      "texto" : "I need the magic when I touch your hand!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:28:09.88",
+      "fim" : "0:28:15.05",
+      "texto" : "I'm not lookin' for a love affair...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:28:15.05",
+      "fim" : "0:28:20.22",
+      "texto" : "I need the magic when I hold you near!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:28:20.22",
+      "fim" : "0:28:25.39",
+      "texto" : "It's more important than a one-night stand...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:28:25.39",
+      "fim" : "0:28:32.86",
+      "texto" : "I need the magic when I touch...touch your hand...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    } ]
+  }, {
+    "arquivoOrigem" : "Mobile.Suit.Gundam.0083.Stardust.Memory.S01E05_Track3_PT-BR.parcial.ass",
+    "arquivoDestino" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificada\\Mobile.Suit.Gundam.0083.Stardust.Memory.S01E05_Track3_PT-BR.parcial.ass",
+    "eventosTotais" : 447,
+    "eventosDialogoPreservados" : 375,
+    "eventosKaraokeRemovidos" : 72,
+    "eventosPreservadosPorSeguranca" : 0,
+    "tamanhoOriginalBytes" : 45711,
+    "tamanhoNovoBytes" : 39246,
+    "percentualReducao" : 14,
+    "avisos" : [ "10 linha(s) simultânea(s) de karaokê foram removidas por deduplicação romaji/PT-BR." ],
+    "linhasCriadas" : [ {
+      "inicio" : "0:00:57.16",
+      "fim" : "0:01:03.42",
+      "texto" : "Não há vencedor nesta luta enquanto eu desabo, agora exaurido.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:03.29",
+      "fim" : "0:01:09.13",
+      "texto" : "I look up to the stars above... and don't even have the strength to cry",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:09.13",
+      "fim" : "0:01:14.51",
+      "texto" : "I don't need, don't need yesterday anymore.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:15.10",
+      "fim" : "0:01:20.64",
+      "texto" : "I don't need dreams that have crumbled away.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:20.64",
+      "fim" : "0:01:23.73",
+      "texto" : "I got a burning heart!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:23.73",
+      "fim" : "0:01:32.66",
+      "texto" : "I just wanna keep on running! Just chasing the thrill that's shooting through my heart!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:33.57",
+      "fim" : "0:01:37.62",
+      "texto" : "Feelings that you just can't describe with words...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:39.62",
+      "fim" : "0:01:44.92",
+      "texto" : "...suficientes para acender até um coração gelado!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:45.75",
+      "fim" : "0:01:48.00",
+      "texto" : "I got a burning love!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:48.75",
+      "fim" : "0:01:56.89",
+      "texto" : "Ardendo em fogo azul brilhante. Fogo que se espalhará até cobrir todas as estrelas do céu.",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:57.85",
+      "fim" : "0:02:00.52",
+      "texto" : "I got a burning heart!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:02:00.93",
+      "fim" : "0:02:10.23",
+      "texto" : "O amor é uma batalha tão solitária. Mas será que ela consumirá o mundo em chamas?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:32.22",
+      "fim" : "0:25:37.27",
+      "texto" : "Don't come to me just 'cause you're lonely tonight...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:37.27",
+      "fim" : "0:25:41.90",
+      "texto" : "Lonely's only part of your game...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:42.27",
+      "fim" : "0:25:47.69",
+      "texto" : "As long as you live, you must remember one thing...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:47.69",
+      "fim" : "0:25:52.45",
+      "texto" : "Give and take are one and the same...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:52.45",
+      "fim" : "0:25:55.03",
+      "texto" : "So tell me are you ready?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:55.03",
+      "fim" : "0:25:57.70",
+      "texto" : "Really, really ready?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:57.70",
+      "fim" : "0:26:02.21",
+      "texto" : "I don't want your love for one night!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:02.21",
+      "fim" : "0:26:08.00",
+      "texto" : "'Cause I'm not lookin' for a love affair...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:08.00",
+      "fim" : "0:26:12.84",
+      "texto" : "I need the magic when I hold you near...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:13.22",
+      "fim" : "0:26:18.35",
+      "texto" : "It's more important than a one-night stand...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:18.35",
+      "fim" : "0:26:23.52",
+      "texto" : "I need the magic when I touch your hand!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:23.52",
+      "fim" : "0:26:28.69",
+      "texto" : "I'm not lookin' for a love affair...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:28.69",
+      "fim" : "0:26:33.86",
+      "texto" : "I need the magic when I hold you near!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:33.86",
+      "fim" : "0:26:39.04",
+      "texto" : "It's more important than a one-night stand...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:39.04",
+      "fim" : "0:26:46.50",
+      "texto" : "I need the magic when I touch...touch your hand...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    } ]
+  }, {
+    "arquivoOrigem" : "Mobile.Suit.Gundam.0083.Stardust.Memory.S01E06_Track3_PT-BR.parcial.ass",
+    "arquivoDestino" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificada\\Mobile.Suit.Gundam.0083.Stardust.Memory.S01E06_Track3_PT-BR.parcial.ass",
+    "eventosTotais" : 416,
+    "eventosDialogoPreservados" : 288,
+    "eventosKaraokeRemovidos" : 128,
+    "eventosPreservadosPorSeguranca" : 0,
+    "tamanhoOriginalBytes" : 44427,
+    "tamanhoNovoBytes" : 33202,
+    "percentualReducao" : 25,
+    "avisos" : [ "11 linha(s) simultânea(s) de karaokê foram removidas por deduplicação romaji/PT-BR." ],
+    "linhasCriadas" : [ {
+      "inicio" : "0:00:59.16",
+      "fim" : "0:01:05.41",
+      "texto" : "Não há vencedor nessa luta enquanto eu desabo, agora exaurido.",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 2
+    }, {
+      "inicio" : "0:01:05.29",
+      "fim" : "0:01:11.13",
+      "texto" : "I look up to the stars above... and don't even have the strength to cry",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:11.13",
+      "fim" : "0:01:16.51",
+      "texto" : "I don't need, don't need yesterday anymore.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:17.09",
+      "fim" : "0:01:22.64",
+      "texto" : "I don't need dreams that have crumbled away.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:22.64",
+      "fim" : "0:01:25.73",
+      "texto" : "I got a burning heart!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:25.73",
+      "fim" : "0:01:34.65",
+      "texto" : "I just wanna keep on running! Just chasing the thrill that's shooting through my heart!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:35.57",
+      "fim" : "0:01:39.62",
+      "texto" : "Feelings that you just can't describe with words...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:41.62",
+      "fim" : "0:01:46.91",
+      "texto" : "...suficientes para acender até um coração gelado!",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 2
+    }, {
+      "inicio" : "0:01:47.75",
+      "fim" : "0:01:50.00",
+      "texto" : "I got a burning love!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:50.75",
+      "fim" : "0:01:58.88",
+      "texto" : "Queimando com fogo azul brilhante. Fogo que se espalhará até cobrir todas as estrelas do céu.",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:59.84",
+      "fim" : "0:02:02.51",
+      "texto" : "I got a burning heart!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:02:02.93",
+      "fim" : "0:02:12.23",
+      "texto" : "O amor é uma batalha tão solitária. Mas será que ela consumirá o mundo em chamas?",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:23:29.98",
+      "fim" : "0:23:35.02",
+      "texto" : "Don't come to me just 'cause you're lonely tonight...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:23:35.02",
+      "fim" : "0:23:39.65",
+      "texto" : "Lonely's only part of your game...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:23:40.03",
+      "fim" : "0:23:45.45",
+      "texto" : "As long as you live, you must remember one thing...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:23:45.45",
+      "fim" : "0:23:50.23",
+      "texto" : "Give and take are one and the same...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:23:50.23",
+      "fim" : "0:23:52.80",
+      "texto" : "So tell me are you ready?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:23:52.80",
+      "fim" : "0:23:55.47",
+      "texto" : "Really, really ready?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:23:55.47",
+      "fim" : "0:23:59.98",
+      "texto" : "I don't want your love for one night!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:23:59.98",
+      "fim" : "0:24:05.77",
+      "texto" : "'Cause I'm not lookin' for a love affair...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:24:05.77",
+      "fim" : "0:24:10.63",
+      "texto" : "I need the magic when I hold you near...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:24:10.97",
+      "fim" : "0:24:16.12",
+      "texto" : "It's more important than a one-night stand...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:24:16.12",
+      "fim" : "0:24:22.77",
+      "texto" : "I need the magic when I touch your hand!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:24:26.45",
+      "fim" : "0:24:31.20",
+      "texto" : "I need you oh so close to my heart.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:24:32.03",
+      "fim" : "0:24:36.80",
+      "texto" : "Come into my world we can, share everything there.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:24:36.80",
+      "fim" : "0:24:40.88",
+      "texto" : "I need the magic light from the start.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:24:42.04",
+      "fim" : "0:24:47.34",
+      "texto" : "Cause then you'll be lover, magic undercover.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:24:47.34",
+      "fim" : "0:24:52.72",
+      "texto" : "No one will be stopping us now.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:24:53.10",
+      "fim" : "0:24:58.89",
+      "texto" : "'Cause I'm not lookin' for a love affair...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:24:58.89",
+      "fim" : "0:25:03.77",
+      "texto" : "I need the magic when I hold you near...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:04.11",
+      "fim" : "0:25:06.86",
+      "texto" : "It's more important than...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:37.27",
+      "fim" : "0:25:40.40",
+      "texto" : "All alone here in no man's land",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:40.40",
+      "fim" : "0:25:43.40",
+      "texto" : "Got a devil walkin' right beside me",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:43.73",
+      "fim" : "0:25:46.57",
+      "texto" : "Angel come and take me by the hand",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:46.82",
+      "fim" : "0:25:49.91",
+      "texto" : "Take me to a place far behind me",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:52.58",
+      "fim" : "0:25:56.29",
+      "texto" : "I just wanna go back where I belong",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:59.12",
+      "fim" : "0:26:03.71",
+      "texto" : "Back to paradise",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:26.68",
+      "fim" : "0:26:31.72",
+      "texto" : "Don't come to me just 'cause you're lonely tonight...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:31.72",
+      "fim" : "0:26:36.35",
+      "texto" : "Lonely's only part of your game...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:36.73",
+      "fim" : "0:26:42.15",
+      "texto" : "As long as you live, you must remember one thing...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:42.15",
+      "fim" : "0:26:46.93",
+      "texto" : "Give and take are one and the same...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:46.93",
+      "fim" : "0:26:49.50",
+      "texto" : "So tell me are you ready?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:49.50",
+      "fim" : "0:26:52.17",
+      "texto" : "Really, really ready?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:52.17",
+      "fim" : "0:26:56.68",
+      "texto" : "I don't want your love for one night!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:56.68",
+      "fim" : "0:27:02.47",
+      "texto" : "'Cause I'm not lookin' for a love affair...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:02.47",
+      "fim" : "0:27:07.33",
+      "texto" : "I need the magic when I hold you near...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:07.67",
+      "fim" : "0:27:12.82",
+      "texto" : "It's more important than a one-night stand...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:12.82",
+      "fim" : "0:27:17.99",
+      "texto" : "I need the magic when I touch your hand!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:17.99",
+      "fim" : "0:27:23.15",
+      "texto" : "I'm not lookin' for a love affair...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:23.15",
+      "fim" : "0:27:28.32",
+      "texto" : "I need the magic when I hold you near!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:28.32",
+      "fim" : "0:27:33.50",
+      "texto" : "It's more important than a one-night stand...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:33.50",
+      "fim" : "0:27:40.95",
+      "texto" : "I need the magic when I touch...touch your hand...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    } ]
+  }, {
+    "arquivoOrigem" : "Mobile.Suit.Gundam.0083.Stardust.Memory.S01E07_Track3_PT-BR.parcial.ass",
+    "arquivoDestino" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificada\\Mobile.Suit.Gundam.0083.Stardust.Memory.S01E07_Track3_PT-BR.parcial.ass",
+    "eventosTotais" : 409,
+    "eventosDialogoPreservados" : 337,
+    "eventosKaraokeRemovidos" : 72,
+    "eventosPreservadosPorSeguranca" : 0,
+    "tamanhoOriginalBytes" : 41488,
+    "tamanhoNovoBytes" : 35037,
+    "percentualReducao" : 16,
+    "avisos" : [ "10 linha(s) simultânea(s) de karaokê foram removidas por deduplicação romaji/PT-BR." ],
+    "linhasCriadas" : [ {
+      "inicio" : "0:01:03.58",
+      "fim" : "0:01:09.84",
+      "texto" : "Não há vencedor nessa luta enquanto eu desabo, agora exaurido.",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 2
+    }, {
+      "inicio" : "0:01:09.72",
+      "fim" : "0:01:15.55",
+      "texto" : "I look up to the stars above... and don't even have the strength to cry",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:15.55",
+      "fim" : "0:01:20.94",
+      "texto" : "I don't need, don't need yesterday anymore.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:21.52",
+      "fim" : "0:01:27.07",
+      "texto" : "I don't need dreams that have crumbled away.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:27.07",
+      "fim" : "0:01:30.15",
+      "texto" : "I got a burning heart!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:30.15",
+      "fim" : "0:01:39.08",
+      "texto" : "I just wanna keep on running! Just chasing the thrill that's shooting through my heart!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:40.00",
+      "fim" : "0:01:44.04",
+      "texto" : "Feelings that you just can't describe with words...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:46.04",
+      "fim" : "0:01:51.34",
+      "texto" : "...suficientes para inflamar até um coração congelado!",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:52.17",
+      "fim" : "0:01:54.43",
+      "texto" : "I got a burning love!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:55.18",
+      "fim" : "0:02:03.31",
+      "texto" : "Ardendo em fogo brilhante azul. Fogo que se espalhará até cobrir todas as estrelas do céu.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:02:04.27",
+      "fim" : "0:02:06.94",
+      "texto" : "I got a burning heart!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:02:07.36",
+      "fim" : "0:02:16.66",
+      "texto" : "Love is such a lonely battle. But is it one that will consume the world in flames?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:15.67",
+      "fim" : "0:26:20.71",
+      "texto" : "Don't come to me just 'cause you're lonely tonight...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:20.71",
+      "fim" : "0:26:25.34",
+      "texto" : "Lonely's only part of your game...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:25.72",
+      "fim" : "0:26:31.14",
+      "texto" : "As long as you live, you must remember one thing...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:31.14",
+      "fim" : "0:26:35.92",
+      "texto" : "Give and take are one and the same...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:35.92",
+      "fim" : "0:26:38.49",
+      "texto" : "So tell me are you ready?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:38.49",
+      "fim" : "0:26:41.16",
+      "texto" : "Really, really ready?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:41.16",
+      "fim" : "0:26:45.67",
+      "texto" : "I don't want your love for one night!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:45.67",
+      "fim" : "0:26:51.46",
+      "texto" : "'Cause I'm not lookin' for a love affair...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:51.46",
+      "fim" : "0:26:56.32",
+      "texto" : "I need the magic when I hold you near...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:56.66",
+      "fim" : "0:27:01.81",
+      "texto" : "It's more important than a one-night stand...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:01.81",
+      "fim" : "0:27:06.98",
+      "texto" : "I need the magic when I touch your hand!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:06.98",
+      "fim" : "0:27:12.14",
+      "texto" : "I'm not lookin' for a love affair...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:12.14",
+      "fim" : "0:27:17.31",
+      "texto" : "I need the magic when I hold you near!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:17.31",
+      "fim" : "0:27:22.49",
+      "texto" : "It's more important than a one-night stand...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:22.49",
+      "fim" : "0:27:29.94",
+      "texto" : "I need the magic when I touch...touch your hand...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    } ]
+  }, {
+    "arquivoOrigem" : "Mobile.Suit.Gundam.0083.Stardust.Memory.S01E08_Track3_PT-BR.parcial.ass",
+    "arquivoDestino" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificada\\Mobile.Suit.Gundam.0083.Stardust.Memory.S01E08_Track3_PT-BR.parcial.ass",
+    "eventosTotais" : 468,
+    "eventosDialogoPreservados" : 370,
+    "eventosKaraokeRemovidos" : 96,
+    "eventosPreservadosPorSeguranca" : 2,
+    "tamanhoOriginalBytes" : 46218,
+    "tamanhoNovoBytes" : 37339,
+    "percentualReducao" : 19,
+    "avisos" : [ "Estilo \"Song JP\": 2 eventos de música sem linha inteira correspondente foram PRESERVADOS intactos (KFX apenas silábico?).", "24 linha(s) simultânea(s) de karaokê foram removidas por deduplicação romaji/PT-BR." ],
+    "linhasCriadas" : [ {
+      "inicio" : "0:00:20.62",
+      "fim" : "0:00:23.29",
+      "texto" : "Olhos sem vida.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:00:23.92",
+      "fim" : "0:00:26.34",
+      "texto" : "The flames at which they gaze.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:00:26.34",
+      "fim" : "0:00:32.34",
+      "texto" : "Agora chegou a hora de deixar tudo para trás.",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:00:33.55",
+      "fim" : "0:00:39.14",
+      "texto" : "Todas aquelas memórias e a dor do passado.",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:00:39.14",
+      "fim" : "0:00:45.61",
+      "texto" : "You can't look back at them, and the battle rages on.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:00:47.36",
+      "fim" : "0:00:53.66",
+      "texto" : "Even if lives are burnt to ashes today...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:00:53.66",
+      "fim" : "0:01:02.04",
+      "texto" : "...will people still dream about tomorrow?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:02.04",
+      "fim" : "0:01:04.54",
+      "texto" : "It may be destiny, but",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:04.54",
+      "fim" : "0:01:06.38",
+      "texto" : "I wanna get the chance!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:06.38",
+      "fim" : "0:01:12.34",
+      "texto" : "In the skies of despair there rages now a storm.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:12.68",
+      "fim" : "0:01:16.81",
+      "texto" : "For whom does the future exist now?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:19.14",
+      "fim" : "0:01:21.56",
+      "texto" : "A world on the path of destruction...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:22.48",
+      "fim" : "0:01:25.15",
+      "texto" : "...with a storm raging through.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:25.69",
+      "fim" : "0:01:28.94",
+      "texto" : "Os escolhidos são...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:28.94",
+      "fim" : "0:01:32.99",
+      "texto" : "Men of destiny!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:04.46",
+      "fim" : "0:26:09.71",
+      "texto" : "All alone in the deep darkness.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:11.09",
+      "fim" : "0:26:16.30",
+      "texto" : "On a night that swallows up the road.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:17.26",
+      "fim" : "0:26:30.03",
+      "texto" : "Searching on and on for the memory of the brilliant dawn.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:30.82",
+      "fim" : "0:26:36.57",
+      "texto" : "There are times when destiny...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:37.45",
+      "fim" : "0:26:42.71",
+      "texto" : "...é um vento que testa seu coração.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:43.58",
+      "fim" : "0:26:49.00",
+      "texto" : "Love is a sky that embraces everything.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:50.63",
+      "fim" : "0:26:56.80",
+      "texto" : "And in it is the vision of the new day.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:03.77",
+      "fim" : "0:27:13.78",
+      "texto" : "I should revive that warm heartbeat inside me.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:16.99",
+      "fim" : "0:27:29.21",
+      "texto" : "That frozen dream has begun to shine again.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    } ]
+  }, {
+    "arquivoOrigem" : "Mobile.Suit.Gundam.0083.Stardust.Memory.S01E09_Track3_PT-BR.parcial.ass",
+    "arquivoDestino" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificada\\Mobile.Suit.Gundam.0083.Stardust.Memory.S01E09_Track3_PT-BR.parcial.ass",
+    "eventosTotais" : 381,
+    "eventosDialogoPreservados" : 283,
+    "eventosKaraokeRemovidos" : 96,
+    "eventosPreservadosPorSeguranca" : 2,
+    "tamanhoOriginalBytes" : 40397,
+    "tamanhoNovoBytes" : 31510,
+    "percentualReducao" : 22,
+    "avisos" : [ "Estilo \"Song JP\": 2 eventos de música sem linha inteira correspondente foram PRESERVADOS intactos (KFX apenas silábico?).", "26 linha(s) simultânea(s) de karaokê foram removidas por deduplicação romaji/PT-BR." ],
+    "linhasCriadas" : [ {
+      "inicio" : "0:00:56.41",
+      "fim" : "0:00:59.08",
+      "texto" : "Eyes drained of their life.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:00:59.71",
+      "fim" : "0:01:02.12",
+      "texto" : "The flames at which they gaze.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:02.12",
+      "fim" : "0:01:08.13",
+      "texto" : "Now the time has come to leave everything behind.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:09.34",
+      "fim" : "0:01:14.93",
+      "texto" : "Todas aquelas memórias e a dor do passado.",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:14.93",
+      "fim" : "0:01:21.39",
+      "texto" : "Você não pode olhar para eles, e a batalha continua feroz.",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:23.15",
+      "fim" : "0:01:29.44",
+      "texto" : "Even if lives are burnt to ashes today...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:29.44",
+      "fim" : "0:01:37.83",
+      "texto" : "...will people still dream about tomorrow?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:37.83",
+      "fim" : "0:01:40.33",
+      "texto" : "It may be destiny, but",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:40.33",
+      "fim" : "0:01:42.16",
+      "texto" : "I wanna get the chance!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:42.16",
+      "fim" : "0:01:48.13",
+      "texto" : "In the skies of despair there rages now a storm.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:48.46",
+      "fim" : "0:01:52.59",
+      "texto" : "For whom does the future exist now?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:54.93",
+      "fim" : "0:01:57.35",
+      "texto" : "A world on the path of destruction...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:58.26",
+      "fim" : "0:02:00.93",
+      "texto" : "...with a storm raging through.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:02:01.48",
+      "fim" : "0:02:04.73",
+      "texto" : "Os escolhidos são...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:02:04.73",
+      "fim" : "0:02:08.77",
+      "texto" : "Men of destiny!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:15.76",
+      "fim" : "0:26:21.02",
+      "texto" : "Sozinho no fundo das trevas.",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:22.35",
+      "fim" : "0:26:27.57",
+      "texto" : "On a night that swallows up the road.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:28.57",
+      "fim" : "0:26:41.33",
+      "texto" : "Searching on and on for the memory of the brilliant dawn.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:42.08",
+      "fim" : "0:26:47.84",
+      "texto" : "There are times when destiny...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:48.71",
+      "fim" : "0:26:54.01",
+      "texto" : "...é um vento que testa seu coração.",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:54.88",
+      "fim" : "0:27:00.31",
+      "texto" : "Love is a sky that embraces everything.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:01.93",
+      "fim" : "0:27:08.11",
+      "texto" : "And in it is the vision of the new day.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:15.03",
+      "fim" : "0:27:25.08",
+      "texto" : "I should revive that warm heartbeat inside me.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:28.25",
+      "fim" : "0:27:40.51",
+      "texto" : "That frozen dream has begun to shine again.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    } ]
+  }, {
+    "arquivoOrigem" : "Mobile.Suit.Gundam.0083.Stardust.Memory.S01E10_Track3_PT-BR.parcial.ass",
+    "arquivoDestino" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificada\\Mobile.Suit.Gundam.0083.Stardust.Memory.S01E10_Track3_PT-BR.parcial.ass",
+    "eventosTotais" : 343,
+    "eventosDialogoPreservados" : 245,
+    "eventosKaraokeRemovidos" : 96,
+    "eventosPreservadosPorSeguranca" : 2,
+    "tamanhoOriginalBytes" : 35880,
+    "tamanhoNovoBytes" : 26974,
+    "percentualReducao" : 25,
+    "avisos" : [ "Estilo \"Song JP\": 2 eventos de música sem linha inteira correspondente foram PRESERVADOS intactos (KFX apenas silábico?).", "24 linha(s) simultânea(s) de karaokê foram removidas por deduplicação romaji/PT-BR." ],
+    "linhasCriadas" : [ {
+      "inicio" : "0:01:06.92",
+      "fim" : "0:01:09.59",
+      "texto" : "Eyes drained of their life.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:10.22",
+      "fim" : "0:01:12.64",
+      "texto" : "The flames at which they gaze.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:12.64",
+      "fim" : "0:01:18.64",
+      "texto" : "Now the time has come to leave everything behind.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:19.85",
+      "fim" : "0:01:25.44",
+      "texto" : "Todas aquelas memórias e a dor do passado.",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:25.44",
+      "fim" : "0:01:31.91",
+      "texto" : "You can't look back at them, and the battle rages on.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:33.66",
+      "fim" : "0:01:39.95",
+      "texto" : "Even if lives are burnt to ashes today...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:39.95",
+      "fim" : "0:01:48.34",
+      "texto" : "...will people still dream about tomorrow?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:48.34",
+      "fim" : "0:01:50.84",
+      "texto" : "It may be destiny, but",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:50.84",
+      "fim" : "0:01:52.68",
+      "texto" : "I wanna get the chance!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:52.68",
+      "fim" : "0:01:58.64",
+      "texto" : "In the skies of despair there rages now a storm.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:58.97",
+      "fim" : "0:02:03.10",
+      "texto" : "For whom does the future exist now?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:02:05.44",
+      "fim" : "0:02:07.86",
+      "texto" : "A world on the path of destruction...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:02:08.78",
+      "fim" : "0:02:11.44",
+      "texto" : "...with a storm raging through.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:02:11.99",
+      "fim" : "0:02:15.24",
+      "texto" : "Os escolhidos são...",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:02:15.24",
+      "fim" : "0:02:19.29",
+      "texto" : "Men of destiny!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:23:19.80",
+      "fim" : "0:23:25.05",
+      "texto" : "All alone in the deep darkness.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:23:26.43",
+      "fim" : "0:23:31.64",
+      "texto" : "On a night that swallows up the road.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:23:32.60",
+      "fim" : "0:23:45.36",
+      "texto" : "Searching on and on for the memory of the brilliant dawn.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:23:46.15",
+      "fim" : "0:23:51.91",
+      "texto" : "There are times when destiny...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:23:52.79",
+      "fim" : "0:23:58.04",
+      "texto" : "...é um vento que testa seu coração.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:23:58.92",
+      "fim" : "0:24:04.34",
+      "texto" : "Love is a sky that embraces everything.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:24:05.97",
+      "fim" : "0:24:12.14",
+      "texto" : "And in it is the vision of the new day.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:24:19.10",
+      "fim" : "0:24:29.11",
+      "texto" : "I should revive that warm heartbeat inside me.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:24:32.28",
+      "fim" : "0:24:44.55",
+      "texto" : "That frozen dream has begun to shine again.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    } ]
+  }, {
+    "arquivoOrigem" : "Mobile.Suit.Gundam.0083.Stardust.Memory.S01E11_Track3_PT-BR.parcial.ass",
+    "arquivoDestino" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificada\\Mobile.Suit.Gundam.0083.Stardust.Memory.S01E11_Track3_PT-BR.parcial.ass",
+    "eventosTotais" : 402,
+    "eventosDialogoPreservados" : 304,
+    "eventosKaraokeRemovidos" : 96,
+    "eventosPreservadosPorSeguranca" : 2,
+    "tamanhoOriginalBytes" : 41588,
+    "tamanhoNovoBytes" : 32708,
+    "percentualReducao" : 21,
+    "avisos" : [ "Estilo \"Song JP\": 2 eventos de música sem linha inteira correspondente foram PRESERVADOS intactos (KFX apenas silábico?).", "22 linha(s) simultânea(s) de karaokê foram removidas por deduplicação romaji/PT-BR." ],
+    "linhasCriadas" : [ {
+      "inicio" : "0:01:00.16",
+      "fim" : "0:01:02.83",
+      "texto" : "Olhos vazios de vida.",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 2
+    }, {
+      "inicio" : "0:01:03.45",
+      "fim" : "0:01:05.87",
+      "texto" : "The flames at which they gaze.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:05.87",
+      "fim" : "0:01:11.88",
+      "texto" : "Now the time has come to leave everything behind.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:13.09",
+      "fim" : "0:01:18.68",
+      "texto" : "Todas aquelas memórias e a dor do passado.",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 2
+    }, {
+      "inicio" : "0:01:18.68",
+      "fim" : "0:01:25.14",
+      "texto" : "You can't look back at them, and the battle rages on.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:26.89",
+      "fim" : "0:01:33.19",
+      "texto" : "Even if lives are burnt to ashes today...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:33.19",
+      "fim" : "0:01:41.58",
+      "texto" : "...will people still dream about tomorrow?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:41.58",
+      "fim" : "0:01:44.08",
+      "texto" : "It may be destiny, but",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:44.08",
+      "fim" : "0:01:45.91",
+      "texto" : "I wanna get the chance!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:45.91",
+      "fim" : "0:01:51.88",
+      "texto" : "In the skies of despair there rages now a storm.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:52.21",
+      "fim" : "0:01:56.34",
+      "texto" : "For whom does the future exist now?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:58.68",
+      "fim" : "0:02:01.10",
+      "texto" : "A world on the path of destruction...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:02:02.01",
+      "fim" : "0:02:04.68",
+      "texto" : "...with a storm raging through.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:02:05.22",
+      "fim" : "0:02:08.48",
+      "texto" : "Os escolhidos são...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:02:08.48",
+      "fim" : "0:02:12.52",
+      "texto" : "Men of destiny!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:12.13",
+      "fim" : "0:26:17.38",
+      "texto" : "All alone in the deep darkness.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:18.76",
+      "fim" : "0:26:23.97",
+      "texto" : "On a night that swallows up the road.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:24.93",
+      "fim" : "0:26:37.70",
+      "texto" : "Searching on and on for the memory of the brilliant dawn.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:38.49",
+      "fim" : "0:26:44.24",
+      "texto" : "There are times when destiny...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:45.12",
+      "fim" : "0:26:50.37",
+      "texto" : "...é um vento que testa seu coração.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:51.25",
+      "fim" : "0:26:56.67",
+      "texto" : "Love is a sky that embraces everything.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:58.30",
+      "fim" : "0:27:04.47",
+      "texto" : "And in it is the vision of the new day.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:11.44",
+      "fim" : "0:27:21.45",
+      "texto" : "I should revive that warm heartbeat inside me.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:24.62",
+      "fim" : "0:27:36.88",
+      "texto" : "That frozen dream has begun to shine again.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    } ]
+  }, {
+    "arquivoOrigem" : "Mobile.Suit.Gundam.0083.Stardust.Memory.S01E12_Track3_PT-BR.parcial.ass",
+    "arquivoDestino" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificada\\Mobile.Suit.Gundam.0083.Stardust.Memory.S01E12_Track3_PT-BR.parcial.ass",
+    "eventosTotais" : 330,
+    "eventosDialogoPreservados" : 232,
+    "eventosKaraokeRemovidos" : 96,
+    "eventosPreservadosPorSeguranca" : 2,
+    "tamanhoOriginalBytes" : 34534,
+    "tamanhoNovoBytes" : 25653,
+    "percentualReducao" : 26,
+    "avisos" : [ "Estilo \"Song JP\": 2 eventos de música sem linha inteira correspondente foram PRESERVADOS intactos (KFX apenas silábico?).", "25 linha(s) simultânea(s) de karaokê foram removidas por deduplicação romaji/PT-BR." ],
+    "linhasCriadas" : [ {
+      "inicio" : "0:00:58.62",
+      "fim" : "0:01:01.29",
+      "texto" : "Olhos desprovidos de vida.",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 2
+    }, {
+      "inicio" : "0:01:01.92",
+      "fim" : "0:01:04.34",
+      "texto" : "The flames at which they gaze.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:04.34",
+      "fim" : "0:01:10.34",
+      "texto" : "Now the time has come to leave everything behind.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:11.55",
+      "fim" : "0:01:17.14",
+      "texto" : "Todas aquelas lembranças e a dor do passado.",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:17.14",
+      "fim" : "0:01:23.61",
+      "texto" : "You can't look back at them, and the battle rages on.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:25.36",
+      "fim" : "0:01:31.66",
+      "texto" : "Even if lives are burnt to ashes today...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:31.66",
+      "fim" : "0:01:40.04",
+      "texto" : "...will people still dream about tomorrow?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:40.04",
+      "fim" : "0:01:42.54",
+      "texto" : "It may be destiny, but",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:42.54",
+      "fim" : "0:01:44.38",
+      "texto" : "I wanna get the chance!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:44.38",
+      "fim" : "0:01:50.34",
+      "texto" : "In the skies of despair there rages now a storm.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:50.68",
+      "fim" : "0:01:54.80",
+      "texto" : "For whom does the future exist now?",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:01:57.14",
+      "fim" : "0:01:59.56",
+      "texto" : "Um mundo rumo a destruição...",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:02:00.48",
+      "fim" : "0:02:03.15",
+      "texto" : "...with a storm raging through.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:02:03.69",
+      "fim" : "0:02:06.94",
+      "texto" : "Os escolhidos são...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:02:06.94",
+      "fim" : "0:02:10.99",
+      "texto" : "Men of destiny!",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:43.23",
+      "fim" : "0:25:48.49",
+      "texto" : "All alone in the deep darkness.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:49.86",
+      "fim" : "0:25:55.08",
+      "texto" : "On a night that swallows up the road.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:56.04",
+      "fim" : "0:26:08.80",
+      "texto" : "Searching on and on for the memory of the brilliant dawn.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:09.59",
+      "fim" : "0:26:15.35",
+      "texto" : "There are times when destiny...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:16.22",
+      "fim" : "0:26:21.48",
+      "texto" : "...é um vento que testa seu coração.",
+      "eventosOrigem" : 1,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:22.35",
+      "fim" : "0:26:27.78",
+      "texto" : "Love is a sky that embraces everything.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:29.40",
+      "fim" : "0:26:35.58",
+      "texto" : "And in it is the vision of the new day.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:42.54",
+      "fim" : "0:26:52.55",
+      "texto" : "I should revive that warm heartbeat inside me.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:55.72",
+      "fim" : "0:27:07.98",
+      "texto" : "That frozen dream has begun to shine again.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    } ]
+  }, {
+    "arquivoOrigem" : "Mobile.Suit.Gundam.0083.Stardust.Memory.S01E13_Track3_PT-BR.parcial.ass",
+    "arquivoDestino" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\simplificada\\Mobile.Suit.Gundam.0083.Stardust.Memory.S01E13_Track3_PT-BR.parcial.ass",
+    "eventosTotais" : 308,
+    "eventosDialogoPreservados" : 222,
+    "eventosKaraokeRemovidos" : 82,
+    "eventosPreservadosPorSeguranca" : 4,
+    "tamanhoOriginalBytes" : 31575,
+    "tamanhoNovoBytes" : 23802,
+    "percentualReducao" : 25,
+    "avisos" : [ "Estilo \"Song JP\": 4 eventos de música sem linha inteira correspondente foram PRESERVADOS intactos (KFX apenas silábico?).", "17 linha(s) simultânea(s) de karaokê foram removidas por deduplicação romaji/PT-BR." ],
+    "linhasCriadas" : [ {
+      "inicio" : "0:25:41.18",
+      "fim" : "0:25:46.43",
+      "texto" : "All alone in the deep darkness.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:47.81",
+      "fim" : "0:25:53.02",
+      "texto" : "On a night that swallows up the road.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:25:53.98",
+      "fim" : "0:26:06.70",
+      "texto" : "Searching on and on for the memory of the brilliant dawn.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:07.53",
+      "fim" : "0:26:13.29",
+      "texto" : "There are times when destiny...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:14.17",
+      "fim" : "0:26:19.42",
+      "texto" : "...is a wind that tests your heart.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:20.30",
+      "fim" : "0:26:25.72",
+      "texto" : "Love is a sky that embraces everything.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:27.35",
+      "fim" : "0:26:33.52",
+      "texto" : "And in it is the vision of the new day.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:40.48",
+      "fim" : "0:26:50.49",
+      "texto" : "I should revive that warm heartbeat inside me.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:26:53.66",
+      "fim" : "0:27:05.93",
+      "texto" : "That frozen dream has begun to shine again.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:17.02",
+      "fim" : "0:27:22.94",
+      "texto" : "Now these empty arms of mine...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:23.24",
+      "fim" : "0:27:28.91",
+      "texto" : "...are endlessly searching on.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:29.83",
+      "fim" : "0:27:35.21",
+      "texto" : "Searching on for a person...",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:36.79",
+      "fim" : "0:27:42.55",
+      "texto" : "...with whom they can share a life.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:27:49.85",
+      "fim" : "0:27:59.81",
+      "texto" : "I should go beyond the burden of time.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:28:03.19",
+      "fim" : "0:28:15.20",
+      "texto" : "That frozen dream has begun to shine again.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:28:59.16",
+      "fim" : "0:29:08.80",
+      "texto" : "I should revive that warm heartbeat inside me.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    }, {
+      "inicio" : "0:29:12.34",
+      "fim" : "0:29:22.15",
+      "texto" : "I should go beyond the burden of time.",
+      "eventosOrigem" : 2,
+      "variantesTexto" : 1
+    } ]
+  } ]
+>>>>>>> 09afbdc6badb58ee1b9937f910bc63d3a6e8fd1b
 }

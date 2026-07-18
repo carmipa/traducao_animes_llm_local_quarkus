@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "tipo" : "Limpeza de Cache",
   "detalhe" : "status=CONCLUIDO; falhas=0",
@@ -6,4 +7,14 @@
   "itensDetectados" : 23,
   "itensCorrigidos" : 1,
   "registradoEm" : "2026-07-15T14:30:27.248679700Z"
+=======
+{
+  "tipo" : "Limpeza de Cache",
+  "detalhe" : "status=CONCLUIDO; falhas=0",
+  "tempoTotalMs" : 739,
+  "arquivosProcessados" : 29,
+  "itensDetectados" : 23,
+  "itensCorrigidos" : 1,
+  "registradoEm" : "2026-07-15T14:30:27.248679700Z"
+>>>>>>> 09afbdc6badb58ee1b9937f910bc63d3a6e8fd1b
 }

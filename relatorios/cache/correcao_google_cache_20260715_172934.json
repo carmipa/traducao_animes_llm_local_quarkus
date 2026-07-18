@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "tipo" : "Correção Google (cache)",
   "detalhe" : "status=CONCLUIDO_COM_PENDENCIAS; pendentes=915; falhas=0",
@@ -6,4 +7,14 @@
   "itensDetectados" : 2163,
   "itensCorrigidos" : 1248,
   "registradoEm" : "2026-07-15T20:29:34.295267200Z"
+=======
+{
+  "tipo" : "Correção Google (cache)",
+  "detalhe" : "status=CONCLUIDO_COM_PENDENCIAS; pendentes=915; falhas=0",
+  "tempoTotalMs" : 1708744,
+  "arquivosProcessados" : 29,
+  "itensDetectados" : 2163,
+  "itensCorrigidos" : 1248,
+  "registradoEm" : "2026-07-15T20:29:34.295267200Z"
+>>>>>>> 09afbdc6badb58ee1b9937f910bc63d3a6e8fd1b
 }
