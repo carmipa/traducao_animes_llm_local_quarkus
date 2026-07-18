@@ -13,6 +13,7 @@ import org.traducao.projeto.traducao.domain.StatusLlm;
 import org.traducao.projeto.traducao.domain.ports.MistralPort;
 import org.traducao.projeto.traducao.infrastructure.config.TradutorProperties;
 import org.traducao.projeto.traducao.infrastructure.contexto.GerenciadorContexto;
+import org.traducao.projeto.traducao.presentation.ui.AnsiCores;
 import org.traducao.projeto.traducao.presentation.ui.PastasExecucao;
 
 import java.nio.file.Files;
@@ -183,11 +184,19 @@ public class TraducaoController {
                 long parcialCount = resultados.stream().filter(r ->
                     r.status() == org.traducao.projeto.traducao.domain.StatusArquivoTraducao.PARCIAL).count();
                 long falhaCount = resultados.size() - okCount - parcialCount;
-                System.out.println("\n========================================================================");
-                System.out.println("  [" + statusLote.getRotulo().toUpperCase() + "] TRADUCAO LOCAL VIA LLM: "
-                    + okCount + " concluído(s), " + parcialCount + " parcial(is), " + falhaCount
-                    + " com falha/bloqueio de " + resultados.size() + " arquivo(s).");
-                System.out.println("========================================================================\n");
+                boolean concluido = statusLote == org.traducao.projeto.traducao.domain.StatusLoteTraducao.CONCLUIDO;
+                String cor = concluido ? AnsiCores.GREEN : AnsiCores.YELLOW;
+                String rotulo = "[" + statusLote.getRotulo().toUpperCase() + "]";
+                System.out.println("\n" + cor + "========================================================================" + AnsiCores.RESET);
+                System.out.println(cor + "  " + rotulo + " TRADUÇÃO LOCAL VIA LLM" + AnsiCores.RESET);
+                System.out.println(cor + "========================================================================" + AnsiCores.RESET);
+                System.out.println(AnsiCores.CYAN + "  • Arquivos Processados: " + resultados.size() + AnsiCores.RESET);
+                System.out.println(AnsiCores.GREEN + "  • Sucessos (Concluídos): " + okCount + AnsiCores.RESET);
+                System.out.println((parcialCount > 0 ? AnsiCores.YELLOW : AnsiCores.GREEN)
+                    + "  • Parciais             : " + parcialCount + AnsiCores.RESET);
+                System.out.println((falhaCount > 0 ? AnsiCores.RED : AnsiCores.GREEN)
+                    + "  • Falhas/Bloqueios     : " + falhaCount + AnsiCores.RESET);
+                System.out.println(cor + "========================================================================\n" + AnsiCores.RESET);
                 log.info("[{}] Traducao via LLM finalizada. {} concluido(s), {} parcial(is), {} falha/bloqueio de {}.",
                     statusLote.name(), okCount, parcialCount, falhaCount, resultados.size());
 

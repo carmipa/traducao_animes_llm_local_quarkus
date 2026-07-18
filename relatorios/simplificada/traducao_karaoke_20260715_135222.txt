@@ -1,0 +1,20 @@
+Tradução de Karaokê — letras originais preservadas + tradução PT-BR
+Origem: C:\animes\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\simplificada
+Destino: C:\animes\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\simplificada-karaoke-ptbr
+Duração: 260144 ms
+
+Mobile.Suit.Gundam.0083.Stardust.Memory.S00E02_Track3_PT-BR.parcial.ass | letra original: 0 | traduzidas (LLM): 0 | cache: 0 | sem tradução: 0 | avisos: 0
+Mobile.Suit.Gundam.0083.Stardust.Memory.S00E03_Track2_PT-BR.parcial.ass | letra original: 0 | traduzidas (LLM): 12 | cache: 0 | sem tradução: 0 | avisos: 0
+Mobile.Suit.Gundam.0083.Stardust.Memory.S01E01_Track3_PT-BR.parcial.ass | letra original: 0 | traduzidas (LLM): 32 | cache: 0 | sem tradução: 1 | avisos: 1
+Mobile.Suit.Gundam.0083.Stardust.Memory.S01E02_Track3_PT-BR.parcial.ass | letra original: 0 | traduzidas (LLM): 23 | cache: 0 | sem tradução: 1 | avisos: 1
+Mobile.Suit.Gundam.0083.Stardust.Memory.S01E03_Track3_PT-BR.parcial.ass | letra original: 0 | traduzidas (LLM): 21 | cache: 0 | sem tradução: 1 | avisos: 1
+Mobile.Suit.Gundam.0083.Stardust.Memory.S01E04_Track3_PT-BR.parcial.ass | letra original: 0 | traduzidas (LLM): 22 | cache: 0 | sem tradução: 0 | avisos: 0
+Mobile.Suit.Gundam.0083.Stardust.Memory.S01E05_Track3_PT-BR.parcial.ass | letra original: 0 | traduzidas (LLM): 22 | cache: 0 | sem tradução: 1 | avisos: 1
+Mobile.Suit.Gundam.0083.Stardust.Memory.S01E06_Track3_PT-BR.parcial.ass | letra original: 0 | traduzidas (LLM): 44 | cache: 0 | sem tradução: 4 | avisos: 4
+Mobile.Suit.Gundam.0083.Stardust.Memory.S01E07_Track3_PT-BR.parcial.ass | letra original: 0 | traduzidas (LLM): 24 | cache: 0 | sem tradução: 0 | avisos: 0
+Mobile.Suit.Gundam.0083.Stardust.Memory.S01E08_Track3_PT-BR.parcial.ass | letra original: 2 | traduzidas (LLM): 20 | cache: 0 | sem tradução: 0 | avisos: 0
+Mobile.Suit.Gundam.0083.Stardust.Memory.S01E09_Track3_PT-BR.parcial.ass | letra original: 2 | traduzidas (LLM): 20 | cache: 0 | sem tradução: 0 | avisos: 0
+Mobile.Suit.Gundam.0083.Stardust.Memory.S01E10_Track3_PT-BR.parcial.ass | letra original: 2 | traduzidas (LLM): 21 | cache: 0 | sem tradução: 0 | avisos: 0
+Mobile.Suit.Gundam.0083.Stardust.Memory.S01E11_Track3_PT-BR.parcial.ass | letra original: 2 | traduzidas (LLM): 21 | cache: 0 | sem tradução: 0 | avisos: 0
+Mobile.Suit.Gundam.0083.Stardust.Memory.S01E12_Track3_PT-BR.parcial.ass | letra original: 2 | traduzidas (LLM): 20 | cache: 0 | sem tradução: 0 | avisos: 0
+Mobile.Suit.Gundam.0083.Stardust.Memory.S01E13_Track3_PT-BR.parcial.ass | letra original: 4 | traduzidas (LLM): 17 | cache: 0 | sem tradução: 0 | avisos: 0

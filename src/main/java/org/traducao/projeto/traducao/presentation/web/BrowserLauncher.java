@@ -51,13 +51,17 @@ public class BrowserLauncher {
         String os = System.getProperty("os.name").toLowerCase();
         try {
             if (os.contains("win")) {
-                Runtime.getRuntime().exec(new String[]{"cmd.exe", "/c", "start", url});
+                // rundll32 é o meio nativo mais resiliente no ecossistema Java para Windows,
+                // acionando o FileProtocolHandler diretamente sem envolver subprocessos de shell bloqueados do cmd.
+                Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + url);
+                log.info("Navegador aberto automaticamente via rundll32: {}", url);
             } else if (os.contains("mac")) {
                 Runtime.getRuntime().exec(new String[]{"open", url});
+                log.info("Navegador aberto automaticamente via open: {}", url);
             } else {
                 Runtime.getRuntime().exec(new String[]{"xdg-open", url});
+                log.info("Navegador aberto automaticamente via xdg-open: {}", url);
             }
-            log.info("Navegador aberto automaticamente na URL: {}", url);
         } catch (IOException e) {
             log.warn("Nao foi possivel abrir o navegador automaticamente: {}", e.getMessage());
         }

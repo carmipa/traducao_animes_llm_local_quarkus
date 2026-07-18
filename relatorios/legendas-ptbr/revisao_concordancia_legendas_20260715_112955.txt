@@ -1,0 +1,238 @@
+REVISÃO DE CONCORDÂNCIA PT-BR (.ass via LLM)
+============================================
+Pasta: C:\animes\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\legendas-ptbr
+Duração: 8s
+Arquivos analisados: 15
+Falas auditadas: 4406
+Falas sem original EN (ignoradas): 0
+Problemas detectados: 1743
+Falas corrigidas via LLM: 5
+Falas pendentes: 1738
+
+DETALHES POR OCORRÊNCIA
+=======================
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S00E02_Track3_PT-BR.parcial.ass
+Evento: 3 | Estilo: Dialogue
+Resultado: LLM_SEM_CONTEUDO_UTILIZAVEL
+Problemas: Resíduo gringo detectado: {\i1}What a persistent nightmare!{\i} | Fala não traduzida (idêntica ao original em inglês): {\i1}What a persistent nightmare!{\i}
+Diagnóstico: O servidor não devolveu choices/content utilizável; consulte o log técnico para HTTP ou timeout.
+EN: {\i1}What a persistent nightmare!{\i}
+PT anterior: {\i1}What a persistent nightmare!{\i}
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S00E02_Track3_PT-BR.parcial.ass
+Evento: 4 | Estilo: Dialogue
+Resultado: LLM_SEM_CONTEUDO_UTILIZAVEL
+Problemas: Resíduo gringo detectado: {\i1}It's been four years on the Lili Marlene...{\i} | Fala não traduzida (idêntica ao original em inglês): {\i1}It's been four years on the Lili Marlene...{\i}
+Diagnóstico: O servidor não devolveu choices/content utilizável; consulte o log técnico para HTTP ou timeout.
+EN: {\i1}It's been four years on the Lili Marlene...{\i}
+PT anterior: {\i1}It's been four years on the Lili Marlene...{\i}
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S00E02_Track3_PT-BR.parcial.ass
+Evento: 5 | Estilo: Dialogue
+Resultado: LLM_SEM_CONTEUDO_UTILIZAVEL
+Problemas: Fala não traduzida (idêntica ao original em inglês): {\i1}Four years of nightmares...{\i}
+Diagnóstico: O servidor não devolveu choices/content utilizável; consulte o log técnico para HTTP ou timeout.
+EN: {\i1}Four years of nightmares...{\i}
+PT anterior: {\i1}Four years of nightmares...{\i}
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S00E02_Track3_PT-BR.parcial.ass
+Evento: 6 | Estilo: Dialogue
+Resultado: CORRIGIDA_LLM
+Problemas: Resíduo gringo detectado: {\i1}We are entering enemy territory. | Fala não traduzida (idêntica ao original em inglês): {\i1}We are entering enemy territory.
+Diagnóstico: Correção validada e persistida.
+EN: {\i1}We are entering enemy territory.
+PT anterior: {\i1}We are entering enemy territory.
+Proposta: {\i1}Estamos entrando em território inimigo.
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S00E02_Track3_PT-BR.parcial.ass
+Evento: 7 | Estilo: Dialogue
+Resultado: CORRIGIDA_LLM
+Problemas: Fala não traduzida (idêntica ao original em inglês): {\i1}Battle stations! Battle stations!
+Diagnóstico: Correção validada e persistida.
+EN: {\i1}Battle stations! Battle stations!
+PT anterior: {\i1}Battle stations! Battle stations!
+Proposta: {\i1}Postos de batalha! Postos de batalha!
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S00E02_Track3_PT-BR.parcial.ass
+Evento: 8 | Estilo: Dialogue
+Resultado: LLM_SEM_CONTEUDO_UTILIZAVEL
+Problemas: Fala não traduzida (idêntica ao original em inglês): {\i1}Keep your eyes peeled!
+Diagnóstico: O servidor não devolveu choices/content utilizável; consulte o log técnico para HTTP ou timeout.
+EN: {\i1}Keep your eyes peeled!
+PT anterior: {\i1}Keep your eyes peeled!
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S00E02_Track3_PT-BR.parcial.ass
+Evento: 9 | Estilo: Dialogue
+Resultado: LLM_SEM_ALTERACAO
+Problemas: Fala não traduzida (idêntica ao original em inglês): {\i1}1200! 1250! 1300!
+Diagnóstico: O modelo respondeu, mas manteve a tradução atual.
+EN: {\i1}1200! 1250! 1300!
+PT anterior: {\i1}1200! 1250! 1300!
+Proposta: {\i1}1200! 1250! 1300!
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S00E02_Track3_PT-BR.parcial.ass
+Evento: 13 | Estilo: Dialogue
+Resultado: CORRIGIDA_LLM
+Problemas: Resíduo gringo detectado: {\i1}Whatever! We are the infamous Cima Fleet.{\i} | Fala não traduzida (idêntica ao original em inglês): {\i1}Whatever! We are the infamous Cima Fleet.{\i}
+Diagnóstico: Correção validada e persistida.
+EN: {\i1}Whatever! We are the infamous Cima Fleet.{\i}
+PT anterior: {\i1}Whatever! We are the infamous Cima Fleet.{\i}
+Proposta: {\i1}Whatever! Nós somos a frota infame de Cima.{\i}
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S00E02_Track3_PT-BR.parcial.ass
+Evento: 14 | Estilo: Dialogue
+Resultado: LLM_SEM_CONTEUDO_UTILIZAVEL
+Problemas: Resíduo gringo detectado (contração): {\i1}It's too late for second thoughts!{\i} | Fala não traduzida (idêntica ao original em inglês): {\i1}It's too late for second thoughts!{\i}
+Diagnóstico: O servidor não devolveu choices/content utilizável; consulte o log técnico para HTTP ou timeout.
+EN: {\i1}It's too late for second thoughts!{\i}
+PT anterior: {\i1}It's too late for second thoughts!{\i}
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S00E02_Track3_PT-BR.parcial.ass
+Evento: 15 | Estilo: Dialogue
+Resultado: CORRIGIDA_LLM
+Problemas: Resíduo gringo detectado: {\i1}...the true desire of we spacenoids... | Fala não traduzida (idêntica ao original em inglês): {\i1}...the true desire of we spacenoids...
+Diagnóstico: Correção validada e persistida.
+EN: {\i1}...the true desire of we spacenoids...
+PT anterior: {\i1}...the true desire of we spacenoids...
+Proposta: {\i1}...o verdadeiro desejo de nós, spacenoids...
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S00E02_Track3_PT-BR.parcial.ass
+Evento: 22 | Estilo: Dialogue
+Resultado: CORRIGIDA_LLM
+Problemas: Resíduo gringo detectado: {\i1}Lt. Commander Cima, have a good hunt! | Fala não traduzida (idêntica ao original em inglês): {\i1}Lt. Commander Cima, have a good hunt!
+Diagnóstico: Correção validada e persistida.
+EN: {\i1}Lt. Commander Cima, have a good hunt!
+PT anterior: {\i1}Lt. Commander Cima, have a good hunt!
+Proposta: {\i1}Tenente-Comandante Cima, boa caçada!
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S00E03_Track2_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 37 de 90 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E01_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 94 de 344 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E02_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 156 de 356 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E03_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 117 de 327 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E04_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 145 de 368 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E05_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 154 de 388 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E06_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 107 de 301 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E07_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 137 de 350 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E08_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 148 de 409 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E09_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 155 de 319 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E10_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 135 de 284 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E11_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 143 de 342 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E12_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 111 de 271 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile.Suit.Gundam.0083.Stardust.Memory.S01E13_Track3_PT-BR.parcial.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 93 de 235 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —

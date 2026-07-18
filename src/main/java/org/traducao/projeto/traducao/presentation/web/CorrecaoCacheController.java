@@ -179,17 +179,22 @@ public class CorrecaoCacheController {
             System.out.println(AnsiCores.RED + "[FALHA] " + operacao + " não retornou resultado." + AnsiCores.RESET);
             return;
         }
-        String resumo = operacao + " — status=" + resultado.status()
-            + ", arquivos=" + resultado.arquivosAnalisados()
-            + ", alterados=" + resultado.arquivosAlterados()
-            + ", corrigidos=" + resultado.itensCorrigidos()
-            + ", pendentes=" + resultado.itensPendentes()
-            + ", falhas=" + resultado.falhas();
-        if ("CONCLUIDO".equals(resultado.status())) {
-            System.out.println(AnsiCores.GREEN + "[SUCESSO] " + resumo + AnsiCores.RESET);
-        } else {
-            System.out.println(AnsiCores.YELLOW + "[ATENÇÃO] " + resumo + AnsiCores.RESET);
-        }
+        boolean concluido = "CONCLUIDO".equals(resultado.status());
+        String cor = concluido ? AnsiCores.GREEN : AnsiCores.YELLOW;
+        String rotulo = concluido ? "[SUCESSO]" : "[ATENÇÃO]";
+
+        System.out.println("\n" + cor + "========================================================================" + AnsiCores.RESET);
+        System.out.println(cor + "  " + rotulo + " " + operacao + " — " + resultado.status() + AnsiCores.RESET);
+        System.out.println(cor + "========================================================================" + AnsiCores.RESET);
+        System.out.println(AnsiCores.CYAN + "  • Arquivos Analisados : " + resultado.arquivosAnalisados() + AnsiCores.RESET);
+        System.out.println(AnsiCores.CYAN + "  • Arquivos Alterados  : " + resultado.arquivosAlterados() + AnsiCores.RESET);
+        System.out.println(AnsiCores.GREEN + "  • Itens Corrigidos    : " + resultado.itensCorrigidos() + AnsiCores.RESET);
+        System.out.println((resultado.itensPendentes() > 0 ? AnsiCores.YELLOW : AnsiCores.GREEN)
+            + "  • Itens Pendentes     : " + resultado.itensPendentes() + AnsiCores.RESET);
+        System.out.println((resultado.falhas() > 0 ? AnsiCores.RED : AnsiCores.GREEN)
+            + "  • Falhas Ocorridas    : " + resultado.falhas() + AnsiCores.RESET);
+        System.out.println(cor + "========================================================================\n" + AnsiCores.RESET);
+
         if (resultado.arquivosAlterados() > 0) {
             System.out.println(AnsiCores.CYAN
                 + "[PRÓXIMO PASSO] Avance para a Opção 6. Ela sincronizará este cache mais novo no ASS antes da revisão."

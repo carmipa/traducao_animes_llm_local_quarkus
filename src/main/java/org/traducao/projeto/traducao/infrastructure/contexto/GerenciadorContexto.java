@@ -14,8 +14,6 @@ import java.util.stream.Collectors;
 @Component
 public class GerenciadorContexto {
 
-    private static final String ID_CONTEXTO_PADRAO = "danmachi";
-
     private final List<ProvedorContexto> provedores;
     private final ProvedorContexto provedorPadrao;
 
@@ -30,8 +28,8 @@ public class GerenciadorContexto {
                 .sorted(Comparator.comparing(ProvedorContexto::getNomeExibicao, String.CASE_INSENSITIVE_ORDER))
                 .toList();
         validarIdsUnicos(this.provedores);
-        this.provedorPadrao = encontrarProvedorPadrao();
-        this.provedorAtivo = provedorPadrao;
+        this.provedorPadrao = null; // Removido fallback hardcoded para 'danmachi'
+        this.provedorAtivo = null;
     }
 
     public List<ProvedorContexto> getProvedores() {
@@ -39,9 +37,8 @@ public class GerenciadorContexto {
     }
 
     /**
-     * Id do contexto usado quando nenhuma seleção explícita é feita (ex.: primeira
-     * carga da UI). Usado pelo frontend para pré-selecionar a opção correta no
-     * combo box, em vez de depender da ordem alfabética da lista.
+     * Id do contexto usado quando nenhuma seleção explícita é feita.
+     * Retorna nulo por padrão para forçar seleção explícita na UI.
      */
     public String getIdContextoPadrao() {
         return provedorPadrao != null ? provedorPadrao.getId() : null;
@@ -52,14 +49,22 @@ public class GerenciadorContexto {
     }
 
     /**
-     * Define o contexto ativo a partir do id selecionado na UI antes de cada
-     * tradução. Um id não vazio que não corresponda a nenhum provedor é um erro:
-     * cair silenciosamente no contexto padrão esconderia o problema e faria o
-     * anime ser traduzido com a lore errada sem nenhum aviso.
+     * PROPÓSITO DE NEGÓCIO: Define explicitamente qual o contexto de lore que o modelo
+     * de IA usará para a sessão de tradução ativa. Isso impede que legendas de animes
+     * diferentes sofram vazamento de dados (cross-contamination) entre si.
+     *
+     * INVARIANTES DO DOMÍNIO:
+     * - O ID do contexto deve existir na lista de provedores carregados.
+     * - Nunca deve aceitar IDs em branco (evitando fallbacks cegos e silenciosos).
+     *
+     * COMPORTAMENTO EM CASO DE FALHA:
+     * - Dispara {@link ContextoNaoEncontradoException} se o ID fornecido for nulo,
+     *   em branco ou não corresponder a um contexto registrado. A aplicação aborta a operação.
      */
     public ProvedorContexto definirContextoAtivo(String id) {
         if (id == null || id.isBlank()) {
-            return this.provedorAtivo;
+            throw new ContextoNaoEncontradoException(
+                    "ID do contexto não pode ser vazio. É obrigatório selecionar o anime na interface web antes de processar.");
         }
         ProvedorContexto encontrado = provedores.stream()
                 .filter(p -> p.getId().equals(id))
@@ -73,7 +78,7 @@ public class GerenciadorContexto {
 
     public String obterPromptAtivo() {
         if (this.provedorAtivo == null) {
-            return "Voce e um tradutor especialista. Traduza fielmente.";
+            return "Voce e um tradutor especialista. Traduza fielmente e nao resuma ou adicione comentarios.";
         }
         return this.provedorAtivo.obterPromptSistema();
     }
@@ -108,13 +113,6 @@ public class GerenciadorContexto {
      */
     public java.util.Set<String> termosProtegidosAtivos() {
         return this.provedorAtivo != null ? this.provedorAtivo.termosProtegidos() : java.util.Set.of();
-    }
-
-    private ProvedorContexto encontrarProvedorPadrao() {
-        return provedores.stream()
-                .filter(p -> ID_CONTEXTO_PADRAO.equals(p.getId()))
-                .findFirst()
-                .orElse(provedores.isEmpty() ? null : provedores.get(0));
     }
 
     private void validarIdsUnicos(List<ProvedorContexto> provedores) {

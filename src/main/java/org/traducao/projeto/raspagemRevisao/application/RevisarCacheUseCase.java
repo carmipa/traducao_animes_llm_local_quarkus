@@ -201,7 +201,15 @@ public class RevisarCacheUseCase {
                 out("  Original: " + resumirFala(original));
                 out("  Tradução atual: " + resumirFala(traduzido));
 
-                TentativaRevisao tentativa = tentarRevisar(original, traduzido, deteccao.motivos());
+                TentativaRevisao tentativa = null;
+                for (int t = 1; t <= 3; t++) {
+                    tentativa = tentarRevisar(original, traduzido, deteccao.motivos());
+                    if (tentativa.revisado().isPresent()) break;
+                    if (t < 3) {
+                        out(AnsiCores.YELLOW + "  [TENTATIVA " + t + "/3] Proposta do LLM inválida, retentando..." + AnsiCores.RESET);
+                    }
+                }
+
                 if (tentativa.revisado().isEmpty()) {
                     c.itensIgnorados++;
                     c.itensPendentes++;

@@ -1,0 +1,14 @@
+REVISÃO DE LEGENDAS (.ass)
+==========================
+Pasta: C:\animes\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\legendas-ptbr
+Duração: 40s
+Arquivos analisados: 27
+Falas auditadas: 505
+Falas sem original EN (ignoradas): 144
+Problemas detectados: 101
+Falas corrigidas via Google: 0
+Falas pendentes: 245
+
+DETALHES POR OCORRÊNCIA
+=======================
+Nenhuma ocorrência detalhada registrada.

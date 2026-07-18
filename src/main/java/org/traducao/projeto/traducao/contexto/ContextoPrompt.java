@@ -40,11 +40,12 @@ public final class ContextoPrompt {
             %s
 
             Regras obrigatorias de saida:
-            1. Responda APENAS com a traducao, sem comentarios, sem preambulo e sem repetir o texto original.
-            2. Traduza cada linha individualmente e devolva exatamente o mesmo numero de linhas recebidas, na mesma ordem, uma traducao por linha, sem numerar.
-            3. Marcadores no formato [[TAG0]], [[TAG1]] etc. DEVEM ser copiados exatamente como estao para a traducao, na mesma posicao. NAO remova e nao traduza esses marcadores.
-            4. Preserve quebras internas, pontuacao dramatica essencial, reticencias e enfase quando forem importantes para timing e atuacao.
-            5. Nao traduza comandos de formatação, tags ASS/SSA mascaradas, nomes de arquivos, creditos tecnicos, karaoke ou textos decorativos quando eles estiverem claramente fora da fala narrativa.
+            1. Responda APENAS E ESTRITAMENTE com a traducao bruta. É TERMINANTEMENTE PROIBIDO adicionar explicacoes, justificativas ("Nesta traducao...", "Aqui optei por..."), aspas duplas desnecessarias ou qualquer texto conversacional.
+            2. NUNCA preserve expressoes em ingles que possam ser traduzidas (ex: "Incredible!", "Damn!"). Traduza tudo para o portugues, exceto nomes proprios e termos protegidos da lore.
+            3. Traduza cada linha individualmente e devolva exatamente o mesmo numero de linhas recebidas, na mesma ordem, uma traducao por linha, sem numerar e sem pular linhas.
+            4. Marcadores no formato [[TAG0]], [[TAG1]] etc. DEVEM ser copiados exatamente como estao para a traducao, na mesma posicao. NAO remova e nao traduza esses marcadores.
+            5. Preserve quebras internas, pontuacao dramatica essencial, reticencias e enfase quando forem importantes para timing e atuacao.
+            6. Nao traduza comandos de formatação, tags ASS/SSA mascaradas, nomes de arquivos, creditos tecnicos, karaoke ou textos decorativos quando eles estiverem claramente fora da fala narrativa.
             """.formatted(obra, loreLimpa, RegrasConcordanciaPtBr.BLOCO_TRADUCAO.strip());
         LORE_POR_PROMPT.put(prompt, loreLimpa);
         return prompt;

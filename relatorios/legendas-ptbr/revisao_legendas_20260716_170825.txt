@@ -1,0 +1,22 @@
+REVISÃO DE LEGENDAS (.ass)
+==========================
+Pasta: C:\animes\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\legendas-ptbr
+Duração: 6s
+Arquivos analisados: 27
+Falas auditadas: 6928
+Falas sem original EN (ignoradas): 630
+Problemas detectados: 8
+Falas corrigidas via Google: 0
+Falas pendentes: 8
+
+DETALHES POR OCORRÊNCIA
+=======================
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E05_Track3_PT-BR.parcial.ass
+Evento: 90 | Estilo: Dialogue
+Resultado: GOOGLE_REJEITADO_SEM_MELHORIA
+Problemas: Resíduo gringo detectado: I can't wait till we upgrade it to\NFull Burnern on the Moon. | Fala não traduzida (idêntica ao original em inglês): I can't wait till we upgrade it to\NFull Burnern on the Moon.
+Diagnóstico: Correção descartada: resposta Google inválida ou sem melhoria.
+EN: I can't wait till we upgrade it to\NFull Burnern on the Moon.
+PT anterior: I can't wait till we upgrade it to\NFull Burnern on the Moon.
+Proposta: Mal posso esperar até atualizá-lo para\NFull Burnern on the Moon.

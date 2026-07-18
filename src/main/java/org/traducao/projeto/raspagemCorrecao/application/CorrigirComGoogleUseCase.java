@@ -207,7 +207,8 @@ public class CorrigirComGoogleUseCase {
                 }
 
                 try {
-                    Thread.sleep(400);
+                    long sleepMs = java.util.concurrent.ThreadLocalRandom.current().nextLong(1500, 2500);
+                    Thread.sleep(sleepMs);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     c.cancelado = true;

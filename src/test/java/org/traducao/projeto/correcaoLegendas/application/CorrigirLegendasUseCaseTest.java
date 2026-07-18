@@ -3,6 +3,7 @@ package org.traducao.projeto.correcaoLegendas.application;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.traducao.projeto.correcaoLegendas.domain.CorrecaoLegendasRelatorioJson;
+import org.traducao.projeto.correcaoLegendas.domain.ResultadoCorrecaoLegendas;
 import org.traducao.projeto.correcaoLegendas.infrastructure.CorrecaoLegendasLogPersistencia;
 import org.traducao.projeto.telemetria.OperacaoTelemetria;
 import org.traducao.projeto.telemetria.TelemetriaService;
@@ -171,4 +172,39 @@ class CorrigirLegendasUseCaseTest {
             return pastaEntrada.resolve("relatorio-fake.json");
         }
     }
+
+    @Test
+    void corrigirPastaComNomesPtBrDiferentesDiretorios() throws IOException {
+        Path pastaOriginal = Files.createDirectory(tempDir.resolve("original_simplificada"));
+        Path pastaTraduzida = Files.createDirectory(tempDir.resolve("traduzida_simplificada"));
+
+        Path original = pastaOriginal.resolve("show_S01E01_Track3_PT-BR.ass");
+        Path traduzido = pastaTraduzida.resolve("show_S01E01_Track3_PT-BR.ass");
+
+        Files.writeString(original, ass("{\\pos(10,10)}Original English", "{\\pos(20,20)}Japan"));
+        Files.writeString(traduzido, ass("Original Sem Tags", "Japan"));
+
+        CorretorFake corretor = new CorretorFake();
+        CorrigirLegendasUseCase useCase = new CorrigirLegendasUseCase(
+            new LeitorLegendaAss(),
+            new EscritorLegendaAss(),
+            new SanitizadorTagsService(),
+            corretor,
+            new GerenciadorContexto(List.of(new ContextoFake())),
+            new TelemetriaFake(),
+            new LogPersistenciaFake(),
+            new DetectorEfeitoKaraokeService(),
+            new TradutorProperties(),
+            new MascaradorTags(),
+            new ProtecaoLegendaAssService()
+        );
+
+        ResultadoCorrecaoLegendas resultado = useCase.corrigirPasta(pastaOriginal, pastaTraduzida, "teste");
+
+        assertEquals(1, resultado.curados());
+        assertEquals(0, resultado.semPar());
+        String conteudoFinal = Files.readString(traduzido);
+        assertTrue(conteudoFinal.contains("{\\pos(10,10)}Original Sem Tags"), "Deveria restaurar a tag do arquivo com sufixo _PT-BR");
+    }
 }
+

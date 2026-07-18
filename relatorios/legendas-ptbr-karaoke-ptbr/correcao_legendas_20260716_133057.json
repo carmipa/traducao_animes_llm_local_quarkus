@@ -1,0 +1,312 @@
+{
+  "operacao" : {
+    "tipo" : "Correcao de Legendas (.ass original->traduzida)",
+    "detalhe" : "Original: C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\legendas_extraidas_ass | Traduzida: C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\legendas-ptbr-karaoke-ptbr",
+    "tempoTotalMs" : 189,
+    "arquivosProcessados" : 15,
+    "itensDetectados" : 159,
+    "itensCorrigidos" : 159,
+    "registradoEm" : "2026-07-16T16:30:57.782135900Z"
+  },
+  "pastaOriginal" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\legendas_extraidas_ass",
+  "pastaTraduzida" : "C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\legendas-ptbr-karaoke-ptbr",
+  "llmHabilitado" : false,
+  "contexto" : null,
+  "resultado" : {
+    "curados" : 14,
+    "falasCuradas" : 159,
+    "corrigidosLlm" : 0,
+    "semAlteracao" : 1,
+    "semPar" : 0,
+    "traducaoAusente" : 0,
+    "totalErros" : 0,
+    "erros" : [ ],
+    "relatorioJson" : null
+  },
+  "eventosSessao" : [ {
+    "timestampUtc" : "2026-07-16T16:30:57.595608Z",
+    "nivel" : "INFO",
+    "arquivo" : null,
+    "mensagem" : "=== Iniciando Correcao de Legendas ==="
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.597598500Z",
+    "nivel" : "INFO",
+    "arquivo" : null,
+    "mensagem" : "Pasta original/ref: C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\legendas_extraidas_ass"
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.598599300Z",
+    "nivel" : "INFO",
+    "arquivo" : null,
+    "mensagem" : "Pasta traduzida/alvo: C:\\animes\\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\\legendas-ptbr-karaoke-ptbr"
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.623232900Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E01_Track3_PT-BR.ass",
+    "mensagem" : "[OK] Mobile Suit Gundam 0083 - Stardust Memory - S01E01_Track3_PT-BR.ass (sem alteracao)"
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.628233600Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E02_5_Track3_PT-BR.ass",
+    "mensagem" : "[Corrigido] Mobile Suit Gundam 0083 - Stardust Memory - S01E02_5_Track3_PT-BR.ass (1 tags restauradas, 0 corrigidas via LLM)"
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.633739500Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E02_Track3_PT-BR.ass",
+    "mensagem" : "Fala 21: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.633739500Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E02_Track3_PT-BR.ass",
+    "mensagem" : "Fala 22: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.634744500Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E02_Track3_PT-BR.ass",
+    "mensagem" : "Fala 24: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.640252100Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E02_Track3_PT-BR.ass",
+    "mensagem" : "[Corrigido] Mobile Suit Gundam 0083 - Stardust Memory - S01E02_Track3_PT-BR.ass (24 tags restauradas, 0 corrigidas via LLM)"
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.646771800Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03-5_Track2_PT-BR.ass",
+    "mensagem" : "[Corrigido] Mobile Suit Gundam 0083 - Stardust Memory - S01E03-5_Track2_PT-BR.ass (2 tags restauradas, 0 corrigidas via LLM)"
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.651311200Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 21: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.651950300Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 22: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.651950300Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 23: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.652961200Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 24: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.652961200Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 26: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.652961200Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 27: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.654469300Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 29: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.654469300Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 31: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.655486Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 32: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.655486Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 33: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.656473300Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 34: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.656473300Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 36: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.657481600Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 37: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.657481600Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 40: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.658481700Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 41: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.658481700Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 42: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.659481300Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 43: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.659481300Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 44: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.660474100Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 45: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.660474100Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 46: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.661482600Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 47: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.661482600Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 49: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.662481700Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 50: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.662481700Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 51: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.663483100Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 54: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.663483100Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 56: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.664481900Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 57: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.664481900Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 59: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.665473100Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 60: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.665473100Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 62: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.666705300Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 64: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.666705300Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 66: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.667715200Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 69: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.667715200Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 70: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.668705600Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 71: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.668705600Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "Fala 74: karaokê japonês/romaji restaurado da legenda original."
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.675135300Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass",
+    "mensagem" : "[Corrigido] Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass (65 tags restauradas, 0 corrigidas via LLM)"
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.684661200Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E04_Track3_PT-BR.ass",
+    "mensagem" : "[Corrigido] Mobile Suit Gundam 0083 - Stardust Memory - S01E04_Track3_PT-BR.ass (3 tags restauradas, 0 corrigidas via LLM)"
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.696175800Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E05_Track3_PT-BR.ass",
+    "mensagem" : "[Corrigido] Mobile Suit Gundam 0083 - Stardust Memory - S01E05_Track3_PT-BR.ass (6 tags restauradas, 0 corrigidas via LLM)"
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.707915700Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.ass",
+    "mensagem" : "[Corrigido] Mobile Suit Gundam 0083 - Stardust Memory - S01E06_Track3_PT-BR.ass (9 tags restauradas, 0 corrigidas via LLM)"
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.727317600Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E07_Track3_PT-BR.ass",
+    "mensagem" : "[Corrigido] Mobile Suit Gundam 0083 - Stardust Memory - S01E07_Track3_PT-BR.ass (4 tags restauradas, 0 corrigidas via LLM)"
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.738610900Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E08_Track3_PT-BR.ass",
+    "mensagem" : "[Corrigido] Mobile Suit Gundam 0083 - Stardust Memory - S01E08_Track3_PT-BR.ass (8 tags restauradas, 0 corrigidas via LLM)"
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.749115100Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E09_Track3_PT-BR.ass",
+    "mensagem" : "[Corrigido] Mobile Suit Gundam 0083 - Stardust Memory - S01E09_Track3_PT-BR.ass (9 tags restauradas, 0 corrigidas via LLM)"
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.757640300Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E10_Track3_PT-BR.ass",
+    "mensagem" : "[Corrigido] Mobile Suit Gundam 0083 - Stardust Memory - S01E10_Track3_PT-BR.ass (10 tags restauradas, 0 corrigidas via LLM)"
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.766376Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E11_Track3_PT-BR.ass",
+    "mensagem" : "[Corrigido] Mobile Suit Gundam 0083 - Stardust Memory - S01E11_Track3_PT-BR.ass (6 tags restauradas, 0 corrigidas via LLM)"
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.774387200Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E12_Track3_PT-BR.ass",
+    "mensagem" : "[Corrigido] Mobile Suit Gundam 0083 - Stardust Memory - S01E12_Track3_PT-BR.ass (7 tags restauradas, 0 corrigidas via LLM)"
+  }, {
+    "timestampUtc" : "2026-07-16T16:30:57.780631500Z",
+    "nivel" : "INFO",
+    "arquivo" : "Mobile Suit Gundam 0083 - Stardust Memory - S01E13_Track3_PT-BR.ass",
+    "mensagem" : "[Corrigido] Mobile Suit Gundam 0083 - Stardust Memory - S01E13_Track3_PT-BR.ass (5 tags restauradas, 0 corrigidas via LLM)"
+  } ]
+}

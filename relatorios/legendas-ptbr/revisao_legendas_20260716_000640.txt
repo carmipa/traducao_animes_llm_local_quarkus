@@ -1,0 +1,112 @@
+REVISÃO DE LEGENDAS (.ass)
+==========================
+Pasta: C:\animes\[Joseki] Mobile Suit Gundam 0083 Stardust Memory COMPLETE (1991)(BD AV1 1080p Opus)[Sub Eng]\legendas-ptbr
+Duração: 3s
+Arquivos analisados: 15
+Falas auditadas: 4406
+Falas sem original EN (ignoradas): 0
+Problemas detectados: 684
+Falas corrigidas via Google: 0
+Falas pendentes: 684
+
+DETALHES POR OCORRÊNCIA
+=======================
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E02_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 136 de 356 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E03_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 99 de 330 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E04_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 42 de 368 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E05_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 52 de 388 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E07_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 43 de 348 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E08_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 56 de 409 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E09_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 61 de 319 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E10_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 57 de 284 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E11_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 51 de 342 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E12_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 47 de 271 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —
+
+Arquivo: Mobile Suit Gundam 0083 - Stardust Memory - S01E13_Track3_PT-BR.ass
+Evento: -1 | Estilo: ARQUIVO
+Resultado: BLOQUEADO_RETRADUCAO_EM_MASSA
+Problemas: Falas iguais ao original acima do limite seguro
+Diagnóstico: 37 de 234 falas auditáveis
+EN: —
+PT anterior: —
+Proposta: —

@@ -1,0 +1,9 @@
+{
+  "tipo" : "Limpeza de Cache",
+  "detalhe" : "status=CONCLUIDO; falhas=0",
+  "tempoTotalMs" : 739,
+  "arquivosProcessados" : 29,
+  "itensDetectados" : 23,
+  "itensCorrigidos" : 1,
+  "registradoEm" : "2026-07-15T14:30:27.248679700Z"
+}
